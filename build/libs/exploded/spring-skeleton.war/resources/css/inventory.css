@@ -1,0 +1,150 @@
+/*Auto Complete*/
+
+.result{
+    background-color: #fff;
+    width: 263px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 35px;
+    z-index: 1000;
+    margin-bottom: 30px;
+}
+.resultCustomer{
+    background-color: #fff;
+    width: 249px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 58px;
+    z-index: 1000;
+    margin-bottom: 30px;
+}
+input.auto-complete-active{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.result table{
+    width: 100%;
+}
+
+/*SEARCH TABLE DESIGN*/
+
+.table-header{
+    background-color: #31708f;
+    color:  #fff !important;
+    border:  none;
+    text-align: center;
+}
+
+.table-row, .data-row{
+    padding: 10px 0px;
+    min-height: 40px;
+}
+.data-row:hover{
+    padding: 10px 0px;
+    min-height: 40px;
+    background-color: #ddd;
+}
+.border-bottom{
+    border-bottom: solid 1px #eee;
+}
+
+/* INVOICE DESIGN */
+
+.invoice-date{
+    background-color: transparent !important;
+    cursor: pointer !important;
+    border:  none !important;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.invoice-date:hover{
+   color: #00a8ff !important;
+}
+
+.invoice-container{
+    padding: 30px;
+    min-height: 10px;
+}
+
+.invoice-header{
+    margin-bottom: 50px;
+}
+
+.invoice-title{
+    font-size: 30pt;
+    font-weight: bold;
+    display: block;
+    padding-top: 5px;
+}
+
+.invoice-section{
+    /* margin-bottom: 30px; */
+    margin-top: 30px;
+}
+
+.invoice-details-block{
+    background-color: #f3f7fb;
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: #2c363c;
+    font-size: 10.5pt !important;
+}
+
+
+.invoice-details-block > .title{
+    display: block;
+    color: #001aa0;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.invoice-details-block > .name{
+    font-weight: bold;
+}
+
+.border-bottom{
+    border-bottom: solid 1px #ddd;
+}
+
+/* table */
+
+.invoice-table-heading{
+    background-color: #f3f7fb;
+    display: table-row;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0px 0px;
+    width: 100%;
+    font-weight: bold;
+    color: #001aa0;
+}
+
+.cell-padding{
+    display: inline-block;
+    padding:  10px 15px;
+}
+
+.row-bg{
+    background-color: #fafafa;
+}
+
+.row-total{
+    background-color: #f3f7fb;
+    color: #001aa0;
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: block;
+}
+
+
+
+/* END INVOICE DESIGN
