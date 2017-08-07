@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http auto-config="true" use-expressions="true">
+
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')"
+                                requires-channel="any"/>
+        <security:form-login login-page="/main" authentication-failure-url="/login?error=loginFail"
+                             authentication-success-handler-ref="successHandler"/>
+        <security:logout logout-url="/logout" logout-success-url="/"/>
+
+        <security:intercept-url pattern="/app"
+                                access="hasRole('ROLE_BUSINESSOWNER,ROLE_AUTHENTICATED') or hasRole('ROLE_BUSINESSUSER,ROLE_AUTHENTICATED')"/>
+
+    </security:http>
+
+    <bean id="successHandler"
+          class="com.inventory.web.session.CustomSavedRequestAwareAuthenticationSuccessHandler">
+    </bean>
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider
+                user-service-ref="userService">
+            <security:password-encoder ref="passwordEncoder">
+            </security:password-encoder>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:jdbc-user-service id="userService"
+                                data-source-ref="dataSource"
+                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=TRUE "
+                                authorities-by-username-query="select username, authority from invuser where username=?"/>
+</beans>
+           
