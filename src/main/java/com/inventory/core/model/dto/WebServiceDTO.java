@@ -12,8 +12,6 @@ public class WebServiceDTO {
 
 	private Status status;
 
-	
-
 	public String getApi_user() {
 		return api_user;
 	}
