@@ -23,6 +23,8 @@ public class CategoryInfoDTO {
 
     private String createdByName;
 
+    private long version;
+
     public Long getCategiryId() {
         return categiryId;
     }
@@ -85,5 +87,13 @@ public class CategoryInfoDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }

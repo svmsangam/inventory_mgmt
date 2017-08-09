@@ -19,6 +19,8 @@ public class UnitInfoDTO {
 
     private String createdByName;
 
+    private long version;
+
     private Status status;
 
     public Long getUnitId() {
@@ -75,5 +77,13 @@ public class UnitInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }

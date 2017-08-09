@@ -19,6 +19,8 @@ public class TagInfoDTO {
 
     private String createdByName;
 
+    private long version;
+
     private Status status;
 
     public Long getTagId() {
@@ -75,5 +77,13 @@ public class TagInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }

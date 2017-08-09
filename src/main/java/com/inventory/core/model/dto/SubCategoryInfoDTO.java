@@ -27,6 +27,8 @@ public class SubCategoryInfoDTO {
 
     private Long categoryId;
 
+    private long version;
+
     public Long getSubCategoryId() {
         return subCategoryId;
     }
@@ -105,5 +107,13 @@ public class SubCategoryInfoDTO {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }
