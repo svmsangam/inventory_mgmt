@@ -28,6 +28,9 @@ public class StringConstants {
 	public static String CITY_LIST="cityList";
 	public static String CITY="city";
 
+	public static String TAG_LIST="tagList";
+	public static String TAG="tag";
+
 	public static String CITY_ERROR="cityError";
 
 	public static String ERROR="error";

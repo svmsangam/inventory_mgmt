@@ -1,5 +1,6 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.ITagInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,13 +14,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 	public class TagController {
 
 		@Autowired
+		private ITagInfoApi tagInfoApi;
+
+		@Autowired
 		private IUserApi userApi;
+
+		/*@Autowired
+		private IBusinessServicePlanApi businessPlanApi;*/
 
 
 	    @GetMapping(value="/")
 	    public String index(RedirectAttributes redirectAttributes){
-
-
 
 			return "redirect:/tag/list";
 	    }
@@ -27,7 +32,31 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 	    @GetMapping(value="/list")
 	    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
 
+	/*		// user checking start
+			if (!AuthorityUtil.checkBusinessOwnerRole()) {
+				return "redirect:/";
+			}
 
+			InvUserDTO currentUser = userApi.getUserByUserName(AuthenticationUtil.getCurrentUser().getUsername());
+
+			BusinessServicePlanDto businessServicePlan = businessPlanApi
+					.getAllServicePlansByStoreAndUserId(currentUser.getStoreId(), currentUser.getId());
+
+			if (currentUser.getStoreId() == 0) {
+				redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, "store.not.assigned");
+				return "redirect:/";
+			}
+
+			if (!AuthorityUtil.checkPermission(ServicePlan.ITEM_VIEW, businessServicePlan)) {
+
+				redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, "access.deniled");
+
+				return "redirect:/";
+			}*/
+
+			// user checking end
+
+	    	//modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE , ));
 	        return "tag/list";
 	    }
 
