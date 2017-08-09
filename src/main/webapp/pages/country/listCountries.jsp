@@ -1,70 +1,124 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-<c:choose>
-    <c:when test="${user.userType == 'ADMIN'}">
-        <%@include file="../common/settings.jsp" %>
-    </c:when>
-    <c:otherwise>
-        <%@include file="../common/businessOwnerSettings.jsp" %>
-    </c:otherwise>
-</c:choose>
-
-
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    <div class="row">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Page Header
+            <small>Optional description</small>
+        </h1>
         <ol class="breadcrumb">
-            <li><a href="#">
-                <svg class="glyph stroked home">
-                    <use xlink:href="#stroked-home"></use>
-                </svg>
-            </a></li>
-            <li class="active">Country</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Data tables</li>
         </ol>
-    </div><!--/.row-->
-    <c:if test="${not empty message}">
-        <div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${message}</strong>
+    </section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Countries</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="table2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Nepal</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
         </div>
-    </c:if>
-    <div class="col-sm-8">
-        <a href="${pageContext.request.contextPath}/addcountry">
-            <button class="btn btn-primary btn-sm pull-right">Add Country</button>
-        </a>
     </div>
-    <br/><br/>
+</section>
 
-    <div class="col-sm-8">
-        <table class="table table-bordered table-stripped">
-            <thead>
-            <tr>
-                <th>Country Name</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="countryInfo" items="${countryList}">
-                <tr>
-                    <td>${countryInfo.name}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/editcountry?id=${countryInfo.countryId}">
-                            <button class="btn btn-info btn-xs">Edit</button>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/removecountry?id=${countryInfo.countryId}">
-                            <button class="btn btn-danger btn-xs"
-                                    onclick="return confirm('Are you sure, you want to DELETE?')">Delete
-                            </button>
-                        </a>
-
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+    <div class="modal fade" id="modal-add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Country</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="control-label">Name</label>
+                            <input type="text" class="form-control" name="" placeholder="Name">
+                            <p class="error">${error.countryName}</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+</div>
+    <!-- /.modal -->
 
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit Country</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/editcountry" modelAttribute="countryDto">
+                            <input type="hidden" name="countryId" value="${countryInfo.countryId}"/>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Name" value="${countryInfo.name}" required>
+                                <p class="error">${error.countryName}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
 
-</div>	
+<%@include file="/pages/parts/footer.jsp" %>

@@ -15,9 +15,6 @@
                              authentication-success-handler-ref="successHandler"/>
         <security:logout logout-url="/logout" logout-success-url="/"/>
 
-        <security:intercept-url pattern="/app"
-                                access="hasRole('ROLE_BUSINESSOWNER,ROLE_AUTHENTICATED') or hasRole('ROLE_BUSINESSUSER,ROLE_AUTHENTICATED')"/>
-
     </security:http>
 
     <bean id="successHandler"
@@ -35,7 +32,7 @@
 
     <security:jdbc-user-service id="userService"
                                 data-source-ref="dataSource"
-                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=TRUE "
+                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=1 "
                                 authorities-by-username-query="select username, authority from invuser where username=?"/>
 </beans>
            
