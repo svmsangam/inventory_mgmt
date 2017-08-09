@@ -8,6 +8,20 @@
 <div class="content-wrapper">
 
 <section class="content">
+    <c:if test="${not empty message}">
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            <strong>${message}</strong>
+        </div>
+    </c:if>
+
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            <strong>${error}</strong>
+        </div>
+    </c:if>
+
     <div class="row">
         <div class="col-xs-6">
             <div class="box box-info">
@@ -23,19 +37,23 @@
                         <thead>
                         <tr>
                             <th>SN</th>
-                            <th>Country</th>
+                            <th>Name</th>
+                            <th>ISO</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Nepal</td>
-                            <td>
-                                <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
-                            </td>
-                        </tr>
+                            <c:forEach var="country" items="${countryList}" varStatus="i">
+                                <tr>
+                                    <td>${i.index + 1}</td>
+                                    <td>${country.countryName}</td>
+                                    <td>${country.countryISO}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -59,14 +77,21 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label class="control-label">Name</label>
-                            <input type="text" class="form-control" name="" placeholder="Name">
+                            <input type="text" class="form-control" name="countryName" placeholder="Name">
                             <p class="error">${error.countryName}</p>
                         </div>
+
+                        <div class="form-group">
+                            <label class="control-label">ISO</label>
+                            <input type="text" class="form-control" name="countryISO" placeholder="ISO">
+                            <p class="error">${error.countryISO}</p>
+                        </div>
+
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -88,16 +113,24 @@
                     <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/editcountry" modelAttribute="countryDto">
                             <input type="hidden" name="countryId" value="${countryInfo.countryId}"/>
                         <div class="box-body">
+
                             <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" value="${countryInfo.name}" required>
+                                <label class="control-label">Name *</label>
+                                <input type="text" class="form-control" placeholder="Name" value="Nepal" required>
                                 <p class="error">${error.countryName}</p>
                             </div>
+
+                            <div class="form-group">
+                                <label class="control-label">ISO *</label>
+                                <input type="text" class="form-control" name="countryISO" value="NPL" placeholder="ISO">
+                                <p class="error">${error.countryISO}</p>
+                            </div>
+
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>

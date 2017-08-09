@@ -79,9 +79,10 @@ public class CountryController {
     public String list(HttpServletRequest request , ModelMap modelMap) throws IOException {
     	try {
     		if (AuthenticationUtil.getCurrentUser() != null) {
-       		 modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
 
-       	        return "country/listCountries";
+    			modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
+
+       	        return "country/countryList";
     		}
     	}catch(Exception e){
     		logger.error("Stack trace: " + e.getStackTrace());
