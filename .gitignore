@@ -17,3 +17,8 @@ gradle-app.setting
 /build/
 /.settings/
 /out/
+/inventory.iml
+/inventory.xml
+/inventory-management.iml
+/inventory.properties
+/spring-skeleton.iml
