@@ -8,11 +8,24 @@
 <div class="content-wrapper">
 
     <section class="content">
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
         <div class="row">
             <div class="col-xs-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Cities</h3>
+                        <h3 class="box-title">City List</h3>
                         <div class="box-tools">
                             <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
                         </div>
@@ -23,19 +36,25 @@
                             <thead>
                             <tr>
                                 <th>SN</th>
+                                <th>Country</th>
+                                <th>State</th>
                                 <th>City</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Kathmandu</td>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
-                                </td>
-                            </tr>
+                            <c:forEach var="city" items="${cityList}" varStatus="i">
+                                <tr>
+                                    <td>${i.index + 1}</td>
+                                    <td>${city.countryName}</td>
+                                    <td>${city.stateName}</td>
+                                    <td>${city.cityName}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

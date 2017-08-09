@@ -23,19 +23,23 @@
                             <thead>
                             <tr>
                                 <th>SN</th>
+                                <th>Country</th>
                                 <th>State</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Central Region</td>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
-                                </td>
-                            </tr>
+                            <c:forEach var="state" items="${stateList}" varStatus="i">
+                                <tr>
+                                    <td>${i.index + 1}</td>
+                                    <td>${state.countryName}</td>
+                                    <td>${state.stateName}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

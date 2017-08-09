@@ -26,7 +26,7 @@
         <div class="col-xs-6">
             <div class="box box-info">
                 <div class="box-header">
-                    <h3 class="box-title">Countries</h3>
+                    <h3 class="box-title">Country List</h3>
                     <div class="box-tools">
                         <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
                     </div>
