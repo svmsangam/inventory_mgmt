@@ -6,18 +6,6 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Country List
-            <%--<small>Optional description</small>--%>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="${pageContext.request.contextPath}/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="javascript:void(0);">Country</a></li>
-            <li class="active">List</li>
-        </ol>
-    </section>
 
 <section class="content">
     <c:if test="${not empty message}">
@@ -38,6 +26,7 @@
         <div class="col-xs-6">
             <div class="box box-info">
                 <div class="box-header">
+                    <h3 class="box-title">Countries</h3>
                     <div class="box-tools">
                         <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
                     </div>

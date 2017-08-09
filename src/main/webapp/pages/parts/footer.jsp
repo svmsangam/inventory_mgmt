@@ -5,7 +5,7 @@
         Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="#">Company</a>.</strong> All rights reserved.
 </footer>
 
 <!-- Control Sidebar -->
@@ -57,7 +57,9 @@
         </div>
         <!-- /.tab-pane -->
         <!-- Stats tab content -->
+<%--
         <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+--%>
         <!-- /.tab-pane -->
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
@@ -65,12 +67,13 @@
                 <li class="header">Extra Settings</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-link"></i> <span>Country</span></a></li>
-                <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>State</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>City</span></a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
                         <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
                     <ul class="treeview-menu" style="display: none;">
                         <li><a href="#">Link in level 2</a></li>
