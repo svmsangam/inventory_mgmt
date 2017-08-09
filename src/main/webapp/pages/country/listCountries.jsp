@@ -6,18 +6,6 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Page Header
-            <small>Optional description</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Data tables</li>
-        </ol>
-    </section>
 
 <section class="content">
     <div class="row">
@@ -35,7 +23,7 @@
                         <thead>
                         <tr>
                             <th>SN</th>
-                            <th>Name</th>
+                            <th>Country</th>
                             <th>Action</th>
                         </tr>
                         </thead>
