@@ -7,7 +7,7 @@ import com.inventory.core.model.enumconstant.Status;
  */
 public class CategoryInfoDTO {
 
-    private Long categiryId;
+    private Long categoryId;
 
     private String name;
 
@@ -25,12 +25,12 @@ public class CategoryInfoDTO {
 
     private Integer version;
 
-    public Long getCategiryId() {
-        return categiryId;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategiryId(Long categiryId) {
-        this.categiryId = categiryId;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {

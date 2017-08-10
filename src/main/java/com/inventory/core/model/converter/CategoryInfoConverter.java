@@ -38,7 +38,7 @@ public class CategoryInfoConverter implements IConvertable<CategoryInfo, Categor
 
         CategoryInfoDTO dto = new CategoryInfoDTO();
 
-        dto.setCategiryId(entity.getId());
+        dto.setCategoryId(entity.getId());
         dto.setCode(entity.getCode());
         dto.setName(entity.getName());
         dto.setStatus(entity.getStatus());
