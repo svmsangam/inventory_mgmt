@@ -25,10 +25,20 @@ public class StoreInfo extends AbstractEntity<Long> {
 
 	private String mobileNumber;
 
+	private String email;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CityInfo cityInfo;
 	
 	private Status status;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getName() {
 		return name;

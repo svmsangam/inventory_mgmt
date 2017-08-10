@@ -27,6 +27,26 @@ public class StoreInfoDTO {
 
     private Status status;
 
+    private String email;
+
+    private Integer version;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public String getStoreId() {
         return storeId;
     }

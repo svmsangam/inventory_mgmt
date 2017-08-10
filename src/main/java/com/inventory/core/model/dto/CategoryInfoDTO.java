@@ -23,7 +23,7 @@ public class CategoryInfoDTO {
 
     private String createdByName;
 
-    private long version;
+    private Integer version;
 
     public Long getCategiryId() {
         return categiryId;
@@ -89,11 +89,11 @@ public class CategoryInfoDTO {
         this.createdByName = createdByName;
     }
 
-    public long getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(long version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 }

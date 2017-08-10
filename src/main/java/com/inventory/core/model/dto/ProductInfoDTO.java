@@ -34,6 +34,16 @@ public class ProductInfoDTO {
 
     private String createdByName;
 
+    private Integer version;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Long getPoductId() {
         return poductId;
     }
