@@ -22,7 +22,7 @@
             </div>
         </c:if>
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">City List</h3>
@@ -32,7 +32,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="table2" class="table table-bordered table-hover">
+                        <table id="table2" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>SN</th>
