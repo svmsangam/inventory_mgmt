@@ -17,6 +17,8 @@ public interface ISubcategoryInfoApi {
 
     List<SubCategoryInfoDTO> list(Status status , long storeId);
 
+    List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status , long storeId , long categoryId);
+
     SubCategoryInfoDTO getSubCategoryByNameAndStoreAndStatus(String subCategoryName , long storeId , Status status);
 
 }

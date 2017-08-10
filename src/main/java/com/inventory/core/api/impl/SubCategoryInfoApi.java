@@ -24,6 +24,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     public SubCategoryInfoDTO save(SubCategoryInfoDTO subCategoryInfoDTO) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoConverter.convertToEntity(subCategoryInfoDTO);
+
         subCategoryInfo.setStatus(Status.ACTIVE);
 
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
@@ -33,6 +34,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     public SubCategoryInfoDTO update(SubCategoryInfoDTO subCategoryInfoDTO) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryInfoDTO.getSubCategoryId());
+
         subCategoryInfo = subCategoryInfoConverter.copyConvertToEntity(subCategoryInfoDTO,subCategoryInfo);
 
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
@@ -42,7 +44,9 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     public void delete(long subCategoryId) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryId);
+
         subCategoryInfo.setStatus(Status.DELETED);
+
         subCategoryInfoRepository.save(subCategoryInfo);
     }
 
@@ -54,6 +58,11 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     @Override
     public List<SubCategoryInfoDTO> list(Status status, long storeId) {
         return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfo(status,storeId));
+    }
+
+    @Override
+    public List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status, long storeId, long categoryId) {
+        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfoAndCategoryInfo(status , storeId , categoryId));
     }
 
     @Override

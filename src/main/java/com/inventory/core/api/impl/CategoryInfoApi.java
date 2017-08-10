@@ -24,7 +24,8 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     public CategoryInfoDTO save(CategoryInfoDTO categoryInfoDTO){
 
         CategoryInfo categoryInfo = categoryInfoConverter.convertToEntity(categoryInfoDTO);
-        categoryInfo = categoryInfoConverter.copyConvertToEntity(categoryInfoDTO, categoryInfo);
+
+        categoryInfo.setStatus(Status.ACTIVE);
 
         return categoryInfoConverter.convertToDto(categoryInfoRepository.save(categoryInfo));
     }
@@ -33,6 +34,7 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     public CategoryInfoDTO update(CategoryInfoDTO categoryInfoDTO) {
 
         CategoryInfo categoryInfo = categoryInfoRepository.findById(categoryInfoDTO.getCategoryId());
+
         categoryInfo = categoryInfoConverter.copyConvertToEntity(categoryInfoDTO,categoryInfo);
 
         return categoryInfoConverter.convertToDto(categoryInfoRepository.save(categoryInfo));
@@ -42,6 +44,7 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     public void delete(long categoryId){
 
         CategoryInfo categoryInfo = categoryInfoRepository.findById(categoryId);
+
         categoryInfo.setStatus(Status.DELETED);
 
         categoryInfoRepository.save(categoryInfo);
@@ -66,6 +69,7 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     public long categoryCount(Status status, long storeId) {
 
         Long count = categoryInfoRepository.countAllByStatusAndStoreInfo(status,storeId);
+
         if (count == null)
             return 0;
 
