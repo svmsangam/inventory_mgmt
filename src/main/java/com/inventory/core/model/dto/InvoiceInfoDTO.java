@@ -33,6 +33,16 @@ public class InvoiceInfoDTO {
 
     private String createdByName;
 
+    private Integer version;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Long getInvoiceId() {
         return invoiceId;
     }

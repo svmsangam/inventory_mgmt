@@ -17,6 +17,16 @@ public class LotInfoDTO {
 
     private String createdByName;
 
+    private Integer version;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Long getLotId() {
         return lotId;
     }
