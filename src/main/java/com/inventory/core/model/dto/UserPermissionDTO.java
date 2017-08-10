@@ -1,6 +1,6 @@
 package com.inventory.core.model.dto;
 
-import com.inventory.core.model.enumconstant.permission;
+import com.inventory.core.model.enumconstant.Permission;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class UserPermissionDTO {
 
     private Long userId;
 
-    private List<permission> permissionList;
+    private List<Permission> permissionList;
 
     private Integer version;
 
@@ -43,11 +43,11 @@ public class UserPermissionDTO {
         this.userId = userId;
     }
 
-    public List<permission> getPermissionList() {
+    public List<Permission> getPermissionList() {
         return permissionList;
     }
 
-    public void setPermissionList(List<permission> permissionList) {
+    public void setPermissionList(List<Permission> permissionList) {
         this.permissionList = permissionList;
     }
 

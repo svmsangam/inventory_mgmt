@@ -1,6 +1,6 @@
 package com.inventory.core.model.enumconstant;
 
-public enum permission {
+public enum Permission {
 	SERVICE_CREATE , SERVICE_VIEW , SERVICE_UPDATE , SERVICE_DELETE , 
 	PRODUCT_CREATE , PRODUCT_VIEW , PRODUCT_UPDATE , PRODUCT_DELETE , 
 	SALES_ORDER_CREATE , SALES_ORDER_VIEW , SALES_ORDER_UPDATE , SALES_ORDER_DELETE , 
