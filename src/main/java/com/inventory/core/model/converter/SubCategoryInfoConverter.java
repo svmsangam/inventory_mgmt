@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by dhiraj on 8/9/17.
@@ -74,11 +76,15 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
 
     @Override
     public List<SubCategoryInfoDTO> convertToDtoList(List<SubCategoryInfo> entities) {
-        return null;
+
+        return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+
     }
 
     @Override
     public List<SubCategoryInfo> convertToEntityList(List<SubCategoryInfoDTO> dtoList) {
-        return null;
+
+        return dtoList.parallelStream().filter(Objects::nonNull).map(this::convertToEntity).collect(Collectors.toList());
+
     }
 }
