@@ -4,20 +4,20 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
-import com.inventory.core.model.enumconstant.UserType;
-import com.inventory.web.util.ClientException;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.web.util.ClientException;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
+@Transactional
 public class UserApi implements IUserApi {
 
 	@Autowired
@@ -33,8 +33,6 @@ public class UserApi implements IUserApi {
 	public User saveUserABC(User user) {
 		return userRepository.save(user);
 	}
-
-	
 
 	@Override
 	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {

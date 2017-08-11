@@ -211,17 +211,17 @@ public class Startup {
 
 		Designation marketingOfficer = new Designation();
 
-		marketingManager.setTitle("Marketing Officer");
-		marketingManager.setCode("MO");
-		marketingManager.setRemarks("marketing officer");
+		marketingOfficer.setTitle("Marketing Officer");
+		marketingOfficer.setCode("MO");
+		marketingOfficer.setRemarks("marketing officer");
 
 		designationList.add(marketingOfficer);
 
 		Designation accountant = new Designation();
 
-		marketingManager.setTitle("Accountant");
-		marketingManager.setCode("AT");
-		marketingManager.setRemarks("Accountant");
+		accountant.setTitle("Accountant");
+		accountant.setCode("AT");
+		accountant.setRemarks("Accountant");
 
 		designationList.add(accountant);
 

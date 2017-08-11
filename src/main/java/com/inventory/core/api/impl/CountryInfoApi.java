@@ -8,6 +8,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CountryInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by dhiraj on 4/18/17.
  */
 @Service
+@Transactional
 public class CountryInfoApi implements ICountryInfoApi {
 
     @Autowired

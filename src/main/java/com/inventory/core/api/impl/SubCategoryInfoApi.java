@@ -8,10 +8,12 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
     @Autowired
