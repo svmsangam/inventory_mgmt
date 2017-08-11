@@ -7,7 +7,7 @@ import com.inventory.core.model.enumconstant.Status;
  */
 public class StoreInfoDTO {
 
-    private String storeId;
+    private Long storeId;
 
     private String name;
 
@@ -47,11 +47,11 @@ public class StoreInfoDTO {
         this.version = version;
     }
 
-    public String getStoreId() {
+    public Long getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(String storeId) {
+    public void setStoreId(Long storeId) {
         this.storeId = storeId;
     }
 

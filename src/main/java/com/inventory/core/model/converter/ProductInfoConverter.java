@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -102,7 +103,13 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
     }
 
     public List<ProductInfoDTO> convertPageToDtoList(Page<ProductInfo> entities) {
-         //entities.map(this::convertToDto).streem.collect(Collectors.toList());
-        return null;//return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+
+        List<ProductInfoDTO> dtoList = new ArrayList<>();
+
+        for (ProductInfo entity : entities){
+            dtoList.add(convertToDto(entity));
+        }
+
+        return dtoList;
     }
 }
