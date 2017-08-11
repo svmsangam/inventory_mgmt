@@ -3,8 +3,6 @@ package com.inventory.core.model.entity;
 import com.inventory.core.model.enumconstant.Status;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -17,9 +15,6 @@ public class LotInfo extends AbstractEntity<Long>{
     private String lot;
 
     private Status status;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User createdBy;
 
     public String getLot() {
         return lot;
@@ -37,11 +32,4 @@ public class LotInfo extends AbstractEntity<Long>{
         this.status = status;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
 }

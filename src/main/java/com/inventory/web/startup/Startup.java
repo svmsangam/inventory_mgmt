@@ -1,15 +1,9 @@
 package com.inventory.web.startup;
 
-import com.inventory.core.model.entity.CityInfo;
-import com.inventory.core.model.entity.CountryInfo;
-import com.inventory.core.model.entity.StateInfo;
-import com.inventory.core.model.entity.User;
+import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
-import com.inventory.core.model.repository.CityInfoRepository;
-import com.inventory.core.model.repository.CountryInfoRepository;
-import com.inventory.core.model.repository.StateInfoRepository;
-import com.inventory.core.model.repository.UserRepository;
+import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -37,12 +31,25 @@ public class Startup {
 	@Autowired
 	private CityInfoRepository cityInfoRepository;
 
+	@Autowired
+	private LotInfoRepository lotInfoRepository;
+
+	@Autowired
+	private DesignationRepository designationRepository;
+
 	@PostConstruct
 	public void initialize() {
 
 		createUser("system" , UserType.SYSTEM , "123456" , Status.ACTIVE);
 
 		CountryStarter();
+
+		//System.out.println(" count lot >>>>>> " + lotInfoRepository.count());
+		if (lotInfoRepository.count() == 0)
+			lotCreater();
+
+		if (designationRepository.count() == 0)
+			designationCreater();
 	}
 
 	private void createUser(String userName, UserType userType,  String password, Status status) {
@@ -155,6 +162,70 @@ public class Startup {
 
 			}
 		}
+	}
+
+	private void lotCreater(){
+
+		List<LotInfo> lotInfoList = new ArrayList<>();
+
+		for (int i = 1 ; i < 100 ; i++){
+			LotInfo lotInfo = new LotInfo();
+
+			if (i == 1){
+				lotInfo.setLot(i + " st lot");
+			}else if (i == 2){
+				lotInfo.setLot(i + " nd lot");
+			}else if(i == 3){
+				lotInfo.setLot(i + " rd lot");
+			}else {
+				lotInfo.setLot(i + " th lot");
+			}
+
+			lotInfo.setStatus(Status.ACTIVE);
+			lotInfoList.add(lotInfo);
+		}
+
+		lotInfoRepository.save(lotInfoList);
+
+	}
+
+	private void designationCreater(){
+
+		List<Designation> designationList = new ArrayList<>();
+
+		Designation maneger = new Designation();
+
+		maneger.setTitle("Managing Director");
+		maneger.setCode("MD");
+		maneger.setRemarks("Managing Director of this store");
+
+		designationList.add(maneger);
+
+		Designation marketingManager = new Designation();
+
+		marketingManager.setTitle("Marketing Manager");
+		marketingManager.setCode("MM");
+		marketingManager.setRemarks("Team leader of marketing officers");
+
+		designationList.add(marketingManager);
+
+		Designation marketingOfficer = new Designation();
+
+		marketingManager.setTitle("Marketing Officer");
+		marketingManager.setCode("MO");
+		marketingManager.setRemarks("marketing officer");
+
+		designationList.add(marketingOfficer);
+
+		Designation accountant = new Designation();
+
+		marketingManager.setTitle("Accountant");
+		marketingManager.setCode("AT");
+		marketingManager.setRemarks("Accountant");
+
+		designationList.add(accountant);
+
+		designationRepository.save(designationList);
 	}
 
 }

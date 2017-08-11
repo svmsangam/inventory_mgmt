@@ -13,10 +13,6 @@ public class LotInfoDTO {
 
     private Status status;
 
-    private long createdById;
-
-    private String createdByName;
-
     private Integer version;
 
     public Integer getVersion() {
@@ -51,19 +47,4 @@ public class LotInfoDTO {
         this.status = status;
     }
 
-    public long getCreatedById() {
-        return createdById;
-    }
-
-    public void setCreatedById(long createdById) {
-        this.createdById = createdById;
-    }
-
-    public String getCreatedByName() {
-        return createdByName;
-    }
-
-    public void setCreatedByName(String createdByName) {
-        this.createdByName = createdByName;
-    }
 }
