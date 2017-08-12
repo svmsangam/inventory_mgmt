@@ -15,7 +15,7 @@ public class AuthenticationUtil {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		System.out.println("currentUser isAuthenticated >>>>> " + authentication.isAuthenticated());
+		//System.out.println("currentUser isAuthenticated >>>>> " + authentication.isAuthenticated());
 
 		if (!authentication.isAuthenticated()){
 			return null;
@@ -36,7 +36,7 @@ public class AuthenticationUtil {
 			
 			for (GrantedAuthority authority : authorities) {
 				// userOne.setAuthority(authority.getAuthority());
-				System.out.println("currentUser Authority >>>>> " + authority.getAuthority());
+				//System.out.println("currentUser Authority >>>>> " + authority.getAuthority());
 				invUser.setAuthority(authority.getAuthority());
 
 				if (authority.getAuthority().contains(Authorities.SUPERADMIN)){

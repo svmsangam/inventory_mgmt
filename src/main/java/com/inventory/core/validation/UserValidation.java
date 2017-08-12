@@ -7,6 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import java.util.List;
 
 /**
  * Created by dhiraj on 5/2/17.
@@ -23,7 +27,28 @@ public class UserValidation extends GlobalValidation{
 
     boolean valid = true;
 
-    public UserError saveValidation(InvUserDTO userDto) {
+    public UserError saveValidation(InvUserDTO userDto , BindingResult result) {
+
+        if (result.hasErrors()) {
+
+            valid = false;
+
+                List<FieldError> errors = result.getFieldErrors();
+                for (FieldError errorResult : errors ) {
+
+                    if (errorResult.getField().equals("inventoryuser")){
+                        error.setUsername("invalid username data");
+                    }else if (errorResult.getField().equals("userpassword")){
+                        error.setPassword("invalid password data");
+                    } else if (errorResult.getField().equals("userTpe")){
+                        error.setPassword("invalid userTpe data");
+                    }
+                }
+
+            error.setValid(valid);
+
+            return error;
+        }
 
         error.setUsername(checkString(userDto.getInventoryuser(), 5, 50, "username", true));
 

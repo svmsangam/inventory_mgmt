@@ -73,19 +73,20 @@
                     <h4 class="modal-title">Add User</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" action="javascript:void(0);" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
+                    <%--javascript:void(0);--%>
+                    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/save" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
 
                     <div class="box-body">
 
                             <div class="form-group">
                                 <label class="control-label">User Name *</label>
-                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required>
+                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required />
                                 <p class="error">${error.username}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Password *</label>
-                                <input type="password" class="form-control" name="userpassword" placeholder="password" required>
+                                <input type="password" class="form-control" name="userpassword" placeholder="password" required />
                                 <p class="error">${error.password}</p>
                             </div>
 
