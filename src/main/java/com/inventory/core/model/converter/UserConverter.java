@@ -27,19 +27,7 @@ public class UserConverter implements IConvertable<User, InvUserDTO>, IListConve
 	@Override
 	public User convertToEntity(InvUserDTO dto) {
 
-		if (dto == null) {
-			return null;
-		}
-
-		User entity = new User();
-
-		entity.setUsername(dto.getInventoryuser());
-		entity.setPassword(dto.getUserpassword());
-		entity.setAuthority(dto.getUserauthority());
-		entity.setStatus(dto.getUserstatus());
-		entity.setUserType(dto.getUserType());
-
-		return entity;
+		return copyConvertToEntity(dto , new User());
 	}
 
 	@Override

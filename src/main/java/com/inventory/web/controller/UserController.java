@@ -58,13 +58,14 @@ public class UserController implements MessageSourceAware {
 			if (AuthenticationUtil.getCurrentUser() != null) {
 
 				String authority = AuthenticationUtil.getCurrentUser().getAuthority();
+
 				if (authority.contains(Authorities.SYSTEM) && authority.contains(Authorities.AUTHENTICATED)) {
 
 					List<UserType> userTypeList = new ArrayList<>();
 
 					userTypeList.add(UserType.SUPERADMIN);
 
-					modelMap.put(StringConstants.USERTYPE_LIST , UserType.values());
+					modelMap.put(StringConstants.USERTYPE_LIST , userTypeList);
 
 					modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
 
