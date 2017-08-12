@@ -4,8 +4,9 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.UserRepository;
-import com.inventory.web.util.ClientException;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,11 +29,6 @@ public class UserApi implements IUserApi {
 
 	@Autowired
 	private UserConverter userConverter;
-	
-	@Override
-	public User saveUserABC(User user) {
-		return userRepository.save(user);
-	}
 
 	@Override
 	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
@@ -48,14 +44,6 @@ public class UserApi implements IUserApi {
 		return userConverter.convertToDto(user);
 	}
 
-	@Override
-	public void editUser(InvUserDTO userDto , String status) throws IOException, JSONException {
-		User user = userRepository.findOne(userDto.getUserId());
-
-		userRepository.save(user);
-
-	}
-
 	public void changePassword(long userId, String newPassword) throws IOException, JSONException {
 		User user = userRepository.findOne(userId);
 
@@ -65,46 +53,9 @@ public class UserApi implements IUserApi {
 	}
 
 	@Override
-	public List<InvUserDTO> getAllUser() {
-		return null;
-	}
-
-	@Override
 	public InvUserDTO getUserWithId(long userId) {
 		return null;// ConvertUtil.convertUser(userRepository.findOne(userId));
 
-	}
-	
-	@Override
-	public User getUser(long userId) {
-		return userRepository.findOne(userId);
-
-	}
-
-	@Override
-	public List<InvUserDTO> findAllUserExceptAdmin() {
-		return null;
-
-	}
-
-	public List<InvUserDTO> findUser() {
-		return null;
-	}
-
-	@Override
-	public List<InvUserDTO> findAllUserExceptDefaultAdmin() {
-		return null;
-	}
-
-	@Override
-	public void deleteUser(Long userId) {
-		userRepository.delete(userId);
-	}
-
-	@Override
-	public String generateSecretKey(String clientId, String accessKey) throws ClientException {
-
-		return null;
 	}
 
 	@Override
@@ -118,6 +69,16 @@ public class UserApi implements IUserApi {
 	@Override
 	public boolean nameExists(String userName) {
 		return userRepository.findByUsername(userName) != null;
+	}
+
+	@Override
+	public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status , List<UserType> userTypeList) {
+		return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status , userTypeList));
+	}
+
+	@Override
+	public List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status ,List<UserType> userTypeList, long storeInfoId) {
+		return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndStoreInfo(status , userTypeList , storeInfoId));
 	}
 
 }

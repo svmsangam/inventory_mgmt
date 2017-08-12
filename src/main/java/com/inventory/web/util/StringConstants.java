@@ -44,4 +44,9 @@ public class StringConstants {
 
 	public static String COUNTRY_LIST="countryList";
 	public static String COUNTRY="country";
+
+	public static String USER_LIST="userList";
+	public static String USER="user";
+
+	public static String USERTYPE_LIST="userTypeList";
 }

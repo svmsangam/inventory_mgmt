@@ -2,82 +2,152 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@include file="/pages/common/header.jsp" %>
-<%@include file="/pages/common/businessownernavbar.jsp" %>
-<%@include file="/pages/common/businessownersidebar.jsp" %>
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">
-                <svg class="glyph stroked home">
-                    <use xlink:href="#stroked-home"></use>
-                </svg>
-            </a></li>
-            <li class="active">Users</li>
-        </ol>
-    </div><!--/.row-->
-    <c:if test="${not empty message}">
-        <div class="alert bg-success alert-dismissable" role="alert">
-            <svg class="glyph stroked checkmark">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-checkmark"></use>
-            </svg>
-                ${message}
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
-        </div>
-    </c:if>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">User List <a
-                        href="${pageContext.request.contextPath}/app/addbusinessowneruser">
-                    <button class="btn btn-sm btn-primary pull-right">Add New User</button>
-                </a>
-                </div>
-                <div class="panel-body">
-                    <table id="example" class="cell-border" cellspacing="0" width="100%">
-                        <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>User Type</th>
-                            <th>Time Zone</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="user" items="${userList}">
+    <section class="content">
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">User List</h3>
+                        <div class="box-tools">
+                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="table2" class="table table-bordered table-hover table-striped">
+                            <thead>
                             <tr>
-                                <td>${user.username}</td>
-                                <td>${user.userType}</td>
-                                <td>${user.timeZone}</td>
-                                <td>${user.status}</td>
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/app/editbusinessowneruser?userId=${user.id}"
-                                       class="btn btn-info btn-xs">
-                                        <i class="fa fa-pencil"></i> Edit </a>
-                                    <a href="${pageContext.request.contextPath}/addBusinessServicePlanForBusinesOwner?userId=${user.id}"
-                                       class="btn btn-warning btn-xs">
-                                        <i class="fa fa-pencil"></i> Permissions </a>
-                                </td>
+                                <th>SN</th>
+                                <th>Username</th>
+                                <th>UserType</th>
+                                <th>Action</th>
                             </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="user" items="${userList}" varStatus="i">
+                                <tr>
+                                    <td>${i.index + 1}</td>
+                                    <td>${user.inventoryuser}</td>
+                                    <td>${user.userType}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
+                <!-- /.box -->
             </div>
         </div>
+    </section>
+
+    <div class="modal fade" id="modal-add">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add User</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/save" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
+
+                    <div class="box-body">
+
+                            <div class="form-group">
+                                <label class="control-label">User Name *</label>
+                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required>
+                                <p class="error">${error.username}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Password *</label>
+                                <input type="password" class="form-control" name="userpassword" placeholder="password" required>
+                                <p class="error">${error.password}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">User Type *</label>
+                                <select class="form-control" name="userTpe" required>
+                                    <option value="">select userType</option>
+                                    <c:forEach items="${userTypeList}" var="userType" >
+                                        <option value="${userType}">${userType}</option>
+                                    </c:forEach>
+                                </select>
+                                <p class="error">${error.userType}</p>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit City</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/city/update" modelAttribute="cityDto">
+                        <input type="hidden" name="countryId" value=""/>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Name" value="" required>
+                                <p class="error">${error.cityName}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </div>
 
-<%@include file="../common/footer.jsp" %>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable({
-            "pagingType": "full_numbers"
-        });
-    });
-</script>
+<%@include file="/pages/parts/footer.jsp" %>
