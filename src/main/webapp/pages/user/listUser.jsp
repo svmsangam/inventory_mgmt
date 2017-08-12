@@ -80,7 +80,7 @@
 
                             <div class="form-group">
                                 <label class="control-label">User Name *</label>
-                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required />
+                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required="required" />
                                 <p class="error">${error.username}</p>
                             </div>
 
