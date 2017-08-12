@@ -73,7 +73,7 @@
                     <h4 class="modal-title">Add User</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/save" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
+                    <form class="form-horizontal" action="javascript:void(0);" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
 
                     <div class="box-body">
 

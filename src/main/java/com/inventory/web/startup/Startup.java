@@ -4,6 +4,7 @@ import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
+import com.inventory.core.util.Authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -64,6 +65,7 @@ public class Startup {
 				dto.setPassword(passwordEncoder.encode(password));
 				dto.setStatus(status);
 				dto.setEnabled(true);
+				dto.setAuthority(Authorities.SYSTEM + "," + Authorities.AUTHENTICATED);
 
 				userRepository.save(dto);
 			}
