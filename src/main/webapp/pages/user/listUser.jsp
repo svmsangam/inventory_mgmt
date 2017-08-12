@@ -80,13 +80,13 @@
 
                             <div class="form-group">
                                 <label class="control-label">User Name *</label>
-                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required>
+                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required />
                                 <p class="error">${error.username}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Password *</label>
-                                <input type="password" class="form-control" name="userpassword" placeholder="password" required>
+                                <input type="password" class="form-control" name="userpassword" placeholder="password" required />
                                 <p class="error">${error.password}</p>
                             </div>
 
