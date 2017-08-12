@@ -74,38 +74,44 @@
                 </div>
                 <div class="modal-body">
                     <%--javascript:void(0);--%>
-                    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/save" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
+                    <form class="form-horizontal" action="javascript:void(0);" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
 
                     <div class="box-body">
 
                             <div class="form-group">
                                 <label class="control-label">User Name *</label>
-                                <input type="text" class="form-control" name="inventoryuser" placeholder="Name" required="required" />
-                                <p class="error">${error.username}</p>
+                                <input type="text" class="form-control" name="inventoryuser" id="inventoryuser" placeholder="Name" required="required" />
+                                <p class="error inventoryuser"></p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Password *</label>
-                                <input type="password" class="form-control" name="userpassword" placeholder="password" required />
-                                <p class="error">${error.password}</p>
+                                <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="password" required />
+                                <p class="error userpassword"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">RePassword *</label>
+                                <input type="password" class="form-control" name="userrepassword" id="userrepassword" placeholder="repassword" required />
+                                <p class="error userrepassword"></p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">User Type *</label>
-                                <select class="form-control" name="userTpe" required>
+                                <select class="form-control" name="userType" id="userType" required>
                                     <option value="">select userType</option>
                                     <c:forEach items="${userTypeList}" var="userType" >
                                         <option value="${userType}">${userType}</option>
                                     </c:forEach>
                                 </select>
-                                <p class="error">${error.userType}</p>
+                                <p class="error userType"></p>
                             </div>
 
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" id="saveuser" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
                         </div>
 
                     </form>

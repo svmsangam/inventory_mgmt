@@ -37,7 +37,7 @@ public enum ResponseStatus {
 	
 	GROUP_NOT_FOUND("SAN015", "No Any Groups were found."),
 	
-	VALIDATION_FAILED("SAN016", "Validation Failed. Check Details"),
+	VALIDATION_FAILED("SAN016", "Validation Failed"),
 	
 	USERNAME_VALIDATION_FAILED("SAN018", "Kindly provide 10 digit numbers"),
 	

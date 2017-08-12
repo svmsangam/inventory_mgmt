@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,10 +37,7 @@ public class UserJsController {
     @Autowired
     private UserValidation userValidation;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @PostMapping(value = "jssave" , produces = {MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<RestResponseDTO> save(@RequestAttribute("user")InvUserDTO userDTO , BindingResult bindingResult){
         RestResponseDTO result = new RestResponseDTO();
 

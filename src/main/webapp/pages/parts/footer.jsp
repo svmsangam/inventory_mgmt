@@ -107,6 +107,12 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
+<%--js model--%>
+<script src="${pageContext.request.contextPath}/resources/js/assest/model/model.js"></script>
+<%--js service--%>
+<script src="${pageContext.request.contextPath}/resources/js/assest/service/service.js"></script>
+<%--js app--%>
+<script src="${pageContext.request.contextPath}/resources/js/assest/app/app.js"></script>
 
 <!-- page script -->
 <script>
