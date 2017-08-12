@@ -16,10 +16,6 @@ public class CountryInfoConverter implements IConvertable<CountryInfo, CountryIn
 	@Override
 	public CountryInfo convertToEntity(CountryInfoDTO dto) {
 
-		if (dto == null) {
-			return null;
-		}
-
 		return copyConvertToEntity(dto , new CountryInfo());
 	}
 

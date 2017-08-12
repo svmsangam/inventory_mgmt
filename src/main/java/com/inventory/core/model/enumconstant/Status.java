@@ -2,7 +2,7 @@ package com.inventory.core.model.enumconstant;
 
 public enum Status {
 
-	ACTIVE("Active"), INACTIVE("Inactive"), DELETED("Deleted"),SHIPPED("Shipped"),DELIVERED("Delivered") ;
+	ACTIVE("Active"), INACTIVE("Inactive"), DELETED("Deleted");
 
 	private final String value;
 
