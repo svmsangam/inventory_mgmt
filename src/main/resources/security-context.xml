@@ -32,7 +32,7 @@
 
     <security:jdbc-user-service id="userService"
                                 data-source-ref="dataSource"
-                                users-by-username-query="select username,password,true from invuserddddd where username=? and status=0 and enabled=1 "
-                                authorities-by-username-query="select username, authority from invuserddddd where username=?"/>
+                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=1 "
+                                authorities-by-username-query="select username, authority from invuser where username=?"/>
 </beans>
            
