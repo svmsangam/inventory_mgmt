@@ -39,19 +39,19 @@
                                 <th>SN</th>
                                 <th>Username</th>
                                 <th>UserType</th>
-                                <th>Action</th>
+                                <%--<th>Action</th>--%>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="myData">
                             <c:forEach var="user" items="${userList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${user.inventoryuser}</td>
                                     <td>${user.userType}</td>
-                                    <td>
+                                    <%--<td>
                                         <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
                                         <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
-                                    </td>
+                                    </td>--%>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -71,6 +71,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add User</h4>
+                    <div class="alert alert-danger addError alert-dismissable hide">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                        <strong class="errorModel"></strong>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <%--javascript:void(0);--%>
@@ -110,7 +114,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
                             <button type="submit" id="saveuser" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
                         </div>
 
