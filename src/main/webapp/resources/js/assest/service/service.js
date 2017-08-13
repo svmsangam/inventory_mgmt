@@ -20,12 +20,8 @@ function UserService(){
             userRequest = $.ajax({
                 type: "POST",
                 url: url,
-                contentType : "application/json",
-                data : {inventoryuser : user.inventoryuser,
-                        userpassword : user.userpassword,
-                        userrepassword : user.userrepassword,
-                        userType:user.userType
-                },
+                contentType : "application/x-www-form-urlencoded;charset=utf-8",
+                data : user,
                 dataType : 'json',
                 timeout : 100000,
                 success: function(data) {

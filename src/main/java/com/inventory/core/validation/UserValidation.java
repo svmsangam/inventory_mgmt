@@ -29,6 +29,8 @@ public class UserValidation extends GlobalValidation{
 
     public UserError saveValidation(InvUserDTO userDto , BindingResult result) {
 
+        valid = true;
+
         if (result.hasErrors()) {
 
             valid = false;
