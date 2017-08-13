@@ -71,8 +71,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add User</h4>
-                    <div class="alert alert-danger addError alert-dismissable hide">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                    <div class="alert alert-danger addError hide">
+                        <a href="javascript:void(0);" class="close closeError" aria-label="close">x</a>
                         <strong class="errorModel"></strong>
                     </div>
                 </div>

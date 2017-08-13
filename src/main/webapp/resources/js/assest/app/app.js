@@ -21,6 +21,10 @@ $(document).ready(function(){
         userService.clearError();
         userService.clearForm();
     });
+
+    $(document).on("click",".closeError",function() {
+        $(".addError").removeClass("hide").removeClass("show").addClass("hide");
+    });
 });
 
 
