@@ -15,6 +15,12 @@ $(document).ready(function(){
 
         userService.save(user , url);
     });
+
+    $(document).on("click",".addUser",function() {
+
+        userService.clearError();
+        userService.clearForm();
+    });
 });
 
 

@@ -100,12 +100,16 @@ function UserService(){
 
         setDataToDOM : function (data) {
             var row = "<tr>";
-            row += "<td>new</td>";
+            row += "<td>0</td>";
             row += "<td>"+data.inventoryuser+"</td>";
             row += "<td>"+data.userType+"</td>";
             row += "</tr>";
 
             $("#myData").prepend(row);
+
+            $("tr").each(function(index) {
+                $(this).find("td:eq(0)").text(index);
+            })
         }
     };
 }
