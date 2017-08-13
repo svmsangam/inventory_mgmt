@@ -64,6 +64,7 @@ public class UserConverter implements IConvertable<User, InvUserDTO>, IListConve
 		}
 		entity.setPassword(dto.getUserpassword());
 		entity.setUserType(dto.getUserType());
+		entity.setEnabled(true);
 
 		if (dto.getUserType().equals(UserType.ADMIN)) {
 			entity.setAuthority(Authorities.ADMINISTRATOR + "," + Authorities.AUTHENTICATED);
