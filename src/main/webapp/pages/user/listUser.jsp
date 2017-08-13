@@ -78,7 +78,6 @@
                 </div>
                 <div class="modal-body">
                     <%--javascript:void(0);--%>
-                    <form class="form-horizontal" action="javascript:void(0);" method="POST" modelAttribute="user" id="saveForm" novalidate="novalidate">
 
                     <div class="box-body">
 
@@ -117,8 +116,6 @@
                             <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
                             <button type="submit" id="saveuser" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
                         </div>
-
-                    </form>
                 </div>
 
             </div>

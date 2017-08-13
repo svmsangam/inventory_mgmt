@@ -76,6 +76,11 @@ public class UserValidation extends GlobalValidation{
             error.setRepassword(checkRepassword(userDto.getUserrepassword() , userDto.getUserpassword()));
         }
 
+        if (userDto.getUserType() == null){
+            valid = false;
+            error.setUserType("user type required");
+        }
+
         error.setValid(valid);
 
         return error;
