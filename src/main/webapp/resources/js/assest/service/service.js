@@ -13,6 +13,8 @@ function UserService(){
 
         save : function(user , url){
 
+            var that = new UserService();
+
             if(userRequest !== undefined){
                 userRequest.abort();
             }
@@ -25,21 +27,34 @@ function UserService(){
                 dataType : 'json',
                 timeout : 100000,
                 success: function(data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
                     if(data.status === 'Success'){
 
                         window.location.reload();
                     }
 
                     if (data.status === 'Failure'){
-                        alert(data.message);
+                        alert(msg);
                     }
 
                     if(data.status === 'Validation Failed'){
-                        alert(data.message);
+
+                        that.setError(result);
                     }
                 }
             });
 
+        },
+
+        setError : function (error) {
+            $(".inventoryuser").text(error.username);
+            $(".userpassword").text(error.password);
+            $(".userrepassword").text(error.repassword);
+            $(".userType").text(error.userType);
         }
     };
 }

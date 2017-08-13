@@ -42,8 +42,8 @@ public class UserValidation extends GlobalValidation{
                         error.setUsername("invalid username data");
                     }else if (errorResult.getField().equals("userpassword")){
                         error.setPassword("invalid password data");
-                    } else if (errorResult.getField().equals("userTpe")){
-                        error.setPassword("invalid userTpe data");
+                    } else if (errorResult.getField().equals("userType")){
+                        error.setUserType("invalid userType data");
                     }
                 }
 
