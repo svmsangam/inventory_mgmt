@@ -7,30 +7,16 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%--<sec:authentication property="principal.username" />--%>
 
-<c:if test="${not empty pageContext.request.userPrincipal}">
-
-    <%--<c:if test="${pageContext.request.isUserInRole('system')}">
-        <%@include file="/pages/parts/system-sidebar.jsp" %>
-    </c:if>
-
-    <c:if test="${pageContext.request.isUserInRole('SUPERADMIN')}">
-        <%@include file="/pages/parts/superadmin-sidebar.jsp" %>
-    </c:if>--%>
-
-    <sec:authorize access="hasRole('SYSTEM')">
-        <%@include file="/pages/parts/system-sidebar.jsp" %>
-    </sec:authorize>
-
-    <sec:authorize access="hasRole('SUPERADMIN')">
+    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
         <%@include file="/pages/parts/superadmin-sidebar.jsp" %>
     </sec:authorize>
 
-</c:if>
+    <sec:authorize access="hasRole('ROLE_SYSTEM,ROLE_AUTHENTICATED')" >
+        <%@include file="/pages/parts/system-sidebar.jsp" %>
+    </sec:authorize>
 
 

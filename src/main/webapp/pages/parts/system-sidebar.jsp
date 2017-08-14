@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
@@ -12,7 +14,7 @@
                      alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>${pageContext.request.userPrincipal.name}</p>
+                <p><%--${pageContext.request.userPrincipal.name}--%><sec:authentication property="principal.username" /></p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -32,7 +34,7 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">HEADER</li>
+            <li class="header">SYSTEM HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>

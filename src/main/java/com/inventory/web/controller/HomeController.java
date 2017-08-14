@@ -38,8 +38,12 @@ public class HomeController {
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String getDashboard(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
+		if (AuthenticationUtil.getCurrentUser() != null) {
+			return "dashboard/index";
+		} else {
+			return "redirect:/";
+		}
 
-		return "dashboard/index";
 		}
 
 	@RequestMapping(value = "admin/charts", method = RequestMethod.GET)
