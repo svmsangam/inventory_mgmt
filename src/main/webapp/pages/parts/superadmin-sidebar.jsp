@@ -57,13 +57,10 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="#">Order List</a></li>
+                    <li><a href="#">Order Add</a></li>
                     <li><a href="#">Return List</a></li>
-                    <li><a href="#">Pending Order</a></li>
-                    <li><a href="#">Accepted Order</a></li>
-                    <li><a href="#">Packed Order</a></li>
-                    <li><a href="#">Shiped Order</a></li>
-                    <li><a href="#">Delivered Order</a></li>
-                    <li><a href="#">Cancelled Order</a></li>
+                    <li><a href="#">Return Add</a></li>
+
                 </ul>
             </li>
 
@@ -75,11 +72,9 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="#">Order List</a></li>
+                    <li><a href="#">Order Add</a></li>
                     <li><a href="#">Return List</a></li>
-                    <li><a href="#">Pending Order</a></li>
-                    <li><a href="#">Issued Order</a></li>
-                    <li><a href="#">Received Order</a></li>
-                    <li><a href="#">Cancelled Order</a></li>
+                    <li><a href="#">Return Add</a></li>
                 </ul>
             </li>
 
