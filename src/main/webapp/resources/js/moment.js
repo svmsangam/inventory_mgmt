@@ -2115,7 +2115,7 @@
             dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
             timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
 
-            // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+            // TODO: Replace the vanilla ajax Date object with an indepentent day-of-week check.
             if (match[1]) { // day of week given
                 var momentDate = new Date(match[2]);
                 var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
@@ -4356,7 +4356,7 @@
 
         if (!total) {
             // this is the same as C#'s (Noda) and python (isodate)...
-            // but not other JS (goog.date)
+            // but not other ajax (goog.date)
             return 'P0D';
         }
 

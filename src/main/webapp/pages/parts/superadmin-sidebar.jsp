@@ -42,6 +42,8 @@
             <li class="header">SUPERADMIN HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a></li>
+            <li ><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-link"></i> <span>Store</span></a></li>
+
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Multilevel link</span>

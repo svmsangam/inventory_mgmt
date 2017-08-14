@@ -92,7 +92,7 @@ immediately after the control sidebar -->
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
+<!-- REQUIAjaxD JS SCRIPTS -->
 
 <!-- jQuery 3 -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>

@@ -1,12 +1,12 @@
-package com.inventory.web.controller.JS;
+package com.inventory.web.controller.ajax;
 
-import com.inventory.core.api.iapi.IUserApi;
-import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.model.dto.RestResponseDTO;
+import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.util.Authorities;
-import com.inventory.core.validation.UserValidation;
-import com.inventory.web.error.UserError;
+import com.inventory.core.validation.StoreInfoValidation;
+import com.inventory.web.error.StoreInfoError;
 import com.inventory.web.util.AuthenticationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,23 +22,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by dhiraj on 8/12/17.
+ * Created by dhiraj on 8/14/17.
  */
 @Controller
-@RequestMapping("user")
+@RequestMapping("store")
 @ResponseBody
-public class UserJsController {
+public class StoreAjaxController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private IUserApi userApi;
+    private IStoreInfoApi storeInfoApi;
 
     @Autowired
-    private UserValidation userValidation;
+    private StoreInfoValidation storeInfoValidation;
 
     @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("user")InvUserDTO userDTO , BindingResult bindingResult){
+    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult){
         RestResponseDTO result = new RestResponseDTO();
 
         try {
@@ -47,17 +47,17 @@ public class UserJsController {
 
                 String authority = AuthenticationUtil.getCurrentUser().getAuthority();
 
-                if ((authority.contains(Authorities.SYSTEM) || authority.contains(Authorities.SUPERADMIN) || authority.contains(Authorities.ADMINISTRATOR)) && authority.contains(Authorities.AUTHENTICATED)) {
+                if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)) {
 
-                    UserError error = new UserError();
+                    StoreInfoError error = new StoreInfoError();
 
-                    error = userValidation.saveValidation(userDTO , bindingResult);
+                    error = storeInfoValidation.onSave(storeInfoDTO , bindingResult);
 
                     if (error.isValid()){
-                        userDTO = userApi.save(userDTO);
+                        storeInfoDTO = storeInfoApi.save(storeInfoDTO);
                         result.setStatus(ResponseStatus.SUCCESS.getValue());
                         result.setMessage("user successfully saved");
-                        result.setDetail(userDTO);
+                        result.setDetail(storeInfoDTO);
                     }else {
                         result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
                         result.setMessage("user validation failed");
@@ -81,4 +81,5 @@ public class UserJsController {
 
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
+
 }

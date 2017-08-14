@@ -1,4 +1,4 @@
-<!-- Angular.JS -->
+<!-- AnguAjaxr.JS -->
 <script src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
 
 <!-- JQuery -->

@@ -17018,7 +17018,7 @@ $.widget( "ui.spinner", {
 		// - rounding is based on 0, so adjust back to our base
 		value = base + aboveMin;
 
-		// Fix precision from bad JS floating point math
+		// Fix precision from bad ajax floating point math
 		value = parseFloat( value.toFixed( this._precision() ) );
 
 		// Clamp the value
