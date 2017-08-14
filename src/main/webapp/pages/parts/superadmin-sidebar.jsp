@@ -42,20 +42,72 @@
             <li class="header">SUPERADMIN HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a></li>
+
             <li ><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-link"></i> <span>Store</span></a></li>
 
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
+
+            <li><a href="#"><i class="fa fa-link"></i> <span>Product</span></a></li>
+
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Multilevel link</span>
+                <a href="#"><i class="fa fa-link"></i> <span>Sales Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Order List</a></li>
+                    <li><a href="#">Return List</a></li>
+                    <li><a href="#">Pending Order</a></li>
+                    <li><a href="#">Accepted Order</a></li>
+                    <li><a href="#">Packed Order</a></li>
+                    <li><a href="#">Shiped Order</a></li>
+                    <li><a href="#">Delivered Order</a></li>
+                    <li><a href="#">Cancelled Order</a></li>
                 </ul>
             </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Purchase Order</span>
+                    <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#">Order List</a></li>
+                    <li><a href="#">Return List</a></li>
+                    <li><a href="#">Pending Order</a></li>
+                    <li><a href="#">Issued Order</a></li>
+                    <li><a href="#">Received Order</a></li>
+                    <li><a href="#">Cancelled Order</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Invoice</span>
+                    <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#">List</a></li>
+                    <li><a href="#">Add</a></li>
+                    <li><a href="#">Receivable</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Client</span>
+                    <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#">Customer</a></li>
+                    <li><a href="#">Vendor</a></li>
+                </ul>
+            </li>
+
         </ul>
         <!-- /.sidebar-menu -->
     </section>
