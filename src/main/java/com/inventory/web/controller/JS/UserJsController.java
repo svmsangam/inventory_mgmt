@@ -47,7 +47,7 @@ public class UserJsController {
 
                 String authority = AuthenticationUtil.getCurrentUser().getAuthority();
 
-                if (authority.contains(Authorities.SYSTEM) && authority.contains(Authorities.AUTHENTICATED)) {
+                if ((authority.contains(Authorities.SYSTEM) || authority.contains(Authorities.SUPERADMIN) || authority.contains(Authorities.ADMINISTRATOR)) && authority.contains(Authorities.AUTHENTICATED)) {
 
                     UserError error = new UserError();
 
