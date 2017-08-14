@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!-- Main Footer -->
 <footer class="main-footer">
     <!-- To the right -->
@@ -52,6 +54,8 @@
             <h3 class="control-sidebar-heading">Tasks Progress</h3>
             <ul class="control-sidebar-menu">
 
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+
                 <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Pending <span class="badge">26</span></span></a></li>
 
                 <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span class="badge">6</span></span></a></li>
@@ -63,6 +67,7 @@
                 <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span class="badge">3</span></span></a></li>
 
                 <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span class="badge">1</span></span></a></li>
+</sec:authorize>
             </ul>
             <!-- /.control-sidebar-menu -->
 
@@ -78,6 +83,8 @@
             <ul class="sidebar-menu tree" data-widget="tree">
                 <li class="header">Extra Settings</li>
                 <!-- Optionally, you can add icons to the links -->
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+
                 <li class="active"><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Employee</span></a></li>
 
                 <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-link"></i> <span>Country</span></a></li>
@@ -110,7 +117,7 @@
                         <li><a href="#">Lot</a></li>
                     </ul>
                 </li>--%>
-
+</sec:authorize>
             </ul>
         </div>
         <!-- /.tab-pane -->
