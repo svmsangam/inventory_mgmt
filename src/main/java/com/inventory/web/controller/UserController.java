@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 @Controller
 @RequestMapping("user")
 public class UserController implements MessageSourceAware {
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private IUserApi userApi;
@@ -53,7 +54,7 @@ public class UserController implements MessageSourceAware {
 	}
 
 	@GetMapping( value = "/list")
-	public String list(ModelMap modelMap) {
+	public String list(ModelMap modelMap , RedirectAttributes redirectAttributes) {
 		try {
 			if (AuthenticationUtil.getCurrentUser() != null) {
 
@@ -69,7 +70,9 @@ public class UserController implements MessageSourceAware {
 
 					modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
 
-				}if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)){
+					return "user/listUser";
+
+				}else if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)){
 
 					List<UserType> userTypeList = new ArrayList<>();
 
@@ -80,7 +83,9 @@ public class UserController implements MessageSourceAware {
 
 					modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
 
-				}if(authority.contains(Authorities.ADMINISTRATOR) && authority.contains(Authorities.AUTHENTICATED)){
+					return "user/listUser";
+
+				}else if(authority.contains(Authorities.ADMINISTRATOR) && authority.contains(Authorities.AUTHENTICATED)){
 
 					InvUserDTO currentUser = userApi.getUserByUserName(AuthenticationUtil.getCurrentUser().getUsername());
 
@@ -92,10 +97,12 @@ public class UserController implements MessageSourceAware {
 
 					modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeInAndStoreInfo(Status.ACTIVE , userTypeList , currentUser.getStoreId()));
 
+					return "user/listUser";
+				}else {
+
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
+					return "redirect:/";
 				}
-
-				return "user/listUser";
-
 			}
 
 			return "redirect:/";
