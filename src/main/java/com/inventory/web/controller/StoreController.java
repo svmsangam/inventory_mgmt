@@ -3,7 +3,6 @@ package com.inventory.web.controller;
 import com.inventory.core.api.iapi.ICityInfoApi;
 import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
@@ -15,9 +14,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller
@@ -40,10 +36,6 @@ public class StoreController {
                 String authority = AuthenticationUtil.getCurrentUser().getAuthority();
 
                 if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)) {
-
-                    List<UserType> userTypeList = new ArrayList<>();
-
-                    userTypeList.add(UserType.SUPERADMIN);
 
                     modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
