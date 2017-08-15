@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/pages/parts/header.jsp" %>
-<%@include file="/pages/parts/system-sidebar.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -23,7 +23,7 @@
     </c:if>
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header">
                     <h3 class="box-title">Country List</h3>

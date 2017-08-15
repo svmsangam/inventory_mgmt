@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/pages/parts/header.jsp" %>
-<%@include file="/pages/parts/system-sidebar.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
