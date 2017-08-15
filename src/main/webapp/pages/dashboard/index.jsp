@@ -17,6 +17,14 @@
         <%@include file="/pages/dashboard/superadmin-index.jsp" %>
     </sec:authorize>
 
+    <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" >
+        <%@include file="/pages/dashboard/admin-index.jsp" %>
+    </sec:authorize>
+
+    <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')" >
+        <%@include file="/pages/dashboard/user-index.jsp" %>
+    </sec:authorize>
+
     <sec:authorize access="hasRole('ROLE_SYSTEM,ROLE_AUTHENTICATED')" >
         <%@include file="/pages/dashboard/system-index.jsp" %>
     </sec:authorize>
