@@ -6,6 +6,7 @@ import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class UserApi implements IUserApi {
 
 	@Autowired
 	private UserConverter userConverter;
+
+	@Autowired
+	private StoreInfoRepository storeInfoRepository;
 
 	@Override
 	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
@@ -69,6 +73,16 @@ public class UserApi implements IUserApi {
 	@Override
 	public boolean nameExists(String userName) {
 		return userRepository.findByUsername(userName) != null;
+	}
+
+	@Override
+	public InvUserDTO changeStore(long userId, long storeId) {
+
+		User user = userRepository.findById(userId);
+
+		user.setStoreInfo(storeInfoRepository.findById(storeId));
+
+		return userConverter.convertToDto(userRepository.save(user));
 	}
 
 	@Override

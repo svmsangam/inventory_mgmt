@@ -21,6 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 	User findByIdAndStatus(long userId , Status status);
 
+	User findById(long userId);
+
 	@Query("select u from User u where u.status = ?1 and u.storeInfo.id = ?2 order by u.username asc ")
 	List<User> findAllByStatusAndStoreInfo(Status status , StoreInfo storeInfo);
 
