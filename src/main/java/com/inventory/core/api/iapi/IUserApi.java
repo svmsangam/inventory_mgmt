@@ -21,6 +21,8 @@ public interface IUserApi {
 
 	boolean nameExists(String userName);
 
+	InvUserDTO changeStore(long userId , long storeId);
+
 	List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status , List<UserType> userTypeList);
 
 	List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status ,List<UserType> userTypeList, long storeInfoId);

@@ -1,6 +1,9 @@
 package com.inventory.web.controller.ajax;
 
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.enumconstant.ResponseStatus;
@@ -37,6 +40,12 @@ public class StoreAjaxController {
     @Autowired
     private StoreInfoValidation storeInfoValidation;
 
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
+
+    @Autowired
+    private IUserApi userApi;
+
     @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult){
         RestResponseDTO result = new RestResponseDTO();
@@ -49,15 +58,26 @@ public class StoreAjaxController {
 
                 if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)) {
 
+                    InvUserDTO currentUser = userApi.getUserByUserName(AuthenticationUtil.getCurrentUser().getUsername());
+
                     StoreInfoError error = new StoreInfoError();
 
                     error = storeInfoValidation.onSave(storeInfoDTO , bindingResult);
 
                     if (error.isValid()){
+
                         storeInfoDTO = storeInfoApi.save(storeInfoDTO);
+
+                        storeUserInfoApi.save(currentUser.getUserId() , storeInfoDTO.getStoreId());
+
+                        if (currentUser.getStoreId() == null){
+                            userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());
+                        }
+
                         result.setStatus(ResponseStatus.SUCCESS.getValue());
                         result.setMessage("user successfully saved");
                         result.setDetail(storeInfoDTO);
+
                     }else {
                         result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
                         result.setMessage("user validation failed");
