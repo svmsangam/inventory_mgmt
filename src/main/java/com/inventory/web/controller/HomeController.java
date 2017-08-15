@@ -19,7 +19,7 @@ public class HomeController {
 	@RequestMapping(value = "/testjsp", method = RequestMethod.GET)
 	public String toTestJspPage(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
 
-		return "country/listCountries";
+		return "store/listStore";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)

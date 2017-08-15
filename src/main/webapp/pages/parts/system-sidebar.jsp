@@ -10,7 +10,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="${pageContext.request.contextPath}/resources/img/user2-160x160.jpg" class="img-circle"
+                <img src="${pageContext.request.contextPath}/resources/img/inventory-logo.png" class="img-circle"
                      alt="User Image">
             </div>
             <div class="pull-left info">
