@@ -40,6 +40,8 @@
                                 <th>SN</th>
                                 <th>Username</th>
                                 <th>UserType</th>
+                                <th>Status</th>
+                                <th>Action</th>
                                 <%--<th>Action</th>--%>
                             </tr>
                             </thead>
@@ -49,10 +51,12 @@
                                     <td>${i.index + 1}</td>
                                     <td>${user.inventoryuser}</td>
                                     <td>${user.userType}</td>
-                                    <%--<td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
-                                    </td>--%>
+                                    <td><c:if test="${user.enable eq true}"><span class="label label-success">Activated</span></c:if><c:if test="${user.enable eq false}"><span class="label label-danger">Deactivated</span></c:if></td>
+                                    <td>
+                                        <c:if test="${user.enable eq true}"><a href="#" onclick="return confirm('Are you sure you want to Deactivate?')"><span class="label label-danger">Deactivate ?</span></a></c:if>
+
+                                        <c:if test="${user.enable eq false}"><a href="#" onclick="return confirm('Are you sure you want to Activate?')"><span class="label label-success">Activate ?</span></a></c:if>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
