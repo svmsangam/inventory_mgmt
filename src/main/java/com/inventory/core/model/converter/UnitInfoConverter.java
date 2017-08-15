@@ -56,8 +56,8 @@ public class UnitInfoConverter implements IConvertable<UnitInfo, UnitInfoDTO>, I
             return null;
         }
 
-        entity.setCode(dto.getCode());
-        entity.setName(dto.getName());
+        entity.setCode(dto.getCode().trim());
+        entity.setName(dto.getName().trim());
         entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
         entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
 

@@ -1,7 +1,10 @@
 package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.StoreInfoDTO;
+import com.inventory.core.model.entity.AccountInfo;
 import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
+import com.inventory.core.model.repository.AccountInfoRepository;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -26,6 +29,9 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
         return copyConvertToEntity(dto , new StoreInfo());
     }
 
+    @Autowired
+    private AccountInfoRepository accountInfoRepository;
+
     @Override
     public StoreInfoDTO convertToDto(StoreInfo entity) {
 
@@ -49,6 +55,13 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
         dto.setStreet(entity.getStreet());
         dto.setVersion(entity.getVersion());
 
+        AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId() , AccountAssociateType.STORE);
+
+        if (accountInfo != null){
+            dto.setAccountId(accountInfo.getId());
+            dto.setAccountNo(accountInfo.getAcountNumber());
+        }
+
         return dto;
     }
 
@@ -60,14 +73,14 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
             return null;
         }
 
-        entity.setName(dto.getName());
+        entity.setName(dto.getName().trim());
         entity.setCityInfo(cityInfoRepository.findOne(dto.getCityId()));
-        entity.setContact(dto.getContact());
-        entity.setEmail(dto.getEmail());
-        entity.setMobileNumber(dto.getMobileNumber());
-        entity.setPanNumber(dto.getPanNumber());
-        entity.setRegNumber(dto.getRegNumber());
-        entity.setStreet(dto.getStreet());
+        entity.setContact(dto.getContact().trim());
+        entity.setEmail(dto.getEmail().trim().toLowerCase());
+        entity.setMobileNumber(dto.getMobileNumber().trim());
+        entity.setPanNumber(dto.getPanNumber().trim());
+        entity.setRegNumber(dto.getRegNumber().trim());
+        entity.setStreet(dto.getStreet().trim());
 
         return entity;
     }

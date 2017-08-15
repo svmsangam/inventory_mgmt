@@ -54,7 +54,7 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
         }
 
         entity.setCountryInfo(countryRepository.findByIdAndStatus(dto.getCountryId(), Status.ACTIVE));
-        entity.setName(dto.getStateName());
+        entity.setName(dto.getStateName().trim());
         entity.setStatus(Status.ACTIVE);
 
         return entity;

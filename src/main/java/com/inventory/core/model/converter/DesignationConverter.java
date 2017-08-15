@@ -46,9 +46,9 @@ public class DesignationConverter implements IConvertable<Designation , Designat
             return null;
         }
 
-        entity.setTitle(dto.getTitle());
-        entity.setCode(dto.getCode());
-        entity.setRemarks(dto.getRemarks());
+        entity.setTitle(dto.getTitle().trim());
+        entity.setCode(dto.getCode().trim());
+        entity.setRemarks(dto.getRemarks().trim());
 
         return entity;
     }

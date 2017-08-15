@@ -27,6 +27,9 @@ public interface UnitInfoRepository extends JpaRepository<UnitInfo , Long> , Jpa
     @Query("select u from UnitInfo u where u.name = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
     UnitInfo findByNameAndStatusAndStoreInfo(String unitName, Status status, long storeId);
 
+    @Query("select u from UnitInfo u where u.code = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
+    UnitInfo findByCodeAndStatusAndStoreInfo(String unitCode, Status status, long storeId);
+
     @Query("select u from UnitInfo u where u.status = ?1 and u.storeInfo.id=?2 order by u.id desc")
     List<UnitInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
 }

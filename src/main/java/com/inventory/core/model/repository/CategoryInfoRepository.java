@@ -26,6 +26,9 @@ public interface CategoryInfoRepository extends JpaRepository<CategoryInfo , Lon
     @Query("select c from CategoryInfo c where c.name = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
     CategoryInfo findByNameAndStatusAndStoreInfo(String categoryName , Status status , long storeId);
 
+    @Query("select c from CategoryInfo c where c.code = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
+    CategoryInfo findByCodeAndStatusAndStoreInfo(String categoryCode , Status status , long storeId);
+
     @Query("select c from CategoryInfo c where c.status = ?1 and c.storeInfo.id = ?2 order by c.id desc ")
     List<CategoryInfo> findAllByStatusAndStoreInfo(Status status , long storeId);
 

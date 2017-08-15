@@ -27,6 +27,9 @@ public interface TagInfoRepository extends JpaRepository<TagInfo , Long> , JpaSp
     @Query("select t from TagInfo t where t.name = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
     TagInfo findByNameAndStatusAndStoreInfo(String tagName, Status status, long storeId);
 
+    @Query("select t from TagInfo t where t.code = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
+    TagInfo findByCodeAndStatusAndStoreInfo(String tagCode, Status status, long storeId);
+
     @Query("select t from TagInfo t where t.status = ?1 and t.storeInfo.id = ?2 order by t.id desc")
     List<TagInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
 

@@ -49,7 +49,7 @@ public class LotInfoConverter implements IConvertable<LotInfo , LotInfoDTO> , IL
             return null;
         }
 
-        entity.setLot(dto.getLot());
+        entity.setLot(dto.getLot().trim());
 
         return entity;
     }

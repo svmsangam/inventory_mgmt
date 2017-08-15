@@ -29,6 +29,10 @@ public class StoreInfoDTO {
 
     private String email;
 
+    private long accountId;
+
+    private String accountNo;
+
     private Integer version;
 
     public String getEmail() {
@@ -125,5 +129,21 @@ public class StoreInfoDTO {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
     }
 }

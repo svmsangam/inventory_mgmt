@@ -1,9 +1,11 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IAccountInfoApi;
 import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.model.converter.StoreInfoConverter;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,20 @@ public class StoreInfoApi implements IStoreInfoApi{
     @Autowired
     private StoreInfoRepository storeInfoRepository;
 
+    @Autowired
+    private IAccountInfoApi accountInfoApi;
+
     @Override
     public StoreInfoDTO save(StoreInfoDTO storeInfoDTO) {
 
         StoreInfo storeInfo = storeInfoConverter.convertToEntity(storeInfoDTO);
         storeInfo.setStatus(Status.ACTIVE);
 
-        return storeInfoConverter.convertToDto(storeInfoRepository.save(storeInfo));
+        storeInfo = storeInfoRepository.save(storeInfo);
+
+        accountInfoApi.save(storeInfo.getId() , AccountAssociateType.STORE , "S-");
+
+        return storeInfoConverter.convertToDto(storeInfo);
     }
 
     @Override
