@@ -19,7 +19,7 @@ public class HomeController {
 	@RequestMapping(value = "/testjsp", method = RequestMethod.GET)
 	public String toTestJspPage(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
 
-		return "country/listCountries";
+		return "store/listStore";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -106,22 +106,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/500", method = RequestMethod.GET)
-	public String eroor(HttpServletRequest request) {
+	public String errorpage(HttpServletRequest request) {
 
 		return "static/500";
 	}
 	
-	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String getSettings(HttpServletRequest request) throws IOException {
-
-		return "common/settings";
-	}
-	
-	@RequestMapping(value = "/businessOwnerSettings", method = RequestMethod.GET)
-	public String getBusinessOwnerSettings(HttpServletRequest request , ModelMap modelMap) throws IOException {
-
-		
-		return "redirect:/";
-	}
-
 }

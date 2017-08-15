@@ -1,35 +1,40 @@
-<html>
-<head>
-    <title>500 error page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/resources/css/error.css" rel="stylesheet" type="text/css" media="all"/>
-</head>
-<body>
-<!-----start-wrap--------->
-<div class="wrap">
-    <!-----start-content--------->
-    <div class="content">
-        <!-----start-logo--------->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-        <div class="logo">
-            <h1><img src="resources/landing/img/500.png"/></h1>
-        </div>
-        <!-----end-logo--------->
-        <!-----start-search-bar-section--------->
-        <div class="buttom">
-            <div class="seach_bar">
-                <p>you can go to <span><a href="/">home</a></span> page</p>
-                <!-----start-sear-box--------->
+<div class="content-wrapper">
 
-            </div>
+<section class="content">
+
+    <div class="error-page">
+        <h2 class="headline text-red">500</h2>
+
+        <div class="error-content">
+            <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
+
+            <p>
+                We will work on fixing that right away.
+                Meanwhile, you may <a href="">return to dashboard</a> or try using the search form.
+            </p>
+
+            <form class="search-form">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" name="submit" class="btn btn-danger btn-flat"><i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.input-group -->
+            </form>
         </div>
-        <!-----end-sear-bar--------->
     </div>
-    <!----copy-right-------------->
-    <p class="copy_right">&#169; 2017 Template by<a href="#" target="_blank">&nbsp;TMK-INVENTORY</a></p>
-</div>
+    <!-- /.error-page -->
 
-<!---------end-wrap---------->
-</body>
-</html>
+</section>
+<!-- /.content -->
+</div>
+<%@include file="/pages/parts/footer.jsp" %>

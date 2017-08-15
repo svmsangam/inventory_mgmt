@@ -17,7 +17,7 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTables.bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/skin-blue.min.css">
 
@@ -71,7 +71,7 @@
                                         <a href="#">
                                             <div class="pull-left">
                                                 <!-- User Image -->
-                                                <img src="${pageContext.request.contextPath}/resources/img/user2-160x160.jpg"
+                                                <img src="${pageContext.request.contextPath}/resources/img/inventory-logo.png"
                                                      class="img-circle" alt="User Image">
                                             </div>
                                             <!-- Message title and timestamp -->
@@ -158,7 +158,7 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="${pageContext.request.contextPath}/resources/img/user2-160x160.jpg"
+                            <img src="${pageContext.request.contextPath}/resources/img/inventory-logo.png"
                                  class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">${pageContext.request.userPrincipal.name}</span>
@@ -166,7 +166,7 @@
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="${pageContext.request.contextPath}/resources/img/user2-160x160.jpg"
+                                <img src="${pageContext.request.contextPath}/resources/img/inventory-logo.png"
                                      class="img-circle" alt="User Image">
 
                                 <p>
