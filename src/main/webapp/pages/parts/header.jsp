@@ -17,7 +17,7 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTables.bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/skin-blue.min.css">
 

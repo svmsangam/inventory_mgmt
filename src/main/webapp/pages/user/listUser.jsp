@@ -72,32 +72,30 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add User</h4>
-                    <div class="alert alert-danger addError hide">
-                        <a href="javascript:void(0);" class="close closeError" aria-label="close">x</a>
-                        <strong class="errorModel"></strong>
-                    </div>
                 </div>
                 <div class="modal-body">
-                    <%--javascript:void(0);--%>
-
+                    <div class="alert alert-danger alert-dismissible addError">
+                        <button type="button" class="close closeError" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p class="errorModel"></p>
+                    </div>
                     <div class="box-body">
 
                             <div class="form-group">
                                 <label class="control-label">User Name *</label>
                                 <input type="text" class="form-control" name="inventoryuser" id="inventoryuser" placeholder="Name" required="required" />
-                                <p class="error inventoryuser"></p>
+                                <p class="form-error inventoryuser"></p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Password *</label>
                                 <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="password" required />
-                                <p class="error userpassword"></p>
+                                <p class="form-error userpassword"></p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">RePassword *</label>
                                 <input type="password" class="form-control" name="userrepassword" id="userrepassword" placeholder="repassword" required />
-                                <p class="error userrepassword"></p>
+                                <p class="form-error userrepassword"></p>
                             </div>
 
                             <div class="form-group">
@@ -108,7 +106,7 @@
                                         <option value="${userType}">${userType}</option>
                                     </c:forEach>
                                 </select>
-                                <p class="error userType"></p>
+                                <p class="form-error userType"></p>
                             </div>
 
                         </div>
@@ -141,7 +139,7 @@
                             <div class="form-group">
                                 <label class="control-label">Name</label>
                                 <input type="text" class="form-control" placeholder="Name" value="" required>
-                                <p class="error">${error.cityName}</p>
+                                <p class="form-error">${error.cityName}</p>
                             </div>
                         </div>
                     </form>
