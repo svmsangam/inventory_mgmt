@@ -2,7 +2,6 @@ package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public interface IStoreInfoApi {
 
-    StoreInfoDTO save(StoreInfoDTO storeInfoDTO);
+    StoreInfoDTO save(StoreInfoDTO storeInfoDTO , long currentUserId);
 
     StoreInfoDTO update(StoreInfoDTO storeInfoDTO);
 

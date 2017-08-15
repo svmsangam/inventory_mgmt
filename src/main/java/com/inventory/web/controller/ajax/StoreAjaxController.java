@@ -1,7 +1,6 @@
 package com.inventory.web.controller.ajax;
 
 import com.inventory.core.api.iapi.IStoreInfoApi;
-import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
@@ -41,9 +40,6 @@ public class StoreAjaxController {
     private StoreInfoValidation storeInfoValidation;
 
     @Autowired
-    private IStoreUserInfoApi storeUserInfoApi;
-
-    @Autowired
     private IUserApi userApi;
 
     @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
@@ -66,9 +62,7 @@ public class StoreAjaxController {
 
                     if (error.isValid()){
 
-                        storeInfoDTO = storeInfoApi.save(storeInfoDTO);
-
-                        storeUserInfoApi.save(currentUser.getUserId() , storeInfoDTO.getStoreId());
+                        storeInfoDTO = storeInfoApi.save(storeInfoDTO , currentUser.getUserId());
 
                         if (currentUser.getStoreId() == null){
                             userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());

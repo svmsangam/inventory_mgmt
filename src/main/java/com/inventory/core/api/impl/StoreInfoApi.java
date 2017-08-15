@@ -2,6 +2,7 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IAccountInfoApi;
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.model.converter.StoreInfoConverter;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.entity.StoreInfo;
@@ -27,15 +28,21 @@ public class StoreInfoApi implements IStoreInfoApi{
     @Autowired
     private IAccountInfoApi accountInfoApi;
 
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
+
     @Override
-    public StoreInfoDTO save(StoreInfoDTO storeInfoDTO) {
+    public StoreInfoDTO save(StoreInfoDTO storeInfoDTO , long currentUserId) {
 
         StoreInfo storeInfo = storeInfoConverter.convertToEntity(storeInfoDTO);
+
         storeInfo.setStatus(Status.ACTIVE);
 
         storeInfo = storeInfoRepository.save(storeInfo);
 
         accountInfoApi.save(storeInfo.getId() , AccountAssociateType.STORE , "S-");
+
+        storeUserInfoApi.save(currentUserId , storeInfoDTO.getStoreId());
 
         return storeInfoConverter.convertToDto(storeInfo);
     }
