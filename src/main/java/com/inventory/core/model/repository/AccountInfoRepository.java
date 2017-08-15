@@ -18,6 +18,8 @@ public interface AccountInfoRepository extends JpaRepository<AccountInfo , Long>
 
     AccountInfo findByAcountNumber(String accountNumber);
 
+    AccountInfo findByAssociateIdAndAssociateType(long associateId , AccountAssociateType associateType);
+
     List<AccountInfo> findAllByAssociateType(AccountAssociateType accountAssociateType);
 
 }

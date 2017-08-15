@@ -1,15 +1,14 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.AccountInfoDTO;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.Status;
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IAccountInfoApi {
 
-    AccountInfoDTO save(AccountInfoDTO accountInfoDTO) throws IOException, JSONException;
+    AccountInfoDTO save(long associateId , AccountAssociateType associateType , String prefix);
 
     AccountInfoDTO update(AccountInfoDTO accountInfoDTO);
 

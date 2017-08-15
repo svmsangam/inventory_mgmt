@@ -1,7 +1,10 @@
 package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.StoreInfoDTO;
+import com.inventory.core.model.entity.AccountInfo;
 import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
+import com.inventory.core.model.repository.AccountInfoRepository;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -26,6 +29,9 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
         return copyConvertToEntity(dto , new StoreInfo());
     }
 
+    @Autowired
+    private AccountInfoRepository accountInfoRepository;
+
     @Override
     public StoreInfoDTO convertToDto(StoreInfo entity) {
 
@@ -48,6 +54,13 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
         dto.setStatus(entity.getStatus());
         dto.setStreet(entity.getStreet());
         dto.setVersion(entity.getVersion());
+
+        AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId() , AccountAssociateType.STORE);
+
+        if (accountInfo != null){
+            dto.setAccountId(accountInfo.getId());
+            dto.setAccountNo(accountInfo.getAcountNumber());
+        }
 
         return dto;
     }
