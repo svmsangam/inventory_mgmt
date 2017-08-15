@@ -89,7 +89,7 @@ public class UserValidation extends GlobalValidation{
 
     private String checkUserName(String username) {
 
-        if (userRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username.trim()) != null) {
 
             logger.debug("username already created");
 

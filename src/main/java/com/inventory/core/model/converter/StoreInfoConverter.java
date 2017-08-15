@@ -60,14 +60,14 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
             return null;
         }
 
-        entity.setName(dto.getName());
+        entity.setName(dto.getName().trim());
         entity.setCityInfo(cityInfoRepository.findOne(dto.getCityId()));
-        entity.setContact(dto.getContact());
-        entity.setEmail(dto.getEmail());
-        entity.setMobileNumber(dto.getMobileNumber());
-        entity.setPanNumber(dto.getPanNumber());
-        entity.setRegNumber(dto.getRegNumber());
-        entity.setStreet(dto.getStreet());
+        entity.setContact(dto.getContact().trim());
+        entity.setEmail(dto.getEmail().trim().toLowerCase());
+        entity.setMobileNumber(dto.getMobileNumber().trim());
+        entity.setPanNumber(dto.getPanNumber().trim());
+        entity.setRegNumber(dto.getRegNumber().trim());
+        entity.setStreet(dto.getStreet().trim());
 
         return entity;
     }

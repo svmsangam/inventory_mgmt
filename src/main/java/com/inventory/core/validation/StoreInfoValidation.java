@@ -64,7 +64,7 @@ public class StoreInfoValidation extends GlobalValidation {
         if (!("".equals(error.getName()))){
             valid = false;
         }else {
-            checkStoreName(storeInfoDTO.getName());
+            checkStoreName(storeInfoDTO.getName().trim());
         }
 
         if (cityInfoRepository.findByIdAndStatus(storeInfoDTO.getCityId() , Status.ACTIVE) == null) {

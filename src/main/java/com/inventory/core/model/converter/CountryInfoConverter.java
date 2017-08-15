@@ -44,8 +44,8 @@ public class CountryInfoConverter implements IConvertable<CountryInfo, CountryIn
 			return null;
 		}
 
-		entity.setName(dto.getCountryName());
-		entity.setISO(dto.getCountryISO());
+		entity.setName(dto.getCountryName().trim());
+		entity.setISO(dto.getCountryISO().trim());
 		entity.setStatus(dto.getCountryStatus());
 
 		return entity;

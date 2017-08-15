@@ -56,11 +56,11 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
         ProductInfoDTO dto = new ProductInfoDTO();
 
         dto.setPoductId(entity.getId());
-        dto.setCode(entity.getCode());
+        dto.setCode(entity.getCode().trim());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
-        dto.setDescription(entity.getDescription());
-        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription().trim());
+        dto.setName(entity.getName().trim());
         dto.setStatus(entity.getStatus());
         dto.setStoreInfoId(entity.getStoreInfo().getId());
         dto.setSubCategoryId(entity.getSubCategoryInfo().getId());

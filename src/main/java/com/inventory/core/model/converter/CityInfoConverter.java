@@ -59,7 +59,7 @@ public class CityInfoConverter implements IConvertable<CityInfo, CityInfoDTO>, I
             return null;
         }
 
-        entity.setName(dto.getCityName());
+        entity.setName(dto.getCityName().trim());
         entity.setStateInfo(stateRepository.findByIdAndStatus(dto.getStateId() , Status.ACTIVE));
         entity.setStatus(Status.ACTIVE);
 
