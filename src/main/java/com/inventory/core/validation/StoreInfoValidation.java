@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -67,7 +68,15 @@ public class StoreInfoValidation extends GlobalValidation {
             checkStoreName(storeInfoDTO.getName().trim());
         }
 
-        if (cityInfoRepository.findByIdAndStatus(storeInfoDTO.getCityId() , Status.ACTIVE) == null) {
+        try {
+
+            if (cityInfoRepository.findByIdAndStatus(storeInfoDTO.getCityId(), Status.ACTIVE) == null) {
+                valid = false;
+                error.setCityName("invalid city");
+            }
+        }catch (Exception e){
+            logger.error(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
+
             valid = false;
             error.setCityName("invalid city");
         }
