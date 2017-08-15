@@ -54,6 +54,26 @@ public class GlobalValidation {
 
     }
 
+    public String checkLong(Long value , int min , String target , boolean notNull){
+
+        if (notNull && value == null){
+
+            return "Cannot Be null";
+        }
+
+        if (value != null) {
+
+            if (value < min) {
+
+                return "Must Be Greater Than " + min;
+            }
+
+        }
+
+        return "";
+
+    }
+
     public String checkString(String value , int minLength , int maxLength , String target , boolean notNull){
 
         if (notNull && value == null ){
