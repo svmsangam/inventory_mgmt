@@ -9,6 +9,7 @@
 
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<%--<sec:authentication property="principal.authorities"/>--%>
 <%--<sec:authentication property="principal.username" />--%>
 
     <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >

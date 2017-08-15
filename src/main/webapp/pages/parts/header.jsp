@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -169,12 +170,25 @@
                                      class="img-circle" alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
-                                    <small>Member since Nov. 2012</small>
+                                    <sec:authentication property="principal.username" /> -
+
+                                    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+                                        Super Administrator
+                                    </sec:authorize>
+
+                                    <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" >
+                                        Administrator
+                                    </sec:authorize>
+
+                                    <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')" >
+                                        User
+                                    </sec:authorize>
+
+                                    <%--<small>Member since Nov. 2012</small>--%>
                                 </p>
                             </li>
                             <!-- Menu Body -->
-                            <li class="user-body">
+                           <%-- <li class="user-body">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
                                         <a href="#">Followers</a>
@@ -187,7 +201,7 @@
                                     </div>
                                 </div>
                                 <!-- /.row -->
-                            </li>
+                            </li>--%>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
