@@ -1,8 +1,10 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.api.iapi.IUserPermissionApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.UserPermissionDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
@@ -15,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -37,6 +36,9 @@ public class UserController {
 
 	@Autowired
 	private IUserPermissionApi userPermissionApi;
+
+	@Autowired
+	private IStoreInfoApi storeInfoApi;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -110,18 +112,13 @@ public class UserController {
 
 
 	@GetMapping( value = "/manage")
-	public String manage(@RequestParam("userId")long userId , BindingResult bindingResult, ModelMap modelMap , RedirectAttributes redirectAttributes) {
+	public String manage(@RequestParam("userId")long userId , ModelMap modelMap , RedirectAttributes redirectAttributes) {
 		try {
 			if (AuthenticationUtil.getCurrentUser() != null) {
 
 				String authority = AuthenticationUtil.getCurrentUser().getAuthority();
 
 				if ((authority.contains(Authorities.ADMINISTRATOR) || authority.contains(Authorities.SUPERADMIN)) && authority.contains(Authorities.AUTHENTICATED)) {
-
-					if (bindingResult.hasErrors() | userId < 0){
-						redirectAttributes.addFlashAttribute(StringConstants.ERROR , "invalid user");
-						return "redirect:/user/list";
-					}
 
 					InvUserDTO userDTO = userApi.getUserWithId(userId);
 
@@ -132,8 +129,51 @@ public class UserController {
 
 					modelMap.put(StringConstants.USER , userDTO);
 					modelMap.put(StringConstants.USER_PERMISSION , userPermissionApi.getByUserId(userId));
+					if (userDTO.getStoreId() != null) {
+						modelMap.put(StringConstants.STORE, storeInfoApi.show(userDTO.getStoreId(), Status.ACTIVE));
+					}
 
 					return "user/manageUser";
+
+				}else {
+
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
+					return "redirect:/";
+				}
+			}
+
+			return "redirect:/";
+		} catch (Exception e) {
+			logger.error("Stack trace: " + e.getStackTrace());
+			return "redirect:/";
+		}
+	}
+
+	@PostMapping( value = "/manage")
+	public String manage(@RequestAttribute("userpermission") UserPermissionDTO userPermissionDTO , ModelMap modelMap , RedirectAttributes redirectAttributes) {
+		try {
+			if (AuthenticationUtil.getCurrentUser() != null) {
+
+				String authority = AuthenticationUtil.getCurrentUser().getAuthority();
+
+				if ((authority.contains(Authorities.ADMINISTRATOR) || authority.contains(Authorities.SUPERADMIN)) && authority.contains(Authorities.AUTHENTICATED)) {
+
+					if (userPermissionDTO.getUserId() == null){
+						redirectAttributes.addFlashAttribute(StringConstants.ERROR , "user not found");
+						return "redirect:/user/list";
+					}
+
+					UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
+
+					if (userPermissionDTO1 == null){
+						userPermissionApi.save(userPermissionDTO);
+					}else {
+						userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
+						userPermissionApi.update(userPermissionDTO);
+					}
+
+
+					return "redirect:/user/manageUser?userId="+userPermissionDTO.getUserId();
 
 				}else {
 

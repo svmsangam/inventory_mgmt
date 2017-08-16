@@ -22,7 +22,13 @@ public class UserPermissionConverter implements IConvertable<UserPermission , Us
 
     @Override
     public UserPermission convertToEntity(UserPermissionDTO dto) {
-        return copyConvertToEntity(dto , new UserPermission());
+
+        UserPermission entity = new UserPermission();
+
+        entity.setUser(userRepository.findOne(dto.getUserId()));
+        entity.setPermissionList(dto.getPermissionList());
+
+        return entity;
     }
 
     @Override
@@ -50,7 +56,6 @@ public class UserPermissionConverter implements IConvertable<UserPermission , Us
             return null;
         }
 
-        entity.setUser(userRepository.findOne(dto.getUserId()));
         entity.setPermissionList(dto.getPermissionList());
 
         return entity;

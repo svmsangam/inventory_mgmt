@@ -3,6 +3,7 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IUserPermissionApi;
 import com.inventory.core.model.converter.UserPermissionConverter;
 import com.inventory.core.model.dto.UserPermissionDTO;
+import com.inventory.core.model.entity.UserPermission;
 import com.inventory.core.model.repository.UserPermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,17 +24,24 @@ public class UserPermissionApi implements IUserPermissionApi{
 
     @Override
     public UserPermissionDTO save(UserPermissionDTO userPermissionDTO) {
-        return null;
+
+        return userPermissionConverter.convertToDto(userPermissionRepository.save(userPermissionConverter.convertToEntity(userPermissionDTO)));
     }
 
     @Override
     public UserPermissionDTO update(UserPermissionDTO userPermissionDTO) {
-        return null;
+
+        UserPermission userPermission = userPermissionRepository.findById(userPermissionDTO.getUserPermissionId());
+
+        userPermission = userPermissionConverter.copyConvertToEntity(userPermissionDTO , userPermission);
+
+        return userPermissionConverter.convertToDto(userPermissionRepository.save(userPermission));
     }
 
     @Override
     public UserPermissionDTO getById(long userPermissionId) {
-        return null;
+
+        return userPermissionConverter.convertToDto(userPermissionRepository.findById(userPermissionId));
     }
 
     @Override
