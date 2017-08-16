@@ -128,7 +128,13 @@ public class UserController {
 					}
 
 					modelMap.put(StringConstants.USER , userDTO);
-					modelMap.put(StringConstants.USER_PERMISSION , userPermissionApi.getByUserId(userId));
+					UserPermissionDTO userPermissionDTO = userPermissionApi.getByUserId(userId);
+
+					if (userPermissionDTO != null ){
+						if (userPermissionDTO.getPermissionList() != null)
+						modelMap.put(StringConstants.USER_PERMISSION , userPermissionDTO.getPermissionList());
+					}
+
 					if (userDTO.getStoreId() != null) {
 						modelMap.put(StringConstants.STORE, storeInfoApi.show(userDTO.getStoreId(), Status.ACTIVE));
 					}
@@ -173,7 +179,7 @@ public class UserController {
 					}
 
 
-					return "redirect:/user/manageUser?userId="+userPermissionDTO.getUserId();
+					return "redirect:/user/manage?userId="+userPermissionDTO.getUserId();
 
 				}else {
 

@@ -65,171 +65,116 @@
                                     </thead>
                                     <tbody>
 
-
                                     <tr>
                                         <td>Category</td>
-                                        <td><input type="checkbox" name="permissionList" value="CATEGORY_CREATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="CATEGORY_VIEW" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="CATEGORY_UPDATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="CATEGORY_DELETE" class="myiterator" /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CATEGORY_CREATE')}"><input type="checkbox" name="permissionList" value="CATEGORY_CREATE" class="myiterator" checked /></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CATEGORY_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CATEGORY_VIEW')}"><input type="checkbox" name="permissionList" value="CATEGORY_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CATEGORY_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CATEGORY_UPDATE')}"><input type="checkbox" name="permissionList" value="CATEGORY_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CATEGORY_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CATEGORY_DELETE')}"><input type="checkbox" name="permissionList" value="CATEGORY_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CATEGORY_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>SubCategory</td>
-                                        <td><input type="checkbox" name="permissionList" value="SUBCATEGORY_CREATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="SUBCATEGORY_VIEW" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="SUBCATEGORY_UPDATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="SUBCATEGORY_DELETE" class="myiterator"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SUBCATEGORY_CREATE')}"><input type="checkbox" name="permissionList" value="SUBCATEGORY_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SUBCATEGORY_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SUBCATEGORY_VIEW')}"><input type="checkbox" name="permissionList" value="SUBCATEGORY_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SUBCATEGORY_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SUBCATEGORY_UPDATE')}"><input type="checkbox" name="permissionList" value="SUBCATEGORY_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SUBCATEGORY_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SUBCATEGORY_DELETE')}"><input type="checkbox" name="permissionList" value="SUBCATEGORY_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SUBCATEGORY_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Tag</td>
-                                        <td><input type="checkbox" name="permissionList" value="TAG_CREATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="TAG_VIEW" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="TAG_UPDATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="TAG_DELETE" class="myiterator" /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'TAG_CREATE')}"><input type="checkbox" name="permissionList" value="TAG_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="TAG_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'TAG_VIEW')}"><input type="checkbox" name="permissionList" value="TAG_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="TAG_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'TAG_UPDATE')}"><input type="checkbox" name="permissionList" value="TAG_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="TAG_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'TAG_DELETE')}"><input type="checkbox" name="permissionList" value="TAG_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="TAG_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Unit</td>
-                                        <td><input type="checkbox" name="permissionList" value="UNIT_CREATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="UNIT_VIEW" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="UNIT_UPDATE" class="myiterator" /></td>
-                                        <td><input type="checkbox" name="permissionList" value="UNIT_DELETE" class="myiterator" /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'UNIT_CREATE')}"><input type="checkbox" name="permissionList" value="UNIT_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="UNIT_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'UNIT_VIEW')}"><input type="checkbox" name="permissionList" value="UNIT_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="UNIT_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'UNIT_UPDATE')}"><input type="checkbox" name="permissionList" value="UNIT_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="UNIT_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'UNIT_DELETE')}"><input type="checkbox" name="permissionList" value="UNIT_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="UNIT_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Product</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PRODUCT_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PRODUCT_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PRODUCT_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PRODUCT_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PRODUCT_CREATE')}"><input type="checkbox" name="permissionList" value="PRODUCT_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PRODUCT_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PRODUCT_VIEW')}"><input type="checkbox" name="permissionList" value="PRODUCT_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PRODUCT_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PRODUCT_UPDATE')}"><input type="checkbox" name="permissionList" value="PRODUCT_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PRODUCT_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PRODUCT_DELETE')}"><input type="checkbox" name="permissionList" value="PRODUCT_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PRODUCT_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Item</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="ITEM_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="ITEM_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="ITEM_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="ITEM_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'ITEM_CREATE')}"><input type="checkbox" name="permissionList" value="ITEM_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="ITEM_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'ITEM_VIEW')}"><input type="checkbox" name="permissionList" value="ITEM_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="ITEM_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'ITEM_UPDATE')}"><input type="checkbox" name="permissionList" value="ITEM_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="ITEM_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'ITEM_DELETE')}"><input type="checkbox" name="permissionList" value="ITEM_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="ITEM_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Client</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="CLIENT_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="CLIENT_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="CLIENT_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="CLIENT_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CLIENT_CREATE')}"><input type="checkbox" name="permissionList" value="CLIENT_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CLIENT_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CLIENT_VIEW')}"><input type="checkbox" name="permissionList" value="CLIENT_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CLIENT_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CLIENT_UPDATE')}"><input type="checkbox" name="permissionList" value="CLIENT_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CLIENT_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'CLIENT_DELETE')}"><input type="checkbox" name="permissionList" value="CLIENT_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="CLIENT_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Sales Order</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_CREATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_UPDATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_DELETE"
-                                        /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_CREATE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_VIEW')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_UPDATE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_DELETE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Purchase Order</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_CREATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_VIEW"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_UPDATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_DELETE"
-                                        /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_CREATE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_VIEW')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_UPDATE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_DELETE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Invoice</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="INVOICE_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="INVOICE_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="INVOICE_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="INVOICE_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'INVOICE_CREATE')}"><input type="checkbox" name="permissionList" value="INVOICE_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="INVOICE_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'INVOICE_VIEW')}"><input type="checkbox" name="permissionList" value="INVOICE_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="INVOICE_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'INVOICE_UPDATE')}"><input type="checkbox" name="permissionList" value="INVOICE_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="INVOICE_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'INVOICE_DELETE')}"><input type="checkbox" name="permissionList" value="INVOICE_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="INVOICE_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Payment</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PAYMENT_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PAYMENT_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PAYMENT_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PAYMENT_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PAYMENT_CREATE')}"><input type="checkbox" name="permissionList" value="PAYMENT_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PAYMENT_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PAYMENT_VIEW')}"><input type="checkbox" name="permissionList" value="PAYMENT_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PAYMENT_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PAYMENT_UPDATE')}"><input type="checkbox" name="permissionList" value="PAYMENT_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PAYMENT_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PAYMENT_DELETE')}"><input type="checkbox" name="permissionList" value="PAYMENT_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PAYMENT_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Sales Return</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_RETURN_CREATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_RETURN_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_RETURN_UPDATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="SALES_ORDER_RETURN_DELETE"
-                                        /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_RETURN_CREATE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_RETURN_VIEW')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_RETURN_UPDATE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'SALES_ORDER_RETURN_DELETE')}"><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="SALES_ORDER_RETURN_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Purchase Return</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_RETURN_CREATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_RETURN__VIEW"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_RETURN__UPDATE"
-                                        /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="PURCHASE_ORDER_RETURN__DELETE"
-                                        /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_RETURN_CREATE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_RETURN_VIEW')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_RETURN_UPDATE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'PURCHASE_ORDER_RETURN_DELETE')}"><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="PURCHASE_ORDER_RETURN_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     <tr>
                                         <td>Report</td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="REPORT_CREATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="REPORT_VIEW"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="REPORT_UPDATE"  /></td>
-                                        <td><input type="checkbox" name="permissionList"
-                                                   class="myiterator" value="REPORT_DELETE"  /></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'REPORT_CREATE')}"><input type="checkbox" name="permissionList" value="REPORT_CREATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="REPORT_CREATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'REPORT_VIEW')}"><input type="checkbox" name="permissionList" value="REPORT_VIEW" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="REPORT_VIEW" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'REPORT_UPDATE')}"><input type="checkbox" name="permissionList" value="REPORT_UPDATE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="REPORT_UPDATE" class="myiterator" /></c:otherwise></c:choose></td>
+                                        <td><c:choose><c:when test="${fn:contains(userpermission, 'REPORT_DELETE')}"><input type="checkbox" name="permissionList" value="REPORT_DELETE" class="myiterator" checked/></c:when><c:otherwise><input type="checkbox" name="permissionList" value="REPORT_DELETE" class="myiterator" /></c:otherwise></c:choose></td>
                                     </tr>
 
                                     </tbody>
