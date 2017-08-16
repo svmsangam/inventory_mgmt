@@ -53,9 +53,9 @@
                                     <td>${user.userType}</td>
                                     <td><c:if test="${user.enable eq true}"><span class="label label-success">Activated</span><c:if test="${user.userType eq 'USER'}"><a href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}"><span class="label label-primary label-manage">Manage</span></a></c:if></c:if><c:if test="${user.enable eq false}"><span class="label label-danger">Deactivated</span></c:if></td>
                                     <td>
-                                        <c:if test="${user.enable eq true}"><a href="#" onclick="return confirm('Are you sure you want to Deactivate?')"><span class="label label-danger">Deactivate ?</span></a></c:if>
+                                        <c:if test="${user.enable eq true}"><a href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}" onclick="return confirm('Are you sure you want to Deactivate?')"><span class="label label-danger">Deactivate ?</span></a></c:if>
 
-                                        <c:if test="${user.enable eq false}"><a href="#" onclick="return confirm('Are you sure you want to Activate?')"><span class="label label-success">Activate ?</span></a></c:if>
+                                        <c:if test="${user.enable eq false}"><a href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}" onclick="return confirm('Are you sure you want to Activate?')"><span class="label label-success">Activate ?</span></a></c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -117,7 +117,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
-                            <button type="submit" id="saveuser" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
+                            <button type="submit" id="saveuser" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
                         </div>
                 </div>
 

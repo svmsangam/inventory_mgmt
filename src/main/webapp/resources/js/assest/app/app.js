@@ -13,7 +13,9 @@ $(document).ready(function(){
 
         var url = $(this).attr("url");
 
-        userService.save(user , url);
+        var pagecontext = $(this).attr("pagecontext");
+
+        userService.save(user , url , pagecontext);
     });
 
     $(document).on("click",".addUser",function() {

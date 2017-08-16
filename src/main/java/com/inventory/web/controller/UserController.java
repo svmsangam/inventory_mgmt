@@ -201,4 +201,39 @@ public class UserController {
 			return "redirect:/";
 		}
 	}
+
+	@GetMapping( value = "/updateenable")
+	public String updateEnable(@RequestParam("userId")long userId , ModelMap modelMap , RedirectAttributes redirectAttributes) {
+		try {
+			if (AuthenticationUtil.getCurrentUser() != null) {
+
+				String authority = AuthenticationUtil.getCurrentUser().getAuthority();
+
+				if ((authority.contains(Authorities.ADMINISTRATOR) || authority.contains(Authorities.SUPERADMIN)) && authority.contains(Authorities.AUTHENTICATED)) {
+
+					UserManageError error = userValidation.onUpadteEnable(userId);
+
+					if (!error.isValid()){
+						redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
+						return "redirect:/user/list";
+					}
+
+					userApi.updateEnable(userId);
+
+					redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user updated successfully");
+					return "redirect:/user/list";
+
+				}else {
+
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
+					return "redirect:/";
+				}
+			}
+
+			return "redirect:/";
+		} catch (Exception e) {
+			logger.error("Stack trace: " + e.getStackTrace());
+			return "redirect:/";
+		}
+	}
 }

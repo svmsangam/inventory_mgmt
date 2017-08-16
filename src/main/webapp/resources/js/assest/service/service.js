@@ -11,7 +11,7 @@ function UserService(){
 
         list : [],
 
-        save : function(user , url){
+        save : function(user , url , pagecontext){
 
             var that = new UserService();
 
@@ -34,7 +34,7 @@ function UserService(){
 
                     if(data.status === 'Success'){
 
-                        that.setDataToDOM(result);
+                        that.setDataToDOM(result , pagecontext);
                         that.successMsg(msg);
                         $(".closeAdd").click();
                     }
@@ -98,11 +98,33 @@ function UserService(){
             $(".errorModel").text(error);
         },
 
-        setDataToDOM : function (data) {
+        setDataToDOM : function (data , pagecontext) {
             var row = "<tr>";
             row += "<td>0</td>";
             row += "<td>"+data.inventoryuser+"</td>";
             row += "<td>"+data.userType+"</td>";
+            row += "<td>";
+            if(data.enable === true){
+                row += "<span class='label label-success'>Activated</span>";
+                if(data.userType === "USER"){
+                    row += "<a href='"+pagecontext+"/user/manage?userId="+data.userId+"'><span class='label label-primary label-manage'>Manage</span></a>";
+                }
+            }else {
+                row += "<span class='label label-danger'>Deactivated</span>";
+            }
+
+            row += "</td>";
+
+            row += "<td>";
+            if(data.enable === false){
+
+                row += "<a href='"+pagecontext+"/user/updateenable?userId="+data.userId+"' onclick='return confirm('Are you sure you want to Activate?')'><span class='label label-success'>Activate ?</span></a>";
+
+            }else {
+                row += "<a href='"+pagecontext+"/user/updateenable?userId="+data.userId+"' onclick='return confirm('Are you sure you want to Deactivate?')'><span class='label label-danger'>Deactivate ?</span></a>";
+            }
+
+            row += "</td>";
             row += "</tr>";
 
             $("#myData").prepend(row);

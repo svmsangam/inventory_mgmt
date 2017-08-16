@@ -15,6 +15,8 @@ public interface IUserApi {
 
 	InvUserDTO getUserWithId(long userId);
 
+	InvUserDTO updateEnable(long userId);
+
 	void changePassword(long userId,String newPassword) throws IOException , JSONException;
 	
 	InvUserDTO getUserByUserName(String userName);

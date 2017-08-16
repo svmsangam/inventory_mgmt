@@ -63,6 +63,20 @@ public class UserApi implements IUserApi {
 	}
 
 	@Override
+	public InvUserDTO updateEnable(long userId) {
+
+		User user = userRepository.findById(userId);
+
+		if (user.getEnabled()){
+			user.setEnabled(false);
+		}else {
+			user.setEnabled(true);
+		}
+
+		return userConverter.convertToDto(userRepository.save(user));
+	}
+
+	@Override
 	public InvUserDTO getUserByUserName(String userName) {
 
 		User user = userRepository.findByUsername(userName);

@@ -108,12 +108,41 @@ public class UserValidation extends GlobalValidation{
             }
 
             else if (!user.getUserType().equals(UserType.USER)) {
-                error.setError("this user not supported for permission");
+                error.setError("this service is not avialable for this user");
                 valid = false;
             }
 
             else if (!user.getEnabled()) {
                 error.setError("this user is not activated");
+                valid = false;
+            }
+        }
+
+        error.setValid(valid);
+
+        return error;
+    }
+
+    public UserManageError onUpadteEnable(long userId){
+
+        UserManageError error = new UserManageError();
+
+        boolean valid = true;
+
+        if (userId < 0){
+            error.setError("invalid user");
+            valid = false;
+        }else {
+
+            User user = userRepository.findById(userId);
+
+            if (user == null) {
+                error.setError("user not found");
+                valid = false;
+            }
+
+            else if (!(user.getUserType().equals(UserType.USER) | user.getUserType().equals(UserType.ADMIN))) {
+                error.setError("this service is not avialable for this user");
                 valid = false;
             }
         }
