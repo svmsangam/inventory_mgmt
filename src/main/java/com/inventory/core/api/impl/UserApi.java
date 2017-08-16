@@ -58,7 +58,7 @@ public class UserApi implements IUserApi {
 
 	@Override
 	public InvUserDTO getUserWithId(long userId) {
-		return null;// ConvertUtil.convertUser(userRepository.findOne(userId));
+		return userConverter.convertToDto(userRepository.findByIdAndStatus(userId , Status.ACTIVE));
 
 	}
 

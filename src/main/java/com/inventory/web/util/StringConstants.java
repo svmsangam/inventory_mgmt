@@ -48,6 +48,8 @@ public class StringConstants {
 	public static String USER_LIST="userList";
 	public static String USER="user";
 
+	public static String USER_PERMISSION="userpermission";
+
 	public static String USERTYPE_LIST="userTypeList";
 
 	public static String STORE_LIST="storeList";
