@@ -34,7 +34,8 @@ public class StringConstants {
 	public static String CITY_ERROR="cityError";
 
 	public static String ERROR="error";
-	public static String MESSAGE="msg";
+	public static String MSG="msg";
+	public static String MESSAGE="message";
 
 	public static String PAGE="page";
 

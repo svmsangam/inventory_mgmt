@@ -1,8 +1,11 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.web.error.UserError;
+import com.inventory.web.error.UserManageError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +82,40 @@ public class UserValidation extends GlobalValidation{
         if (userDto.getUserType() == null){
             valid = false;
             error.setUserType("user type required");
+        }
+
+        error.setValid(valid);
+
+        return error;
+    }
+
+    public UserManageError onManage(long userId){
+
+        UserManageError error = new UserManageError();
+
+        boolean valid = true;
+
+        if (userId < 0){
+            error.setError("invalid user");
+            valid = false;
+        }else {
+
+            User user = userRepository.findById(userId);
+
+            if (user == null) {
+                error.setError("user not found");
+                valid = false;
+            }
+
+            else if (!user.getUserType().equals(UserType.USER)) {
+                error.setError("this user not supported for permission");
+                valid = false;
+            }
+
+            else if (!user.getEnabled()) {
+                error.setError("this user is not activated");
+                valid = false;
+            }
         }
 
         error.setValid(valid);

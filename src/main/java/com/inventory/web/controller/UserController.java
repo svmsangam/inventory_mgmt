@@ -9,6 +9,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.UserValidation;
+import com.inventory.web.error.UserManageError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
@@ -120,12 +121,15 @@ public class UserController {
 
 				if ((authority.contains(Authorities.ADMINISTRATOR) || authority.contains(Authorities.SUPERADMIN)) && authority.contains(Authorities.AUTHENTICATED)) {
 
-					InvUserDTO userDTO = userApi.getUserWithId(userId);
 
-					if (userDTO == null){
-						redirectAttributes.addFlashAttribute(StringConstants.ERROR , "user not found");
+					UserManageError error = userValidation.onManage(userId);
+
+					if (!error.isValid()){
+						redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
 						return "redirect:/user/list";
 					}
+
+					InvUserDTO userDTO = userApi.getUserWithId(userId);
 
 					modelMap.put(StringConstants.USER , userDTO);
 					UserPermissionDTO userPermissionDTO = userPermissionApi.getByUserId(userId);
@@ -164,8 +168,10 @@ public class UserController {
 
 				if ((authority.contains(Authorities.ADMINISTRATOR) || authority.contains(Authorities.SUPERADMIN)) && authority.contains(Authorities.AUTHENTICATED)) {
 
-					if (userPermissionDTO.getUserId() == null){
-						redirectAttributes.addFlashAttribute(StringConstants.ERROR , "user not found");
+					UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
+
+					if (!error.isValid()){
+						redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
 						return "redirect:/user/list";
 					}
 
@@ -178,6 +184,7 @@ public class UserController {
 						userPermissionApi.update(userPermissionDTO);
 					}
 
+					redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user managed successfully");
 
 					return "redirect:/user/manage?userId="+userPermissionDTO.getUserId();
 
