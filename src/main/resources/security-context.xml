@@ -13,7 +13,16 @@
                                 requires-channel="any"/>
         <security:form-login login-page="/main" authentication-failure-url="/login?error=loginFail"
                              authentication-success-handler-ref="successHandler"/>
-        <security:logout logout-url="/logout" logout-success-url="/"/>
+        <!--<security:logout logout-url="/logout" logout-success-url="/"/>-->
+
+        <security:logout logout-url="/j_spring_security_logout" logout-success-url="/" delete-cookies="JSESSIONID"  invalidate-session="true"/>
+        <security:anonymous/>
+        <security:session-management invalid-session-url="/" session-fixation-protection="migrateSession">
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"  />
+        </security:session-management>
+        <security:port-mappings>
+            <security:port-mapping http="8084" https="8443"/>
+        </security:port-mappings>
 
     </security:http>
 
@@ -32,7 +41,7 @@
 
     <security:jdbc-user-service id="userService"
                                 data-source-ref="dataSource"
-                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=1 "
+                                users-by-username-query="select username,password,enabled from invuser where username=? and status=0 and enabled=1 "
                                 authorities-by-username-query="select username, authority from invuser where username=?"/>
 </beans>
            

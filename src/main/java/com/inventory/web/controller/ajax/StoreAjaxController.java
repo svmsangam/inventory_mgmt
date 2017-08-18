@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by dhiraj on 8/14/17.
  */
@@ -43,48 +45,47 @@ public class StoreAjaxController {
     private IUserApi userApi;
 
     @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult){
+    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult , HttpServletRequest request){
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
-            if (AuthenticationUtil.getCurrentUser() != null) {
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                String authority = AuthenticationUtil.getCurrentUser().getAuthority();
-
-                if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)) {
-
-                    InvUserDTO currentUser = userApi.getUserByUserName(AuthenticationUtil.getCurrentUser().getUsername());
-
-                    StoreInfoError error = new StoreInfoError();
-
-                    error = storeInfoValidation.onSave(storeInfoDTO , bindingResult);
-
-                    if (error.isValid()){
-
-                        storeInfoDTO = storeInfoApi.save(storeInfoDTO , currentUser.getUserId());
-
-                        if (currentUser.getStoreId() == null){
-                            userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());
-                        }
-
-                        result.setStatus(ResponseStatus.SUCCESS.getValue());
-                        result.setMessage("user successfully saved");
-                        result.setDetail(storeInfoDTO);
-
-                    }else {
-                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                        result.setMessage("user validation failed");
-                        result.setDetail(error);
-                    }
-
-                }else {
-                    result.setStatus(ResponseStatus.FAILURE.getValue());
-                    result.setMessage("unauthorized user");
-                }
-            }else {
+            if (currentUser == null){
+                request.getSession().invalidate();
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                StoreInfoError error = new StoreInfoError();
+
+                error = storeInfoValidation.onSave(storeInfoDTO , bindingResult);
+
+                if (error.isValid()){
+
+                    storeInfoDTO = storeInfoApi.save(storeInfoDTO , currentUser.getUserId());
+
+                    if (currentUser.getStoreId() == null){
+                        userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());
+                    }
+
+                    result.setStatus(ResponseStatus.SUCCESS.getValue());
+                    result.setMessage("user successfully saved");
+                    result.setDetail(storeInfoDTO);
+
+                }else {
+                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                    result.setMessage("user validation failed");
+                    result.setDetail(error);
+                }
+
+            }else {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("unauthorized user");
             }
 
         }catch (Exception e){

@@ -1,7 +1,11 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.ParameterConstants;
+import com.inventory.web.util.StringConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +19,9 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
+	@Autowired
+	private IUserApi userApi;
+
 	@RequestMapping(value = "/testjsp", method = RequestMethod.GET)
 	public String toTestJspPage(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
 
@@ -23,12 +30,15 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getMainPage(HttpServletRequest request,@ModelAttribute("message") String message,RedirectAttributes redirectAttributes) throws IOException {
-		if (AuthenticationUtil.getCurrentUser() != null) {
-			redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, message);
-			return "redirect:/dashboard";
-		} else {
+
+		if (AuthenticationUtil.getCurrentUser(userApi) == null){
+			//redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
 			return "dashboard/login";
 		}
+
+		redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, message);
+		return "redirect:/dashboard";
+
 	}
 
 	
@@ -36,13 +46,18 @@ public class HomeController {
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String getDashboard(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
-		if (AuthenticationUtil.getCurrentUser() != null) {
-			return "dashboard/index";
-		} else {
-			return "redirect:/";
+
+		InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+		if (currentUser == null){
+			redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
+			return "redirect:/home/logout";
 		}
 
-		}
+		return "dashboard/index";
+
+
+	}
 
 	@RequestMapping(value = "admin/charts", method = RequestMethod.GET)
 	public String getChart(HttpServletRequest request) throws IOException {
@@ -94,7 +109,7 @@ public class HomeController {
 	public String logout(HttpServletRequest request) {
 		request.getSession().invalidate();
 
-		return "redirect:/main";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/404", method = RequestMethod.GET)

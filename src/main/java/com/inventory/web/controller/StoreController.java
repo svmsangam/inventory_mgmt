@@ -2,6 +2,8 @@ package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.ICityInfoApi;
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
@@ -28,28 +30,33 @@ public class StoreController {
     @Autowired
     private ICityInfoApi cityInfoApi;
 
+    @Autowired
+    private IUserApi userApi;
+
     @GetMapping( value = "/list")
     public String list(ModelMap modelMap , RedirectAttributes redirectAttributes) {
         try {
-            if (AuthenticationUtil.getCurrentUser() != null) {
 
-                String authority = AuthenticationUtil.getCurrentUser().getAuthority();
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                if (authority.contains(Authorities.SUPERADMIN) && authority.contains(Authorities.AUTHENTICATED)) {
-
-                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-
-                    modelMap.put(StringConstants.STORE_LIST , storeInfoApi.list(Status.ACTIVE));
-
-                    return "store/listStore";
-                }else {
-
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
-                    return "redirect:/";
-                }
+            if (currentUser == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
+                return "redirect:/home/logout";
             }
 
-            return "redirect:/";
+            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+
+                modelMap.put(StringConstants.STORE_LIST , storeInfoApi.list(Status.ACTIVE));
+
+                return "store/listStore";
+            }else {
+
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
+                return "redirect:/";
+            }
+
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
             return "redirect:/";
