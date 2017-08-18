@@ -2,6 +2,13 @@
  * Created by dhiraj on 8/12/17.
  */
 
+//global settings start
+$(document).ready(function(){
+    $(".select2").select2();// for select2 dropdown;
+});
+
+//global settings end
+
 //user app start
 var userService = new UserService();
 

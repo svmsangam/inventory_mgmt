@@ -134,6 +134,8 @@ immediately after the control sidebar -->
 
 <!-- jQuery 3 -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+<%--select2 dropdown--%>
+<script src="${pageContext.request.contextPath}/resources/js/select2.full.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <!-- DataTables -->

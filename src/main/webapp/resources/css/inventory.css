@@ -150,6 +150,10 @@ input.auto-complete-active{
     font-size: 14px;
 }
 
+.select2{
+    width: 100% !important;
+}
+
 
 
 /* END INVOICE DESIGN

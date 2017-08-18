@@ -15,7 +15,6 @@ import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,9 +44,6 @@ public class UserController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private SessionRegistry sessionRegistry;
 
 	public PasswordEncoder getPasswordEncoder() {
 		return passwordEncoder;

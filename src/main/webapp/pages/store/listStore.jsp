@@ -186,7 +186,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Street Address</label>
-                                    <input type="text" class="form-control" name="" id="" placeholder="street address"
+                                    <input type="text" class="form-control" name="" id="street" placeholder="street address"
                                            required/>
                                     <p class="form-error"></p>
                                 </div>
@@ -194,9 +194,13 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="control-label">Address</label>
-                                    <input type="text" class="form-control" name="" id="" placeholder="Address"
-                                           required/>
+                                    <label class="control-label">City</label>
+                                    <select name="cityId" class="form-control select2" id="cityId">
+                                        <option value="">select city</option>
+                                        <c:forEach items="${cityList}" var="city">
+                                            <option value="${city.cityId}">${city.cityName}</option>
+                                        </c:forEach>
+                                    </select>
                                     <p class="form-error"></p>
                                 </div>
                             </div>
