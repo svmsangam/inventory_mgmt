@@ -26,7 +26,7 @@ public class User extends AbstractEntity<Long> {
     @Column
     private String secret_key;
 
-    private Boolean enabled;
+    private boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
@@ -83,11 +83,11 @@ public class User extends AbstractEntity<Long> {
         this.secret_key = secret_key;
     }
 
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

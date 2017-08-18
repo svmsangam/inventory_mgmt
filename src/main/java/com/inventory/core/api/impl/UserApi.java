@@ -8,6 +8,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.web.session.SessionInfo;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,9 @@ public class UserApi implements IUserApi {
 
 	@Autowired
 	private StoreInfoRepository storeInfoRepository;
+
+	@Autowired
+	private SessionInfo sessionInfo;
 
 	@Override
 	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
@@ -69,6 +73,9 @@ public class UserApi implements IUserApi {
 
 		if (user.getEnabled()){
 			user.setEnabled(false);
+
+			sessionInfo.expireUserSessions(user.getUsername());
+
 		}else {
 			user.setEnabled(true);
 		}

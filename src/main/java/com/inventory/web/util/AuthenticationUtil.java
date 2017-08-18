@@ -27,12 +27,17 @@ public class AuthenticationUtil {
 
 			User user = (User) principal;
 
+			if (!user.isEnabled()){
+				return null;
+			}
+
 			com.inventory.core.model.entity.User invUser = new com.inventory.core.model.entity.User();
 
 			Collection<GrantedAuthority> authorities = user.getAuthorities();
 
 			invUser.setUsername(user.getUsername());
 			invUser.setPassword(user.getPassword());
+			invUser.setEnabled(user.isEnabled());
 			
 			for (GrantedAuthority authority : authorities) {
 				// userOne.setAuthority(authority.getAuthority());

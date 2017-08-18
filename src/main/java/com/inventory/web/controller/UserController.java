@@ -15,12 +15,14 @@ import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,9 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private SessionRegistry sessionRegistry;
+
 	public PasswordEncoder getPasswordEncoder() {
 		return passwordEncoder;
 	}
@@ -53,8 +58,9 @@ public class UserController {
 	}
 
 	@GetMapping( value = "/list")
-	public String list(ModelMap modelMap , RedirectAttributes redirectAttributes) {
+	public String list(ModelMap modelMap  ,  HttpSession session,  RedirectAttributes redirectAttributes) {
 		try {
+
 			if (AuthenticationUtil.getCurrentUser() != null) {
 
 				String authority = AuthenticationUtil.getCurrentUser().getAuthority();
@@ -218,7 +224,7 @@ public class UserController {
 						return "redirect:/user/list";
 					}
 
-					userApi.updateEnable(userId);
+					InvUserDTO userDTO = userApi.updateEnable(userId);
 
 					redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user updated successfully");
 					return "redirect:/user/list";

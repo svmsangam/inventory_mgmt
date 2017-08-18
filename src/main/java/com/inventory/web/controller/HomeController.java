@@ -1,10 +1,9 @@
 package com.inventory.web.controller;
 
-import com.inventory.web.util.ParameterConstants;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.ParameterConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getMainPage(HttpServletRequest request,@ModelAttribute("message") String message,RedirectAttributes redirectAttributes) throws IOException {
-
 		if (AuthenticationUtil.getCurrentUser() != null) {
 			redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, message);
 			return "redirect:/dashboard";
