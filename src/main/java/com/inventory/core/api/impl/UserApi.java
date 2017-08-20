@@ -4,6 +4,7 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.entity.UserPermission;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
@@ -70,14 +71,24 @@ public class UserApi implements IUserApi {
 	@Override
 	public InvUserDTO getUserPermission(InvUserDTO userDTO) {
 
-		userDTO.setPermissionList(userPermissionRepository.findByPermissionUser(userDTO.getUserId()));
+		UserPermission userPermission = userPermissionRepository.findByPermissionUser(userDTO.getUserId());
+
+		if (userPermission != null)
+			userDTO.setPermissionList(userPermission.getPermissionList());
 
 		return userDTO;
 	}
 
 	@Override
 	public List<Permission> getUserPermission(long userId) {
-		return userPermissionRepository.findByPermissionUser(userId);
+
+		UserPermission userPermission = userPermissionRepository.findByPermissionUser(userId);
+
+		if (userPermission != null)
+			return userPermission.getPermissionList();
+
+		return null;
+
 	}
 
 	@Override

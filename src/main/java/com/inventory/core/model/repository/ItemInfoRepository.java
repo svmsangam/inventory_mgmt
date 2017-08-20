@@ -5,11 +5,9 @@ import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -18,21 +16,16 @@ import java.util.List;
 @Repository
 public interface ItemInfoRepository extends JpaRepository<ItemInfo , Long> , JpaSpecificationExecutor<ItemInfo>{
 
-    @Lock(LockModeType.OPTIMISTIC)
     ItemInfo findById(long itemInfoId);
 
-    @Lock(LockModeType.OPTIMISTIC)
     ItemInfo findByIdAndStatus(long itemInfoId , Status status);
 
-    @Lock(LockModeType.OPTIMISTIC)
     @Query("select i from ItemInfo i where i.id = ?1 and i.status = ?2 and i.productInfo.id = ?3 ")
     ItemInfo findByIdAndStatusAndProductInfo(long itemInfoId , Status status , long productInfoId);
 
-    @Lock(LockModeType.OPTIMISTIC)
     @Query("select i from ItemInfo i where i.id = ?1 and i.status = ?2 and i.productInfo.storeInfo.id = ?3 ")
     ItemInfo findByIdAndStatusAndStoreInfo(long itemInfoId , Status status , long storeInfoId);
 
-    @Lock(LockModeType.OPTIMISTIC)
     @Query("select i from ItemInfo i where i.id = ?1 and i.status = ?2 and i.productInfo.id = ?3 and i.productInfo.storeInfo.id = ?4 ")
     ItemInfo findByIdAndStatusAndProductInfoAndStoreInfo(long itemInfoId , Status status, long productInfoId , long storeInfoId);
 

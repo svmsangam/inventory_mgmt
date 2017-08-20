@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -112,7 +113,8 @@ public class UserController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
+			e.printStackTrace();
+			logger.error("Stack trace: "  + Arrays.toString(e.getStackTrace()));
 			return "redirect:/";
 		}
 	}

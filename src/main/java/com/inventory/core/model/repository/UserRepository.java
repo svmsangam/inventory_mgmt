@@ -6,12 +6,10 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.LockModeType;
 import java.util.List;
 
 
@@ -19,13 +17,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-	@Lock(LockModeType.OPTIMISTIC)
 	User findByUsername(String username);
 
-	@Lock(LockModeType.OPTIMISTIC)
 	User findByIdAndStatus(long userId , Status status);
 
-	@Lock(LockModeType.OPTIMISTIC)
 	User findById(long userId);
 
 	@Query("select u from User u where u.status = ?1 and u.storeInfo.id = ?2 order by u.username asc ")
