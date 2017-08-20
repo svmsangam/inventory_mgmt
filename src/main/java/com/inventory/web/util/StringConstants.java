@@ -55,4 +55,8 @@ public class StringConstants {
 
 	public static String STORE_LIST="storeList";
 	public static String STORE="store";
+
+	public static String CATEGORY_LIST="categoryList";
+	public static String CATEGORY="category";
+	public static String CATEGORY_ERROR="categoryError";
 }

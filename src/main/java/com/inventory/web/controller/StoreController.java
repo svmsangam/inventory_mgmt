@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+
 
 @Controller
 @RequestMapping("store")
@@ -58,7 +60,7 @@ public class StoreController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            logger.error("Exception on store controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/";
         }
     }

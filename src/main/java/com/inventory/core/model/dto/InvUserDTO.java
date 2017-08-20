@@ -1,7 +1,10 @@
 package com.inventory.core.model.dto;
 
+import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
+
+import java.util.List;
 
 public class InvUserDTO  {
 	
@@ -24,6 +27,8 @@ public class InvUserDTO  {
 	private String secret_key;
 
 	private String storeName;
+
+	private List<Permission> permissionList;
 	
 	private Long storeId;
 
@@ -113,5 +118,13 @@ public class InvUserDTO  {
 
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
+	}
+
+	public List<Permission> getPermissionList() {
+		return permissionList;
+	}
+
+	public void setPermissionList(List<Permission> permissionList) {
+		this.permissionList = permissionList;
 	}
 }

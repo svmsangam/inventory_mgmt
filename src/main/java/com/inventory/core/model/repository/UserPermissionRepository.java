@@ -32,6 +32,10 @@ public interface UserPermissionRepository extends JpaRepository<UserPermission ,
     UserPermission findByUser(long userId);
 
     @Lock(LockModeType.OPTIMISTIC)
+    @Query("select u.permissionList from UserPermission u where u.user.id = ?1")
+    List<Permission> findByPermissionUser(long userId);
+
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select u from UserPermission u where u.user.id = ?1 and u.permissionList in (?2)")
     UserPermission findByUserAndPermissionList(long userId , List<Permission> permissionList);
 }

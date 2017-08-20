@@ -1,6 +1,7 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import org.json.JSONException;
@@ -14,6 +15,10 @@ public interface IUserApi {
 	InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException;
 
 	InvUserDTO getUserWithId(long userId);
+
+	InvUserDTO getUserPermission(InvUserDTO userDTO);
+
+	List<Permission> getUserPermission(long userId);
 
 	InvUserDTO updateEnable(long userId);
 
