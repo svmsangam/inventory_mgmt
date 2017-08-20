@@ -4,10 +4,12 @@ import com.inventory.core.model.entity.StockInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -17,10 +19,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface StockInfoRepository extends JpaRepository<StockInfo , Long> , JpaSpecificationExecutor<StockInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     StockInfo findById(long stockInfoId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     StockInfo findByIdAndStatus(long stockInfoId , Status status);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select s from StockInfo s where s.id = ?1 and s.status = ?2 and s.productInfo.id = ?3 ")
     StockInfo findByIdAndStatusAndProductInfo(long stockInfoId , Status status , long productInfoId);
 

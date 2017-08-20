@@ -5,10 +5,12 @@ import com.inventory.core.model.entity.StateInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -18,10 +20,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface StateInfoRepository extends JpaRepository<StateInfo, Long> , JpaSpecificationExecutor<StateInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     StateInfo findByIdAndStatus(long stateId , Status status);
 
+    @Lock(LockModeType.OPTIMISTIC)
     StateInfo findByNameAndStatus(String stateName , Status status);
 
+    @Lock(LockModeType.OPTIMISTIC)
     StateInfo findByName(String stateName);
 
     List<StateInfo> findAllByCountryInfoAndStatus(CountryInfo countryInfo , Status status);

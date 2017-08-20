@@ -4,10 +4,12 @@ import com.inventory.core.model.entity.SubCategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -17,16 +19,21 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo , Long> , JpaSpecificationExecutor<SubCategoryInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     SubCategoryInfo findById(long subCategoryId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select s from SubCategoryInfo s where s.id = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
     SubCategoryInfo findByIdAndStatusAndStoreInfo(long subCategoryId, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     SubCategoryInfo findByName(String name);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select s from SubCategoryInfo s where s.name = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
     SubCategoryInfo findByNameAndStatusAndStoreInfo(String name, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select s from SubCategoryInfo s where s.code = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
     SubCategoryInfo findByCodeAndStatusAndStoreInfo(String code, Status status, long storeId);
 

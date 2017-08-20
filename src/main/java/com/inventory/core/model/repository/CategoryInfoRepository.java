@@ -4,10 +4,12 @@ import com.inventory.core.model.entity.CategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -18,14 +20,18 @@ import java.util.List;
 public interface CategoryInfoRepository extends JpaRepository<CategoryInfo , Long> , JpaSpecificationExecutor<CategoryInfo> {
 
     //@Query("select c from CategoryInfo c where c.id = ?1")
+    @Lock(LockModeType.OPTIMISTIC)
     CategoryInfo findById(long categoryId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select c from CategoryInfo c where c.id = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
     CategoryInfo findByIdAndStatusAndStoreInfo(long categoryId , Status status , long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select c from CategoryInfo c where c.name = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
     CategoryInfo findByNameAndStatusAndStoreInfo(String categoryName , Status status , long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select c from CategoryInfo c where c.code = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
     CategoryInfo findByCodeAndStatusAndStoreInfo(String categoryCode , Status status , long storeId);
 

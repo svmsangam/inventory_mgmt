@@ -4,9 +4,11 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.UserPermissionRepository;
 import com.inventory.core.model.repository.UserRepository;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class UserApi implements IUserApi {
 	@Autowired
 	private StoreInfoRepository storeInfoRepository;
 
+	@Autowired
+	private UserPermissionRepository userPermissionRepository;
+
 	@Override
 	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
 
@@ -60,6 +65,19 @@ public class UserApi implements IUserApi {
 	public InvUserDTO getUserWithId(long userId) {
 		return userConverter.convertToDto(userRepository.findByIdAndStatus(userId , Status.ACTIVE));
 
+	}
+
+	@Override
+	public InvUserDTO getUserPermission(InvUserDTO userDTO) {
+
+		userDTO.setPermissionList(userPermissionRepository.findByPermissionUser(userDTO.getUserId()));
+
+		return userDTO;
+	}
+
+	@Override
+	public List<Permission> getUserPermission(long userId) {
+		return userPermissionRepository.findByPermissionUser(userId);
 	}
 
 	@Override

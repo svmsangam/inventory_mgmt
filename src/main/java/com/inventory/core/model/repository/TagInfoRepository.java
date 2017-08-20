@@ -4,10 +4,12 @@ import com.inventory.core.model.entity.TagInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -17,22 +19,26 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface TagInfoRepository extends JpaRepository<TagInfo , Long> , JpaSpecificationExecutor<TagInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     TagInfo findById(long tagId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select t from TagInfo t where t.id = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
     TagInfo findByIdAndStatusAndStoreInfo(long tagId, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     TagInfo findByName(String tagName);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select t from TagInfo t where t.name = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
     TagInfo findByNameAndStatusAndStoreInfo(String tagName, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select t from TagInfo t where t.code = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
     TagInfo findByCodeAndStatusAndStoreInfo(String tagCode, Status status, long storeId);
 
     @Query("select t from TagInfo t where t.status = ?1 and t.storeInfo.id = ?2 order by t.id desc")
     List<TagInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
-
 
     @Query("select count (t) from TagInfo t where t.status = ?1 and t.storeInfo.id = ?2")
     Long countAllByStatusAndStoreInfo(Status status, long storeId);
