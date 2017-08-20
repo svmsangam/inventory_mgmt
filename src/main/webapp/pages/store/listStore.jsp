@@ -8,7 +8,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-    <section class="content">
+    g<section class="content">
         <c:if test="${not empty message}">
             <div class="alert alert-success alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
@@ -37,6 +37,8 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+
+                        <div class="box-body">
                         <table id="table2" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -366,3 +368,8 @@
 </div>
 <%--content-wrapper--%>
 <%@include file="/pages/parts/footer.jsp" %>
+<script>
+    $(function () {
+        $('.select2').select2()
+    })
+</script>

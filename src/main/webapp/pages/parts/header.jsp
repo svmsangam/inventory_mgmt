@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ionicons.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTables.bootstrap.min.css">
+    <%--select 2--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/skin-blue.min.css">
     <%--custom--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/inventory.css">
-    <%--select 2--%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

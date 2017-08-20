@@ -134,10 +134,10 @@ immediately after the control sidebar -->
 
 <!-- jQuery 3 -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<%--select2 dropdown--%>
-<script src="${pageContext.request.contextPath}/resources/js/select2.full.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+<--select2 dropdown-->
+<script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
 <!-- DataTables -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
 
@@ -151,11 +151,11 @@ immediately after the control sidebar -->
 <%--notification--%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-notify.min.js"></script>
 <%--js model--%>
-<script src="${pageContext.request.contextPath}/resources/js/assest/model/model.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/asset/model/model.js"></script>
 <%--js service--%>
-<script src="${pageContext.request.contextPath}/resources/js/assest/service/service.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/asset/service/service.js"></script>
 <%--js app--%>
-<script src="${pageContext.request.contextPath}/resources/js/assest/app/app.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
 <!-- iCheck -->
 <script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
 
