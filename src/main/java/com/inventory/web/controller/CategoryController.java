@@ -156,7 +156,7 @@ public class CategoryController {
             CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
 
             if (!error.isValid()) {
-                modelMap.put(StringConstants.CATEGORY_LIST, error);
+                modelMap.put(StringConstants.CATEGORY_ERROR, error);
                 modelMap.put(StringConstants.CATEGORY, categoryInfoDTO);
                 return "category/add";
             }

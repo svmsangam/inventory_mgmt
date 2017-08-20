@@ -28,9 +28,6 @@ public class StringConstants {
 	public static String CITY_LIST="cityList";
 	public static String CITY="city";
 
-	public static String TAG_LIST="tagList";
-	public static String TAG="tag";
-
 	public static String CITY_ERROR="cityError";
 
 	public static String ERROR="error";
@@ -59,4 +56,16 @@ public class StringConstants {
 	public static String CATEGORY_LIST="categoryList";
 	public static String CATEGORY="category";
 	public static String CATEGORY_ERROR="categoryError";
+
+	public static String SUBCATEGORY_LIST="subcategoryList";
+	public static String SUBCATEGORY="subcategory";
+	public static String SUBCATEGORY_ERROR="subcategoryError";
+
+	public static String TAG_LIST="tagList";
+	public static String TAG="tag";
+	public static String TAG_ERROR="tagError";
+
+	public static String UNIT_LIST="unitList";
+	public static String UNIT="unit";
+	public static String UNIT_ERROR="unitError";
 }

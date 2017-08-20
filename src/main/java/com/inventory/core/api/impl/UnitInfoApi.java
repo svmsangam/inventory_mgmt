@@ -7,9 +7,13 @@ import com.inventory.core.model.entity.UnitInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.UnitInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class UnitInfoApi implements IUnitInfoApi {
 
     @Autowired
@@ -22,6 +26,7 @@ public class UnitInfoApi implements IUnitInfoApi {
     public UnitInfoDTO save(UnitInfoDTO unitInfoDTO) {
 
         UnitInfo unitInfo = unitInfoConverter.convertToEntity(unitInfoDTO);
+
         unitInfo.setStatus(Status.ACTIVE);
 
         return unitInfoConverter.convertToDto(unitInfoRepository.save(unitInfo));
@@ -31,7 +36,8 @@ public class UnitInfoApi implements IUnitInfoApi {
     public UnitInfoDTO update(UnitInfoDTO unitInfoDTO) {
 
         UnitInfo unitInfo = unitInfoRepository.findById(unitInfoDTO.getUnitId());
-        unitInfo = unitInfoConverter.copyConvertToEntity(unitInfoDTO,unitInfo);
+
+        unitInfo = unitInfoConverter.copyConvertToEntity(unitInfoDTO , unitInfo);
 
         return unitInfoConverter.convertToDto(unitInfoRepository.save(unitInfo));
     }
@@ -40,7 +46,9 @@ public class UnitInfoApi implements IUnitInfoApi {
     public void delete(long unitInfoId) {
 
         UnitInfo unitInfo = unitInfoRepository.findById(unitInfoId);
+
         unitInfo.setStatus(Status.DELETED);
+
         unitInfoRepository.save(unitInfo);
     }
 
