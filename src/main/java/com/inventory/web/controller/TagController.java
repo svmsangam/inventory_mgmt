@@ -31,31 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 	    @GetMapping(value="/list")
 	    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
-
-	/*		// user checking start
-			if (!AuthorityUtil.checkBusinessOwnerRole()) {
-				return "redirect:/";
-			}
-
-			InvUserDTO currentUser = userApi.getUserByUserName(AuthenticationUtil.getCurrentUser().getUsername());
-
-			BusinessServicePlanDto businessServicePlan = businessPlanApi
-					.getAllServicePlansByStoreAndUserId(currentUser.getStoreId(), currentUser.getId());
-
-			if (currentUser.getStoreId() == 0) {
-				redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, "store.not.assigned");
-				return "redirect:/";
-			}
-
-			if (!AuthorityUtil.checkPermission(ServicePlan.ITEM_VIEW, businessServicePlan)) {
-
-				redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, "access.deniled");
-
-				return "redirect:/";
-			}*/
-
-			// user checking end
-
+			
 	    	//modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE , ));
 	        return "tag/list";
 	    }
