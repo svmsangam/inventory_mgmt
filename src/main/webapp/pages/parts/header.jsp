@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ionicons.min.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/blue.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTables.bootstrap.min.css">
     <%--select 2--%>

@@ -45,14 +45,27 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        ${user.inventoryuser}
-
-                        ${user.userType}
-
-                        <c:if test="${store ne null}">
-                            Associate with : ${store.name} contact ${store.contact} , ${store.mobileNumber} address ${store.cityName}
-                        </c:if>
-
+                        <div class="col-md-6">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">${user.inventoryuser}</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <dl>
+                                        <dd>User Type: <b>${user.userType}</b></dd>
+                                        <c:if test="${store ne null}">
+                                            <dd>Associated With: <b>${store.name}</b></dd>
+                                            <dd>Contact No.: <b>${store.contact}</b></dd>
+                                            <dd>Mobile No.: <b>${store.mobileNumber}</b></dd>
+                                            <dd>Address: <b>${store.cityName}</b></dd>
+                                        </c:if>
+                                    </dl>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
 
                             <style>
                                 .myiterat{

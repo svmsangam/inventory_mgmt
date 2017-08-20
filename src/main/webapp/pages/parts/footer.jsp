@@ -146,6 +146,8 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="${pageContext.request.contextPath}/resources/js/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
 <%--notification--%>
@@ -156,17 +158,18 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/asset/service/service.js"></script>
 <%--js app--%>
 <script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
-<!-- iCheck -->
-<script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
 
 <script>
     $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        })
+    })
 </script>
 
 <!-- page script -->

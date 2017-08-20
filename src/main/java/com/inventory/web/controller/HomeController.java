@@ -24,10 +24,10 @@ public class HomeController {
 	@Autowired
 	private IUserApi userApi;
 
-	@RequestMapping(value = "/testjsp", method = RequestMethod.GET)
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String toTestJspPage(Model model, HttpServletRequest request , RedirectAttributes redirectAttributes) throws IOException {
 
-		return "store/listStore";
+		return "user/manageUser";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
