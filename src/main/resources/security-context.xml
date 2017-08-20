@@ -19,13 +19,15 @@
 
         <security:anonymous/>
         <security:session-management invalid-session-url="/logout" session-authentication-error-url="/logout" session-fixation-protection="migrateSession">
-            <security:concurrency-control max-sessions="2" expired-url="/logout"  error-if-maximum-exceeded="true"  />
+            <security:concurrency-control max-sessions="2" expired-url="/logout"  error-if-maximum-exceeded="true" session-registry-ref="sessionRegistry" session-registry-alias="sessionInfoImp"/>
         </security:session-management>
         <security:port-mappings>
             <security:port-mapping http="8080" https="8443"/>
         </security:port-mappings>
 
     </security:http>
+
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 
     <bean id="successHandler"
           class="com.inventory.web.session.CustomSavedRequestAwareAuthenticationSuccessHandler">

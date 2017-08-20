@@ -42,6 +42,9 @@ public class UserController {
 	@Autowired
 	private IStoreInfoApi storeInfoApi;
 
+	/*@Autowired
+	private SessionInfo sessionInfo;*/
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -229,6 +232,10 @@ public class UserController {
 				}
 
 				InvUserDTO userDTO = userApi.updateEnable(userId);
+
+				/*if (!userDTO.getEnable()){
+					sessionInfo.list(userDTO.getInventoryuser());
+				}*/
 
 				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user updated successfully");
 				return "redirect:/user/list";
