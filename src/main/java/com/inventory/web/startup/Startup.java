@@ -76,8 +76,8 @@ public class Startup {
 
 	private CountryInfo createCountry(String name, String ISO,  Status status) {
 			CountryInfo countryInfo = countryInfoRepository.findByName(name);
-			CountryInfo dto = new CountryInfo();;
-			if (countryInfo==null) {
+			CountryInfo dto = new CountryInfo();
+        if (countryInfo==null) {
 
 				dto.setName(name);
 				dto.setISO(ISO);

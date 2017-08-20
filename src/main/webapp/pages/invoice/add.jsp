@@ -339,13 +339,13 @@
                 },
                 processResults: function (data, params) {
                     params.page = params.page || 1;
-                    var arr = []
+                    var arr = [];
                     $.each(data.detail, function (index, value) {
                         arr.push({
                             id: value.orderId,
                             text: "( No. " + value.orderNo + " ) ( amount: " + value.grandTotal.toFixed(2) + " ) ( date: " + moment(value.orderDate).format("ll") + " ) ( " + moment(moment(value.orderDate).format("YYYYMMDD"), "YYYYMMDD").fromNow() + " )"
                         })
-                    })
+                    });
 
 
                     return {

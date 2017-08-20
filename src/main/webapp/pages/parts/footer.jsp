@@ -56,18 +56,18 @@
 
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
 
-                <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Pending <span class="badge">26</span></span></a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Pending <span class="badge">26</span></span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span class="badge">6</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span class="badge">6</span></span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Packed <span class="badge">14</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Packed <span class="badge">14</span></span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Shipped <span class="badge">10</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Shipped <span class="badge">10</span></span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span class="badge">3</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span class="badge">3</span></span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span class="badge">1</span></span></a></li>
-</sec:authorize>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span class="badge">1</span></span></a></li>
+                </sec:authorize>
             </ul>
             <!-- /.control-sidebar-menu -->
 
@@ -140,6 +140,7 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
+
 <script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
@@ -147,7 +148,6 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
-
 <%--notification--%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-notify.min.js"></script>
 <%--js model--%>
@@ -156,11 +156,23 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/assest/service/service.js"></script>
 <%--js app--%>
 <script src="${pageContext.request.contextPath}/resources/js/assest/app/app.js"></script>
+<!-- iCheck -->
+<script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
+
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
 
 <!-- page script -->
 <script>
     $(function () {
-        $('#table1').DataTable()
+        $('#table1').DataTable();
         $('#table2').DataTable({
             'paging'      : true,
             'lengthChange': false,

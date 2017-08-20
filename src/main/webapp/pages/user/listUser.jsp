@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@include file="/pages/parts/header.jsp" %>
 <%@include file="/pages/parts/sidebar.jsp" %>
 
@@ -39,6 +40,7 @@
                             <tr>
                                 <th>SN</th>
                                 <th>Username</th>
+                                <th>Store</th>
                                 <th>UserType</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -50,6 +52,7 @@
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${user.inventoryuser}</td>
+                                    <td>${user.storeName}</td>
                                     <td>${user.userType}</td>
                                     <td><c:if test="${user.enable eq true}"><span class="label label-success">Activated</span><c:if test="${user.userType eq 'USER'}"><a href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}"><span class="label label-primary label-manage">Manage</span></a></c:if></c:if><c:if test="${user.enable eq false}"><span class="label label-danger">Deactivated</span></c:if></td>
                                     <td>
@@ -112,6 +115,21 @@
                                 </select>
                                 <p class="form-error userType"></p>
                             </div>
+
+                            <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+
+                                <div class="form-group">
+                                    <label class="control-label">Store *</label>
+                                    <select class="form-control" name="storeId" id="storeId" required>
+                                        <option value="">select store</option>
+                                        <c:forEach items="${storeList}" var="store" >
+                                            <option value="${store.storeId}">${store.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <p class="form-error storeId"></p>
+                                </div>
+
+                            </sec:authorize>
 
                         </div>
 

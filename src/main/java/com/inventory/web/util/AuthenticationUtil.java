@@ -29,6 +29,10 @@ public class AuthenticationUtil {
 
 			InvUserDTO userDTO = userApi.getUserByUserName(user.getUsername());
 
+			if (userDTO == null){
+				return null;
+			}
+
 			if (userDTO.getUserauthority() == null){
 				return null;
 			}

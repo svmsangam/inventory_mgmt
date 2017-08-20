@@ -146,7 +146,7 @@ public class StateController {
 
 			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 			StateError stateError = new StateError();
 			stateError = stateValidation.stateValidationOnSave(stateDto);

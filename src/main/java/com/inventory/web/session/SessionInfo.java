@@ -1,12 +1,8 @@
 package com.inventory.web.session;
 
-import org.springframework.stereotype.Service;
-
-
 /**
  * Created by dhiraj on 8/17/17.
  */
-@Service
 public class SessionInfo {
 
    /* @Autowired

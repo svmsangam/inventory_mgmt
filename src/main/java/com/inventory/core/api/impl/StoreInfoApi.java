@@ -42,7 +42,7 @@ public class StoreInfoApi implements IStoreInfoApi{
 
         accountInfoApi.save(storeInfo.getId() , AccountAssociateType.STORE , "S-");
 
-        storeUserInfoApi.save(currentUserId , storeInfoDTO.getStoreId());
+        storeUserInfoApi.save(currentUserId , storeInfo.getId());
 
         return storeInfoConverter.convertToDto(storeInfo);
     }
@@ -77,8 +77,9 @@ public class StoreInfoApi implements IStoreInfoApi{
     }
 
     @Override
-    public StoreInfoDTO getStoreByNameAndStatus(String storeName, long storeId) {
-        return null;
+    public StoreInfoDTO getStoreByNameAndStatus(String storeName, Status status) {
+
+        return storeInfoConverter.convertToDto(storeInfoRepository.findByNameAndStatus(storeName , status));
     }
 
     @Override

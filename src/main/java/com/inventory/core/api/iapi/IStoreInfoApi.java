@@ -20,7 +20,7 @@ public interface IStoreInfoApi {
 
     List<StoreInfoDTO> list(Status status);
 
-    StoreInfoDTO getStoreByNameAndStatus(String storeName, long storeId);
+    StoreInfoDTO getStoreByNameAndStatus(String storeName, Status status);
 
     long storeCount(Status status, long storeId);
 

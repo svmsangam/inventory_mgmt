@@ -38,7 +38,7 @@ public class CityController {
 		try {
 			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());

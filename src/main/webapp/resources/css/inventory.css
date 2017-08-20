@@ -154,6 +154,11 @@ input.auto-complete-active{
     width: 100% !important;
 }
 
+.title-center{
+    margin-left: 30%;
+    margin-top: 0px;
+}
+
 
 
 /* END INVOICE DESIGN

@@ -48,6 +48,7 @@ public class UserConverter implements IConvertable<User, InvUserDTO>, IListConve
 
 		if (entity.getStoreInfo() != null){
 			dto.setStoreId(entity.getStoreInfo().getId());
+			dto.setStoreName(entity.getStoreInfo().getName());
 		}else {
 			dto.setStoreId(null);
 		}

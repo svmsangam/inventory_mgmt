@@ -22,6 +22,8 @@ public class InvUserDTO  {
 	private Boolean enable;
 
 	private String secret_key;
+
+	private String storeName;
 	
 	private Long storeId;
 
@@ -103,5 +105,13 @@ public class InvUserDTO  {
 
 	public void setStoreId(Long storeId) {
 		this.storeId = storeId;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 }

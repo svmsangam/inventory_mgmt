@@ -41,7 +41,7 @@ public class StoreController {
 
             if (currentUser == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-                return "redirect:/home/logout";
+                return "redirect:/logout";
             }
 
             if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {

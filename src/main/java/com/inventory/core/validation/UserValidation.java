@@ -2,7 +2,9 @@ package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.web.error.UserError;
 import com.inventory.web.error.UserManageError;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +26,9 @@ public class UserValidation extends GlobalValidation{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -47,6 +53,8 @@ public class UserValidation extends GlobalValidation{
                         error.setPassword("invalid password data");
                     } else if (errorResult.getField().equals("userType")){
                         error.setUserType("invalid userType data");
+                    } else if (errorResult.getField().equals("storeId")){
+                        error.setUserType("invalid store data");
                     }
                 }
 
@@ -82,6 +90,23 @@ public class UserValidation extends GlobalValidation{
         if (userDto.getUserType() == null){
             valid = false;
             error.setUserType("user type required");
+        }
+
+        error.setStoreId(checkLong(userDto.getStoreId() , 1 , "store" , false));
+
+        if (!("".equals(error.getStoreId()))){
+            valid = false;
+        }else if (userDto.getStoreId() != null){
+            try {
+
+                if (storeInfoRepository.findByIdAndStatus(userDto.getStoreId() , Status.ACTIVE) == null){
+                    valid = false;
+                    error.setStoreId("invalid store data");
+                }
+
+            }catch (Exception e){
+                logger.error("user validation store " + Arrays.toString(e.getStackTrace()));
+            }
         }
 
         error.setValid(valid);

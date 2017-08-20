@@ -14,9 +14,6 @@ public class PaymentInfo extends AbstractEntity<Long>{
     @OneToOne
     private Payment receivedPayment;
 
-    @OneToOne
-    private Payment returnedPayment;
-
     private String remark;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,14 +31,6 @@ public class PaymentInfo extends AbstractEntity<Long>{
 
     public void setReceivedPayment(Payment receivedPayment) {
         this.receivedPayment = receivedPayment;
-    }
-
-    public Payment getReturnedPayment() {
-        return returnedPayment;
-    }
-
-    public void setReturnedPayment(Payment returnedPayment) {
-        this.returnedPayment = returnedPayment;
     }
 
     public String getRemark() {

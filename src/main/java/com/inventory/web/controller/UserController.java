@@ -21,7 +21,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class UserController {
 
 			if (currentUser == null){
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			if (currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
@@ -87,6 +86,8 @@ public class UserController {
 				modelMap.put(StringConstants.USERTYPE_LIST , userTypeList);
 
 				modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
+
+				modelMap.put(StringConstants.STORE_LIST , storeInfoApi.list(Status.ACTIVE));
 
 				return "user/listUser";
 
@@ -122,7 +123,7 @@ public class UserController {
 
 			if (currentUser == null){
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
@@ -171,7 +172,7 @@ public class UserController {
 
 			if (currentUser == null){
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
@@ -216,7 +217,7 @@ public class UserController {
 
 			if (currentUser == null){
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 

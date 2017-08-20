@@ -16,6 +16,8 @@ public class UserError {
 
 	private String status;
 
+	private String storeId;
+
 	private boolean isValid;
 
 	public String getUsername() {
@@ -80,5 +82,13 @@ public class UserError {
 
 	public void setValid(boolean valid) {
 		isValid = valid;
+	}
+
+	public String getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(String storeId) {
+		this.storeId = storeId;
 	}
 }

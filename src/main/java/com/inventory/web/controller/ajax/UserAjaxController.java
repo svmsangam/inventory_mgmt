@@ -54,22 +54,62 @@ public class UserAjaxController {
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
-            if ((currentUser.getUserauthority().contains(Authorities.SYSTEM) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN) || currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+            if (currentUser.getUserauthority().contains(Authorities.SYSTEM) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                userDTO.setStoreId(null);
 
                 UserError error = new UserError();
 
-                error = userValidation.saveValidation(userDTO , bindingResult);
+                error = userValidation.saveValidation(userDTO, bindingResult);
 
-                if (error.isValid()){
+                if (error.isValid()) {
                     userDTO = userApi.save(userDTO);
                     result.setStatus(ResponseStatus.SUCCESS.getValue());
                     result.setMessage("user successfully saved");
                     result.setDetail(userDTO);
-                }else {
+                } else {
                     result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
                     result.setMessage("user validation failed");
                     result.setDetail(error);
                 }
+            } else if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                if (userDTO.getStoreId() == null){
+                    userDTO.setStoreId((long)0);
+                }
+
+                UserError error = new UserError();
+
+                error = userValidation.saveValidation(userDTO, bindingResult);
+
+                if (error.isValid()) {
+                    userDTO = userApi.save(userDTO);
+                    result.setStatus(ResponseStatus.SUCCESS.getValue());
+                    result.setMessage("user successfully saved");
+                    result.setDetail(userDTO);
+                } else {
+                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                    result.setMessage("user validation failed");
+                    result.setDetail(error);
+                }
+            }else if (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                userDTO.setStoreId(currentUser.getStoreId());
+
+                    UserError error = new UserError();
+
+                    error = userValidation.saveValidation(userDTO, bindingResult);
+
+                    if (error.isValid()) {
+                        userDTO = userApi.save(userDTO);
+                        result.setStatus(ResponseStatus.SUCCESS.getValue());
+                        result.setMessage("user successfully saved");
+                        result.setDetail(userDTO);
+                    } else {
+                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                        result.setMessage("user validation failed");
+                        result.setDetail(error);
+                    }
 
             }else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());

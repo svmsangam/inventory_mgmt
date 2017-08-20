@@ -8,9 +8,11 @@ import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +53,7 @@ public class HomeController {
 
 		if (currentUser == null){
 			redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-			return "redirect:/home/logout";
+			return "redirect:/logout";
 		}
 
 		return "dashboard/index";
@@ -72,8 +74,11 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String getLogin(HttpServletRequest request) throws IOException {
+	public String getLogin(@RequestParam(value = "error" , required = false) Boolean error, HttpServletRequest request , ModelMap modelMap) throws IOException {
 
+		if (error) {
+			modelMap.put(StringConstants.ERROR, "wrong username or password");
+		}
 		return "dashboard/login";
 	}
 
@@ -103,13 +108,6 @@ public class HomeController {
 	@RequestMapping(value = "404")
 	public String get404() {
 		return "404";
-	}
-
-	@RequestMapping(value = "home/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest request) {
-		request.getSession().invalidate();
-
-		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/404", method = RequestMethod.GET)

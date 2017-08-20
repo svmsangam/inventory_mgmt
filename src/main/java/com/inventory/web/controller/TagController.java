@@ -88,8 +88,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 				return "/tag/edit";
 
 			}catch (Exception e){
-	    		e.printStackTrace();;
-	    		return "redirect:/";
+	    		e.printStackTrace();
+                return "redirect:/";
 			}
 
 

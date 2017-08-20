@@ -42,7 +42,7 @@ public class CountryController {
 
     		if (AuthenticationUtil.getCurrentUser(userApi) == null) {
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			return "country/addCountry";
@@ -61,7 +61,7 @@ public class CountryController {
 
 			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			CountryError countryError = new CountryError();
@@ -90,7 +90,7 @@ public class CountryController {
 
     		if (AuthenticationUtil.getCurrentUser(userApi) == null) {
 				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
+				return "redirect:/logout";
 			}
 
 			modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
