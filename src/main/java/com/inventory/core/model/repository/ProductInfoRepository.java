@@ -5,10 +5,12 @@ import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -18,8 +20,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface ProductInfoRepository extends JpaRepository<ProductInfo , Long> , JpaSpecificationExecutor<ProductInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     ProductInfo findById(long productInfoId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select p from ProductInfo p where p.id = ?1 and p.status = ?2 and p.storeInfo.id = ?3")
     ProductInfo findByIdAndStatusAndStoreInfo(long productInfoId , Status status , long storeId);
 

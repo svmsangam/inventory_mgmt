@@ -4,10 +4,12 @@ import com.inventory.core.model.entity.UnitInfo;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -17,16 +19,21 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface UnitInfoRepository extends JpaRepository<UnitInfo , Long> , JpaSpecificationExecutor<UnitInfo> {
 
+    @Lock(LockModeType.OPTIMISTIC)
     UnitInfo findById(long unitId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select u from UnitInfo u where u.id = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
     UnitInfo findByIdAndStatusAndStoreInfo(long unitId, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     UnitInfo findByName(String unitName);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select u from UnitInfo u where u.name = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
     UnitInfo findByNameAndStatusAndStoreInfo(String unitName, Status status, long storeId);
 
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select u from UnitInfo u where u.code = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
     UnitInfo findByCodeAndStatusAndStoreInfo(String unitCode, Status status, long storeId);
 
