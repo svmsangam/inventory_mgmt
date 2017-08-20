@@ -8,7 +8,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-    g<section class="content">
+    <section class="content">
         <c:if test="${not empty message}">
             <div class="alert alert-success alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
