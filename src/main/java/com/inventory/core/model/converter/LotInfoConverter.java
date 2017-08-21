@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
  * Created by dhiraj on 8/11/17.
  */
 @Service
-public class LotInfoConverter implements IConvertable<LotInfo , LotInfoDTO> , IListConvertable<LotInfo , LotInfoDTO>{
+public class LotInfoConverter implements IConvertable<LotInfo, LotInfoDTO>, IListConvertable<LotInfo, LotInfoDTO> {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public LotInfo convertToEntity(LotInfoDTO dto) {
-        return copyConvertToEntity(dto , new LotInfo());
+        return copyConvertToEntity(dto, new LotInfo());
     }
 
     @Override
     public LotInfoDTO convertToDto(LotInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -45,7 +45,7 @@ public class LotInfoConverter implements IConvertable<LotInfo , LotInfoDTO> , IL
     @Override
     public LotInfo copyConvertToEntity(LotInfoDTO dto, LotInfo entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 

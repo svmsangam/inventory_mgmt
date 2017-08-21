@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * Created by dhiraj on 8/10/17.
  */
 @Service
-public class StoreUserInfoConverter implements IConvertable<StoreUserInfo , StoreUserInfoDTO> {
+public class StoreUserInfoConverter implements IConvertable<StoreUserInfo, StoreUserInfoDTO> {
 
     @Autowired
     private UserRepository userRepository;
@@ -28,13 +28,13 @@ public class StoreUserInfoConverter implements IConvertable<StoreUserInfo , Stor
 
     @Override
     public StoreUserInfo convertToEntity(StoreUserInfoDTO dto) {
-        return copyConvertToEntity(dto , new StoreUserInfo());
+        return copyConvertToEntity(dto, new StoreUserInfo());
     }
 
     @Override
     public StoreUserInfoDTO convertToDto(StoreUserInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -54,7 +54,7 @@ public class StoreUserInfoConverter implements IConvertable<StoreUserInfo , Stor
     @Override
     public StoreUserInfo copyConvertToEntity(StoreUserInfoDTO dto, StoreUserInfo entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 

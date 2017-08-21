@@ -32,7 +32,7 @@ public class UnitInfoConverter implements IConvertable<UnitInfo, UnitInfoDTO>, I
 
     @Override
     public UnitInfoDTO convertToDto(UnitInfo entity) {
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -52,7 +52,7 @@ public class UnitInfoConverter implements IConvertable<UnitInfo, UnitInfoDTO>, I
 
     @Override
     public UnitInfo copyConvertToEntity(UnitInfoDTO dto, UnitInfo entity) {
-        if (dto == null | entity == null){
+        if (dto == null | entity == null) {
             return null;
         }
 

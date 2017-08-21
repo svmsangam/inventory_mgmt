@@ -27,196 +27,196 @@ import java.util.Arrays;
 @RequestMapping("/tag")
 public class TagController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private ITagInfoApi tagInfoApi;
+    @Autowired
+    private ITagInfoApi tagInfoApi;
 
-	@Autowired
-	private IUserApi userApi;
+    @Autowired
+    private IUserApi userApi;
 
-	@Autowired
-	private TagInfoValidation tagInfoValidation;
+    @Autowired
+    private TagInfoValidation tagInfoValidation;
 
-	@GetMapping(value="/list")
-	public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-		try {
+        try {
 
         /*current user checking start*/
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			if (currentUser == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_VIEW))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-				return "redirect:/";//access deniled page
-			}
+            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_VIEW))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
 
-			if (currentUser.getStoreId() == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-				return "redirect:/";//store not assigned page
-			}
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
 
         /*current user checking end*/
 
-			modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-		}catch (Exception e){
+        } catch (Exception e) {
 
-			logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
-			return "redirect:/500";
-		}
+            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
 
-		return "category/list";
-	}
+        return "category/list";
+    }
 
-	@GetMapping(value="/add")
-	public String add(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/add")
+    public String add(RedirectAttributes redirectAttributes) {
 
-		try {
+        try {
 
                 /*current user checking start*/
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			if (currentUser == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-				return "redirect:/";//access deniled page
-			}
+            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
 
-			if (currentUser.getStoreId() == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-				return "redirect:/";//store not assigned page
-			}
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
 
         /*current user checking end*/
-		}catch (Exception e){
+        } catch (Exception e) {
 
-			logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
-			return "redirect:/500";
-		}
+            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
 
-		return "tag/add";
-	}
+        return "tag/add";
+    }
 
-	@PostMapping(value="/save")
-	public String save(@ModelAttribute("tag") TagInfoDTO tagInfoDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/save")
+    public String save(@ModelAttribute("tag") TagInfoDTO tagInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-		try {
+        try {
 
                 /*current user checking start*/
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			if (currentUser == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE))) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-				return "redirect:/";//access deniled page
-			}
+            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
 
-			if (currentUser.getStoreId() == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-				return "redirect:/";//store not assigned page
-			}
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
 
         /*current user checking end*/
 
-			TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
+            TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
 
-			if (!error.isValid()) {
-				modelMap.put(StringConstants.TAG_ERROR, error);
-				modelMap.put(StringConstants.TAG, tagInfoDTO);
-				return "tag/add";
-			}
+            if (!error.isValid()) {
+                modelMap.put(StringConstants.TAG_ERROR, error);
+                modelMap.put(StringConstants.TAG, tagInfoDTO);
+                return "tag/add";
+            }
 
-			tagInfoApi.save(tagInfoDTO);
+            tagInfoApi.save(tagInfoDTO);
 
-		}catch (Exception e){
+        } catch (Exception e) {
 
-			logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
-			return "redirect:/500";
-		}
+            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
 
-		return "redirect:/tag/list";
-	}
-
-
-	@GetMapping(value="/edit")
-	    public String edit(@RequestParam("tag") Long tagId,ModelMap modelMap , RedirectAttributes redirectAttributes){
-
-	    	try {
+        return "redirect:/tag/list";
+    }
 
 
-				return "/tag/edit";
+    @GetMapping(value = "/edit")
+    public String edit(@RequestParam("tag") Long tagId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-			}catch (Exception e){
-	    		e.printStackTrace();
-                return "redirect:/";
-			}
+        try {
 
 
-	    }
+            return "/tag/edit";
 
-	    @PostMapping(value="/update")
-	    public String update(RedirectAttributes redirectAttributes){
-
-	    	try {
-
-	    		return "redirect:/tag/list";
-
-			}catch (Exception e){
-	    		e.printStackTrace();
-	    		return "redirect:/";
-			}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
 
 
-	    }
+    }
 
-	    @GetMapping(value="/{tagId}")
-	    public String show(@PathVariable("tagId") Long tagId){
+    @PostMapping(value = "/update")
+    public String update(RedirectAttributes redirectAttributes) {
 
-	        return "redirect:/tag/list";
-	    }
+        try {
 
-	    @GetMapping(value="/delete")
-	    public String delete(@RequestParam("tag") long tagId, RedirectAttributes redirectAttributes){
+            return "redirect:/tag/list";
 
-	    	try {
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
 
-				return "redirect:/tag/list";
-			}catch (Exception e){
-	    		e.printStackTrace();
-	    		return "redirect:/";
-			}
 
-	    }
-	}
+    }
+
+    @GetMapping(value = "/{tagId}")
+    public String show(@PathVariable("tagId") Long tagId) {
+
+        return "redirect:/tag/list";
+    }
+
+    @GetMapping(value = "/delete")
+    public String delete(@RequestParam("tag") long tagId, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            return "redirect:/tag/list";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+
+    }
+}
 
 
 

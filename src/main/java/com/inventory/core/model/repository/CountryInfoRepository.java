@@ -14,11 +14,11 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface CountryInfoRepository extends JpaRepository<CountryInfo, Long> , JpaSpecificationExecutor<CountryInfo>{
+public interface CountryInfoRepository extends JpaRepository<CountryInfo, Long>, JpaSpecificationExecutor<CountryInfo> {
 
-    CountryInfo findByIdAndStatus(long countryId , Status status);
+    CountryInfo findByIdAndStatus(long countryId, Status status);
 
-    CountryInfo findByNameAndStatus(String countryName , Status status);
+    CountryInfo findByNameAndStatus(String countryName, Status status);
 
     CountryInfo findByName(String countryName);
 

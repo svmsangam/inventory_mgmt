@@ -13,63 +13,59 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class CityInfoValidation extends GlobalValidation{
+public class CityInfoValidation extends GlobalValidation {
 
-	@Autowired
-	private CityInfoRepository cityInfoRepository;
+    @Autowired
+    private CityInfoRepository cityInfoRepository;
 
-	@Autowired
-	private StateInfoRepository stateInfoRepository;
-	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	public CityError cityValidationOnSave(CityInfoDTO cityDto) {
+    @Autowired
+    private StateInfoRepository stateInfoRepository;
 
-		CityError error = new CityError();
-		boolean valid = true;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-		error.setName(checkString(cityDto.getCityName() , 3, 20, "cityname" , true));
-		try {
+    public CityError cityValidationOnSave(CityInfoDTO cityDto) {
 
-		if (!("".equals(error.getName()))){
-			valid = false;
-		}
+        CityError error = new CityError();
+        boolean valid = true;
 
-		else if (cityInfoRepository.findByName(cityDto.getCityName().trim()) != null) {
-				valid = false;
-				error.setName("City name already exists");
-			}
-		}catch (Exception e){
-			logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
-			error.setName("invalid CityName");
-			error.setValid(false);
+        error.setName(checkString(cityDto.getCityName(), 3, 20, "cityname", true));
+        try {
 
-			return error;
-		}
+            if (!("".equals(error.getName()))) {
+                valid = false;
+            } else if (cityInfoRepository.findByName(cityDto.getCityName().trim()) != null) {
+                valid = false;
+                error.setName("City name already exists");
+            }
+        } catch (Exception e) {
+            logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            error.setName("invalid CityName");
+            error.setValid(false);
 
-		finally {
-			try {
+            return error;
+        } finally {
+            try {
 
-				if (stateInfoRepository.findByIdAndStatus(cityDto.getStateId() , Status.ACTIVE) == null){
-					logger.error("@ Validation Trace : 'invalid sate Id on save city' ");
-					error.setState("invalid State");
+                if (stateInfoRepository.findByIdAndStatus(cityDto.getStateId(), Status.ACTIVE) == null) {
+                    logger.error("@ Validation Trace : 'invalid sate Id on save city' ");
+                    error.setState("invalid State");
 
-					error.setValid(false);
+                    error.setValid(false);
 
-					return error;
-				}
+                    return error;
+                }
 
-			}catch (Exception e){
-				logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
-				error.setState("invalid State");
-				error.setValid(false);
+            } catch (Exception e) {
+                logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+                error.setState("invalid State");
+                error.setValid(false);
 
-				return error;
-			}
-		}
+                return error;
+            }
+        }
 
 
-		error.setValid(valid);
-		return error;
-	}
+        error.setValid(valid);
+        return error;
+    }
 }

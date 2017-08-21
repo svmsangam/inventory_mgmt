@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface UnitInfoRepository extends JpaRepository<UnitInfo , Long> , JpaSpecificationExecutor<UnitInfo> {
+public interface UnitInfoRepository extends JpaRepository<UnitInfo, Long>, JpaSpecificationExecutor<UnitInfo> {
 
     UnitInfo findById(long unitId);
 

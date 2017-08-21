@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IAccountInfoApi {
 
-    AccountInfoDTO save(long associateId , AccountAssociateType associateType , String prefix);
+    AccountInfoDTO save(long associateId, AccountAssociateType associateType, String prefix);
 
     AccountInfoDTO update(AccountInfoDTO accountInfoDTO);
 

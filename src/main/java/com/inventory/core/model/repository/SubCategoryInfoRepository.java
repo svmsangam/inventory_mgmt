@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo , Long> , JpaSpecificationExecutor<SubCategoryInfo> {
+public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo, Long>, JpaSpecificationExecutor<SubCategoryInfo> {
 
     SubCategoryInfo findById(long subCategoryId);
 

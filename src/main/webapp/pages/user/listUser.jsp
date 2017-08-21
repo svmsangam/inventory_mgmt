@@ -30,7 +30,10 @@
                     <div class="box-header">
                         <h3 class="box-title">User List</h3>
                         <div class="box-tools">
-                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right addUser" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
+                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right addUser"
+                                    data-toggle="modal" data-target="#modal-add"><span
+                                    class="glyphicon glyphicon-plus-sign"></span> Add
+                            </button>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -44,6 +47,7 @@
                                 <th>UserType</th>
                                 <th>Status</th>
                                 <th>Action</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody id="myData">
@@ -53,11 +57,27 @@
                                     <td>${user.inventoryuser}</td>
                                     <td>${user.storeName}</td>
                                     <td>${user.userType}</td>
-                                    <td><c:if test="${user.enable eq true}"><span class="label label-success">Activated</span><c:if test="${user.userType eq 'USER'}"><a href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}"><span class="label label-primary label-manage">Manage</span></a></c:if></c:if><c:if test="${user.enable eq false}"><span class="label label-danger">Deactivated</span></c:if></td>
+                                    <td><c:if test="${user.enable eq true}"><span
+                                            class="label label-success">Activated</span></c:if><c:if
+                                            test="${user.enable eq false}"><span
+                                            class="label label-danger">Deactivated</span></c:if></td>
                                     <td>
-                                        <c:if test="${user.enable eq true}"><a href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}" onclick="return confirm('Are you sure you want to Deactivate?')"><span class="label label-danger">Deactivate ?</span></a></c:if>
+                                        <c:if test="${user.enable eq true}"><a
+                                                href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}"
+                                                onclick="return confirm('Are you sure you want to Deactivate?')"><span
+                                                class="label label-danger">Deactivate ?</span></a></c:if>
 
-                                        <c:if test="${user.enable eq false}"><a href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}" onclick="return confirm('Are you sure you want to Activate?')"><span class="label label-success">Activate ?</span></a></c:if>
+                                        <c:if test="${user.enable eq false}"><a
+                                                href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}"
+                                                onclick="return confirm('Are you sure you want to Activate?')"><span
+                                                class="label label-success">Activate ?</span></a></c:if>
+                                    </td>
+                                    <td>
+                                        <c:if test="${user.userType eq 'USER'}">
+                                            <a class="btn btn-xs bg-purple margin"href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
+                                                <i class="fa fa-cogs"></i> Manage
+                                            </a>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -81,61 +101,68 @@
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger alert-dismissible addError">
-                        <button type="button" class="close closeError" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <button type="button" class="close closeError" data-dismiss="alert" aria-hidden="true">&times;
+                        </button>
                         <p class="errorModel"></p>
                     </div>
                     <div class="box-body">
 
-                            <div class="form-group">
-                                <label class="control-label">User Name *</label>
-                                <input type="text" class="form-control" name="inventoryuser" id="inventoryuser" placeholder="Name" required="required" />
-                                <p class="form-error inventoryuser"></p>
-                            </div>
+                        <div class="form-group">
+                            <label class="control-label">User Name *</label>
+                            <input type="text" class="form-control" name="inventoryuser" id="inventoryuser"
+                                   placeholder="Name" required="required"/>
+                            <p class="form-error inventoryuser"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Password *</label>
+                            <input type="password" class="form-control" name="userpassword" id="userpassword"
+                                   placeholder="password" required/>
+                            <p class="form-error userpassword"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">RePassword *</label>
+                            <input type="password" class="form-control" name="userrepassword" id="userrepassword"
+                                   placeholder="repassword" required/>
+                            <p class="form-error userrepassword"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">User Type *</label>
+                            <select class="form-control" name="userType" id="userType" required>
+                                <option value="">select userType</option>
+                                <c:forEach items="${userTypeList}" var="userType">
+                                    <option value="${userType}">${userType}</option>
+                                </c:forEach>
+                            </select>
+                            <p class="form-error userType"></p>
+                        </div>
+
+                        <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
                             <div class="form-group">
-                                <label class="control-label">Password *</label>
-                                <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="password" required />
-                                <p class="form-error userpassword"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">RePassword *</label>
-                                <input type="password" class="form-control" name="userrepassword" id="userrepassword" placeholder="repassword" required />
-                                <p class="form-error userrepassword"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">User Type *</label>
-                                <select class="form-control" name="userType" id="userType" required>
-                                    <option value="">select userType</option>
-                                    <c:forEach items="${userTypeList}" var="userType" >
-                                        <option value="${userType}">${userType}</option>
+                                <label class="control-label">Store *</label>
+                                <select class="form-control" name="storeId" id="storeId" required>
+                                    <option value="">select store</option>
+                                    <c:forEach items="${storeList}" var="store">
+                                        <option value="${store.storeId}">${store.name}</option>
                                     </c:forEach>
                                 </select>
-                                <p class="form-error userType"></p>
+                                <p class="form-error storeId"></p>
                             </div>
 
-                            <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+                        </sec:authorize>
 
-                                <div class="form-group">
-                                    <label class="control-label">Store *</label>
-                                    <select class="form-control" name="storeId" id="storeId" required>
-                                        <option value="">select store</option>
-                                        <c:forEach items="${storeList}" var="store" >
-                                            <option value="${store.storeId}">${store.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <p class="form-error storeId"></p>
-                                </div>
+                    </div>
 
-                            </sec:authorize>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
-                            <button type="submit" id="saveuser" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes</button>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" id="saveuser" pagecontext="${pageContext.request.contextPath}"
+                                url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -154,7 +181,8 @@
                     <h4 class="modal-title">Edit City</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/city/update" modelAttribute="cityDto">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/city/update"
+                          modelAttribute="cityDto">
                         <input type="hidden" name="countryId" value=""/>
                         <div class="box-body">
                             <div class="form-group">

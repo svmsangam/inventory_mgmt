@@ -2,75 +2,74 @@ package com.inventory.core.model.dto;
 
 public class RestResponseDTO {
 
-	String Status;
-	
-	String message;
-	
-	String refresh;
+    String Status;
 
-	int nextPage;
+    String message;
 
-	int previousPage;
+    String refresh;
 
-	int currentPage;
-	
-	Object detail;
-	
-	
+    int nextPage;
 
-	public String getRefresh() {
-		return refresh;
-	}
+    int previousPage;
 
-	public void setRefresh(String refresh) {
-		this.refresh = refresh;
-	}
+    int currentPage;
 
-	public String getStatus() {
-		return Status;
-	}
+    Object detail;
 
-	public void setStatus(String status) {
-		Status = status;
-	}
 
-	public String getMessage() {
-		return message;
-	}
+    public String getRefresh() {
+        return refresh;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
+    }
 
-	public Object getDetail() {
-		return detail;
-	}
+    public String getStatus() {
+        return Status;
+    }
 
-	public void setDetail(Object detail) {
-		this.detail = detail;
-	}
+    public void setStatus(String status) {
+        Status = status;
+    }
 
-	public int getNextPage() {
-		return nextPage;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setNextPage(int nextPage) {
-		this.nextPage = nextPage;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public int getPreviousPage() {
-		return previousPage;
-	}
+    public Object getDetail() {
+        return detail;
+    }
 
-	public void setPreviousPage(int previousPage) {
-		this.previousPage = previousPage;
-	}
+    public void setDetail(Object detail) {
+        this.detail = detail;
+    }
 
-	public int getCurrentPage() {
-		return currentPage;
-	}
+    public int getNextPage() {
+        return nextPage;
+    }
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
+    public void setNextPage(int nextPage) {
+        this.nextPage = nextPage;
+    }
+
+    public int getPreviousPage() {
+        return previousPage;
+    }
+
+    public void setPreviousPage(int previousPage) {
+        this.previousPage = previousPage;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
 }

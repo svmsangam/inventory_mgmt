@@ -15,58 +15,58 @@ import java.util.Arrays;
 @Service
 public class StateValidation extends GlobalValidation {
 
-	@Autowired
-	private StateInfoRepository stateInfoRepository;
+    @Autowired
+    private StateInfoRepository stateInfoRepository;
 
-	@Autowired
-	private CountryInfoRepository countryInfoRepository;
-	
-	private Logger logger = LoggerFactory.getLogger(StateValidation.class);
-	
-	public StateError stateValidationOnSave(StateInfoDTO stateDto) {
+    @Autowired
+    private CountryInfoRepository countryInfoRepository;
 
-		StateError error = new StateError();
-		boolean valid = true;
+    private Logger logger = LoggerFactory.getLogger(StateValidation.class);
 
-		error.setName(checkString(stateDto.getStateName(), 3, 20, "cityname", true));
-		try {
+    public StateError stateValidationOnSave(StateInfoDTO stateDto) {
 
-			if (!("".equals(error.getName()))) {
-				valid = false;
-			} else if (stateInfoRepository.findByName(stateDto.getStateName().trim()) != null) {
-				valid = false;
-				error.setName("State name already exists");
-			}
-		} catch (Exception e) {
-			logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
-			error.setName("invalid StateName");
-			error.setValid(false);
+        StateError error = new StateError();
+        boolean valid = true;
 
-			return error;
-		} finally {
-			try {
+        error.setName(checkString(stateDto.getStateName(), 3, 20, "cityname", true));
+        try {
 
-				if (countryInfoRepository.findByIdAndStatus(stateDto.getCountryId(), Status.ACTIVE) == null) {
-					logger.error("@ Validation Trace : 'invalid country Id on save state' ");
-					error.setCountry("invalid Country");
+            if (!("".equals(error.getName()))) {
+                valid = false;
+            } else if (stateInfoRepository.findByName(stateDto.getStateName().trim()) != null) {
+                valid = false;
+                error.setName("State name already exists");
+            }
+        } catch (Exception e) {
+            logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            error.setName("invalid StateName");
+            error.setValid(false);
 
-					error.setValid(false);
+            return error;
+        } finally {
+            try {
 
-					return error;
-				}
+                if (countryInfoRepository.findByIdAndStatus(stateDto.getCountryId(), Status.ACTIVE) == null) {
+                    logger.error("@ Validation Trace : 'invalid country Id on save state' ");
+                    error.setCountry("invalid Country");
 
-			} catch (Exception e) {
-				logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
-				error.setCountry("invalid Country");
-				error.setValid(false);
+                    error.setValid(false);
 
-				return error;
-			}
-		}
+                    return error;
+                }
+
+            } catch (Exception e) {
+                logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+                error.setCountry("invalid Country");
+                error.setValid(false);
+
+                return error;
+            }
+        }
 
 
-		error.setValid(valid);
-		return error;
-	}
+        error.setValid(valid);
+        return error;
+    }
 
 }

@@ -11,70 +11,70 @@ import org.springframework.security.core.userdetails.User;
 
 public class AuthenticationUtil {
 
-	public static final InvUserDTO getCurrentUser(IUserApi userApi) {
+    public static final InvUserDTO getCurrentUser(IUserApi userApi) {
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		if (authentication == null) {
-			return null;
-		}
+        if (authentication == null) {
+            return null;
+        }
 
-		if (!authentication.isAuthenticated()){
-			return null;
-		}
+        if (!authentication.isAuthenticated()) {
+            return null;
+        }
 
-		Object principal = authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-		if (principal instanceof User) {
+        if (principal instanceof User) {
 
-			User user = (User) principal;
+            User user = (User) principal;
 
-			InvUserDTO userDTO = userApi.getUserByUserName(user.getUsername());
+            InvUserDTO userDTO = userApi.getUserByUserName(user.getUsername());
 
-			if (userDTO == null){
-				return null;
-			}
+            if (userDTO == null) {
+                return null;
+            }
 
-			if (userDTO.getUserauthority() == null){
-				return null;
-			}
+            if (userDTO.getUserauthority() == null) {
+                return null;
+            }
 
-			if (!userDTO.getUserstatus().equals(Status.ACTIVE)){
-				return null;
-			}
+            if (!userDTO.getUserstatus().equals(Status.ACTIVE)) {
+                return null;
+            }
 
-			if (!userDTO.getEnable()){
-				return null;
-			}
+            if (!userDTO.getEnable()) {
+                return null;
+            }
 
-			if (userDTO.getUserType().equals(UserType.USER)){
-				userDTO.setPermissionList(userApi.getUserPermission(userDTO.getUserId()));
-			}
+            if (userDTO.getUserType().equals(UserType.USER)) {
+                userDTO.setPermissionList(userApi.getUserPermission(userDTO.getUserId()));
+            }
 
-			return userDTO;
+            return userDTO;
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	public static boolean checkPermission(InvUserDTO currentUser , Permission permission){
+    public static boolean checkPermission(InvUserDTO currentUser, Permission permission) {
 
-		if (currentUser == null){
-			return false;
-		}
+        if (currentUser == null) {
+            return false;
+        }
 
-		if (currentUser.getPermissionList() == null){
-			return false;
-		}
+        if (currentUser.getPermissionList() == null) {
+            return false;
+        }
 
-		for (Permission p : currentUser.getPermissionList()){
+        for (Permission p : currentUser.getPermissionList()) {
 
-			if (p.equals(permission)){
+            if (p.equals(permission)) {
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

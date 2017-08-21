@@ -14,17 +14,17 @@ import java.util.stream.Collectors;
  * Created by dhiraj on 8/12/17.
  */
 @Service
-public class DesignationConverter implements IConvertable<Designation , DesignationInfoDTO> , IListConvertable<Designation , DesignationInfoDTO>{
+public class DesignationConverter implements IConvertable<Designation, DesignationInfoDTO>, IListConvertable<Designation, DesignationInfoDTO> {
 
     @Override
     public Designation convertToEntity(DesignationInfoDTO dto) {
-        return copyConvertToEntity(dto , new Designation());
+        return copyConvertToEntity(dto, new Designation());
     }
 
     @Override
     public DesignationInfoDTO convertToDto(Designation entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -42,7 +42,7 @@ public class DesignationConverter implements IConvertable<Designation , Designat
     @Override
     public Designation copyConvertToEntity(DesignationInfoDTO dto, Designation entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 

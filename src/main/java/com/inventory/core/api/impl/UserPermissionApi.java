@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserPermissionApi implements IUserPermissionApi{
+public class UserPermissionApi implements IUserPermissionApi {
 
     @Autowired
     private UserPermissionConverter userPermissionConverter;
@@ -33,7 +33,7 @@ public class UserPermissionApi implements IUserPermissionApi{
 
         UserPermission userPermission = userPermissionRepository.findById(userPermissionDTO.getUserPermissionId());
 
-        userPermission = userPermissionConverter.copyConvertToEntity(userPermissionDTO , userPermission);
+        userPermission = userPermissionConverter.copyConvertToEntity(userPermissionDTO, userPermission);
 
         return userPermissionConverter.convertToDto(userPermissionRepository.save(userPermission));
     }

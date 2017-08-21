@@ -4,13 +4,13 @@
 
 // model for user start
 
-function User(){
+function User() {
 
     return {
 
-        userId : 0,
+        userId: 0,
 
-        storeId : 0,
+        storeId: 0,
 
         inventoryuser: "",
 
@@ -18,7 +18,7 @@ function User(){
 
         userrepassword: "",
 
-        userType : ""
+        userType: ""
     };
 }
 
@@ -26,35 +26,35 @@ function User(){
 
 // model for store start
 
-function Store(){
+function Store() {
 
     return {
 
-         storeId:0,
+        storeId: 0,
 
-         name:"",
-    
-         street:"",
-    
-         panNumber:"",
-    
-         regNumber:"",
-    
-         contact:"",
-    
-         mobileNumber:"",
-    
-         cityId:0,
-    
-         cityName:"",
-    
-         email:"",
-    
-         accountId:0,
+        name: "",
 
-         accountNo:"",
+        street: "",
 
-         version:0
+        panNumber: "",
+
+        regNumber: "",
+
+        contact: "",
+
+        mobileNumber: "",
+
+        cityId: 0,
+
+        cityName: "",
+
+        email: "",
+
+        accountId: 0,
+
+        accountNo: "",
+
+        version: 0
     };
 }
 

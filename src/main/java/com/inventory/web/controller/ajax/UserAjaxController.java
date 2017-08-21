@@ -39,15 +39,15 @@ public class UserAjaxController {
     @Autowired
     private UserValidation userValidation;
 
-    @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("user")InvUserDTO userDTO , BindingResult bindingResult , HttpServletRequest request){
+    @PostMapping(value = "save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("user") InvUserDTO userDTO, BindingResult bindingResult, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null){
+            if (currentUser == null) {
                 request.getSession().invalidate();
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("user authentication failed");
@@ -74,8 +74,8 @@ public class UserAjaxController {
                 }
             } else if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                if (userDTO.getStoreId() == null){
-                    userDTO.setStoreId((long)0);
+                if (userDTO.getStoreId() == null) {
+                    userDTO.setStoreId((long) 0);
                 }
 
                 UserError error = new UserError();
@@ -92,31 +92,31 @@ public class UserAjaxController {
                     result.setMessage("user validation failed");
                     result.setDetail(error);
                 }
-            }else if (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+            } else if (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
                 userDTO.setStoreId(currentUser.getStoreId());
 
-                    UserError error = new UserError();
+                UserError error = new UserError();
 
-                    error = userValidation.saveValidation(userDTO, bindingResult);
+                error = userValidation.saveValidation(userDTO, bindingResult);
 
-                    if (error.isValid()) {
-                        userDTO = userApi.save(userDTO);
-                        result.setStatus(ResponseStatus.SUCCESS.getValue());
-                        result.setMessage("user successfully saved");
-                        result.setDetail(userDTO);
-                    } else {
-                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                        result.setMessage("user validation failed");
-                        result.setDetail(error);
-                    }
+                if (error.isValid()) {
+                    userDTO = userApi.save(userDTO);
+                    result.setStatus(ResponseStatus.SUCCESS.getValue());
+                    result.setMessage("user successfully saved");
+                    result.setDetail(userDTO);
+                } else {
+                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                    result.setMessage("user validation failed");
+                    result.setDetail(error);
+                }
 
-            }else {
+            } else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("unauthorized user");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");

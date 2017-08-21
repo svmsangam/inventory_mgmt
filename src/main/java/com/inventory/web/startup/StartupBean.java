@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class StartupBean {
 
 	/*@Bean(name="firstAdminCreator")
-	public FirstAdminCreator firstAdminCreator(){
+    public FirstAdminCreator firstAdminCreator(){
 		return new FirstAdminCreator();
 	}*/
 }

@@ -14,7 +14,8 @@
                      alt="User Image">
             </div>
             <div class="pull-left info">
-                <p><%--${pageContext.request.userPrincipal.name}--%><sec:authentication property="principal.username" /></p>
+                <p><%--${pageContext.request.userPrincipal.name}--%><sec:authentication
+                        property="principal.username"/></p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -36,7 +37,8 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">SYSTEM HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a>
+            </li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>

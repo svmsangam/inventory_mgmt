@@ -16,9 +16,9 @@ public interface ILotInfoApi {
 
     void delete(long lotInfoId);
 
-    LotInfoDTO getByNameAndStatus(String lotName , Status status);
+    LotInfoDTO getByNameAndStatus(String lotName, Status status);
 
-    LotInfoDTO getByIdAndStatus(long lotInfoId , Status status);
+    LotInfoDTO getByIdAndStatus(long lotInfoId, Status status);
 
     List<LotInfoDTO> list(Status status);
 }

@@ -41,9 +41,11 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">SUPERADMIN HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a>
+            </li>
 
-            <li ><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-link"></i> <span>Store</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-link"></i>
+                <span>Store</span></a></li>
 
             <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
 

@@ -23,7 +23,7 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     private CategoryInfoRepository categoryInfoRepository;
 
     @Override
-    public CategoryInfoDTO save(CategoryInfoDTO categoryInfoDTO){
+    public CategoryInfoDTO save(CategoryInfoDTO categoryInfoDTO) {
 
         CategoryInfo categoryInfo = categoryInfoConverter.convertToEntity(categoryInfoDTO);
 
@@ -37,13 +37,13 @@ public class CategoryInfoApi implements ICategoryInfoApi {
 
         CategoryInfo categoryInfo = categoryInfoRepository.findById(categoryInfoDTO.getCategoryId());
 
-        categoryInfo = categoryInfoConverter.copyConvertToEntity(categoryInfoDTO,categoryInfo);
+        categoryInfo = categoryInfoConverter.copyConvertToEntity(categoryInfoDTO, categoryInfo);
 
         return categoryInfoConverter.convertToDto(categoryInfoRepository.save(categoryInfo));
     }
 
     @Override
-    public void delete(long categoryId){
+    public void delete(long categoryId) {
 
         CategoryInfo categoryInfo = categoryInfoRepository.findById(categoryId);
 
@@ -54,23 +54,23 @@ public class CategoryInfoApi implements ICategoryInfoApi {
 
     @Override
     public CategoryInfoDTO show(long categoryId, long storeId, Status status) {
-        return categoryInfoConverter.convertToDto(categoryInfoRepository.findByIdAndStatusAndStoreInfo(categoryId,status,storeId));
+        return categoryInfoConverter.convertToDto(categoryInfoRepository.findByIdAndStatusAndStoreInfo(categoryId, status, storeId));
     }
 
     @Override
     public List<CategoryInfoDTO> list(Status status, long storeId) {
-        return categoryInfoConverter.convertToDtoList(categoryInfoRepository.findAllByStatusAndStoreInfo(status,storeId));
+        return categoryInfoConverter.convertToDtoList(categoryInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
     }
 
     @Override
     public CategoryInfoDTO getCategoryByNameAndStoreAndStatus(String categoryName, long storeId, Status status) {
-        return categoryInfoConverter.convertToDto(categoryInfoRepository.findByNameAndStatusAndStoreInfo(categoryName,status,storeId));
+        return categoryInfoConverter.convertToDto(categoryInfoRepository.findByNameAndStatusAndStoreInfo(categoryName, status, storeId));
     }
 
     @Override
     public long categoryCount(Status status, long storeId) {
 
-        Long count = categoryInfoRepository.countAllByStatusAndStoreInfo(status,storeId);
+        Long count = categoryInfoRepository.countAllByStatusAndStoreInfo(status, storeId);
 
         if (count == null)
             return 0;

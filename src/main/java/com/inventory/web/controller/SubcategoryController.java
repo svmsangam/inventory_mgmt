@@ -43,15 +43,15 @@ public class SubcategoryController {
     private ICategoryInfoApi categoryInfoApi;
 
 
-    @GetMapping(value="/")
-    public String index(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/")
+    public String index(RedirectAttributes redirectAttributes) {
 
 
         return "redirect:/subcategory/list";
     }
 
-    @GetMapping(value="/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -82,7 +82,7 @@ public class SubcategoryController {
 
             modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -91,8 +91,8 @@ public class SubcategoryController {
         return "subcategory/list";
     }
 
-    @GetMapping(value="/add")
-    public String add(RedirectAttributes redirectAttributes , ModelMap modelMap){
+    @GetMapping(value = "/add")
+    public String add(RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
 
@@ -120,9 +120,9 @@ public class SubcategoryController {
             }
         /*current user checking end*/
 
-        modelMap.put(StringConstants.CATEGORY_LIST , categoryInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+            modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -132,8 +132,8 @@ public class SubcategoryController {
         return "subcategory/add";
     }
 
-    @PostMapping(value="/save")
-    public String save(@ModelAttribute("subcategory") SubCategoryInfoDTO subCategoryInfoDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/save")
+    public String save(@ModelAttribute("subcategory") SubCategoryInfoDTO subCategoryInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -167,13 +167,13 @@ public class SubcategoryController {
             if (!error.isValid()) {
                 modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
                 modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                modelMap.put(StringConstants.CATEGORY_LIST , categoryInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+                modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
                 return "subcategory/add";
             }
 
             subcategoryInfoApi.save(subCategoryInfoDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -182,28 +182,28 @@ public class SubcategoryController {
         return "redirect:/subcategory/list";
     }
 
-    @GetMapping(value="/edit")
-    public String edit(@RequestParam("subcategory") long subcategoryId,ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/edit")
+    public String edit(@RequestParam("subcategory") long subcategoryId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
 
         return "/subcategory/edit";
     }
 
-    @PostMapping(value="/update")
-    public String update(RedirectAttributes redirectAttributes){
-
-       return "redirect:/subcategory/list";
-    }
-
-    @GetMapping(value="/show")
-    public String show(RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/update")
+    public String update(RedirectAttributes redirectAttributes) {
 
         return "redirect:/subcategory/list";
     }
 
-    @GetMapping(value="/delete")
-    public String delete(@RequestParam("subcategory") long subcategoryId, RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/show")
+    public String show(RedirectAttributes redirectAttributes) {
 
-       return "redirect:/subcategory/list";
+        return "redirect:/subcategory/list";
+    }
+
+    @GetMapping(value = "/delete")
+    public String delete(@RequestParam("subcategory") long subcategoryId, RedirectAttributes redirectAttributes) {
+
+        return "redirect:/subcategory/list";
     }
 }

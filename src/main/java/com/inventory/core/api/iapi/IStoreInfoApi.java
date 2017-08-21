@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IStoreInfoApi {
 
-    StoreInfoDTO save(StoreInfoDTO storeInfoDTO , long currentUserId);
+    StoreInfoDTO save(StoreInfoDTO storeInfoDTO, long currentUserId);
 
     StoreInfoDTO update(StoreInfoDTO storeInfoDTO);
 

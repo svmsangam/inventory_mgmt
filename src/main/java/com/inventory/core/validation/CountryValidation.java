@@ -25,22 +25,20 @@ public class CountryValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public CountryError countryValidateOnSave(CountryInfoDTO countryDto){
+    public CountryError countryValidateOnSave(CountryInfoDTO countryDto) {
 
         valid = true;
 
-        error.setName(checkString(countryDto.getCountryName() , 3, 20, "cityname" , true));
+        error.setName(checkString(countryDto.getCountryName(), 3, 20, "cityname", true));
         try {
 
-            if (!("".equals(error.getName()))){
+            if (!("".equals(error.getName()))) {
                 valid = false;
-            }
-
-            else if (countryRepository.findByName(countryDto.getCountryName().trim()) != null) {
+            } else if (countryRepository.findByName(countryDto.getCountryName().trim()) != null) {
                 valid = false;
                 error.setName("Country name already exists");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
             error.setName("invalid CountryName");
             error.setValid(false);

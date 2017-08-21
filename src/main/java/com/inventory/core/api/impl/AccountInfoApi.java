@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AccountInfoApi implements IAccountInfoApi{
+public class AccountInfoApi implements IAccountInfoApi {
 
     @Autowired
     private AccountInfoConverter accountInfoConverter;
@@ -24,7 +24,7 @@ public class AccountInfoApi implements IAccountInfoApi{
     private AccountInfoRepository accountInfoRepository;
 
     @Override
-    public AccountInfoDTO save(long associateId , AccountAssociateType associateType , String prefix){
+    public AccountInfoDTO save(long associateId, AccountAssociateType associateType, String prefix) {
 
         AccountInfo accountInfo = new AccountInfo();
 
@@ -33,7 +33,7 @@ public class AccountInfoApi implements IAccountInfoApi{
 
         String accountNo = prefix + System.currentTimeMillis();
 
-        while (accountInfoRepository.findByAcountNumber(accountNo) != null){
+        while (accountInfoRepository.findByAcountNumber(accountNo) != null) {
             accountNo = prefix + System.currentTimeMillis();
         }
 
@@ -46,7 +46,7 @@ public class AccountInfoApi implements IAccountInfoApi{
     public AccountInfoDTO update(AccountInfoDTO accountInfoDTO) {
 
         AccountInfo accountInfo = accountInfoRepository.findById(accountInfoDTO.getAccountId());
-        accountInfo = accountInfoConverter.copyConvertToEntity(accountInfoDTO,accountInfo);
+        accountInfo = accountInfoConverter.copyConvertToEntity(accountInfoDTO, accountInfo);
 
         return accountInfoConverter.convertToDto(accountInfoRepository.save(accountInfo));
     }

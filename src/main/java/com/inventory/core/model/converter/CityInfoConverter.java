@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class CityInfoConverter implements IConvertable<CityInfo, CityInfoDTO>, IListConvertable<CityInfo , CityInfoDTO> {
+public class CityInfoConverter implements IConvertable<CityInfo, CityInfoDTO>, IListConvertable<CityInfo, CityInfoDTO> {
 
     @Autowired
     private StateInfoRepository stateRepository;
@@ -26,17 +26,17 @@ public class CityInfoConverter implements IConvertable<CityInfo, CityInfoDTO>, I
     @Override
     public CityInfo convertToEntity(CityInfoDTO dto) {
 
-        if (dto == null){
+        if (dto == null) {
             return null;
         }
 
-        return copyConvertToEntity(dto , new CityInfo());
+        return copyConvertToEntity(dto, new CityInfo());
     }
 
     @Override
     public CityInfoDTO convertToDto(CityInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -55,12 +55,12 @@ public class CityInfoConverter implements IConvertable<CityInfo, CityInfoDTO>, I
     @Override
     public CityInfo copyConvertToEntity(CityInfoDTO dto, CityInfo entity) {
 
-        if (entity == null || dto == null){
+        if (entity == null || dto == null) {
             return null;
         }
 
         entity.setName(dto.getCityName().trim());
-        entity.setStateInfo(stateRepository.findByIdAndStatus(dto.getStateId() , Status.ACTIVE));
+        entity.setStateInfo(stateRepository.findByIdAndStatus(dto.getStateId(), Status.ACTIVE));
         entity.setStatus(Status.ACTIVE);
 
         return entity;

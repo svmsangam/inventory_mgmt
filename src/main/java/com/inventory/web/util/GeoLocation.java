@@ -83,8 +83,8 @@ public class GeoLocation {
      * the location argument.
      *
      * @param radius the radius of the sphere, e.g. the average radius for a
-     * spherical approximation of the figure of the Earth is approximately
-     * 6371.01 kilometers.
+     *               spherical approximation of the figure of the Earth is approximately
+     *               6371.01 kilometers.
      * @return the distance, measured in the same unit as the radius argument.
      */
     public double distanceTo(GeoLocation location, double radius) {
@@ -93,7 +93,7 @@ public class GeoLocation {
                 * Math.cos(radLon - location.radLon)) * radius;
     }
 
-        public GeoLocation[] boundingCoordinates(double distance, double radius) {
+    public GeoLocation[] boundingCoordinates(double distance, double radius) {
 
         if (radius < 0d || distance < 0d) {
             throw new IllegalArgumentException();
@@ -126,7 +126,7 @@ public class GeoLocation {
         }
 
         return new GeoLocation[]{fromRadians(minLat, minLon),
-            fromRadians(maxLat, maxLon)};
+                fromRadians(maxLat, maxLon)};
     }
 
 }

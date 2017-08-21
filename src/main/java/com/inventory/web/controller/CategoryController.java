@@ -37,15 +37,15 @@ public class CategoryController {
     @Autowired
     private CategoryInfoValidation categoryInfoValidation;
 
-    @GetMapping(value="/")
-    public String index(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/")
+    public String index(RedirectAttributes redirectAttributes) {
 
 
         return "redirect:/CategoryInfo/list";
     }
 
-    @GetMapping(value="/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -76,7 +76,7 @@ public class CategoryController {
 
             modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -85,8 +85,8 @@ public class CategoryController {
         return "category/list";
     }
 
-    @GetMapping(value="/add")
-    public String add(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/add")
+    public String add(RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -114,7 +114,7 @@ public class CategoryController {
             }
 
         /*current user checking end*/
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -123,8 +123,8 @@ public class CategoryController {
         return "category/add";
     }
 
-    @PostMapping(value="/save")
-    public String save(@ModelAttribute("category") CategoryInfoDTO categoryInfoDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/save")
+    public String save(@ModelAttribute("category") CategoryInfoDTO categoryInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -163,7 +163,7 @@ public class CategoryController {
 
             categoryInfoApi.save(categoryInfoDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -172,27 +172,27 @@ public class CategoryController {
         return "redirect:/category/list";
     }
 
-    @GetMapping(value="/edit")
-    public String edit(@RequestParam("category") long categoryId,ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/edit")
+    public String edit(@RequestParam("category") long categoryId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
 
         return "/category/edit";
     }
 
-    @PostMapping(value="/update")
-    public String update( RedirectAttributes redirectAttributes){
-
-       return "redirect:/category/list";
-    }
-
-    @GetMapping(value="/{categoryId}")
-    public String show(){
+    @PostMapping(value = "/update")
+    public String update(RedirectAttributes redirectAttributes) {
 
         return "redirect:/category/list";
     }
 
-    @GetMapping(value="/delete")
-    public String delete(@RequestParam("category") long categoryId, RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/{categoryId}")
+    public String show() {
+
+        return "redirect:/category/list";
+    }
+
+    @GetMapping(value = "/delete")
+    public String delete(@RequestParam("category") long categoryId, RedirectAttributes redirectAttributes) {
 
         return "redirect:/category/list";
     }

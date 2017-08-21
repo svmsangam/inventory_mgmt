@@ -20,12 +20,12 @@ public class SessionInfo {
     @Qualifier("sessionRegistry")
     private SessionRegistry sessionRegistry;
 
-    public void list(String username){
+    public void list(String username) {
         List<Object> principals = sessionRegistry.getAllPrincipals();
 
         List<String> usersNamesList = new ArrayList<String>();
 
-        for (Object principal: principals) {
+        for (Object principal : principals) {
             if (principal instanceof User) {
                 System.out.println("logined User : " + ((User) principal).getUsername());
                 //usersNamesList.add(((User) principal).getUsername());
@@ -33,7 +33,7 @@ public class SessionInfo {
         }
     }
 
-    public void expireUserSessions(String username)  {
+    public void expireUserSessions(String username) {
         for (Object principal : sessionRegistry.getAllPrincipals()) {
             if (principal instanceof User) {
                 User user = (User) principal;

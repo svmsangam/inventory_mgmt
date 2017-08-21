@@ -24,83 +24,83 @@ import java.io.IOException;
 @RequestMapping("/country")
 public class CountryController {
 
-	private Logger logger = LoggerFactory.getLogger(CountryController.class);
-	
+    private Logger logger = LoggerFactory.getLogger(CountryController.class);
+
     @Autowired
     private ICountryInfoApi countryService;
-    
+
     @Autowired
     private CountryValidation countryValidation;
 
     @Autowired
-	private IUserApi userApi;
+    private IUserApi userApi;
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(RedirectAttributes redirectAttributes) throws IOException {
-    	try {
+        try {
 
-    		if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			return "country/addCountry";
+            return "country/addCountry";
 
-    	}catch(Exception e){
-    		logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-    	}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
 
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/save")
-	public String addCountry(ModelMap modelMap, @ModelAttribute("countryDto") CountryInfoDTO countryDto,
-			RedirectAttributes redirectAttributes) {
-		try {
+    public String addCountry(ModelMap modelMap, @ModelAttribute("countryDto") CountryInfoDTO countryDto,
+                             RedirectAttributes redirectAttributes) {
+        try {
 
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			CountryError countryError = new CountryError();
-			countryError = countryValidation.countryValidateOnSave(countryDto);
-			if (countryError.isValid()) {
-				countryService.save(countryDto);
-				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "successfully saved");
-				return "redirect:/country/list";
-			} else {
-				redirectAttributes.addAttribute(StringConstants.ERROR , "Failed to save check the field errors");
-				modelMap.put(StringConstants.ERROR ,countryError);
-				modelMap.put(StringConstants.CITY_ERROR , countryDto);
-				 return "country/addCountry";
-			}
+            CountryError countryError = new CountryError();
+            countryError = countryValidation.countryValidateOnSave(countryDto);
+            if (countryError.isValid()) {
+                countryService.save(countryDto);
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully saved");
+                return "redirect:/country/list";
+            } else {
+                redirectAttributes.addAttribute(StringConstants.ERROR, "Failed to save check the field errors");
+                modelMap.put(StringConstants.ERROR, countryError);
+                modelMap.put(StringConstants.CITY_ERROR, countryDto);
+                return "country/addCountry";
+            }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
 
-	}
-    
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(HttpServletRequest request , ModelMap modelMap , RedirectAttributes redirectAttributes) throws IOException {
-    	try {
+    public String list(HttpServletRequest request, ModelMap modelMap, RedirectAttributes redirectAttributes) throws IOException {
+        try {
 
-    		if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
+            modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
 
-			return "country/countryList";
+            return "country/countryList";
 
-    	}catch(Exception e){
-    		logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-    	}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
     }
 
 }

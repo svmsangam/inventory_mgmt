@@ -17,22 +17,22 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface CityInfoRepository extends JpaRepository<CityInfo, Long> , JpaSpecificationExecutor<CityInfo> {
+public interface CityInfoRepository extends JpaRepository<CityInfo, Long>, JpaSpecificationExecutor<CityInfo> {
 
-    CityInfo findByIdAndStatus(long cityId , Status status);
+    CityInfo findByIdAndStatus(long cityId, Status status);
 
-    CityInfo findByNameAndStatus(String cityName , Status status);
+    CityInfo findByNameAndStatus(String cityName, Status status);
 
     CityInfo findByName(String name);
 
-    List<CityInfo> findAllByStatusAndStateInfo(Status status , StateInfo stateInfo);
+    List<CityInfo> findAllByStatusAndStateInfo(Status status, StateInfo stateInfo);
 
     @Query("select c from CityInfo c where c.status = ?1 and c.stateInfo.id = ?2")
-    List<CityInfo> findAllByStatusAndStateInfoId(Status status , long stateId);
+    List<CityInfo> findAllByStatusAndStateInfoId(Status status, long stateId);
 
     long countAllByStatus(Status status);
 
-    List<CityInfo> findAllByStatus(Status status , Pageable pageable);
+    List<CityInfo> findAllByStatus(Status status, Pageable pageable);
 
     List<CityInfo> findAllByStatus(Status status);
 }

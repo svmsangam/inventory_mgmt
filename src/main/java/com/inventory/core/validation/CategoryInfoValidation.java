@@ -17,7 +17,7 @@ import java.util.List;
  * Created by dhiraj on 8/15/17.
  */
 @Service
-public class CategoryInfoValidation extends GlobalValidation{
+public class CategoryInfoValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,7 +28,7 @@ public class CategoryInfoValidation extends GlobalValidation{
 
     boolean valid;
 
-    public CategoryInfoError onSave(CategoryInfoDTO categoryInfoDTO ,  BindingResult result){
+    public CategoryInfoError onSave(CategoryInfoDTO categoryInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -43,7 +43,7 @@ public class CategoryInfoValidation extends GlobalValidation{
                     error.setName("invalid store name");
                 } else if (errorResult.getField().equals("code")) {
                     error.setCode("invalid code");
-                }else if (errorResult.getField().equals("description")){
+                } else if (errorResult.getField().equals("description")) {
                     error.setCode("invalid description");
                 }
             }
@@ -53,31 +53,31 @@ public class CategoryInfoValidation extends GlobalValidation{
             return error;
         }
 
-        error.setName(checkString(categoryInfoDTO.getName() , 2 , 10, "categoryName" , true));
+        error.setName(checkString(categoryInfoDTO.getName(), 2, 10, "categoryName", true));
 
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else if (categoryInfoRepository.findByNameAndStatusAndStoreInfo(categoryInfoDTO.getName().trim() , Status.ACTIVE , categoryInfoDTO.getStoreInfoId()) != null){
+        } else if (categoryInfoRepository.findByNameAndStatusAndStoreInfo(categoryInfoDTO.getName().trim(), Status.ACTIVE, categoryInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(categoryInfoDTO.getCode() , 2 , 10, "categoryCode" , true));
+        error.setCode(checkString(categoryInfoDTO.getCode(), 2, 10, "categoryCode", true));
 
-        if (!("".equals(error.getCode()))){
+        if (!("".equals(error.getCode()))) {
             valid = false;
-        }else if (categoryInfoRepository.findByCodeAndStatusAndStoreInfo(categoryInfoDTO.getCode().trim() , Status.ACTIVE , categoryInfoDTO.getStoreInfoId()) != null){
+        } else if (categoryInfoRepository.findByCodeAndStatusAndStoreInfo(categoryInfoDTO.getCode().trim(), Status.ACTIVE, categoryInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this code already in use");
         }
 
-        error.setDescription(checkString(categoryInfoDTO.getDescription() , 5 , 100, "description" , false));
+        error.setDescription(checkString(categoryInfoDTO.getDescription(), 5, 100, "description", false));
 
-        if (!("".equals(error.getDescription()))){
+        if (!("".equals(error.getDescription()))) {
             valid = false;
         }
 

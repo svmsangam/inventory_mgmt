@@ -17,7 +17,7 @@ public class Test {
     /*@Autowired
     private IStateInfoApi stateInfoApi;*/
 
-    public   void transactional(){
+    public void transactional() {
 
         try {
 
@@ -38,7 +38,7 @@ public class Test {
 
             stateInfoApi.save(stateInfoDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

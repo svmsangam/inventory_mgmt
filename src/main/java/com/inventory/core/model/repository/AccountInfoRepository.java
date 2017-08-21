@@ -12,13 +12,13 @@ import java.util.List;
  * Created by dhiraj on 8/12/17.
  */
 @Repository
-public interface AccountInfoRepository extends CrudRepository<AccountInfo , Long>, JpaSpecificationExecutor<AccountInfo>{
+public interface AccountInfoRepository extends CrudRepository<AccountInfo, Long>, JpaSpecificationExecutor<AccountInfo> {
 
     AccountInfo findById(long accountInfoId);
 
     AccountInfo findByAcountNumber(String accountNumber);
 
-    AccountInfo findByAssociateIdAndAssociateType(long associateId , AccountAssociateType associateType);
+    AccountInfo findByAssociateIdAndAssociateType(long associateId, AccountAssociateType associateType);
 
     List<AccountInfo> findAllByAssociateType(AccountAssociateType accountAssociateType);
 

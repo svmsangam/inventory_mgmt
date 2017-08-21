@@ -14,7 +14,9 @@
                     <div class="box-header">
                         <h3 class="box-title">States</h3>
                         <div class="box-tools">
-                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
+                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal"
+                                    data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            </button>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -35,8 +37,13 @@
                                     <td>${state.countryName}</td>
                                     <td>${state.stateName}</td>
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
+                                                data-toggle="modal" data-target="#modal-edit"><span
+                                                class="glyphicon glyphicon-edit"></span> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                                class="glyphicon glyphicon-minus-sign"></span> Delete
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -89,7 +96,8 @@
                     <h4 class="modal-title">Edit State</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/state/update" modelAttribute="stateDto">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/state/update"
+                          modelAttribute="stateDto">
                         <input type="hidden" name="countryId" value=""/>
                         <div class="box-body">
                             <div class="form-group">

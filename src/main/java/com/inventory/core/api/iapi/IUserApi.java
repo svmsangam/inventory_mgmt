@@ -12,26 +12,26 @@ import java.util.List;
 
 public interface IUserApi {
 
-	InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException;
+    InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException;
 
-	InvUserDTO getUserWithId(long userId);
+    InvUserDTO getUserWithId(long userId);
 
-	InvUserDTO getUserPermission(InvUserDTO userDTO);
+    InvUserDTO getUserPermission(InvUserDTO userDTO);
 
-	List<Permission> getUserPermission(long userId);
+    List<Permission> getUserPermission(long userId);
 
-	InvUserDTO updateEnable(long userId);
+    InvUserDTO updateEnable(long userId);
 
-	void changePassword(long userId,String newPassword) throws IOException , JSONException;
-	
-	InvUserDTO getUserByUserName(String userName);
+    void changePassword(long userId, String newPassword) throws IOException, JSONException;
 
-	boolean nameExists(String userName);
+    InvUserDTO getUserByUserName(String userName);
 
-	InvUserDTO changeStore(long userId , long storeId);
+    boolean nameExists(String userName);
 
-	List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status , List<UserType> userTypeList);
+    InvUserDTO changeStore(long userId, long storeId);
 
-	List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status ,List<UserType> userTypeList, long storeInfoId);
-	
+    List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList);
+
+    List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId);
+
 }

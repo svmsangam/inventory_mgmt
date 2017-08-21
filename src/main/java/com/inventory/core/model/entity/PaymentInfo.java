@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "paymentdetail_tables")
-public class PaymentInfo extends AbstractEntity<Long>{
+public class PaymentInfo extends AbstractEntity<Long> {
 
     private static final long serialVersionUID = -6245833303340171164L;
 

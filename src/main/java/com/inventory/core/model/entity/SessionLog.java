@@ -6,59 +6,59 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="sessionlog")
+@Table(name = "sessionlog")
 public class SessionLog extends AbstractEntity<Long> {
-	
-	private static final long serialVersionUID = 1L;
 
-	private long userId;
+    private static final long serialVersionUID = 1L;
 
-	private String sessionId;
+    private long userId;
 
-	private Date loggedIn;
+    private String sessionId;
 
-	private Date loggedOut;
+    private Date loggedIn;
 
-	private String remoteAddress;
+    private Date loggedOut;
 
-	public long getUserId() {
-		return userId;
-	}
+    private String remoteAddress;
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	public String getSessionId() {
-		return sessionId;
-	}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public Date getLoggedIn() {
-		return loggedIn;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	public void setLoggedIn(Date loggedIn) {
-		this.loggedIn = loggedIn;
-	}
+    public Date getLoggedIn() {
+        return loggedIn;
+    }
 
-	public Date getLoggedOut() {
-		return loggedOut;
-	}
+    public void setLoggedIn(Date loggedIn) {
+        this.loggedIn = loggedIn;
+    }
 
-	public void setLoggedOut(Date loggedOut) {
-		this.loggedOut = loggedOut;
-	}
+    public Date getLoggedOut() {
+        return loggedOut;
+    }
 
-	public String getRemoteAddress() {
-		return remoteAddress;
-	}
+    public void setLoggedOut(Date loggedOut) {
+        this.loggedOut = loggedOut;
+    }
 
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
-	}
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
 
 }

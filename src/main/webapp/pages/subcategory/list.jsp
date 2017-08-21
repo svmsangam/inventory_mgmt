@@ -5,17 +5,21 @@
   Time: 12:07 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@include file="../common/businessOwnerSettings.jsp"%>
+<%@include file="../common/businessOwnerSettings.jsp" %>
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
-            <li><a href="/"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+            <li><a href="/">
+                <svg class="glyph stroked home">
+                    <use xlink:href="#stroked-home"></use>
+                </svg>
+            </a></li>
             <li class="active">sub categoryInfo</li>
             <li>
 
@@ -33,8 +37,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">sub categoryInfo List <a href="${pageContext.request.contextPath}/subCategoryInfo/add" style="float:right; margin-bottom:8px;">
-                        <button class="btn btn-primary btn-sm">Add New subCategoryInfo</button></a>
+                    <div class="panel-heading">sub categoryInfo List <a
+                            href="${pageContext.request.contextPath}/subCategoryInfo/add"
+                            style="float:right; margin-bottom:8px;">
+                        <button class="btn btn-primary btn-sm">Add New subCategoryInfo</button>
+                    </a>
                     </div>
                     <div class="panel-body">
                         <table id="example" class="table" cellspacing="0" width="100%">
@@ -54,10 +61,14 @@
                                     <td>${subCategoryInfo.subcategoryName}</td>
                                     <td>${subCategoryInfo.code}</td>
 
-                                    <td><a href="${pageContext.request.contextPath}/subCategoryInfo/edit?subCategoryInfo=${subCategoryInfo.subcategoryId}"
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/subCategoryInfo/edit?subCategoryInfo=${subCategoryInfo.subcategoryId}"
                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
-                                        Edit </a> <a href="${pageContext.request.contextPath}/subCategoryInfo/delete?subCategoryInfo=${subCategoryInfo.subcategoryId}"
-                                                     class="btn btn-danger btn-xs" onclick="return confirm('Are you sure, you want to DELETE?')">Delete</a></td>
+                                            Edit </a> <a
+                                            href="${pageContext.request.contextPath}/subCategoryInfo/delete?subCategoryInfo=${subCategoryInfo.subcategoryId}"
+                                            class="btn btn-danger btn-xs"
+                                            onclick="return confirm('Are you sure, you want to DELETE?')">Delete</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -68,22 +79,23 @@
                     <c:if test="${fn:length(pagelist) gt 1}">
 
                         <style>
-                            .mypgactive{
-                                background : #a51234 !important;
-                                cursor:pointer !important;
-                                color:white !important;
+                            .mypgactive {
+                                background: #a51234 !important;
+                                cursor: pointer !important;
+                                color: white !important;
                             }
                         </style>
 
                         <div class="pagination-block col-md-10  pull-left">
-                            <ul	class="pagination pagination-sm no-margin pagingclass col-md-10">
+                            <ul class="pagination pagination-sm no-margin pagingclass col-md-10">
                                 <li>
                                     <c:if test="${currentpage > 1}">
-                                        <a href="/app/oldItem?pageNo=${currentpage-1}" class="pn prev mypgactive">Prev</a>
+                                        <a href="/app/oldItem?pageNo=${currentpage-1}"
+                                           class="pn prev mypgactive">Prev</a>
                                     </c:if></li>
 
-                                <c:forEach   var="pagelist" items="${pagelist}" >
-                                    <li> <c:choose>
+                                <c:forEach var="pagelist" items="${pagelist}">
+                                    <li><c:choose>
 
                                         <c:when test="${pagelist == currentpage}">
 
@@ -96,11 +108,12 @@
 
                                         </c:otherwise>
 
-                                    </c:choose> </li>
+                                    </c:choose></li>
                                 </c:forEach>
                                 <li>
                                     <c:if test="${currentpage + 1 <= lastpage}">
-                                        <a href="/app/oldItem?pageNo=${currentpage+1}" class="pn next mypgactive">Next</a>
+                                        <a href="/app/oldItem?pageNo=${currentpage+1}"
+                                           class="pn next mypgactive">Next</a>
                                     </c:if></li>
                             </ul>
                         </div>
@@ -111,5 +124,5 @@
         </div>
     </div>
 </div>
-<%@include file="../common/footer.jsp"%>
+<%@include file="../common/footer.jsp" %>
 

@@ -37,7 +37,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryInfoDTO.getSubCategoryId());
 
-        subCategoryInfo = subCategoryInfoConverter.copyConvertToEntity(subCategoryInfoDTO,subCategoryInfo);
+        subCategoryInfo = subCategoryInfoConverter.copyConvertToEntity(subCategoryInfoDTO, subCategoryInfo);
 
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
     }
@@ -54,22 +54,22 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
     @Override
     public SubCategoryInfoDTO show(long subCategoryId, long storeId, Status status) {
-        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryId,status,storeId));
+        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryId, status, storeId));
     }
 
     @Override
     public List<SubCategoryInfoDTO> list(Status status, long storeId) {
-        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfo(status,storeId));
+        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
     }
 
     @Override
     public List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status, long storeId, long categoryId) {
-        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfoAndCategoryInfo(status , storeId , categoryId));
+        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfoAndCategoryInfo(status, storeId, categoryId));
     }
 
     @Override
     public SubCategoryInfoDTO getSubCategoryByNameAndStoreAndStatus(String subCategoryName, long storeId, Status status) {
-        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryName,status,storeId));
+        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryName, status, storeId));
     }
 
 }

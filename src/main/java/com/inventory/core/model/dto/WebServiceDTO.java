@@ -4,45 +4,45 @@ import com.inventory.core.model.enumconstant.Status;
 
 public class WebServiceDTO {
 
-	private String api_user;
-	
-	private String api_password;
+    private String api_user;
 
-	private String access_key;
+    private String api_password;
 
-	private Status status;
+    private String access_key;
 
-	public String getApi_user() {
-		return api_user;
-	}
+    private Status status;
 
-	public void setApi_user(String api_user) {
-		this.api_user = api_user;
-	}
+    public String getApi_user() {
+        return api_user;
+    }
 
-	public String getApi_password() {
-		return api_password;
-	}
+    public void setApi_user(String api_user) {
+        this.api_user = api_user;
+    }
 
-	public void setApi_password(String api_password) {
-		this.api_password = api_password;
-	}
+    public String getApi_password() {
+        return api_password;
+    }
 
-	public String getAccess_key() {
-		return access_key;
-	}
+    public void setApi_password(String api_password) {
+        this.api_password = api_password;
+    }
 
-	public void setAccess_key(String access_key) {
-		this.access_key = access_key;
-	}
+    public String getAccess_key() {
+        return access_key;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public void setAccess_key(String access_key) {
+        this.access_key = access_key;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	
-	
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+
 }

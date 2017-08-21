@@ -334,7 +334,7 @@
                 form.submit();
             }
         });
-    class
+        class
         = "pull-right"
     });
 </script>
@@ -370,9 +370,9 @@
 
                     return {
                         results: arr/*,
-						 pagination: {
-						 more: (params.page * 1) < 2
-						 }*/
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
                     };
                 },
                 cache: true

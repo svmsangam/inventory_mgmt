@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface DesignationRepository extends JpaRepository<Designation , Long> , JpaSpecificationExecutor<Designation>{
+public interface DesignationRepository extends JpaRepository<Designation, Long>, JpaSpecificationExecutor<Designation> {
 
     Designation findById(long designationId);
 

@@ -18,7 +18,7 @@ import java.util.List;
  * Created by dhiraj on 8/15/17.
  */
 @Service
-public class SubCategoryInfoValidation extends GlobalValidation{
+public class SubCategoryInfoValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -32,7 +32,7 @@ public class SubCategoryInfoValidation extends GlobalValidation{
 
     boolean valid;
 
-    public SubCategoryInfoError onSave(SubCategoryInfoDTO subCategoryInfoDTO,  BindingResult result){
+    public SubCategoryInfoError onSave(SubCategoryInfoDTO subCategoryInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -47,9 +47,9 @@ public class SubCategoryInfoValidation extends GlobalValidation{
                     error.setName("invalid store name");
                 } else if (errorResult.getField().equals("code")) {
                     error.setCode("invalid code");
-                }else if (errorResult.getField().equals("description")){
+                } else if (errorResult.getField().equals("description")) {
                     error.setCode("invalid description");
-                }else if (errorResult.getField().equals("categoryId")){
+                } else if (errorResult.getField().equals("categoryId")) {
                     error.setCategoryId("invalid category");
                 }
             }
@@ -59,39 +59,39 @@ public class SubCategoryInfoValidation extends GlobalValidation{
             return error;
         }
 
-        error.setName(checkString(subCategoryInfoDTO.getName() , 2 , 10, "subcategoryName" , true));
+        error.setName(checkString(subCategoryInfoDTO.getName(), 2, 10, "subcategoryName", true));
 
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else if (subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryInfoDTO.getName().trim() , Status.ACTIVE , subCategoryInfoDTO.getStoreInfoId()) != null){
+        } else if (subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryInfoDTO.getName().trim(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(subCategoryInfoDTO.getCode() , 2 , 10, "subcategoryCode" , true));
+        error.setCode(checkString(subCategoryInfoDTO.getCode(), 2, 10, "subcategoryCode", true));
 
-        if (!("".equals(error.getCode()))){
+        if (!("".equals(error.getCode()))) {
             valid = false;
-        }else if (subCategoryInfoRepository.findByCodeAndStatusAndStoreInfo(subCategoryInfoDTO.getCode().trim() , Status.ACTIVE , subCategoryInfoDTO.getStoreInfoId()) != null){
+        } else if (subCategoryInfoRepository.findByCodeAndStatusAndStoreInfo(subCategoryInfoDTO.getCode().trim(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this code already in use");
         }
 
-        error.setDescription(checkString(subCategoryInfoDTO.getDescription() , 5 , 100, "description" , false));
+        error.setDescription(checkString(subCategoryInfoDTO.getDescription(), 5, 100, "description", false));
 
-        if (!("".equals(error.getDescription()))){
+        if (!("".equals(error.getDescription()))) {
             valid = false;
         }
 
-        error.setCategoryId(checkLong(subCategoryInfoDTO.getCategoryId() , 1 , "categoryId" , true));
+        error.setCategoryId(checkLong(subCategoryInfoDTO.getCategoryId(), 1, "categoryId", true));
 
-        if (!("".equals(error.getCode()))){
+        if (!("".equals(error.getCode()))) {
             valid = false;
-        }else if (categoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId() , Status.ACTIVE , subCategoryInfoDTO.getStoreInfoId()) == null){
+        } else if (categoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
             valid = false;
             error.setCategoryId("invalid category");
         }

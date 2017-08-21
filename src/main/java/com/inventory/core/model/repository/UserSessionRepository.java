@@ -17,39 +17,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserSessionRepository extends CrudRepository<UserSession, String> {
 
-	@Query("select s from UserSession s WHERE s.sessionId = ?1")
-	UserSession findBySessionId(String sessionId);
+    @Query("select s from UserSession s WHERE s.sessionId = ?1")
+    UserSession findBySessionId(String sessionId);
 
-	@Query("select s from UserSession s WHERE s.user.id = ?1 and s.expired = false")
-	List<UserSession> getUserSessions(Long userId);
+    @Query("select s from UserSession s WHERE s.user.id = ?1 and s.expired = false")
+    List<UserSession> getUserSessions(Long userId);
 
-	@Query("select s from UserSession s WHERE s.user.id = ?1")
-	List<UserSession> getUserSessionsIncludingExpired(Long userId);
+    @Query("select s from UserSession s WHERE s.user.id = ?1")
+    List<UserSession> getUserSessionsIncludingExpired(Long userId);
 
-	//@Query("select distinct(s.user) from usersession s WHERE s.expired=false")
-	@Query("select s.user from UserSession s WHERE s.expired=false")
-	Page<User> findActiveUsers(Pageable page);
+    //@Query("select distinct(s.user) from usersession s WHERE s.expired=false")
+    @Query("select s.user from UserSession s WHERE s.expired=false")
+    Page<User> findActiveUsers(Pageable page);
 
-	@Query("select s from UserSession s WHERE s.expired=false")
-	Page<UserSession> findActiveSessions(Pageable page);
+    @Query("select s from UserSession s WHERE s.expired=false")
+    Page<UserSession> findActiveSessions(Pageable page);
 
-	@Query("select count(s) from UserSession s WHERE s.expired=false")
-	long countActiveSessions();
+    @Query("select count(s) from UserSession s WHERE s.expired=false")
+    long countActiveSessions();
 
-	@Query("select s from UserSession s WHERE s.sessionId = ?1 and s.expired = false")
-	UserSession findByActiveSessionId(String sessionId);
+    @Query("select s from UserSession s WHERE s.sessionId = ?1 and s.expired = false")
+    UserSession findByActiveSessionId(String sessionId);
 
-	@Transactional
-	@Modifying
-	@Query("delete from UserSession s where s.expired=true or s.lastRequest < ?1")
-	void deleteExpiredSessions(Date lastRefreshed);
+    @Transactional
+    @Modifying
+    @Query("delete from UserSession s where s.expired=true or s.lastRequest < ?1")
+    void deleteExpiredSessions(Date lastRefreshed);
 
-	@Transactional
-	@Modifying
-	@Query("update UserSession s set s.lastRequest = now() where s.sessionId=?1")
-	void refreshSession(String sessionId);
+    @Transactional
+    @Modifying
+    @Query("update UserSession s set s.lastRequest = now() where s.sessionId=?1")
+    void refreshSession(String sessionId);
 
-	@Query("select s from UserSession s where s.expired = false")
-	List<UserSession> findActiveUser();
+    @Query("select s from UserSession s where s.expired = false")
+    List<UserSession> findActiveUser();
 
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class StoreInfoApi implements IStoreInfoApi{
+public class StoreInfoApi implements IStoreInfoApi {
 
     @Autowired
     private StoreInfoConverter storeInfoConverter;
@@ -32,7 +32,7 @@ public class StoreInfoApi implements IStoreInfoApi{
     private IStoreUserInfoApi storeUserInfoApi;
 
     @Override
-    public StoreInfoDTO save(StoreInfoDTO storeInfoDTO , long currentUserId) {
+    public StoreInfoDTO save(StoreInfoDTO storeInfoDTO, long currentUserId) {
 
         StoreInfo storeInfo = storeInfoConverter.convertToEntity(storeInfoDTO);
 
@@ -40,9 +40,9 @@ public class StoreInfoApi implements IStoreInfoApi{
 
         storeInfo = storeInfoRepository.save(storeInfo);
 
-        accountInfoApi.save(storeInfo.getId() , AccountAssociateType.STORE , "S-");
+        accountInfoApi.save(storeInfo.getId(), AccountAssociateType.STORE, "S-");
 
-        storeUserInfoApi.save(currentUserId , storeInfo.getId());
+        storeUserInfoApi.save(currentUserId, storeInfo.getId());
 
         return storeInfoConverter.convertToDto(storeInfo);
     }
@@ -68,7 +68,7 @@ public class StoreInfoApi implements IStoreInfoApi{
 
     @Override
     public StoreInfoDTO show(long storeId, Status status) {
-        return storeInfoConverter.convertToDto(storeInfoRepository.findByIdAndStatus(storeId,status));
+        return storeInfoConverter.convertToDto(storeInfoRepository.findByIdAndStatus(storeId, status));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class StoreInfoApi implements IStoreInfoApi{
     @Override
     public StoreInfoDTO getStoreByNameAndStatus(String storeName, Status status) {
 
-        return storeInfoConverter.convertToDto(storeInfoRepository.findByNameAndStatus(storeName , status));
+        return storeInfoConverter.convertToDto(storeInfoRepository.findByNameAndStatus(storeName, status));
     }
 
     @Override

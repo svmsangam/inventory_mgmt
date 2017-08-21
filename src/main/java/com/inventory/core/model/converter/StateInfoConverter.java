@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>, IListConvertable<StateInfo , StateInfoDTO> {
+public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>, IListConvertable<StateInfo, StateInfoDTO> {
 
     @Autowired
     private CountryInfoRepository countryRepository;
@@ -27,13 +27,13 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
     @Override
     public StateInfo convertToEntity(StateInfoDTO dto) {
 
-        return copyConvertToEntity(dto , new StateInfo());
+        return copyConvertToEntity(dto, new StateInfo());
     }
 
     @Override
     public StateInfoDTO convertToDto(StateInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -49,7 +49,7 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
     @Override
     public StateInfo copyConvertToEntity(StateInfoDTO dto, StateInfo entity) {
 
-        if (entity == null || dto == null){
+        if (entity == null || dto == null) {
             return null;
         }
 

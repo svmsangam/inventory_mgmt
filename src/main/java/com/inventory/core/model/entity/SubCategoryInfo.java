@@ -10,14 +10,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "subcategory_table")
-public class SubCategoryInfo extends AbstractEntity<Long>{
+public class SubCategoryInfo extends AbstractEntity<Long> {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5073587115963440263L;
-	
-	private String name;
+     *
+     */
+    private static final long serialVersionUID = 5073587115963440263L;
+
+    private String name;
 
     private String code;
 

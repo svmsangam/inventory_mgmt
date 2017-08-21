@@ -4,47 +4,47 @@
 
 // user service start
 
-function UserService(){
+function UserService() {
     var userRequest;
 
     return {
 
-        list : [],
+        list: [],
 
-        save : function(user , url , pagecontext){
+        save: function (user, url, pagecontext) {
 
             var that = new UserService();
 
-            if(userRequest !== undefined){
+            if (userRequest !== undefined) {
                 userRequest.abort();
             }
 
             userRequest = $.ajax({
                 type: "POST",
                 url: url,
-                contentType : "application/x-www-form-urlencoded;charset=utf-8",
-                data : user,
-                dataType : 'json',
-                timeout : 100000,
-                success: function(data) {
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: user,
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
 
                     var result = data.detail;
 
                     var msg = data.message;
 
-                    if(data.status === 'Success'){
+                    if (data.status === 'Success') {
 
-                        that.setDataToDOM(result , pagecontext);
+                        that.setDataToDOM(result, pagecontext);
                         that.successMsg(msg);
                         $(".closeAdd").click();
                     }
 
-                    if (data.status === 'Failure'){
+                    if (data.status === 'Failure') {
                         that.errorMsg(msg);
                         $(".closeAdd").click();
                     }
 
-                    if(data.status === 'Validation Failed'){
+                    if (data.status === 'Validation Failed') {
 
                         that.errorOnForm(msg);
                         that.setError(result);
@@ -54,11 +54,11 @@ function UserService(){
 
         },
 
-        getById : function (userId) {
+        getById: function (userId) {
 
         },
 
-        setError : function (error) {
+        setError: function (error) {
             $(".inventoryuser").text(error.username);
             $(".userpassword").text(error.password);
             $(".userrepassword").text(error.repassword);
@@ -66,7 +66,7 @@ function UserService(){
             $(".storeId").text(error.storeId);
         },
 
-        clearError : function () {
+        clearError: function () {
             $(".inventoryuser").text("");
             $(".userpassword").text("");
             $(".userrepassword").text("");
@@ -76,14 +76,14 @@ function UserService(){
             $(".addError").removeClass("hide").removeClass("show").addClass("hide");
         },
 
-        clearForm : function () {
+        clearForm: function () {
             $("#inventoryuser").val("");
             $("#userpassword").val("");
             $("#userrepassword").val("");
             /*$("#userType").val("");*/
         },
 
-        successMsg : function (msg) {
+        successMsg: function (msg) {
             $.notify({
                 icon: 'glyphicon glyphicon-ok',
                 title: '<strong>Success!</strong>',
@@ -91,11 +91,11 @@ function UserService(){
             });
         },
 
-        errorMsg : function (msg) {
+        errorMsg: function (msg) {
             $.notify({
                 title: '<strong>warnning!</strong>',
                 message: msg
-            },{
+            }, {
                 type: 'danger'
             });
         },
@@ -105,30 +105,30 @@ function UserService(){
             $(".errorModel").text(error);
         },
 
-        setDataToDOM : function (data , pagecontext) {
+        setDataToDOM: function (data, pagecontext) {
             var row = "<tr>";
             row += "<td>0</td>";
-            row += "<td>"+data.inventoryuser+"</td>";
-            row += "<td>"+data.userType+"</td>";
+            row += "<td>" + data.inventoryuser + "</td>";
+            row += "<td>" + data.userType + "</td>";
             row += "<td>";
-            if(data.enable === true){
+            if (data.enable === true) {
                 row += "<span class='label label-success'>Activated</span>";
-                if(data.userType === "USER"){
-                    row += "<a href='"+pagecontext+"/user/manage?userId="+data.userId+"'><span class='label label-primary label-manage'>Manage</span></a>";
+                if (data.userType === "USER") {
+                    row += "<a href='" + pagecontext + "/user/manage?userId=" + data.userId + "'><span class='label label-primary label-manage'>Manage</span></a>";
                 }
-            }else {
+            } else {
                 row += "<span class='label label-danger'>Deactivated</span>";
             }
 
             row += "</td>";
 
             row += "<td>";
-            if(data.enable === false){
+            if (data.enable === false) {
 
-                row += "<a href='"+pagecontext+"/user/updateenable?userId="+data.userId+"' onclick='return confirm('Are you sure you want to Activate?')'><span class='label label-success'>Activate ?</span></a>";
+                row += "<a href='" + pagecontext + "/user/updateenable?userId=" + data.userId + "' onclick='return confirm('Are you sure you want to Activate?')'><span class='label label-success'>Activate ?</span></a>";
 
-            }else {
-                row += "<a href='"+pagecontext+"/user/updateenable?userId="+data.userId+"' onclick='return confirm('Are you sure you want to Deactivate?')'><span class='label label-danger'>Deactivate ?</span></a>";
+            } else {
+                row += "<a href='" + pagecontext + "/user/updateenable?userId=" + data.userId + "' onclick='return confirm('Are you sure you want to Deactivate?')'><span class='label label-danger'>Deactivate ?</span></a>";
             }
 
             row += "</td>";
@@ -136,8 +136,8 @@ function UserService(){
 
             $("#myData").prepend(row);
 
-            $("tbody > tr").each(function(index) {
-                $(this).find("td:eq(0)").text(index+1);
+            $("tbody > tr").each(function (index) {
+                $(this).find("td:eq(0)").text(index + 1);
             })
         }
     };
@@ -148,37 +148,37 @@ function UserService(){
 
 // store service start
 
-function StoreService(){
+function StoreService() {
     var storeRequest;
 
     return {
 
-        list : [],
+        list: [],
 
-        save : function(store , url , pagecontext , isSave){
+        save: function (store, url, pagecontext, isSave) {
 
             var that = new StoreService();
 
-            if(storeRequest !== undefined){
+            if (storeRequest !== undefined) {
                 storeRequest.abort();
             }
 
             storeRequest = $.ajax({
                 type: "POST",
                 url: url,
-                contentType : "application/x-www-form-urlencoded;charset=utf-8",
-                data : store,
-                dataType : 'json',
-                timeout : 100000,
-                success: function(data) {
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: store,
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
 
                     var result = data.detail;
 
                     var msg = data.message;
 
-                    if(data.status === 'Success'){
+                    if (data.status === 'Success') {
 
-                        if(isSave === true) {
+                        if (isSave === true) {
                             that.setDataToDOM(result, pagecontext);
                             that.successMsg(msg);
                             $(".closeAdd").click();
@@ -188,12 +188,12 @@ function StoreService(){
                         }
                     }
 
-                    if (data.status === 'Failure'){
+                    if (data.status === 'Failure') {
                         that.errorMsg(msg);
                         $(".closeAdd").click();
                     }
 
-                    if(data.status === 'Validation Failed'){
+                    if (data.status === 'Validation Failed') {
 
                         that.errorOnForm(msg);
                         that.setError(result);
@@ -203,34 +203,34 @@ function StoreService(){
 
         },
 
-        getById : function (url) {
+        getById: function (url) {
 
             var that = new StoreService();
 
             that.clearLoadData();
 
-            if(storeRequest !== undefined){
+            if (storeRequest !== undefined) {
                 storeRequest.abort();
             }
 
             storeRequest = $.ajax({
                 type: "GET",
                 url: url,
-                contentType : "application/x-www-form-urlencoded;charset=utf-8",
-                dataType : 'json',
-                timeout : 100000,
-                success: function(data) {
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
 
                     var result = data.detail;
 
                     var msg = data.message;
 
-                    if(data.status === 'Success'){
+                    if (data.status === 'Success') {
 
                         that.loadData(result);
                     }
 
-                    if (data.status === 'Failure'){
+                    if (data.status === 'Failure') {
                         that.errorMsg(msg);
                         $(".closeShow").click();
                     }
@@ -238,7 +238,7 @@ function StoreService(){
             });
         },
 
-        loadData : function (data) {
+        loadData: function (data) {
 
             $(".storeName").text("").text(data.name);
             $(".storeEmail").text("").text(data.email);
@@ -256,7 +256,7 @@ function StoreService(){
             $("#contactEdit").val("").val(data.contact);
             $("#mobileEdit").val("").val(data.mobileNumber);
             $("#streetEdit").val("").val(data.street);
-            $("#storeIdEdit").attr("storeId" , "").attr("storeId" , data.storeId);
+            $("#storeIdEdit").attr("storeId", "").attr("storeId", data.storeId);
 
         },
 
@@ -276,10 +276,10 @@ function StoreService(){
             $("#contactEdit").val("");
             $("#mobileEdit").val("");
             $("#streetEdit").val("");
-            $("#storeIdEdit").attr("storeId" , "");
+            $("#storeIdEdit").attr("storeId", "");
         },
 
-        setError : function (error) {
+        setError: function (error) {
             $(".name").text(error.name);
             $(".contact").text(error.contact);
             $(".email").text(error.email);
@@ -290,7 +290,7 @@ function StoreService(){
             $(".street").text(error.street);
         },
 
-        clearError : function () {
+        clearError: function () {
             $(".name").text("");
             $(".contact").text("");
             $(".email").text("");
@@ -303,7 +303,7 @@ function StoreService(){
             $(".addError").removeClass("hide").removeClass("show").addClass("hide");
         },
 
-        clearForm : function () {
+        clearForm: function () {
             $("#name").val("");
             $("#contact").val("");
             $("#email").val("");
@@ -315,7 +315,7 @@ function StoreService(){
             /*$("#cityId").val("");*/
         },
 
-        successMsg : function (msg) {
+        successMsg: function (msg) {
             $.notify({
                 icon: 'glyphicon glyphicon-ok',
                 title: '<strong>Success!</strong>',
@@ -323,11 +323,11 @@ function StoreService(){
             });
         },
 
-        errorMsg : function (msg) {
+        errorMsg: function (msg) {
             $.notify({
                 title: '<strong>warnning!</strong>',
                 message: msg
-            },{
+            }, {
                 type: 'danger'
             });
         },
@@ -337,23 +337,23 @@ function StoreService(){
             $(".errorModel").text(error);
         },
 
-        setDataToDOM : function (data , pagecontext) {
+        setDataToDOM: function (data, pagecontext) {
             var row = "<tr>";
             row += "<td>0</td>";
-            row += "<td>"+data.name+"</td>";
-            row += "<td>"+data.contact+"</td>";
-            row += "<td>"+data.email+"</td>";
-            row += "<td>"+data.cityName+"</td>";
-            row += "<td>"+data.street+"</td>";
+            row += "<td>" + data.name + "</td>";
+            row += "<td>" + data.contact + "</td>";
+            row += "<td>" + data.email + "</td>";
+            row += "<td>" + data.cityName + "</td>";
+            row += "<td>" + data.street + "</td>";
             row += "<td><span class='label label-success'>Active</span></td>";
-            row += "<td><button type='button' class='btn btn-info btn-sm  btn-flat viewStoreInfo' url='"+pagecontext+"/store/show/"+data.storeId+"' data-toggle='modal' data-target='#modal-view'><span class='glyphicon glyphicon-eye-open'></span>View</button>";
+            row += "<td><button type='button' class='btn btn-info btn-sm  btn-flat viewStoreInfo' url='" + pagecontext + "/store/show/" + data.storeId + "' data-toggle='modal' data-target='#modal-view'><span class='glyphicon glyphicon-eye-open'></span>View</button>";
             row += "<button type='button' class='btn btn-warning btn-sm  btn-flat' data-toggle='modal' data-target='#modal-edit'><span class='glyphicon glyphicon-edit'></span>Edit</button></td>";
             row += "</tr>";
 
             $("#myData").prepend(row);
 
-            $("tbody > tr").each(function(index) {
-                $(this).find("td:eq(0)").text(index+1);
+            $("tbody > tr").each(function (index) {
+                $(this).find("td:eq(0)").text(index + 1);
             })
         }
     };

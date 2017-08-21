@@ -5,125 +5,125 @@ import com.inventory.core.model.enumconstant.Status;
 
 public class UserSessionDTO {
 
-	private long id;
-	
-	private String lastRequest;
+    private long id;
 
-	private String sessionId;
+    private String lastRequest;
 
-	private long userId;
+    private String sessionId;
 
-	private String username;
+    private long userId;
 
-	private String password;
+    private String username;
 
-	private UserType userType;
+    private String password;
 
-	private String address;
+    private UserType userType;
 
-	private String mobileNo;
+    private String address;
 
-	private String emailId;
+    private String mobileNo;
 
-	private String authority;
+    private String emailId;
 
-	private Status status;
+    private String authority;
 
-	
-	public String getLastRequest() {
-		return lastRequest;
-	}
+    private Status status;
 
-	public void setLastRequest(String lastRequest) {
-		this.lastRequest = lastRequest;
-	}
-	
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	public String getSessionId() {
-		return sessionId;
-	}
+    public String getLastRequest() {
+        return lastRequest;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public void setLastRequest(String lastRequest) {
+        this.lastRequest = lastRequest;
+    }
 
-	public long getUserId() {
-		return userId;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	
-	public String getUsername() {
-		return username;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	public UserType getUserType() {
-		return userType;
-	}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getMobileNo() {
-		return mobileNo;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
+    public UserType getUserType() {
+        return userType;
+    }
 
-	public String getEmailId() {
-		return emailId;
-	}
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getAuthority() {
-		return authority;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
+    public String getMobileNo() {
+        return mobileNo;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
 }

@@ -33,7 +33,7 @@ public class StoreInfoValidation extends GlobalValidation {
 
     boolean valid;
 
-    public StoreInfoError onSave(StoreInfoDTO storeInfoDTO , BindingResult result){
+    public StoreInfoError onSave(StoreInfoDTO storeInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -43,25 +43,25 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
 
             List<FieldError> errors = result.getFieldErrors();
-            for (FieldError errorResult : errors ) {
+            for (FieldError errorResult : errors) {
 
-                if (errorResult.getField().equals("name")){
+                if (errorResult.getField().equals("name")) {
                     error.setName("invalid store name");
-                }else if (errorResult.getField().equals("cityId")){
+                } else if (errorResult.getField().equals("cityId")) {
                     error.setCityName("invalid city");
-                } else if(errorResult.getField().equals("contact")){
+                } else if (errorResult.getField().equals("contact")) {
                     error.setContact("invalid data provided");
-                }else if (errorResult.getField().equals("email")){
+                } else if (errorResult.getField().equals("email")) {
                     error.setEmail("invalid city");
-                } else if(errorResult.getField().equals("mobileNumber")){
+                } else if (errorResult.getField().equals("mobileNumber")) {
                     error.setMobileNumber("invalid data provided");
-                }else if (errorResult.getField().equals("regNumber")){
+                } else if (errorResult.getField().equals("regNumber")) {
                     error.setRegNumber("invalid city");
-                } else if(errorResult.getField().equals("panNumber")){
+                } else if (errorResult.getField().equals("panNumber")) {
                     error.setPanNumber("invalid data provided");
-                }else if(errorResult.getField().equals("street")){
+                } else if (errorResult.getField().equals("street")) {
                     error.setStreet("invalid data provided");
-                }else{
+                } else {
                     //System.out.println(errorResult.getField() + " " + errorResult.getRejectedValue());
                     error.setName("invalid data provided");
                 }
@@ -73,60 +73,58 @@ public class StoreInfoValidation extends GlobalValidation {
         }
 
 
+        error.setName(checkString(storeInfoDTO.getName(), 5, 50, "storeName", true));
 
-
-        error.setName(checkString(storeInfoDTO.getName() , 5 , 50 , "storeName" , true));
-
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else {
+        } else {
             checkStoreName(storeInfoDTO.getName().trim());
         }
 
-        error.setCityName(checkLong(storeInfoDTO.getCityId() , 1 , "city" , true));
+        error.setCityName(checkLong(storeInfoDTO.getCityId(), 1, "city", true));
 
         try {
 
-            if (!("".equals(error.getCityName()))){
+            if (!("".equals(error.getCityName()))) {
                 valid = false;
             } else if (cityInfoRepository.findByIdAndStatus(storeInfoDTO.getCityId(), Status.ACTIVE) == null) {
                 valid = false;
                 error.setCityName("invalid city");
             }
-        }catch (Exception e){
-            logger.error(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
+        } catch (Exception e) {
+            logger.error(e.getClass() + " error on store validation for city id : " + Arrays.toString(e.getStackTrace()));
 
             valid = false;
             error.setCityName("invalid city");
         }
 
-        error.setContact(checkString(storeInfoDTO.getContact() , 7 , 10  , "contact" , true));
+        error.setContact(checkString(storeInfoDTO.getContact(), 7, 10, "contact", true));
 
-        if (!("".equals(error.getContact()))){
+        if (!("".equals(error.getContact()))) {
             valid = false;
         }
 
-        error.setEmail(checkString(storeInfoDTO.getEmail() , 5 , 20 , "email" , true));
+        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 20, "email", true));
 
-        if (!("".equals(error.getEmail()))){
+        if (!("".equals(error.getEmail()))) {
             valid = false;
         }
 
-        error.setMobileNumber(checkString(storeInfoDTO.getMobileNumber() , 10 , 10 , "mobile Number" , false));
+        error.setMobileNumber(checkString(storeInfoDTO.getMobileNumber(), 10, 10, "mobile Number", false));
 
-        if (!("".equals(error.getMobileNumber()))){
+        if (!("".equals(error.getMobileNumber()))) {
             valid = false;
         }
 
-        error.setPanNumber(checkString(storeInfoDTO.getPanNumber() , 10 , 10 , "pan number" , true));
+        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 10, 10, "pan number", true));
 
-        if (!("".equals(error.getPanNumber()))){
+        if (!("".equals(error.getPanNumber()))) {
             valid = false;
         }
 
-        error.setRegNumber(checkString(storeInfoDTO.getRegNumber() , 10 , 10 , "registration number" , true));
+        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 10, 10, "registration number", true));
 
-        if (!("".equals(error.getRegNumber()))){
+        if (!("".equals(error.getRegNumber()))) {
             valid = false;
         }
 
@@ -135,7 +133,7 @@ public class StoreInfoValidation extends GlobalValidation {
         return error;
     }
 
-    public StoreInfoError onUpdate(StoreInfoDTO storeInfoDTO , BindingResult result){
+    public StoreInfoError onUpdate(StoreInfoDTO storeInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -145,27 +143,27 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
 
             List<FieldError> errors = result.getFieldErrors();
-            for (FieldError errorResult : errors ) {
+            for (FieldError errorResult : errors) {
 
-                if (errorResult.getField().equals("name")){
+                if (errorResult.getField().equals("name")) {
                     error.setName("invalid store name");
-                }else if (errorResult.getField().equals("storeId")) {
+                } else if (errorResult.getField().equals("storeId")) {
                     error.setCityName("invalid store");
-                }else if (errorResult.getField().equals("cityId")){
+                } else if (errorResult.getField().equals("cityId")) {
                     error.setCityName("invalid city");
-                } else if(errorResult.getField().equals("contact")){
+                } else if (errorResult.getField().equals("contact")) {
                     error.setContact("invalid data provided");
-                }else if (errorResult.getField().equals("email")){
+                } else if (errorResult.getField().equals("email")) {
                     error.setEmail("invalid city");
-                } else if(errorResult.getField().equals("mobileNumber")){
+                } else if (errorResult.getField().equals("mobileNumber")) {
                     error.setMobileNumber("invalid data provided");
-                }else if (errorResult.getField().equals("regNumber")){
+                } else if (errorResult.getField().equals("regNumber")) {
                     error.setRegNumber("invalid city");
-                } else if(errorResult.getField().equals("panNumber")){
+                } else if (errorResult.getField().equals("panNumber")) {
                     error.setPanNumber("invalid data provided");
-                }else if(errorResult.getField().equals("street")){
+                } else if (errorResult.getField().equals("street")) {
                     error.setStreet("invalid data provided");
-                }else{
+                } else {
                     //System.out.println(errorResult.getField() + " " + errorResult.getRejectedValue());
                     error.setName("invalid data provided");
                 }
@@ -177,21 +175,19 @@ public class StoreInfoValidation extends GlobalValidation {
         }
 
 
+        error.setName(checkLong(storeInfoDTO.getStoreId(), 1, "storeId", true));
 
-
-        error.setName(checkLong(storeInfoDTO.getStoreId() , 1, "storeId" , true));
-
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else {
-            try{
+        } else {
+            try {
 
-                if (storeInfoRepository.findByIdAndStatus(storeInfoDTO.getStoreId() , Status.ACTIVE) == null){
+                if (storeInfoRepository.findByIdAndStatus(storeInfoDTO.getStoreId(), Status.ACTIVE) == null) {
                     valid = false;
 
                     error.setName("store not found");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 valid = false;
 
                 error.setName("store not found");
@@ -215,33 +211,33 @@ public class StoreInfoValidation extends GlobalValidation {
             error.setCityName("invalid city");
         }*/
 
-        error.setContact(checkString(storeInfoDTO.getContact() , 7 , 10  , "contact" , true));
+        error.setContact(checkString(storeInfoDTO.getContact(), 7, 10, "contact", true));
 
-        if (!("".equals(error.getContact()))){
+        if (!("".equals(error.getContact()))) {
             valid = false;
         }
 
-        error.setEmail(checkString(storeInfoDTO.getEmail() , 5 , 20 , "email" , true));
+        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 20, "email", true));
 
-        if (!("".equals(error.getEmail()))){
+        if (!("".equals(error.getEmail()))) {
             valid = false;
         }
 
-        error.setMobileNumber(checkString(storeInfoDTO.getMobileNumber() , 10 , 10 , "mobile Number" , false));
+        error.setMobileNumber(checkString(storeInfoDTO.getMobileNumber(), 10, 10, "mobile Number", false));
 
-        if (!("".equals(error.getMobileNumber()))){
+        if (!("".equals(error.getMobileNumber()))) {
             valid = false;
         }
 
-        error.setPanNumber(checkString(storeInfoDTO.getPanNumber() , 10 , 10 , "pan number" , true));
+        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 10, 10, "pan number", true));
 
-        if (!("".equals(error.getPanNumber()))){
+        if (!("".equals(error.getPanNumber()))) {
             valid = false;
         }
 
-        error.setRegNumber(checkString(storeInfoDTO.getRegNumber() , 10 , 10 , "registration number" , true));
+        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 10, 10, "registration number", true));
 
-        if (!("".equals(error.getRegNumber()))){
+        if (!("".equals(error.getRegNumber()))) {
             valid = false;
         }
 
@@ -250,9 +246,9 @@ public class StoreInfoValidation extends GlobalValidation {
         return error;
     }
 
-    private void checkStoreName(String name){
+    private void checkStoreName(String name) {
 
-        if (storeInfoRepository.findByNameAndStatus(name , Status.ACTIVE) != null){
+        if (storeInfoRepository.findByNameAndStatus(name, Status.ACTIVE) != null) {
             valid = false;
 
             error.setName("store name not avialabale");

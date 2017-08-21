@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "store_user_table")
-public class StoreUserInfo extends AbstractEntity<Long>{
+public class StoreUserInfo extends AbstractEntity<Long> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;

@@ -42,15 +42,15 @@ public class StoreAjaxController {
     @Autowired
     private IUserApi userApi;
 
-    @PostMapping(value = "save" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult , HttpServletRequest request){
+    @PostMapping(value = "save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store") StoreInfoDTO storeInfoDTO, BindingResult bindingResult, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null){
+            if (currentUser == null) {
                 request.getSession().invalidate();
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("user authentication failed");
@@ -61,32 +61,32 @@ public class StoreAjaxController {
 
                 StoreInfoError error = new StoreInfoError();
 
-                error = storeInfoValidation.onSave(storeInfoDTO , bindingResult);
+                error = storeInfoValidation.onSave(storeInfoDTO, bindingResult);
 
-                if (error.isValid()){
+                if (error.isValid()) {
 
-                    storeInfoDTO = storeInfoApi.save(storeInfoDTO , currentUser.getUserId());
+                    storeInfoDTO = storeInfoApi.save(storeInfoDTO, currentUser.getUserId());
 
-                    if (currentUser.getStoreId() == null){
-                        userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());
+                    if (currentUser.getStoreId() == null) {
+                        userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
                     }
 
                     result.setStatus(ResponseStatus.SUCCESS.getValue());
                     result.setMessage("store successfully saved");
                     result.setDetail(storeInfoDTO);
 
-                }else {
+                } else {
                     result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
                     result.setMessage("store validation failed");
                     result.setDetail(error);
                 }
 
-            }else {
+            } else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("unauthorized user");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
@@ -96,28 +96,28 @@ public class StoreAjaxController {
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/show/{storeId}" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> save(@PathVariable("storeId")Long storeId,  HttpServletRequest request){
+    @GetMapping(value = "/show/{storeId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> save(@PathVariable("storeId") Long storeId, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null){
+            if (currentUser == null) {
                 request.getSession().invalidate();
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("user authentication failed");
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
-            if (storeId == null){
+            if (storeId == null) {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("store not found");
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
-            if (storeId < 0){
+            if (storeId < 0) {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("store not found");
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
@@ -125,9 +125,9 @@ public class StoreAjaxController {
 
             if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) || currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                StoreInfoDTO storeInfoDTO = storeInfoApi.show(storeId , Status.ACTIVE);
+                StoreInfoDTO storeInfoDTO = storeInfoApi.show(storeId, Status.ACTIVE);
 
-                if (storeInfoDTO == null){
+                if (storeInfoDTO == null) {
                     result.setStatus(ResponseStatus.FAILURE.getValue());
                     result.setMessage("store not found");
                     return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
@@ -139,7 +139,7 @@ public class StoreAjaxController {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
@@ -149,15 +149,15 @@ public class StoreAjaxController {
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value = "update" , produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<RestResponseDTO> update(@RequestAttribute("store")StoreInfoDTO storeInfoDTO, BindingResult bindingResult , HttpServletRequest request){
+    @PostMapping(value = "update", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> update(@RequestAttribute("store") StoreInfoDTO storeInfoDTO, BindingResult bindingResult, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null){
+            if (currentUser == null) {
                 request.getSession().invalidate();
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("user authentication failed");
@@ -168,32 +168,32 @@ public class StoreAjaxController {
 
                 StoreInfoError error = new StoreInfoError();
 
-                error = storeInfoValidation.onUpdate(storeInfoDTO , bindingResult);
+                error = storeInfoValidation.onUpdate(storeInfoDTO, bindingResult);
 
-                if (error.isValid()){
+                if (error.isValid()) {
 
                     storeInfoDTO = storeInfoApi.update(storeInfoDTO);
 
-                    if (currentUser.getStoreId() == null){
-                        userApi.changeStore(currentUser.getUserId() , storeInfoDTO.getStoreId());
+                    if (currentUser.getStoreId() == null) {
+                        userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
                     }
 
                     result.setStatus(ResponseStatus.SUCCESS.getValue());
                     result.setMessage("store successfully updated");
                     result.setDetail(storeInfoDTO);
 
-                }else {
+                } else {
                     result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
                     result.setMessage("store validation failed");
                     result.setDetail(error);
                 }
 
-            }else {
+            } else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("unauthorized user");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
@@ -202,7 +202,6 @@ public class StoreAjaxController {
 
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
-
 
 
 }

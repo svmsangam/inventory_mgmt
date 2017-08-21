@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Created by dhiraj on 8/9/17.
  */
 @Service
-public class TagInfoConverter implements IConvertable<TagInfo , TagInfoDTO> , IListConvertable<TagInfo , TagInfoDTO>{
+public class TagInfoConverter implements IConvertable<TagInfo, TagInfoDTO>, IListConvertable<TagInfo, TagInfoDTO> {
 
     @Autowired
     private StoreInfoRepository storeInfoRepository;
@@ -27,13 +27,13 @@ public class TagInfoConverter implements IConvertable<TagInfo , TagInfoDTO> , IL
 
     @Override
     public TagInfo convertToEntity(TagInfoDTO dto) {
-        return copyConvertToEntity(dto , new TagInfo());
+        return copyConvertToEntity(dto, new TagInfo());
     }
 
     @Override
     public TagInfoDTO convertToDto(TagInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -54,7 +54,7 @@ public class TagInfoConverter implements IConvertable<TagInfo , TagInfoDTO> , IL
     @Override
     public TagInfo copyConvertToEntity(TagInfoDTO dto, TagInfo entity) {
 
-        if (dto == null | entity == null){
+        if (dto == null | entity == null) {
             return null;
         }
 

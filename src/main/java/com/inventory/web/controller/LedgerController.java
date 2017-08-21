@@ -16,18 +16,18 @@ public class LedgerController {
     @Autowired
     private IUserApi userApi;
 
-    @GetMapping(value="/")
-    public String index(){
+    @GetMapping(value = "/")
+    public String index() {
 
         return "redirect:/LedgerInfo/list";
     }
 
-    @GetMapping(value="/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
-           }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }

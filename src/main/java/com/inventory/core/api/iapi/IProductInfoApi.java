@@ -16,9 +16,9 @@ public interface IProductInfoApi {
 
     void delete(long productInfoId);
 
-    ProductInfoDTO getByNameAndStoreAndStatus(String productName , long storeId , Status status);
+    ProductInfoDTO getByNameAndStoreAndStatus(String productName, long storeId, Status status);
 
-    ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId , long storeId , Status status);
+    ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status);
 
-    List<ProductInfoDTO> list(Status status , long storeId);
+    List<ProductInfoDTO> list(Status status, long storeId);
 }

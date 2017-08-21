@@ -17,217 +17,217 @@ import java.util.Map;
 
 public class Startup {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private CountryInfoRepository countryInfoRepository;
+    @Autowired
+    private CountryInfoRepository countryInfoRepository;
 
-	@Autowired
-	private StateInfoRepository stateInfoRepository;
+    @Autowired
+    private StateInfoRepository stateInfoRepository;
 
-	@Autowired
-	private CityInfoRepository cityInfoRepository;
+    @Autowired
+    private CityInfoRepository cityInfoRepository;
 
-	@Autowired
-	private LotInfoRepository lotInfoRepository;
+    @Autowired
+    private LotInfoRepository lotInfoRepository;
 
-	@Autowired
-	private DesignationRepository designationRepository;
+    @Autowired
+    private DesignationRepository designationRepository;
 
-	@PostConstruct
-	public void initialize() {
+    @PostConstruct
+    public void initialize() {
 
-		createUser("system" , UserType.SYSTEM , "123456" , Status.ACTIVE);
+        createUser("system", UserType.SYSTEM, "123456", Status.ACTIVE);
 
-		CountryStarter();
+        CountryStarter();
 
-		//System.out.println(" count lot >>>>>> " + lotInfoRepository.count());
-		if (lotInfoRepository.count() == 0)
-			lotCreater();
+        //System.out.println(" count lot >>>>>> " + lotInfoRepository.count());
+        if (lotInfoRepository.count() == 0)
+            lotCreater();
 
-		if (designationRepository.count() == 0)
-			designationCreater();
-	}
+        if (designationRepository.count() == 0)
+            designationCreater();
+    }
 
-	private void createUser(String userName, UserType userType,  String password, Status status) {
-		try {
-			User user = userRepository.findByUsername(userName);
-			
-			if (user==null) {
-				User dto = new User();
+    private void createUser(String userName, UserType userType, String password, Status status) {
+        try {
+            User user = userRepository.findByUsername(userName);
 
-				dto.setUsername(userName);
-				dto.setUserType(userType);
-				dto.setPassword(passwordEncoder.encode(password));
-				dto.setStatus(status);
-				dto.setEnabled(true);
-				dto.setAuthority(Authorities.SYSTEM + "," + Authorities.AUTHENTICATED);
+            if (user == null) {
+                User dto = new User();
 
-				userRepository.save(dto);
-			}
-		} catch (Exception e) {
-			System.out.println("Exception : " + e.getMessage());
-		}
-	}
+                dto.setUsername(userName);
+                dto.setUserType(userType);
+                dto.setPassword(passwordEncoder.encode(password));
+                dto.setStatus(status);
+                dto.setEnabled(true);
+                dto.setAuthority(Authorities.SYSTEM + "," + Authorities.AUTHENTICATED);
 
-	private CountryInfo createCountry(String name, String ISO,  Status status) {
-			CountryInfo countryInfo = countryInfoRepository.findByName(name);
-			CountryInfo dto = new CountryInfo();
-        if (countryInfo==null) {
+                userRepository.save(dto);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception : " + e.getMessage());
+        }
+    }
 
-				dto.setName(name);
-				dto.setISO(ISO);
-				dto.setStatus(status);
+    private CountryInfo createCountry(String name, String ISO, Status status) {
+        CountryInfo countryInfo = countryInfoRepository.findByName(name);
+        CountryInfo dto = new CountryInfo();
+        if (countryInfo == null) {
 
-				dto = countryInfoRepository.save(dto);
-			}
+            dto.setName(name);
+            dto.setISO(ISO);
+            dto.setStatus(status);
 
-			return dto;
-	}
+            dto = countryInfoRepository.save(dto);
+        }
+
+        return dto;
+    }
 
 
-	public void CountryStarter() {
-		CountryInfo c = createCountry("Nepal" , "NPL" , Status.ACTIVE);
-		HashMap<CountryInfo, String> statesmap = new HashMap<CountryInfo, String>();
+    public void CountryStarter() {
+        CountryInfo c = createCountry("Nepal", "NPL", Status.ACTIVE);
+        HashMap<CountryInfo, String> statesmap = new HashMap<CountryInfo, String>();
 
-		statesmap.put(c,
-				"Mechi,Koshi,Sagarmatha,Janakpur,Bagmati,Narayani,Gandaki,Lumbini,Dhaulagiri,Rapti,Karnali,Bheri,Seti,Mahakali");
-		List<StateInfo> s = createState(statesmap);
+        statesmap.put(c,
+                "Mechi,Koshi,Sagarmatha,Janakpur,Bagmati,Narayani,Gandaki,Lumbini,Dhaulagiri,Rapti,Karnali,Bheri,Seti,Mahakali");
+        List<StateInfo> s = createState(statesmap);
 
-		List<String> cityMap = new ArrayList<String>();
-		cityMap.add("Ilam,Jhapa,Panchthar,Taplejung");
-		cityMap.add("Bhojpur,Dhankuta,Morang,Sankhuwasabha,Sunsari,Terhathum");
-		cityMap.add("Khotang,Okhaldhunga,Saptari,Siraha,Solukhumbu,Udayapur");
-		cityMap.add("Dhanusa,Dholkha,Mahottari,Ramechhap,Sarlahi,Sindhuli");
-		cityMap.add("Bhaktapur,Dhading,Kathmandu,Kavrepalanchok,Lalitpur,Nuwakot,Rasuwa,Sindhupalchok ");
-		cityMap.add("Bara,Chitwan,Makwanpur,Parsa,Rautahat");
-		cityMap.add("Gorkha,Kaski,Lamjung,Manang,Syangja,Tanahu");
-		cityMap.add("Arghakhanchi,Gulmi,Kapilvastu,Nawalparasi,Palpa,Rupandehi");
-		cityMap.add("Baglung,Mustang,Myagdi,Parbat");
-		cityMap.add("Dang,Pyuthan,Rolpa,Rukum,Salyan");
-		cityMap.add("Dolpa,Humla,Jumla,Kalikot,Mugu");
-		cityMap.add("Banke,Bardiya,Dailekh,Jajarkot,Surkhet");
-		cityMap.add("Achham,Bajhang,Bajura,Doti,Kailali");
-		cityMap.add("Baitadi,Dadeldhura,Darchula,Kanchanpur");
-		HashMap<StateInfo, String> citymap = new HashMap<StateInfo, String>();
-		int start = 0;
-		for (StateInfo ss : s) {
-			citymap.put(ss, cityMap.get(start));
-			start++;
-		}
-		createCity(citymap);
+        List<String> cityMap = new ArrayList<String>();
+        cityMap.add("Ilam,Jhapa,Panchthar,Taplejung");
+        cityMap.add("Bhojpur,Dhankuta,Morang,Sankhuwasabha,Sunsari,Terhathum");
+        cityMap.add("Khotang,Okhaldhunga,Saptari,Siraha,Solukhumbu,Udayapur");
+        cityMap.add("Dhanusa,Dholkha,Mahottari,Ramechhap,Sarlahi,Sindhuli");
+        cityMap.add("Bhaktapur,Dhading,Kathmandu,Kavrepalanchok,Lalitpur,Nuwakot,Rasuwa,Sindhupalchok ");
+        cityMap.add("Bara,Chitwan,Makwanpur,Parsa,Rautahat");
+        cityMap.add("Gorkha,Kaski,Lamjung,Manang,Syangja,Tanahu");
+        cityMap.add("Arghakhanchi,Gulmi,Kapilvastu,Nawalparasi,Palpa,Rupandehi");
+        cityMap.add("Baglung,Mustang,Myagdi,Parbat");
+        cityMap.add("Dang,Pyuthan,Rolpa,Rukum,Salyan");
+        cityMap.add("Dolpa,Humla,Jumla,Kalikot,Mugu");
+        cityMap.add("Banke,Bardiya,Dailekh,Jajarkot,Surkhet");
+        cityMap.add("Achham,Bajhang,Bajura,Doti,Kailali");
+        cityMap.add("Baitadi,Dadeldhura,Darchula,Kanchanpur");
+        HashMap<StateInfo, String> citymap = new HashMap<StateInfo, String>();
+        int start = 0;
+        for (StateInfo ss : s) {
+            citymap.put(ss, cityMap.get(start));
+            start++;
+        }
+        createCity(citymap);
 
-	}
+    }
 
-	private List<StateInfo> createState(HashMap<CountryInfo, String> statesmap) {
-		List<StateInfo> st = new ArrayList<StateInfo>();
-		for (Map.Entry<CountryInfo, String> entry : statesmap.entrySet()) {
+    private List<StateInfo> createState(HashMap<CountryInfo, String> statesmap) {
+        List<StateInfo> st = new ArrayList<StateInfo>();
+        for (Map.Entry<CountryInfo, String> entry : statesmap.entrySet()) {
 
-			CountryInfo c = entry.getKey();
-			String[] values = entry.getValue().split(",");
-			for (int i = 0; i < values.length - 1; i++) {
+            CountryInfo c = entry.getKey();
+            String[] values = entry.getValue().split(",");
+            for (int i = 0; i < values.length - 1; i++) {
 
-				StateInfo s = stateInfoRepository.findByName(values[i]);
-				if (s == null) {
-					s = new StateInfo();
-					s.setCountryInfo(c);
-					s.setName(values[i]);
-					s.setStatus(Status.ACTIVE);
-					s = stateInfoRepository.save(s);
-					st.add(s);
-				}
+                StateInfo s = stateInfoRepository.findByName(values[i]);
+                if (s == null) {
+                    s = new StateInfo();
+                    s.setCountryInfo(c);
+                    s.setName(values[i]);
+                    s.setStatus(Status.ACTIVE);
+                    s = stateInfoRepository.save(s);
+                    st.add(s);
+                }
 
-			}
-		}
-		return st;
-	}
+            }
+        }
+        return st;
+    }
 
-	private void createCity(HashMap<StateInfo, String> citymap) {
-		for (Map.Entry<StateInfo, String> entry : citymap.entrySet()) {
+    private void createCity(HashMap<StateInfo, String> citymap) {
+        for (Map.Entry<StateInfo, String> entry : citymap.entrySet()) {
 
-			StateInfo s = entry.getKey();
-			String[] values = entry.getValue().split(",");
-			for (int i = 0; i < values.length - 1; i++) {
+            StateInfo s = entry.getKey();
+            String[] values = entry.getValue().split(",");
+            for (int i = 0; i < values.length - 1; i++) {
 
-				CityInfo c = cityInfoRepository.findByName(values[i]);
-				if (c == null) {
-					c = new CityInfo();
-					c.setStateInfo(s);
-					c.setName(values[i]);
-					c.setStatus(Status.ACTIVE);
-					cityInfoRepository.save(c);
-				}
+                CityInfo c = cityInfoRepository.findByName(values[i]);
+                if (c == null) {
+                    c = new CityInfo();
+                    c.setStateInfo(s);
+                    c.setName(values[i]);
+                    c.setStatus(Status.ACTIVE);
+                    cityInfoRepository.save(c);
+                }
 
-			}
-		}
-	}
+            }
+        }
+    }
 
-	private void lotCreater(){
+    private void lotCreater() {
 
-		List<LotInfo> lotInfoList = new ArrayList<>();
+        List<LotInfo> lotInfoList = new ArrayList<>();
 
-		for (int i = 1 ; i < 100 ; i++){
-			LotInfo lotInfo = new LotInfo();
+        for (int i = 1; i < 100; i++) {
+            LotInfo lotInfo = new LotInfo();
 
-			if (i == 1){
-				lotInfo.setLot(i + " st lot");
-			}else if (i == 2){
-				lotInfo.setLot(i + " nd lot");
-			}else if(i == 3){
-				lotInfo.setLot(i + " rd lot");
-			}else {
-				lotInfo.setLot(i + " th lot");
-			}
+            if (i == 1) {
+                lotInfo.setLot(i + " st lot");
+            } else if (i == 2) {
+                lotInfo.setLot(i + " nd lot");
+            } else if (i == 3) {
+                lotInfo.setLot(i + " rd lot");
+            } else {
+                lotInfo.setLot(i + " th lot");
+            }
 
-			lotInfo.setStatus(Status.ACTIVE);
-			lotInfoList.add(lotInfo);
-		}
+            lotInfo.setStatus(Status.ACTIVE);
+            lotInfoList.add(lotInfo);
+        }
 
-		lotInfoRepository.save(lotInfoList);
+        lotInfoRepository.save(lotInfoList);
 
-	}
+    }
 
-	private void designationCreater(){
+    private void designationCreater() {
 
-		List<Designation> designationList = new ArrayList<>();
+        List<Designation> designationList = new ArrayList<>();
 
-		Designation maneger = new Designation();
+        Designation maneger = new Designation();
 
-		maneger.setTitle("Managing Director");
-		maneger.setCode("MD");
-		maneger.setRemarks("Managing Director of this store");
+        maneger.setTitle("Managing Director");
+        maneger.setCode("MD");
+        maneger.setRemarks("Managing Director of this store");
 
-		designationList.add(maneger);
+        designationList.add(maneger);
 
-		Designation marketingManager = new Designation();
+        Designation marketingManager = new Designation();
 
-		marketingManager.setTitle("Marketing Manager");
-		marketingManager.setCode("MM");
-		marketingManager.setRemarks("Team leader of marketing officers");
+        marketingManager.setTitle("Marketing Manager");
+        marketingManager.setCode("MM");
+        marketingManager.setRemarks("Team leader of marketing officers");
 
-		designationList.add(marketingManager);
+        designationList.add(marketingManager);
 
-		Designation marketingOfficer = new Designation();
+        Designation marketingOfficer = new Designation();
 
-		marketingOfficer.setTitle("Marketing Officer");
-		marketingOfficer.setCode("MO");
-		marketingOfficer.setRemarks("marketing officer");
+        marketingOfficer.setTitle("Marketing Officer");
+        marketingOfficer.setCode("MO");
+        marketingOfficer.setRemarks("marketing officer");
 
-		designationList.add(marketingOfficer);
+        designationList.add(marketingOfficer);
 
-		Designation accountant = new Designation();
+        Designation accountant = new Designation();
 
-		accountant.setTitle("Accountant");
-		accountant.setCode("AT");
-		accountant.setRemarks("Accountant");
+        accountant.setTitle("Accountant");
+        accountant.setCode("AT");
+        accountant.setRemarks("Accountant");
 
-		designationList.add(accountant);
+        designationList.add(accountant);
 
-		designationRepository.save(designationList);
-	}
+        designationRepository.save(designationList);
+    }
 
 }

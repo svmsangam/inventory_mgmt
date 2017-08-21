@@ -12,97 +12,93 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ItemController {
 
 
-	@Autowired
-	private IUserApi userApi;
+    @Autowired
+    private IUserApi userApi;
 
 
-	@GetMapping(value="/")
-	public String index(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/")
+    public String index(RedirectAttributes redirectAttributes) {
 
 
+        return "redirect:/item/list";
+    }
 
-		return "redirect:/item/list";
-	}
+    @GetMapping(value = "/list")
+    public String list(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-	@GetMapping(value="/list")
-	public String list(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction , ModelMap modelMap , RedirectAttributes redirectAttributes){
-
-		try{
-
+        try {
 
 
-		}catch (Exception e){
-			e.printStackTrace();
-			return "redirect:/";
-		}
-		return "item/list";
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+        return "item/list";
+    }
 
-	@GetMapping(value="/add")
-	public String add(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/add")
+    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-		try {
+        try {
 
-			return "item/add";
-		}catch (Exception e){
-			e.printStackTrace();
-			return "redirect:/";
-		}
-	}
+            return "item/add";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+    }
 
-	@PostMapping(value="/save")
-	public String save(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/save")
+    public String save(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-		try {
-
-
-
-		}catch (Exception e){
-			e.printStackTrace();
-			return "redirect:/";
-		}
-
-		return "redirect:/item/" ;
-	}
-
-	@GetMapping(value="/edit")
-	public String edit(@RequestParam("itemId") Long itemId , ModelMap modelMap){
-
-		return "redirect:/item/list";
-	}
-
-	@PostMapping(value="/update")
-	public String update(){
-
-		return "redirect:/item/list";
-	}
-
-	@GetMapping(value="/{itemId}")
-	public String show(@PathVariable("itemId") Integer itemId , ModelMap modelMap , RedirectAttributes redirectAttributes){
-
-		try{
+        try {
 
 
-		}catch (Exception e){
-			e.printStackTrace();
-			return "redirect:/";
-		}
-		return "/item/show";
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
 
-	@GetMapping(value="/delete")
-	public String delete(@RequestParam("itemId") Integer itemId , RedirectAttributes redirectAttributes ){
+        return "redirect:/item/";
+    }
 
-		try {
+    @GetMapping(value = "/edit")
+    public String edit(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
+
+        return "redirect:/item/list";
+    }
+
+    @PostMapping(value = "/update")
+    public String update() {
+
+        return "redirect:/item/list";
+    }
+
+    @GetMapping(value = "/{itemId}")
+    public String show(@PathVariable("itemId") Integer itemId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+        return "/item/show";
+    }
 
-		}catch (Exception e){
-			e.printStackTrace();
-			return "redirect:/";
-		}
+    @GetMapping(value = "/delete")
+    public String delete(@RequestParam("itemId") Integer itemId, RedirectAttributes redirectAttributes) {
 
-		return "redirect:/item/list";
-	}
+        try {
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+
+        return "redirect:/item/list";
+    }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class ClientInfoApi implements IClientInfoApi{
+public class ClientInfoApi implements IClientInfoApi {
 
 
     @Override
