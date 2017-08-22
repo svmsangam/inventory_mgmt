@@ -147,6 +147,13 @@ public class TagController {
 
         /*current user checking end*/
 
+            if (tagInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/tag/add";
+            }
+
+            tagInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
             TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
 
             if (!error.isValid()) {

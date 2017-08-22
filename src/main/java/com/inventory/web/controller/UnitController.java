@@ -160,6 +160,13 @@ public class UnitController {
 
         /*current user checking end*/
 
+            if (unitInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/unit/add";
+            }
+
+            unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
             UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
 
             if (!error.isValid()) {

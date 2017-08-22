@@ -162,6 +162,14 @@ public class SubcategoryController {
 
         /*current user checking end*/
 
+            if (subCategoryInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/subcategory/add";
+            }
+
+            subCategoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
+
             SubCategoryInfoError error = subCategoryInfoValidation.onSave(subCategoryInfoDTO, bindingResult);
 
             if (!error.isValid()) {

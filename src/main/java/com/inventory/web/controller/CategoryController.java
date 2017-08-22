@@ -153,6 +153,13 @@ public class CategoryController {
 
         /*current user checking end*/
 
+            if (categoryInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/category/add";
+            }
+
+            categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+            
             CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
 
             if (!error.isValid()) {
