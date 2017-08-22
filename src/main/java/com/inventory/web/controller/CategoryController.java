@@ -159,7 +159,7 @@ public class CategoryController {
             }
 
             categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            
+
             CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
 
             if (!error.isValid()) {

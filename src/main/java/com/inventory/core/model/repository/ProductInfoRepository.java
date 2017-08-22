@@ -23,6 +23,9 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long>,
     @Query("select p from ProductInfo p where p.name = ?1 and p.status = ?2 and p.storeInfo.id = ?3")
     ProductInfo findByNameAndStatusAndStoreInfo(String name , Status status , long storeInfoId);
 
+    @Query("select p from ProductInfo p where p.code = ?1 and p.status = ?2 and p.storeInfo.id = ?3")
+    ProductInfo findByCodeAndStatusAndStoreInfo(String code , Status status , long storeInfoId);
+
     @Query("select p from ProductInfo p where p.id = ?1 and p.status = ?2 and p.storeInfo.id = ?3")
     ProductInfo findByIdAndStatusAndStoreInfo(long productInfoId, Status status, long storeId);
 
