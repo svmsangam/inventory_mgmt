@@ -29,7 +29,7 @@ public class ItemInfo extends AbstractEntity<Long> {
 
     private int inStock;
 
-    private int quantity;
+    private long quantity;
 
     private int threshold;
 
@@ -91,11 +91,11 @@ public class ItemInfo extends AbstractEntity<Long> {
         this.inStock = inStock;
     }
 
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 

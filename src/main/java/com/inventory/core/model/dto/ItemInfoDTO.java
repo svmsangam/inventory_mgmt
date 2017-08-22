@@ -31,7 +31,7 @@ public class ItemInfoDTO {
 
     private int inStock;
 
-    private int quantity;
+    private Long quantity;
 
     private int threshold;
 
@@ -135,11 +135,11 @@ public class ItemInfoDTO {
         this.inStock = inStock;
     }
 
-    public int getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 

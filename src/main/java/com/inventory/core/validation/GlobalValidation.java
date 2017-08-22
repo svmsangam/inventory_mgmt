@@ -118,7 +118,7 @@ public class GlobalValidation {
 
             if (isEqual) {
 
-                if (value < checker) {
+                if (value < checker | checker > value) {
 
                     return "Must be Greater or Equal Than " + checkerTarget;
                 }
