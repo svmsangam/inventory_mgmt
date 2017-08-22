@@ -16,12 +16,12 @@ public interface ITagInfoApi {
 
     void delete(long tagId);
 
-    TagInfoDTO show(long tagId , long storeId , Status status);
+    TagInfoDTO show(long tagId, long storeId, Status status);
 
-    List<TagInfoDTO> list(Status status , long storeId);
+    List<TagInfoDTO> list(Status status, long storeId);
 
-    TagInfoDTO getTagByNameAndStoreAndStatus(String tagName , long storeId , Status status);
+    TagInfoDTO getTagByNameAndStoreAndStatus(String tagName, long storeId, Status status);
 
-    long tagCount(Status status  , long storeId);
+    long tagCount(Status status, long storeId);
 
 }

@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
  * Created by dhiraj on 8/1/17.
  */
 @Service
-public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO> , IListConvertable<StoreInfo , StoreInfoDTO>{
+public class StoreInfoConverter implements IConvertable<StoreInfo, StoreInfoDTO>, IListConvertable<StoreInfo, StoreInfoDTO> {
 
     @Autowired
     private CityInfoRepository cityInfoRepository;
 
     @Override
     public StoreInfo convertToEntity(StoreInfoDTO dto) {
-        return copyConvertToEntity(dto , new StoreInfo());
+        return copyConvertToEntity(dto, new StoreInfo());
     }
 
     @Autowired
@@ -35,7 +35,7 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
     @Override
     public StoreInfoDTO convertToDto(StoreInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
 
             return null;
         }
@@ -55,9 +55,9 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
         dto.setStreet(entity.getStreet());
         dto.setVersion(entity.getVersion());
 
-        AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId() , AccountAssociateType.STORE);
+        AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId(), AccountAssociateType.STORE);
 
-        if (accountInfo != null){
+        if (accountInfo != null) {
             dto.setAccountId(accountInfo.getId());
             dto.setAccountNo(accountInfo.getAcountNumber());
         }
@@ -68,20 +68,20 @@ public class StoreInfoConverter implements IConvertable<StoreInfo , StoreInfoDTO
     @Override
     public StoreInfo copyConvertToEntity(StoreInfoDTO dto, StoreInfo entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
 
             return null;
         }
 
         if (dto.getName() != null & !("".equals(dto.getName().trim()))) {
             entity.setName(dto.getName().trim());
-        }else {
+        } else {
             entity.setName(entity.getName());
         }
 
         if (dto.getCityId() != null & 1 < dto.getCityId()) {
             entity.setCityInfo(cityInfoRepository.findOne(dto.getCityId()));
-        }else {
+        } else {
             entity.setCityInfo(entity.getCityInfo());
         }
 

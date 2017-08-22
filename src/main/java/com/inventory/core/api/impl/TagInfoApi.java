@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class TagInfoApi implements ITagInfoApi{
+public class TagInfoApi implements ITagInfoApi {
 
     @Autowired
     private TagInfoConverter tagInfoConverter;
@@ -40,7 +40,7 @@ public class TagInfoApi implements ITagInfoApi{
 
         TagInfo tagInfo = tagInfoRepository.findById(tagInfoDTO.getTagId());
 
-        tagInfo = tagInfoConverter.copyConvertToEntity(tagInfoDTO , tagInfo);
+        tagInfo = tagInfoConverter.copyConvertToEntity(tagInfoDTO, tagInfo);
 
         return tagInfoConverter.convertToDto(tagInfoRepository.save(tagInfo));
     }
@@ -57,23 +57,23 @@ public class TagInfoApi implements ITagInfoApi{
 
     @Override
     public TagInfoDTO show(long tagId, long storeId, Status status) {
-        return tagInfoConverter.convertToDto(tagInfoRepository.findByIdAndStatusAndStoreInfo(tagId , status , storeId));
+        return tagInfoConverter.convertToDto(tagInfoRepository.findByIdAndStatusAndStoreInfo(tagId, status, storeId));
     }
 
     @Override
-    public List<TagInfoDTO> list(Status status , long storeId) {
-        return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllByStatusAndStoreInfo(status , storeId));
+    public List<TagInfoDTO> list(Status status, long storeId) {
+        return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
     }
 
     @Override
     public TagInfoDTO getTagByNameAndStoreAndStatus(String tagName, long storeId, Status status) {
-        return tagInfoConverter.convertToDto(tagInfoRepository.findByNameAndStatusAndStoreInfo(tagName , status , storeId));
+        return tagInfoConverter.convertToDto(tagInfoRepository.findByNameAndStatusAndStoreInfo(tagName, status, storeId));
     }
 
     @Override
     public long tagCount(Status status, long storeId) {
 
-        Long count = tagInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+        Long count = tagInfoRepository.countAllByStatusAndStoreInfo(status, storeId);
         if (count == null)
             return 0;
 

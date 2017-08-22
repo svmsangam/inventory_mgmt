@@ -16,9 +16,9 @@ public interface IUnitInfoApi {
 
     void delete(long unitInfoId);
 
-    UnitInfoDTO getByNameAndStoreAndStatus(String unitName , long storeId , Status status);
+    UnitInfoDTO getByNameAndStoreAndStatus(String unitName, long storeId, Status status);
 
-    UnitInfoDTO getByIdAndStoreAndStatus(long unitInfoId , long storeId , Status status);
+    UnitInfoDTO getByIdAndStoreAndStatus(long unitInfoId, long storeId, Status status);
 
-    List<UnitInfoDTO> list(Status status , long storeId);
+    List<UnitInfoDTO> list(Status status, long storeId);
 }

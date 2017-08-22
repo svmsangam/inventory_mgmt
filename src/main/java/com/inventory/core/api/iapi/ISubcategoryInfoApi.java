@@ -13,12 +13,12 @@ public interface ISubcategoryInfoApi {
 
     void delete(long subCategoryId);
 
-    SubCategoryInfoDTO show(long subCategoryId , long storeId , Status status);
+    SubCategoryInfoDTO show(long subCategoryId, long storeId, Status status);
 
-    List<SubCategoryInfoDTO> list(Status status , long storeId);
+    List<SubCategoryInfoDTO> list(Status status, long storeId);
 
-    List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status , long storeId , long categoryId);
+    List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status, long storeId, long categoryId);
 
-    SubCategoryInfoDTO getSubCategoryByNameAndStoreAndStatus(String subCategoryName , long storeId , Status status);
+    SubCategoryInfoDTO getSubCategoryByNameAndStoreAndStatus(String subCategoryName, long storeId, Status status);
 
 }

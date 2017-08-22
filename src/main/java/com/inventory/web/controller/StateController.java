@@ -23,147 +23,147 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/state")
 public class StateController {
-	
-	@Autowired
-	private IStateInfoApi stateService;
-	
-	@Autowired
-	private ICountryInfoApi countryService;
 
-	@Autowired
-	private IUserApi userApi;
-	
-	@Autowired
-	private StateValidation stateValidation;
-	
-	private Logger logger = LoggerFactory.getLogger(StateController.class);
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/list")
-	public String listStates(ModelMap modelMap , RedirectAttributes redirectAttributes) {
-		try {
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
-			}
+    @Autowired
+    private IStateInfoApi stateService;
 
-			modelMap.put(StringConstants.STATE_LIST ,stateService.list());
-			return "state/listStates";
+    @Autowired
+    private ICountryInfoApi countryService;
+
+    @Autowired
+    private IUserApi userApi;
+
+    @Autowired
+    private StateValidation stateValidation;
+
+    private Logger logger = LoggerFactory.getLogger(StateController.class);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public String listStates(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/home/logout";
+            }
+
+            modelMap.put(StringConstants.STATE_LIST, stateService.list());
+            return "state/listStates";
 
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
-	
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/delete")
-	public String removeState(ModelMap modelMap, @RequestParam("id") long id, RedirectAttributes redirectAttributes) {
-		try {
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
-			}
 
-			stateService.delete(id);
-			return "redirect:/state/list";
+    @RequestMapping(method = RequestMethod.GET, value = "/delete")
+    public String removeState(ModelMap modelMap, @RequestParam("id") long id, RedirectAttributes redirectAttributes) {
+        try {
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/add")
-	public String addState(ModelMap modelMap , RedirectAttributes redirectAttributes) {
-		try {
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/home/logout";
+            }
 
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
-			}
+            stateService.delete(id);
+            return "redirect:/state/list";
 
-			modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
-			return "state/addState";
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/save")
-	public String addState(ModelMap modelMap, @ModelAttribute("stateDto") StateInfoDTO stateDto,
-			RedirectAttributes redirectAttributes) {
-		try {
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
-			}
+    @RequestMapping(method = RequestMethod.GET, value = "/add")
+    public String addState(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
 
-			StateError stateError = new StateError();
-			stateError = stateValidation.stateValidationOnSave(stateDto);
-			if (stateError.isValid()) {
-				stateService.save(stateDto);
-				return "redirect:/state/list";
-			} else {
-				modelMap.put(StringConstants.ERROR , stateError);
-				modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
-				modelMap.put(StringConstants.STATE , stateDto);
-				return "state/addState";
-			}
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/home/logout";
+            }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/edit")
-	public String editState(ModelMap modelMap, @RequestParam("id") long id , RedirectAttributes redirectAttributes) {
-		try {
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/home/logout";
-			}
+            modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
+            return "state/addState";
 
-			StateInfoDTO stateDto = stateService.show(id);
-			modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
-			modelMap.put(StringConstants.STATE , stateDto);
-			return "state/editState";
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/update")
-	public String updateState(ModelMap modelMap, @ModelAttribute("stateDto") StateInfoDTO stateDto,
-			RedirectAttributes redirectAttributes) {
-		try {
+    @RequestMapping(method = RequestMethod.POST, value = "/save")
+    public String addState(ModelMap modelMap, @ModelAttribute("stateDto") StateInfoDTO stateDto,
+                           RedirectAttributes redirectAttributes) {
+        try {
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/home/logout";
+            }
 
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
-			StateError stateError = new StateError();
-			stateError = stateValidation.stateValidationOnSave(stateDto);
-			if (stateError.isValid()) {
-				stateService.update(stateDto);
-				return "redirect:/state/list";
-			} else {
-				modelMap.put(StringConstants.ERROR , stateError);
-				modelMap.put(StringConstants.COUNTRY_LIST , countryService.list());
-				modelMap.put(StringConstants.STATE , stateDto);
-				return "state/editState";
-			}
+            StateError stateError = new StateError();
+            stateError = stateValidation.stateValidationOnSave(stateDto);
+            if (stateError.isValid()) {
+                stateService.save(stateDto);
+                return "redirect:/state/list";
+            } else {
+                modelMap.put(StringConstants.ERROR, stateError);
+                modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
+                modelMap.put(StringConstants.STATE, stateDto);
+                return "state/addState";
+            }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/edit")
+    public String editState(ModelMap modelMap, @RequestParam("id") long id, RedirectAttributes redirectAttributes) {
+        try {
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/home/logout";
+            }
+
+            StateInfoDTO stateDto = stateService.show(id);
+            modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
+            modelMap.put(StringConstants.STATE, stateDto);
+            return "state/editState";
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/update")
+    public String updateState(ModelMap modelMap, @ModelAttribute("stateDto") StateInfoDTO stateDto,
+                              RedirectAttributes redirectAttributes) {
+        try {
+
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+            StateError stateError = new StateError();
+            stateError = stateValidation.stateValidationOnSave(stateDto);
+            if (stateError.isValid()) {
+                stateService.update(stateDto);
+                return "redirect:/state/list";
+            } else {
+                modelMap.put(StringConstants.ERROR, stateError);
+                modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
+                modelMap.put(StringConstants.STATE, stateDto);
+                return "state/editState";
+            }
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
 }

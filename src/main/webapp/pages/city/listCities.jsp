@@ -27,7 +27,9 @@
                     <div class="box-header">
                         <h3 class="box-title">City List</h3>
                         <div class="box-tools">
-                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal" data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span>  Add</button>
+                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal"
+                                    data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            </button>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -50,8 +52,13 @@
                                     <td>${city.stateName}</td>
                                     <td>${city.cityName}</td>
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal" data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
+                                                data-toggle="modal" data-target="#modal-edit"><span
+                                                class="glyphicon glyphicon-edit"></span> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                                class="glyphicon glyphicon-minus-sign"></span> Delete
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -104,7 +111,8 @@
                     <h4 class="modal-title">Edit City</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/city/update" modelAttribute="cityDto">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/city/update"
+                          modelAttribute="cityDto">
                         <input type="hidden" name="countryId" value=""/>
                         <div class="box-body">
                             <div class="form-group">

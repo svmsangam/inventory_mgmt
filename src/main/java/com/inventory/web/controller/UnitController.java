@@ -43,16 +43,16 @@ public class UnitController {
     private UnitInfoValidation unitInfoValidation;
 
 
-    @GetMapping(value="/")
-    public String index(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/")
+    public String index(RedirectAttributes redirectAttributes) {
 
         // user checking end
 
         return "redirect:/unit/list";
     }
 
-    @GetMapping(value="/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -83,7 +83,7 @@ public class UnitController {
 
             modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -92,8 +92,8 @@ public class UnitController {
         return "category/list";
     }
 
-    @GetMapping(value="/add")
-    public String add(RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/add")
+    public String add(RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -121,7 +121,7 @@ public class UnitController {
             }
 
         /*current user checking end*/
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -130,8 +130,8 @@ public class UnitController {
         return "tag/add";
     }
 
-    @PostMapping(value="/save")
-    public String save(@ModelAttribute("unit") UnitInfoDTO unitInfoDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/save")
+    public String save(@ModelAttribute("unit") UnitInfoDTO unitInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -170,7 +170,7 @@ public class UnitController {
 
             unitInfoApi.save(unitInfoDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
@@ -179,8 +179,8 @@ public class UnitController {
         return "redirect:/unit/list";
     }
 
-    @GetMapping(value="/edit")
-    public String edit(@RequestParam("unit") long unitId,ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/edit")
+    public String edit(@RequestParam("unit") long unitId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -188,15 +188,15 @@ public class UnitController {
             return "/unit/edit";
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }
 
     }
 
-    @PostMapping(value="/update")
-    public String update( RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/update")
+    public String update(RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -204,20 +204,20 @@ public class UnitController {
             redirectAttributes.addFlashAttribute("message", "UnitInfo Edited Successfully");
             return "redirect:/unit/list";
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }
 
     }
 
-    @GetMapping(value="/{unitId}")
-    public String show(@PathVariable("unitId") Long unitId , ModelMap modelMap , RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/{unitId}")
+    public String show(@PathVariable("unitId") Long unitId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-        try{
+        try {
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirct:/";
         }
@@ -226,14 +226,14 @@ public class UnitController {
         return "unit/show";
     }
 
-    @GetMapping(value="/delete")
-    public String delete(@RequestParam("unit") long unitId, RedirectAttributes redirectAttributes){
+    @GetMapping(value = "/delete")
+    public String delete(@RequestParam("unit") long unitId, RedirectAttributes redirectAttributes) {
 
         try {
 
             return "redirect:/unit/list";
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }

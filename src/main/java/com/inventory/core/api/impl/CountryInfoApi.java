@@ -35,7 +35,7 @@ public class CountryInfoApi implements ICountryInfoApi {
     @Override
     public CountryInfoDTO update(CountryInfoDTO countryDTO) {
 
-        return countryConverter.convertToDto(countryRepository.save(countryConverter.copyConvertToEntity(countryDTO , countryRepository.findByIdAndStatus(countryDTO.getCountryId() , Status.ACTIVE))));
+        return countryConverter.convertToDto(countryRepository.save(countryConverter.copyConvertToEntity(countryDTO, countryRepository.findByIdAndStatus(countryDTO.getCountryId(), Status.ACTIVE))));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CountryInfoApi implements ICountryInfoApi {
     @Override
     public CountryInfoDTO show(long countryId) {
 
-        return countryConverter.convertToDto(countryRepository.findByIdAndStatus(countryId , Status.ACTIVE));
+        return countryConverter.convertToDto(countryRepository.findByIdAndStatus(countryId, Status.ACTIVE));
     }
 
     @Override

@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface IStoreUserInfoApi {
 
-    StoreUserInfoDTO save(long userId , long storeId);
+    StoreUserInfoDTO save(long userId, long storeId);
 
-    StoreUserInfoDTO getByUserAndStore(long userId , long storeId);
+    StoreUserInfoDTO getByUserAndStore(long userId, long storeId);
 
     List<StoreInfoDTO> getAllStoreByUser(long userId);
 }

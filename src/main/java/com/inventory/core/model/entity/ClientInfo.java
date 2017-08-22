@@ -12,115 +12,115 @@ import javax.persistence.Table;
 @Table(name = "invclient")
 public class ClientInfo extends AbstractEntity<Long> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String name;
+    private String name;
 
-	private String companyName;
+    private String companyName;
 
-	private String contact;
+    private String contact;
 
-	private String mobileNumber;
-	
-	private String email;
-	
-	private ClientType clientType;
-	
-	private String street;
+    private String mobileNumber;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private CityInfo cityInfo;
+    private String email;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private User createdBy;
-	
-	private Status status;
+    private ClientType clientType;
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
+    private String street;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CityInfo cityInfo;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User createdBy;
 
-	public String getCompanyName() {
-		return companyName;
-	}
+    private Status status;
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-	public String getContact() {
-		return contact;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
+    public String getCompanyName() {
+        return companyName;
+    }
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getContact() {
+        return contact;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
-	public ClientType getClientType() {
-		return clientType;
-	}
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-	public void setClientType(ClientType clientType) {
-		this.clientType = clientType;
-	}
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public CityInfo getCityInfo() {
-		return cityInfo;
-	}
+    public ClientType getClientType() {
+        return clientType;
+    }
 
-	public void setCityInfo(CityInfo cityInfo) {
-		this.cityInfo = cityInfo;
-	}
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 }
-	
+
 	
 	
 	

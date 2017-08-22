@@ -16,12 +16,12 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public interface UserPermissionRepository extends JpaRepository<UserPermission , Long> , JpaSpecificationExecutor<UserPermission>{
+public interface UserPermissionRepository extends JpaRepository<UserPermission, Long>, JpaSpecificationExecutor<UserPermission> {
 
     UserPermission findById(long userPermissionId);
 
     @Query("select u from UserPermission u where u.id = ?1 and u.user.id = ?2")
-    UserPermission findByIdAndUser(long userPermissionId , long userId);
+    UserPermission findByIdAndUser(long userPermissionId, long userId);
 
     @Query("select u from UserPermission u where u.user.id = ?1")
     UserPermission findByUser(long userId);
@@ -30,5 +30,5 @@ public interface UserPermissionRepository extends JpaRepository<UserPermission ,
     UserPermission findByPermissionUser(long userId);
 
     @Query("select u from UserPermission u where u.user.id = ?1 and u.permissionList in (?2)")
-    UserPermission findByUserAndPermissionList(long userId , List<Permission> permissionList);
+    UserPermission findByUserAndPermissionList(long userId, List<Permission> permissionList);
 }

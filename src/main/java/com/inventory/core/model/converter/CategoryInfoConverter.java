@@ -27,12 +27,12 @@ public class CategoryInfoConverter implements IConvertable<CategoryInfo, Categor
 
     @Override
     public CategoryInfo convertToEntity(CategoryInfoDTO dto) {
-        return copyConvertToEntity(dto , new CategoryInfo());
+        return copyConvertToEntity(dto, new CategoryInfo());
     }
 
     @Override
     public CategoryInfoDTO convertToDto(CategoryInfo entity) {
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -52,7 +52,7 @@ public class CategoryInfoConverter implements IConvertable<CategoryInfo, Categor
 
     @Override
     public CategoryInfo copyConvertToEntity(CategoryInfoDTO dto, CategoryInfo entity) {
-        if (dto == null | entity == null){
+        if (dto == null | entity == null) {
             return null;
         }
 

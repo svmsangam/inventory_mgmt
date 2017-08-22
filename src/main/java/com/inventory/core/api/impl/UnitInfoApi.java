@@ -37,7 +37,7 @@ public class UnitInfoApi implements IUnitInfoApi {
 
         UnitInfo unitInfo = unitInfoRepository.findById(unitInfoDTO.getUnitId());
 
-        unitInfo = unitInfoConverter.copyConvertToEntity(unitInfoDTO , unitInfo);
+        unitInfo = unitInfoConverter.copyConvertToEntity(unitInfoDTO, unitInfo);
 
         return unitInfoConverter.convertToDto(unitInfoRepository.save(unitInfo));
     }
@@ -59,11 +59,11 @@ public class UnitInfoApi implements IUnitInfoApi {
 
     @Override
     public UnitInfoDTO getByIdAndStoreAndStatus(long unitInfoId, long storeId, Status status) {
-        return unitInfoConverter.convertToDto(unitInfoRepository.findByIdAndStatusAndStoreInfo(unitInfoId,status,storeId));
+        return unitInfoConverter.convertToDto(unitInfoRepository.findByIdAndStatusAndStoreInfo(unitInfoId, status, storeId));
     }
 
     @Override
     public List<UnitInfoDTO> list(Status status, long storeId) {
-        return unitInfoConverter.convertToDtoList(unitInfoRepository.findAllByStatusAndStoreInfo(status,storeId));
+        return unitInfoConverter.convertToDtoList(unitInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
     }
 }

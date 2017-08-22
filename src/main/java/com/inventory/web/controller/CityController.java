@@ -19,37 +19,37 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/city")
 public class CityController {
 
-	@Autowired
-	private ICityInfoApi cityInfoApi;
+    @Autowired
+    private ICityInfoApi cityInfoApi;
 
-	@Autowired
-	private IStateInfoApi stateInfoApi;
-	
-	@Autowired
-	private CityInfoValidation cityInfoValidation;
+    @Autowired
+    private IStateInfoApi stateInfoApi;
 
-	@Autowired
-	private IUserApi userApi;
-	
-	private Logger logger = LoggerFactory.getLogger(CityController.class);
-	
-	@GetMapping( value = "/list")
-	public String listCity(ModelMap modelMap , RedirectAttributes redirectAttributes) {
-		try {
-			if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+    @Autowired
+    private CityInfoValidation cityInfoValidation;
 
-			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+    @Autowired
+    private IUserApi userApi;
 
-			return "city/listCities";
+    private Logger logger = LoggerFactory.getLogger(CityController.class);
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
+    @GetMapping(value = "/list")
+    public String listCity(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
+            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+
+            return "city/listCities";
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
 }
 

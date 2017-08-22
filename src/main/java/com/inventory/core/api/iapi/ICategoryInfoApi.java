@@ -13,11 +13,11 @@ public interface ICategoryInfoApi {
 
     void delete(long categoryId);
 
-    CategoryInfoDTO show(long categoryId , long storeId , Status status);
+    CategoryInfoDTO show(long categoryId, long storeId, Status status);
 
-    List<CategoryInfoDTO> list(Status status , long storeId);
+    List<CategoryInfoDTO> list(Status status, long storeId);
 
-    CategoryInfoDTO getCategoryByNameAndStoreAndStatus(String categoryName , long storeId , Status status);
+    CategoryInfoDTO getCategoryByNameAndStoreAndStatus(String categoryName, long storeId, Status status);
 
-    long categoryCount(Status status  , long storeId);
+    long categoryCount(Status status, long storeId);
 }

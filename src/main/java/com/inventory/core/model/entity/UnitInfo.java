@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "unit")
-public class UnitInfo extends AbstractEntity<Long>{
+public class UnitInfo extends AbstractEntity<Long> {
 
     private String name;
 

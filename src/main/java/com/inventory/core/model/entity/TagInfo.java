@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tag")
-public class TagInfo extends AbstractEntity<Long>{
+public class TagInfo extends AbstractEntity<Long> {
 
     private String name;
 

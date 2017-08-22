@@ -12,20 +12,20 @@
 <%--<sec:authentication property="principal.authorities"/>--%>
 <%--<sec:authentication property="principal.username" />--%>
 
-    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
-        <%@include file="/pages/parts/superadmin-sidebar.jsp" %>
-    </sec:authorize>
+<sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
+    <%@include file="/pages/parts/superadmin-sidebar.jsp" %>
+</sec:authorize>
 
-    <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" >
-        <%@include file="/pages/parts/admin-sidebar.jsp" %>
-    </sec:authorize>
+<sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')">
+    <%@include file="/pages/parts/admin-sidebar.jsp" %>
+</sec:authorize>
 
-    <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')" >
-        <%@include file="/pages/parts/user-sidebar.jsp" %>
-    </sec:authorize>
+<sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')">
+    <%@include file="/pages/parts/user-sidebar.jsp" %>
+</sec:authorize>
 
-    <sec:authorize access="hasRole('ROLE_SYSTEM,ROLE_AUTHENTICATED')" >
-        <%@include file="/pages/parts/system-sidebar.jsp" %>
-    </sec:authorize>
+<sec:authorize access="hasRole('ROLE_SYSTEM,ROLE_AUTHENTICATED')">
+    <%@include file="/pages/parts/system-sidebar.jsp" %>
+</sec:authorize>
 
 

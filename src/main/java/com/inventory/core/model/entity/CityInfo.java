@@ -6,40 +6,40 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="city")
+@Table(name = "city")
 public class CityInfo extends AbstractEntity<Long> {
-	
-	@Column(nullable = false)
-	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private StateInfo stateInfo;
-	
-	@Column(nullable = false)
-	private Status status;
+    @Column(nullable = false)
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StateInfo stateInfo;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(nullable = false)
+    private Status status;
 
-	public StateInfo getStateInfo() {
-		return stateInfo;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setStateInfo(StateInfo stateInfo) {
-		this.stateInfo = stateInfo;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public StateInfo getStateInfo() {
+        return stateInfo;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setStateInfo(StateInfo stateInfo) {
+        this.stateInfo = stateInfo;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
 }

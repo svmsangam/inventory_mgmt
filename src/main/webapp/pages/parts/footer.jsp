@@ -54,19 +54,25 @@
             <h3 class="control-sidebar-heading">Tasks Progress</h3>
             <ul class="control-sidebar-menu">
 
-                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                    <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Pending <span class="badge">26</span></span></a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i>
+                        <span>Sales Order Pending <span class="badge">26</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span class="badge">6</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span
+                            class="badge">6</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Packed <span class="badge">14</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Packed <span
+                            class="badge">14</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Shipped <span class="badge">10</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Shipped <span
+                            class="badge">10</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span class="badge">3</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span
+                            class="badge">3</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span class="badge">1</span></span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span
+                            class="badge">1</span></span></a></li>
                 </sec:authorize>
             </ul>
             <!-- /.control-sidebar-menu -->
@@ -74,50 +80,59 @@
         </div>
         <!-- /.tab-pane -->
         <!-- Stats tab content -->
-<%--
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
---%>
+        <%--
+                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        --%>
         <!-- /.tab-pane -->
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <ul class="sidebar-menu tree" data-widget="tree">
                 <li class="header">Extra Settings</li>
                 <!-- Optionally, you can add icons to the links -->
-                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')" >
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                <li class="active"><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Employee</span></a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/state/list"><i
+                            class="fa fa-link"></i> <span>Employee</span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-link"></i> <span>Country</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-link"></i> <span>Country</span></a>
+                    </li>
 
-                <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>State</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i>
+                        <span>State</span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>City</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i>
+                        <span>City</span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Category</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Category</span></a>
+                    </li>
 
-                <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>SubCategory</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>SubCategory</span></a>
+                    </li>
 
-                <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Unit</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i>
+                        <span>Unit</span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>Tag</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i>
+                        <span>Tag</span></a></li>
 
-                <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Lot</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i>
+                        <span>Lot</span></a></li>
 
-            <%--<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none;">
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">SubCategory</a></li>
-                        <li><a href="#">Unit</a></li>
-                        <li><a href="#">Tag</a></li>
-                        <li><a href="#">Lot</a></li>
-                    </ul>
-                </li>--%>
-</sec:authorize>
+                    <%--<li class="treeview">
+                            <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display: none;">
+                                <li><a href="#">Category</a></li>
+                                <li><a href="#">SubCategory</a></li>
+                                <li><a href="#">Unit</a></li>
+                                <li><a href="#">Tag</a></li>
+                                <li><a href="#">Lot</a></li>
+                            </ul>
+                        </li>--%>
+                </sec:authorize>
             </ul>
         </div>
         <!-- /.tab-pane -->
@@ -177,12 +192,12 @@ immediately after the control sidebar -->
     $(function () {
         $('#table1').DataTable();
         $('#table2').DataTable({
-            'paging'      : true,
+            'paging': true,
             'lengthChange': false,
-            'searching'   : true,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : false
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
         })
     })
 </script>

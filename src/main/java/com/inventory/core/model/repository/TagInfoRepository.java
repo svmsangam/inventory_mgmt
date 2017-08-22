@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface TagInfoRepository extends JpaRepository<TagInfo , Long> , JpaSpecificationExecutor<TagInfo> {
+public interface TagInfoRepository extends JpaRepository<TagInfo, Long>, JpaSpecificationExecutor<TagInfo> {
 
     TagInfo findById(long tagId);
 

@@ -52,11 +52,11 @@ public class StoreUserInfoApi implements IStoreUserInfoApi {
 
     @Override
     public StoreUserInfoDTO getByUserAndStore(long userId, long storeId) {
-        return storeUserInfoConverter.convertToDto(storeUserInfoRepository.findByStoreInfoAndUserAndStatus(storeId , userId , Status.ACTIVE));
+        return storeUserInfoConverter.convertToDto(storeUserInfoRepository.findByStoreInfoAndUserAndStatus(storeId, userId, Status.ACTIVE));
     }
 
     @Override
     public List<StoreInfoDTO> getAllStoreByUser(long userId) {
-        return storeInfoConverter.convertToDtoList(storeUserInfoRepository.findAllByUserAndStatus(userId , Status.ACTIVE));
+        return storeInfoConverter.convertToDtoList(storeUserInfoRepository.findAllByUserAndStatus(userId, Status.ACTIVE));
     }
 }

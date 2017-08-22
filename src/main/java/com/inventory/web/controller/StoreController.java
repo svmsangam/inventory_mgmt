@@ -35,14 +35,14 @@ public class StoreController {
     @Autowired
     private IUserApi userApi;
 
-    @GetMapping( value = "/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes) {
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
                 return "redirect:/logout";
             }
 
@@ -50,12 +50,12 @@ public class StoreController {
 
                 modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-                modelMap.put(StringConstants.STORE_LIST , storeInfoApi.list(Status.ACTIVE));
+                modelMap.put(StringConstants.STORE_LIST, storeInfoApi.list(Status.ACTIVE));
 
                 return "store/listStore";
-            }else {
+            } else {
 
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";
             }
 

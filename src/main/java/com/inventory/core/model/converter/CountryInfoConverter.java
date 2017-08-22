@@ -13,52 +13,52 @@ import java.util.stream.Collectors;
 @Service
 public class CountryInfoConverter implements IConvertable<CountryInfo, CountryInfoDTO>, IListConvertable<CountryInfo, CountryInfoDTO> {
 
-	@Override
-	public CountryInfo convertToEntity(CountryInfoDTO dto) {
+    @Override
+    public CountryInfo convertToEntity(CountryInfoDTO dto) {
 
-		return copyConvertToEntity(dto , new CountryInfo());
-	}
+        return copyConvertToEntity(dto, new CountryInfo());
+    }
 
-	@Override
-	public CountryInfoDTO convertToDto(CountryInfo entity) {
+    @Override
+    public CountryInfoDTO convertToDto(CountryInfo entity) {
 
-		if (entity == null) {
-			return null;
-		}
+        if (entity == null) {
+            return null;
+        }
 
-		CountryInfoDTO dto = new CountryInfoDTO();
+        CountryInfoDTO dto = new CountryInfoDTO();
 
-		dto.setCountryId(entity.getId());
-		dto.setCountryName(entity.getName());
-		dto.setCountryStatus(entity.getStatus());
-		dto.setCountryISO(entity.getISO());
+        dto.setCountryId(entity.getId());
+        dto.setCountryName(entity.getName());
+        dto.setCountryStatus(entity.getStatus());
+        dto.setCountryISO(entity.getISO());
 
-		return dto;
-	}
+        return dto;
+    }
 
-	@Override
-	public CountryInfo copyConvertToEntity(CountryInfoDTO dto , CountryInfo entity) {
+    @Override
+    public CountryInfo copyConvertToEntity(CountryInfoDTO dto, CountryInfo entity) {
 
-		if (entity == null || dto == null){
+        if (entity == null || dto == null) {
 
-			return null;
-		}
+            return null;
+        }
 
-		entity.setName(dto.getCountryName().trim());
-		entity.setISO(dto.getCountryISO().trim());
-		entity.setStatus(dto.getCountryStatus());
+        entity.setName(dto.getCountryName().trim());
+        entity.setISO(dto.getCountryISO().trim());
+        entity.setStatus(dto.getCountryStatus());
 
-		return entity;
-	}
+        return entity;
+    }
 
-	@Override
-	public List<CountryInfoDTO> convertToDtoList(List<CountryInfo> entities) {
-		return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
-	}
+    @Override
+    public List<CountryInfoDTO> convertToDtoList(List<CountryInfo> entities) {
+        return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+    }
 
-	@Override
-	public List<CountryInfo> convertToEntityList(List<CountryInfoDTO> dtoList) {
-		return dtoList.parallelStream().filter(Objects::nonNull).map(this::convertToEntity).collect(Collectors.toList());
-	}
+    @Override
+    public List<CountryInfo> convertToEntityList(List<CountryInfoDTO> dtoList) {
+        return dtoList.parallelStream().filter(Objects::nonNull).map(this::convertToEntity).collect(Collectors.toList());
+    }
 
 }

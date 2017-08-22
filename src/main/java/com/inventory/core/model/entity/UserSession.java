@@ -7,52 +7,52 @@ import javax.persistence.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
-@Table(name="usersession")
+@Table(name = "usersession")
 public class UserSession extends AbstractPersistable<Long> {
-	private static final long serialVersionUID = 1L;
-	
-	@Column(nullable = false, unique = true)
-	private String sessionId;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	private User user;
+    @Column(nullable = false, unique = true)
+    private String sessionId;
 
-	@Column(nullable = false)
-	private boolean expired;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private User user;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastRequest;
+    @Column(nullable = false)
+    private boolean expired;
 
-	public User getUser() {
-		return user;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastRequest;
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public boolean isExpired() {
-		return expired;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setExpired(boolean expired) {
-		this.expired = expired;
-	}
+    public boolean isExpired() {
+        return expired;
+    }
 
-	public Date getLastRequest() {
-		return lastRequest;
-	}
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
 
-	public void setLastRequest(Date lastRequest) {
-		this.lastRequest = lastRequest;
-	}
+    public Date getLastRequest() {
+        return lastRequest;
+    }
 
-	public String getSessionId() {
-		return sessionId;
-	}
+    public void setLastRequest(Date lastRequest) {
+        this.lastRequest = lastRequest;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
 }

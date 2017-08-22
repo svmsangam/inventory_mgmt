@@ -14,11 +14,11 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface LotInfoRepository extends JpaRepository<LotInfo , Long> , JpaSpecificationExecutor<LotInfo>{
+public interface LotInfoRepository extends JpaRepository<LotInfo, Long>, JpaSpecificationExecutor<LotInfo> {
 
     LotInfo findById(long lotInfoId);
 
-    LotInfo findByIdAndStatus(long lotInfoId , Status status);
+    LotInfo findByIdAndStatus(long lotInfoId, Status status);
 
     List<LotInfo> findAllByStatus(Status status);
 }

@@ -1,439 +1,560 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="spring-skeleton" default="all">
-  
-  
-  <property file="spring-skeleton.properties"/>
-  <!-- Uncomment the following property if no tests compilation is needed -->
-  <!-- 
-  <property name="skip.tests" value="true"/>
-   -->
-  
-  <!-- Compiler options -->
-  
-  <property name="compiler.debug" value="on"/>
-  <property name="compiler.generate.no.warnings" value="off"/>
-  <property name="compiler.args" value=""/>
-  <property name="compiler.max.memory" value="700m"/>
-  <patternset id="ignored.files">
-    <exclude name="**/*.hprof/**"/>
-    <exclude name="**/*.pyc/**"/>
-    <exclude name="**/*.pyo/**"/>
-    <exclude name="**/*.rbc/**"/>
-    <exclude name="**/*.yarb/**"/>
-    <exclude name="**/*~/**"/>
-    <exclude name="**/.DS_Store/**"/>
-    <exclude name="**/.git/**"/>
-    <exclude name="**/.hg/**"/>
-    <exclude name="**/.svn/**"/>
-    <exclude name="**/CVS/**"/>
-    <exclude name="**/__pycache__/**"/>
-    <exclude name="**/_svn/**"/>
-    <exclude name="**/vssver.scc/**"/>
-    <exclude name="**/vssver2.scc/**"/>
-  </patternset>
-  <patternset id="library.patterns">
-    <include name="*.egg"/>
-    <include name="*.jar"/>
-    <include name="*.ear"/>
-    <include name="*.swc"/>
-    <include name="*.war"/>
-    <include name="*.ane"/>
-    <include name="*.zip"/>
-  </patternset>
-  <patternset id="compiler.resources">
-    <exclude name="**/?*.java"/>
-    <exclude name="**/?*.form"/>
-    <exclude name="**/?*.class"/>
-    <exclude name="**/?*.groovy"/>
-    <exclude name="**/?*.scala"/>
-    <exclude name="**/?*.flex"/>
-    <exclude name="**/?*.kt"/>
-    <exclude name="**/?*.clj"/>
-    <exclude name="**/?*.aj"/>
-  </patternset>
-  
-  <!-- JDK definitions -->
-  
-  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
-  <path id="jdk.classpath.1.8">
-    <fileset dir="${jdk.home.1.8}">
-      <include name="jre/lib/charsets.jar"/>
-      <include name="jre/lib/deploy.jar"/>
-      <include name="jre/lib/ext/cldrdata.jar"/>
-      <include name="jre/lib/ext/dnsns.jar"/>
-      <include name="jre/lib/ext/jaccess.jar"/>
-      <include name="jre/lib/ext/jfxrt.jar"/>
-      <include name="jre/lib/ext/localedata.jar"/>
-      <include name="jre/lib/ext/nashorn.jar"/>
-      <include name="jre/lib/ext/sunec.jar"/>
-      <include name="jre/lib/ext/sunjce_provider.jar"/>
-      <include name="jre/lib/ext/sunpkcs11.jar"/>
-      <include name="jre/lib/ext/zipfs.jar"/>
-      <include name="jre/lib/javaws.jar"/>
-      <include name="jre/lib/jce.jar"/>
-      <include name="jre/lib/jfr.jar"/>
-      <include name="jre/lib/jfxswt.jar"/>
-      <include name="jre/lib/jsse.jar"/>
-      <include name="jre/lib/management-agent.jar"/>
-      <include name="jre/lib/plugin.jar"/>
-      <include name="jre/lib/resources.jar"/>
-      <include name="jre/lib/rt.jar"/>
-    </fileset>
-  </path>
-  
-  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  
-  
-  <!-- Project Libraries -->
-  
-  <path id="library.gradle:_antlr:antlr:2.7.7.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar"/>
-  </path>
-  
-  <path id="library.gradle:_aopalliance:aopalliance:1.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_cglib:cglib-nodep:2.2.2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/2.2.2/d456bb230c70c0b95c76fb28e429d42f275941/cglib-nodep-2.2.2.jar"/>
-  </path>
-  
-  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.9.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.9.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.9.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_com.fasterxml:classmate:1.0.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c81162b17c540e634cffa3bd9b09b4c/classmate-1.0.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_commons-fileupload:commons-fileupload:1.3.2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.2/5d7491ed6ebd02b6a8d2305f8e6b7fe5dbd95f72/commons-fileupload-1.3.2.jar"/>
-  </path>
-  
-  <path id="library.gradle:_commons-io:commons-io:2.2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.2/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar"/>
-  </path>
-  
-  <path id="library.gradle:_commons-logging:commons-logging:1.2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar"/>
-  </path>
-  
-  <path id="library.gradle:_dom4j:dom4j:1.6.1.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar"/>
-  </path>
-  
-  <path id="library.gradle:_javax.el:javax.el-api:2.2.5.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.el/javax.el-api/2.2.5/370140e991eefb212a6d6baedbce585f00ef76e0/javax.el-api-2.2.5.jar"/>
-  </path>
-  
-  <path id="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar"/>
-  </path>
-  
-  <path id="library.gradle:_javax.servlet:jstl:1.2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar"/>
-  </path>
-  
-  <path id="library.gradle:_javax.validation:validation-api:1.1.0.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_junit:junit:4.12.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar"/>
-  </path>
-  
-  <path id="library.gradle:_mysql:mysql-connector-java:5.1.43.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.43/dee9103eec0d877f3a21c82d4d9e9f4fbd2d6e0a/mysql-connector-java-5.1.43.jar"/>
-  </path>
-  
-  <path id="library.gradle:_net.bull.javamelody:javamelody-core:1.41.0.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.41.0/b1430988daa56282c62064def5d6a0011c3116f9/javamelody-core-1.41.0.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.aspectj:aspectjrt:1.8.9.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.9/87372d9e2323313bec24b09a325bfea8ae0eb867/aspectjrt-1.8.9.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.aspectj:aspectjweaver:1.6.12.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.6.12/e885e7ba80175986cfd6a84b0ce118407621f11b/aspectjweaver-1.6.12.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hibernate.common:hibernate-commons-annotations:4.0.5.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.5.Final/2a581b9edb8168e45060d8bad8b7f46712d2c52c/hibernate-commons-annotations-4.0.5.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hibernate:hibernate-core:4.3.10.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.10.Final/6dbf5fe7a8cb307587ad4b4a97ae0933bba5e2a9/hibernate-core-4.3.10.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hibernate:hibernate-entitymanager:4.3.10.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.10.Final/1d1beb7bbd179d9bf241c4a8165f0bf3693aca/hibernate-entitymanager-4.3.10.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.hibernate:hibernate-validator:5.1.3.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c808/hibernate-validator-5.1.3.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.javassist:javassist:3.18.1-ga.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.jboss.logging:jboss-logging-annotations:1.2.0.beta1.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.jboss.logging:jboss-logging:3.1.3.ga.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.jboss:jandex:1.1.0.final.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.jrobin:jrobin:1.5.9.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jrobin/jrobin/1.5.9/bd9a84484c67de930fa841f23cd6a93108b05cd0/jrobin-1.5.9.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.json:json:20170516.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.21.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.21/331b564a3a42f002a0004b039c1c430da89062cd/jcl-over-slf4j-1.7.21.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.slf4j:slf4j-api:1.7.21.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.21/139535a69a4239db087de9bab0bee568bf8e0b70/slf4j-api-1.7.21.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.data:spring-data-commons:1.12.4.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.12.4.RELEASE/956cef39ac422323d78999273988fc7186108f73/spring-data-commons-1.12.4.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.data:spring-data-jpa:1.10.4.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/1.10.4.RELEASE/610c9410a18332cff48f4ade8f0eab21a8eaa876/spring-data-jpa-1.10.4.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.security:spring-security-acl:3.2.7.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-acl/3.2.7.RELEASE/8dabf22afa5fdc81f71f529063ef113846700caf/spring-security-acl-3.2.7.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.security:spring-security-config:3.2.7.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.2.7.RELEASE/36ded839a3f90b268c2b708a5a92a50aa0412223/spring-security-config-3.2.7.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.security:spring-security-core:3.2.7.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/3.2.7.RELEASE/50c170701f0cc9a99d14a50a7a97ff0c651bab66/spring-security-core-3.2.7.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.security:spring-security-taglibs:3.2.7.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/3.2.7.RELEASE/c542291c37463f2969aeeaf1eb2d982c11a184f1/spring-security-taglibs-3.2.7.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework.security:spring-security-web:3.2.7.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.2.7.RELEASE/3170f54765d6d9f99cf2d4ba7f25698d1026cf6f/spring-security-web-3.2.7.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-aop:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.9.RELEASE/95f5f5cf3cae64266a89dc1bc9e0484425cd8358/spring-aop-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-beans:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.9.RELEASE/daa5abf3779c8cad1a2910e1ea08e4272489d8ae/spring-beans-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-context:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.9.RELEASE/a186823724f03b98becd5f93b1fa107fe6f7a7ff/spring-context-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-core:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.9.RELEASE/430b7298bfb85d66fb61e19ca8f06231b911e9f5/spring-core-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-expression:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.9.RELEASE/4edca6913da9e62a6586714e053e01a61952a153/spring-expression-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-jdbc:4.2.8.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.2.8.RELEASE/f3718cf6154b5826a7fd1a5d3609694c304f2da1/spring-jdbc-4.2.8.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-orm:4.2.8.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.2.8.RELEASE/43b557f5025782616f791dbd720b4a606eeca1bf/spring-orm-4.2.8.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-tx:4.2.8.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.8.RELEASE/b64d7823a8dc1876fcacfa79dee77f77bad6be5e/spring-tx-4.2.8.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-web:4.3.9.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.9.RELEASE/91dae64c4280093ad5fb4736a10913c9233479c1/spring-web-4.3.9.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_org.springframework:spring-webmvc:4.2.8.release.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.8.RELEASE/e83295391d9c103ee2edfb37ea267edda104b2b5/spring-webmvc-4.2.8.RELEASE.jar"/>
-  </path>
-  
-  <path id="library.gradle:_xml-apis:xml-apis:1.0.b2.classpath">
-    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar"/>
-  </path>
-  
-  
-  <!-- Application Server Libraries -->
-  <!-- Register Custom Compiler Taskdefs -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
-  
-  <!-- Modules -->
-  
-  <import file="${basedir}/.idea/modules/inventory-core/module_inventory-core.xml"/>
-  
-  <import file="${basedir}/.idea/module_spring-skeleton.xml"/>
-  
-  <import file="${basedir}/.idea/modules/module_spring-skeleton_main.xml"/>
-  
-  <import file="${basedir}/.idea/modules/module_spring-skeleton_test.xml"/>
-  
-  <target name="init" description="Build initialization">
-    <!-- Perform any build initialization in this target -->
-  </target>
-  
-  <target name="clean" depends="clean.module.inventory-core, clean.module.spring-skeleton, clean.module.spring-skeleton_main, clean.module.spring-skeleton_test, clean.artifact.gradle_:_spring-skeleton.war_(exploded)" description="cleanup all"/>
-  
-  <target name="build.modules" depends="init, clean, compile.module.inventory-core, compile.module.spring-skeleton, compile.module.spring-skeleton_main, compile.module.spring-skeleton_test" description="build all modules"/>
-  
-  <target name="init.artifacts">
-    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.gradle_:_spring-skeleton.war" value="${basedir}/build/libs"/>
-    <property name="artifact.output.gradle_:_spring-skeleton.war_(exploded)" value="${basedir}/build/libs/exploded/spring-skeleton.war"/>
-    <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.spring-skeleton.war" value="${artifacts.temp.dir}/spring-skeleton.war"/>
-  </target>
-  
-  <target name="clean.artifact.gradle_:_spring-skeleton.war_(exploded)" description="clean Gradle : spring-skeleton.war (exploded) artifact output">
-    <delete dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
-  </target>
-  
-  <target name="artifact.gradle_:_spring-skeleton.war" depends="init.artifacts, artifact.gradle_:_spring-skeleton.war_(exploded)" description="Build &#39;Gradle : spring-skeleton.war&#39; artifact">
-    <property name="artifact.temp.output.gradle_:_spring-skeleton.war" value="${artifacts.temp.dir}/Gradle___spring_skeleton_war"/>
-    <mkdir dir="${artifact.temp.output.gradle_:_spring-skeleton.war}"/>
-    <zip destfile="${temp.jar.path.spring-skeleton.war}">
-      <zipfileset dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
-    </zip>
-    <copy file="${temp.jar.path.spring-skeleton.war}" tofile="${artifact.temp.output.gradle_:_spring-skeleton.war}/spring-skeleton.war"/>
-  </target>
-  
-  <target name="artifact.gradle_:_spring-skeleton.war_(exploded)" depends="init.artifacts, compile.module.spring-skeleton_main" description="Build &#39;Gradle : spring-skeleton.war (exploded)&#39; artifact">
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/META-INF"/>
-    <copy file="${basedir}/build/libs/exploded/spring-skeleton.war/META-INF/MANIFEST.MF" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/META-INF/MANIFEST.MF"/>
-    <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}">
-      <fileset dir="${basedir}/src/main/webapp"/>
-    </copy>
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF"/>
-    <copy file="${basedir}/src/main/webapp/WEB-INF/web.xml" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/web.xml"/>
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF"/>
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes"/>
-    <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes">
-      <fileset dir="${spring-skeleton_main.output.dir}"/>
-    </copy>
-    <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes">
-      <fileset dir="${basedir}/build/resources/main"/>
-    </copy>
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jstl-1.2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/1.10.4.RELEASE/610c9410a18332cff48f4ade8f0eab21a8eaa876/spring-data-jpa-1.10.4.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-data-jpa-1.10.4.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.8.RELEASE/e83295391d9c103ee2edfb37ea267edda104b2b5/spring-webmvc-4.2.8.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-webmvc-4.2.8.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.2.7.RELEASE/3170f54765d6d9f99cf2d4ba7f25698d1026cf6f/spring-security-web-3.2.7.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-web-3.2.7.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.2.7.RELEASE/36ded839a3f90b268c2b708a5a92a50aa0412223/spring-security-config-3.2.7.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-config-3.2.7.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javax.servlet-api-3.0.1.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/2.2.2/d456bb230c70c0b95c76fb28e429d42f275941/cglib-nodep-2.2.2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/cglib-nodep-2.2.2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.6.12/e885e7ba80175986cfd6a84b0ce118407621f11b/aspectjweaver-1.6.12.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aspectjweaver-1.6.12.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.10.Final/1d1beb7bbd179d9bf241c4a8165f0bf3693aca/hibernate-entitymanager-4.3.10.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-entitymanager-4.3.10.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.10.Final/6dbf5fe7a8cb307587ad4b4a97ae0933bba5e2a9/hibernate-core-4.3.10.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-core-4.3.10.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c808/hibernate-validator-5.1.3.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-validator-5.1.3.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.el/javax.el-api/2.2.5/370140e991eefb212a6d6baedbce585f00ef76e0/javax.el-api-2.2.5.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javax.el-api-2.2.5.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-core-2.9.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-annotations-2.9.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-databind-2.9.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.2/5d7491ed6ebd02b6a8d2305f8e6b7fe5dbd95f72/commons-fileupload-1.3.2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-fileupload-1.3.2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/json-20170516.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.41.0/b1430988daa56282c62064def5d6a0011c3116f9/javamelody-core-1.41.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javamelody-core-1.41.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/3.2.7.RELEASE/c542291c37463f2969aeeaf1eb2d982c11a184f1/spring-security-taglibs-3.2.7.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-taglibs-3.2.7.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.12.4.RELEASE/956cef39ac422323d78999273988fc7186108f73/spring-data-commons-1.12.4.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-data-commons-1.12.4.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.2.8.RELEASE/43b557f5025782616f791dbd720b4a606eeca1bf/spring-orm-4.2.8.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-orm-4.2.8.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.43/dee9103eec0d877f3a21c82d4d9e9f4fbd2d6e0a/mysql-connector-java-5.1.43.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/mysql-connector-java-5.1.43.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.8.RELEASE/b64d7823a8dc1876fcacfa79dee77f77bad6be5e/spring-tx-4.2.8.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-tx-4.2.8.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.21/331b564a3a42f002a0004b039c1c430da89062cd/jcl-over-slf4j-1.7.21.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jcl-over-slf4j-1.7.21.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aopalliance-1.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/3.2.7.RELEASE/50c170701f0cc9a99d14a50a7a97ff0c651bab66/spring-security-core-3.2.7.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-core-3.2.7.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-logging-3.1.3.GA.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-logging-annotations-1.2.0.Beta1.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/dom4j-1.6.1.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.5.Final/2a581b9edb8168e45060d8bad8b7f46712d2c52c/hibernate-commons-annotations-4.0.5.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-commons-annotations-4.0.5.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javassist-3.18.1-GA.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/antlr-2.7.7.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jandex-1.1.0.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c81162b17c540e634cffa3bd9b09b4c/classmate-1.0.0.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/classmate-1.0.0.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.2/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-io-2.2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jrobin/jrobin/1.5.9/bd9a84484c67de930fa841f23cd6a93108b05cd0/jrobin-1.5.9.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jrobin-1.5.9.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-acl/3.2.7.RELEASE/8dabf22afa5fdc81f71f529063ef113846700caf/spring-security-acl-3.2.7.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-acl-3.2.7.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.2.8.RELEASE/f3718cf6154b5826a7fd1a5d3609694c304f2da1/spring-jdbc-4.2.8.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-jdbc-4.2.8.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.9.RELEASE/91dae64c4280093ad5fb4736a10913c9233479c1/spring-web-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-web-4.3.9.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.9/87372d9e2323313bec24b09a325bfea8ae0eb867/aspectjrt-1.8.9.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aspectjrt-1.8.9.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.21/139535a69a4239db087de9bab0bee568bf8e0b70/slf4j-api-1.7.21.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/slf4j-api-1.7.21.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.9.RELEASE/daa5abf3779c8cad1a2910e1ea08e4272489d8ae/spring-beans-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-beans-4.3.9.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.9.RELEASE/a186823724f03b98becd5f93b1fa107fe6f7a7ff/spring-context-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-context-4.3.9.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.9.RELEASE/430b7298bfb85d66fb61e19ca8f06231b911e9f5/spring-core-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-core-4.3.9.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-logging-1.2.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.9.RELEASE/4edca6913da9e62a6586714e053e01a61952a153/spring-expression-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-expression-4.3.9.RELEASE.jar"/>
-    <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.9.RELEASE/95f5f5cf3cae64266a89dc1bc9e0484425cd8358/spring-aop-4.3.9.RELEASE.jar" tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-aop-4.3.9.RELEASE.jar"/>
-  </target>
-  
-  <target name="build.all.artifacts" depends="artifact.gradle_:_spring-skeleton.war, artifact.gradle_:_spring-skeleton.war_(exploded)" description="Build all artifacts">
-    <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war}"/>
-    <copy todir="${artifact.output.gradle_:_spring-skeleton.war}">
-      <fileset dir="${artifact.temp.output.gradle_:_spring-skeleton.war}"/>
-    </copy>
-    
-    <!-- Delete temporary files -->
-    <delete dir="${artifacts.temp.dir}"/>
-  </target>
-  
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+
+
+    <property file="spring-skeleton.properties"/>
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="700m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*.yarb/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.egg"/>
+        <include name="*.jar"/>
+        <include name="*.ear"/>
+        <include name="*.swc"/>
+        <include name="*.war"/>
+        <include name="*.ane"/>
+        <include name="*.zip"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+        <exclude name="**/?*.aj"/>
+    </patternset>
+
+    <!-- JDK definitions -->
+
+    <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+    <path id="jdk.classpath.1.8">
+        <fileset dir="${jdk.home.1.8}">
+            <include name="jre/lib/charsets.jar"/>
+            <include name="jre/lib/deploy.jar"/>
+            <include name="jre/lib/ext/cldrdata.jar"/>
+            <include name="jre/lib/ext/dnsns.jar"/>
+            <include name="jre/lib/ext/jaccess.jar"/>
+            <include name="jre/lib/ext/jfxrt.jar"/>
+            <include name="jre/lib/ext/localedata.jar"/>
+            <include name="jre/lib/ext/nashorn.jar"/>
+            <include name="jre/lib/ext/sunec.jar"/>
+            <include name="jre/lib/ext/sunjce_provider.jar"/>
+            <include name="jre/lib/ext/sunpkcs11.jar"/>
+            <include name="jre/lib/ext/zipfs.jar"/>
+            <include name="jre/lib/javaws.jar"/>
+            <include name="jre/lib/jce.jar"/>
+            <include name="jre/lib/jfr.jar"/>
+            <include name="jre/lib/jfxswt.jar"/>
+            <include name="jre/lib/jsse.jar"/>
+            <include name="jre/lib/management-agent.jar"/>
+            <include name="jre/lib/plugin.jar"/>
+            <include name="jre/lib/resources.jar"/>
+            <include name="jre/lib/rt.jar"/>
+        </fileset>
+    </path>
+
+    <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+    <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+    <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+
+
+    <!-- Project Libraries -->
+
+    <path id="library.gradle:_antlr:antlr:2.7.7.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar"/>
+    </path>
+
+    <path id="library.gradle:_aopalliance:aopalliance:1.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_cglib:cglib-nodep:2.2.2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/2.2.2/d456bb230c70c0b95c76fb28e429d42f275941/cglib-nodep-2.2.2.jar"/>
+    </path>
+
+    <path id="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.9.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.9.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.9.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_com.fasterxml:classmate:1.0.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c81162b17c540e634cffa3bd9b09b4c/classmate-1.0.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_commons-fileupload:commons-fileupload:1.3.2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.2/5d7491ed6ebd02b6a8d2305f8e6b7fe5dbd95f72/commons-fileupload-1.3.2.jar"/>
+    </path>
+
+    <path id="library.gradle:_commons-io:commons-io:2.2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.2/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar"/>
+    </path>
+
+    <path id="library.gradle:_commons-logging:commons-logging:1.2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar"/>
+    </path>
+
+    <path id="library.gradle:_dom4j:dom4j:1.6.1.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar"/>
+    </path>
+
+    <path id="library.gradle:_javax.el:javax.el-api:2.2.5.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.el/javax.el-api/2.2.5/370140e991eefb212a6d6baedbce585f00ef76e0/javax.el-api-2.2.5.jar"/>
+    </path>
+
+    <path id="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar"/>
+    </path>
+
+    <path id="library.gradle:_javax.servlet:jstl:1.2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar"/>
+    </path>
+
+    <path id="library.gradle:_javax.validation:validation-api:1.1.0.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_junit:junit:4.12.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar"/>
+    </path>
+
+    <path id="library.gradle:_mysql:mysql-connector-java:5.1.43.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.43/dee9103eec0d877f3a21c82d4d9e9f4fbd2d6e0a/mysql-connector-java-5.1.43.jar"/>
+    </path>
+
+    <path id="library.gradle:_net.bull.javamelody:javamelody-core:1.41.0.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.41.0/b1430988daa56282c62064def5d6a0011c3116f9/javamelody-core-1.41.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.aspectj:aspectjrt:1.8.9.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.9/87372d9e2323313bec24b09a325bfea8ae0eb867/aspectjrt-1.8.9.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.aspectj:aspectjweaver:1.6.12.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.6.12/e885e7ba80175986cfd6a84b0ce118407621f11b/aspectjweaver-1.6.12.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hibernate.common:hibernate-commons-annotations:4.0.5.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.5.Final/2a581b9edb8168e45060d8bad8b7f46712d2c52c/hibernate-commons-annotations-4.0.5.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hibernate:hibernate-core:4.3.10.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.10.Final/6dbf5fe7a8cb307587ad4b4a97ae0933bba5e2a9/hibernate-core-4.3.10.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hibernate:hibernate-entitymanager:4.3.10.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.10.Final/1d1beb7bbd179d9bf241c4a8165f0bf3693aca/hibernate-entitymanager-4.3.10.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.hibernate:hibernate-validator:5.1.3.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c808/hibernate-validator-5.1.3.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.javassist:javassist:3.18.1-ga.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.jboss.logging:jboss-logging-annotations:1.2.0.beta1.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.jboss.logging:jboss-logging:3.1.3.ga.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.jboss:jandex:1.1.0.final.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.jrobin:jrobin:1.5.9.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jrobin/jrobin/1.5.9/bd9a84484c67de930fa841f23cd6a93108b05cd0/jrobin-1.5.9.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.json:json:20170516.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.21.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.21/331b564a3a42f002a0004b039c1c430da89062cd/jcl-over-slf4j-1.7.21.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.slf4j:slf4j-api:1.7.21.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.21/139535a69a4239db087de9bab0bee568bf8e0b70/slf4j-api-1.7.21.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.data:spring-data-commons:1.12.4.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.12.4.RELEASE/956cef39ac422323d78999273988fc7186108f73/spring-data-commons-1.12.4.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.data:spring-data-jpa:1.10.4.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/1.10.4.RELEASE/610c9410a18332cff48f4ade8f0eab21a8eaa876/spring-data-jpa-1.10.4.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.security:spring-security-acl:3.2.7.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-acl/3.2.7.RELEASE/8dabf22afa5fdc81f71f529063ef113846700caf/spring-security-acl-3.2.7.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.security:spring-security-config:3.2.7.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.2.7.RELEASE/36ded839a3f90b268c2b708a5a92a50aa0412223/spring-security-config-3.2.7.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.security:spring-security-core:3.2.7.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/3.2.7.RELEASE/50c170701f0cc9a99d14a50a7a97ff0c651bab66/spring-security-core-3.2.7.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.security:spring-security-taglibs:3.2.7.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/3.2.7.RELEASE/c542291c37463f2969aeeaf1eb2d982c11a184f1/spring-security-taglibs-3.2.7.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework.security:spring-security-web:3.2.7.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.2.7.RELEASE/3170f54765d6d9f99cf2d4ba7f25698d1026cf6f/spring-security-web-3.2.7.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-aop:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.9.RELEASE/95f5f5cf3cae64266a89dc1bc9e0484425cd8358/spring-aop-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-beans:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.9.RELEASE/daa5abf3779c8cad1a2910e1ea08e4272489d8ae/spring-beans-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-context:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.9.RELEASE/a186823724f03b98becd5f93b1fa107fe6f7a7ff/spring-context-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-core:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.9.RELEASE/430b7298bfb85d66fb61e19ca8f06231b911e9f5/spring-core-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-expression:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.9.RELEASE/4edca6913da9e62a6586714e053e01a61952a153/spring-expression-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-jdbc:4.2.8.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.2.8.RELEASE/f3718cf6154b5826a7fd1a5d3609694c304f2da1/spring-jdbc-4.2.8.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-orm:4.2.8.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.2.8.RELEASE/43b557f5025782616f791dbd720b4a606eeca1bf/spring-orm-4.2.8.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-tx:4.2.8.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.8.RELEASE/b64d7823a8dc1876fcacfa79dee77f77bad6be5e/spring-tx-4.2.8.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-web:4.3.9.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.9.RELEASE/91dae64c4280093ad5fb4736a10913c9233479c1/spring-web-4.3.9.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.springframework:spring-webmvc:4.2.8.release.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.8.RELEASE/e83295391d9c103ee2edfb37ea267edda104b2b5/spring-webmvc-4.2.8.RELEASE.jar"/>
+    </path>
+
+    <path id="library.gradle:_xml-apis:xml-apis:1.0.b2.classpath">
+        <pathelement
+                location="${basedir}/../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar"/>
+    </path>
+
+
+    <!-- Application Server Libraries -->
+    <!-- Register Custom Compiler Taskdefs -->
+    <property name="javac2.home" value="${idea.home}/lib"/>
+    <path id="javac2.classpath">
+        <pathelement location="${javac2.home}/javac2.jar"/>
+        <pathelement location="${javac2.home}/jdom.jar"/>
+        <pathelement location="${javac2.home}/asm-all.jar"/>
+        <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+    </path>
+    <target name="register.custom.compilers">
+        <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+        <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions"
+                 classpathref="javac2.classpath"/>
+    </target>
+
+    <!-- Modules -->
+
+    <import file="${basedir}/.idea/modules/inventory-core/module_inventory-core.xml"/>
+
+    <import file="${basedir}/.idea/module_spring-skeleton.xml"/>
+
+    <import file="${basedir}/.idea/modules/module_spring-skeleton_main.xml"/>
+
+    <import file="${basedir}/.idea/modules/module_spring-skeleton_test.xml"/>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean"
+            depends="clean.module.inventory-core, clean.module.spring-skeleton, clean.module.spring-skeleton_main, clean.module.spring-skeleton_test, clean.artifact.gradle_:_spring-skeleton.war_(exploded)"
+            description="cleanup all"/>
+
+    <target name="build.modules"
+            depends="init, clean, compile.module.inventory-core, compile.module.spring-skeleton, compile.module.spring-skeleton_main, compile.module.spring-skeleton_test"
+            description="build all modules"/>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+        <property name="artifact.output.gradle_:_spring-skeleton.war" value="${basedir}/build/libs"/>
+        <property name="artifact.output.gradle_:_spring-skeleton.war_(exploded)"
+                  value="${basedir}/build/libs/exploded/spring-skeleton.war"/>
+        <mkdir dir="${artifacts.temp.dir}"/>
+        <property name="temp.jar.path.spring-skeleton.war" value="${artifacts.temp.dir}/spring-skeleton.war"/>
+    </target>
+
+    <target name="clean.artifact.gradle_:_spring-skeleton.war_(exploded)"
+            description="clean Gradle : spring-skeleton.war (exploded) artifact output">
+        <delete dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
+    </target>
+
+    <target name="artifact.gradle_:_spring-skeleton.war"
+            depends="init.artifacts, artifact.gradle_:_spring-skeleton.war_(exploded)"
+            description="Build &#39;Gradle : spring-skeleton.war&#39; artifact">
+        <property name="artifact.temp.output.gradle_:_spring-skeleton.war"
+                  value="${artifacts.temp.dir}/Gradle___spring_skeleton_war"/>
+        <mkdir dir="${artifact.temp.output.gradle_:_spring-skeleton.war}"/>
+        <zip destfile="${temp.jar.path.spring-skeleton.war}">
+            <zipfileset dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
+        </zip>
+        <copy file="${temp.jar.path.spring-skeleton.war}"
+              tofile="${artifact.temp.output.gradle_:_spring-skeleton.war}/spring-skeleton.war"/>
+    </target>
+
+    <target name="artifact.gradle_:_spring-skeleton.war_(exploded)"
+            depends="init.artifacts, compile.module.spring-skeleton_main"
+            description="Build &#39;Gradle : spring-skeleton.war (exploded)&#39; artifact">
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}"/>
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/META-INF"/>
+        <copy file="${basedir}/build/libs/exploded/spring-skeleton.war/META-INF/MANIFEST.MF"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/META-INF/MANIFEST.MF"/>
+        <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}">
+            <fileset dir="${basedir}/src/main/webapp"/>
+        </copy>
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF"/>
+        <copy file="${basedir}/src/main/webapp/WEB-INF/web.xml"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/web.xml"/>
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF"/>
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes"/>
+        <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes">
+            <fileset dir="${spring-skeleton_main.output.dir}"/>
+        </copy>
+        <copy todir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/classes">
+            <fileset dir="${basedir}/build/resources/main"/>
+        </copy>
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jstl-1.2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/1.10.4.RELEASE/610c9410a18332cff48f4ade8f0eab21a8eaa876/spring-data-jpa-1.10.4.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-data-jpa-1.10.4.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.8.RELEASE/e83295391d9c103ee2edfb37ea267edda104b2b5/spring-webmvc-4.2.8.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-webmvc-4.2.8.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.2.7.RELEASE/3170f54765d6d9f99cf2d4ba7f25698d1026cf6f/spring-security-web-3.2.7.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-web-3.2.7.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.2.7.RELEASE/36ded839a3f90b268c2b708a5a92a50aa0412223/spring-security-config-3.2.7.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-config-3.2.7.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javax.servlet-api-3.0.1.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/2.2.2/d456bb230c70c0b95c76fb28e429d42f275941/cglib-nodep-2.2.2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/cglib-nodep-2.2.2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.6.12/e885e7ba80175986cfd6a84b0ce118407621f11b/aspectjweaver-1.6.12.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aspectjweaver-1.6.12.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.10.Final/1d1beb7bbd179d9bf241c4a8165f0bf3693aca/hibernate-entitymanager-4.3.10.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-entitymanager-4.3.10.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.10.Final/6dbf5fe7a8cb307587ad4b4a97ae0933bba5e2a9/hibernate-core-4.3.10.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-core-4.3.10.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c808/hibernate-validator-5.1.3.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-validator-5.1.3.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.el/javax.el-api/2.2.5/370140e991eefb212a6d6baedbce585f00ef76e0/javax.el-api-2.2.5.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javax.el-api-2.2.5.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-core-2.9.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-annotations-2.9.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jackson-databind-2.9.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.2/5d7491ed6ebd02b6a8d2305f8e6b7fe5dbd95f72/commons-fileupload-1.3.2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-fileupload-1.3.2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/json-20170516.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.41.0/b1430988daa56282c62064def5d6a0011c3116f9/javamelody-core-1.41.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javamelody-core-1.41.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/3.2.7.RELEASE/c542291c37463f2969aeeaf1eb2d982c11a184f1/spring-security-taglibs-3.2.7.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-taglibs-3.2.7.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.12.4.RELEASE/956cef39ac422323d78999273988fc7186108f73/spring-data-commons-1.12.4.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-data-commons-1.12.4.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.2.8.RELEASE/43b557f5025782616f791dbd720b4a606eeca1bf/spring-orm-4.2.8.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-orm-4.2.8.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.43/dee9103eec0d877f3a21c82d4d9e9f4fbd2d6e0a/mysql-connector-java-5.1.43.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/mysql-connector-java-5.1.43.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.8.RELEASE/b64d7823a8dc1876fcacfa79dee77f77bad6be5e/spring-tx-4.2.8.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-tx-4.2.8.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.21/331b564a3a42f002a0004b039c1c430da89062cd/jcl-over-slf4j-1.7.21.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jcl-over-slf4j-1.7.21.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aopalliance-1.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/3.2.7.RELEASE/50c170701f0cc9a99d14a50a7a97ff0c651bab66/spring-security-core-3.2.7.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-core-3.2.7.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-logging-3.1.3.GA.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-logging-annotations-1.2.0.Beta1.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/dom4j-1.6.1.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.5.Final/2a581b9edb8168e45060d8bad8b7f46712d2c52c/hibernate-commons-annotations-4.0.5.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-commons-annotations-4.0.5.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/javassist-3.18.1-GA.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/antlr-2.7.7.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jandex-1.1.0.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c81162b17c540e634cffa3bd9b09b4c/classmate-1.0.0.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/classmate-1.0.0.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.2/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-io-2.2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jrobin/jrobin/1.5.9/bd9a84484c67de930fa841f23cd6a93108b05cd0/jrobin-1.5.9.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/jrobin-1.5.9.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-acl/3.2.7.RELEASE/8dabf22afa5fdc81f71f529063ef113846700caf/spring-security-acl-3.2.7.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-security-acl-3.2.7.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.2.8.RELEASE/f3718cf6154b5826a7fd1a5d3609694c304f2da1/spring-jdbc-4.2.8.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-jdbc-4.2.8.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.9.RELEASE/91dae64c4280093ad5fb4736a10913c9233479c1/spring-web-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-web-4.3.9.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.9/87372d9e2323313bec24b09a325bfea8ae0eb867/aspectjrt-1.8.9.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/aspectjrt-1.8.9.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.21/139535a69a4239db087de9bab0bee568bf8e0b70/slf4j-api-1.7.21.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/slf4j-api-1.7.21.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.9.RELEASE/daa5abf3779c8cad1a2910e1ea08e4272489d8ae/spring-beans-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-beans-4.3.9.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.9.RELEASE/a186823724f03b98becd5f93b1fa107fe6f7a7ff/spring-context-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-context-4.3.9.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.9.RELEASE/430b7298bfb85d66fb61e19ca8f06231b911e9f5/spring-core-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-core-4.3.9.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/commons-logging-1.2.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.9.RELEASE/4edca6913da9e62a6586714e053e01a61952a153/spring-expression-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-expression-4.3.9.RELEASE.jar"/>
+        <copy file="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.9.RELEASE/95f5f5cf3cae64266a89dc1bc9e0484425cd8358/spring-aop-4.3.9.RELEASE.jar"
+              tofile="${artifact.output.gradle_:_spring-skeleton.war_(exploded)}/WEB-INF/lib/spring-aop-4.3.9.RELEASE.jar"/>
+    </target>
+
+    <target name="build.all.artifacts"
+            depends="artifact.gradle_:_spring-skeleton.war, artifact.gradle_:_spring-skeleton.war_(exploded)"
+            description="Build all artifacts">
+        <mkdir dir="${artifact.output.gradle_:_spring-skeleton.war}"/>
+        <copy todir="${artifact.output.gradle_:_spring-skeleton.war}">
+            <fileset dir="${artifact.temp.output.gradle_:_spring-skeleton.war}"/>
+        </copy>
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}"/>
+    </target>
+
+    <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>

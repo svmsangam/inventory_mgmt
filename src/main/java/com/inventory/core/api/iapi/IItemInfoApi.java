@@ -16,9 +16,9 @@ public interface IItemInfoApi {
 
     void delete(long itemInfoId);
 
-    ItemInfoDTO getByIdAndStoreAndStatus(long itemInfoId , long storeId , Status status);
+    ItemInfoDTO getByIdAndStoreAndStatus(long itemInfoId, long storeId, Status status);
 
-    List<ItemInfoDTO> list(Status status , long storeId);
+    List<ItemInfoDTO> list(Status status, long storeId);
 
-    List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId , Status status , long storeId);
+    List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId, Status status, long storeId);
 }

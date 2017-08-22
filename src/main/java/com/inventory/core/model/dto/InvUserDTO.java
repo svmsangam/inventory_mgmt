@@ -6,125 +6,125 @@ import com.inventory.core.model.enumconstant.UserType;
 
 import java.util.List;
 
-public class InvUserDTO  {
-	
-	private Long userId;
-	
-	private String inventoryuser;
-	
-	private String userpassword;
-	
-	private String userrepassword;
+public class InvUserDTO {
 
-	private UserType userType;
+    private Long userId;
 
-	private Status userstatus;
-	
-	private String userauthority;
-	
-	private Boolean enable;
+    private String inventoryuser;
 
-	private String secret_key;
+    private String userpassword;
 
-	private String storeName;
+    private String userrepassword;
 
-	private List<Permission> permissionList;
-	
-	private Long storeId;
+    private UserType userType;
 
-	public String getInventoryuser() {
-		return inventoryuser;
-	}
+    private Status userstatus;
 
-	public void setInventoryuser(String inventoryuser) {
-		this.inventoryuser = inventoryuser;
-	}
+    private String userauthority;
 
-	public String getUserpassword() {
-		return userpassword;
-	}
+    private Boolean enable;
 
-	public void setUserpassword(String userpassword) {
-		this.userpassword = userpassword;
-	}
+    private String secret_key;
 
-	public String getUserrepassword() {
-		return userrepassword;
-	}
+    private String storeName;
 
-	public void setUserrepassword(String userrepassword) {
-		this.userrepassword = userrepassword;
-	}
+    private List<Permission> permissionList;
 
-	public UserType getUserType() {
-		return userType;
-	}
+    private Long storeId;
 
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
+    public String getInventoryuser() {
+        return inventoryuser;
+    }
 
-	public Status getUserstatus() {
-		return userstatus;
-	}
+    public void setInventoryuser(String inventoryuser) {
+        this.inventoryuser = inventoryuser;
+    }
 
-	public void setUserstatus(Status userstatus) {
-		this.userstatus = userstatus;
-	}
+    public String getUserpassword() {
+        return userpassword;
+    }
 
-	public String getUserauthority() {
-		return userauthority;
-	}
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
+    }
 
-	public void setUserauthority(String userauthority) {
-		this.userauthority = userauthority;
-	}
+    public String getUserrepassword() {
+        return userrepassword;
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public void setUserrepassword(String userrepassword) {
+        this.userrepassword = userrepassword;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public UserType getUserType() {
+        return userType;
+    }
 
-	public Boolean getEnable() {
-		return enable;
-	}
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 
-	public void setEnable(Boolean enable) {
-		this.enable = enable;
-	}
+    public Status getUserstatus() {
+        return userstatus;
+    }
 
-	public String getSecret_key() {
-		return secret_key;
-	}
+    public void setUserstatus(Status userstatus) {
+        this.userstatus = userstatus;
+    }
 
-	public void setSecret_key(String secret_key) {
-		this.secret_key = secret_key;
-	}
+    public String getUserauthority() {
+        return userauthority;
+    }
 
-	public Long getStoreId() {
-		return storeId;
-	}
+    public void setUserauthority(String userauthority) {
+        this.userauthority = userauthority;
+    }
 
-	public void setStoreId(Long storeId) {
-		this.storeId = storeId;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public String getStoreName() {
-		return storeName;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public void setStoreName(String storeName) {
-		this.storeName = storeName;
-	}
+    public Boolean getEnable() {
+        return enable;
+    }
 
-	public List<Permission> getPermissionList() {
-		return permissionList;
-	}
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
 
-	public void setPermissionList(List<Permission> permissionList) {
-		this.permissionList = permissionList;
-	}
+    public String getSecret_key() {
+        return secret_key;
+    }
+
+    public void setSecret_key(String secret_key) {
+        this.secret_key = secret_key;
+    }
+
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
 }

@@ -9,8 +9,8 @@ import javax.persistence.Table;
  * Created by dhiraj on 7/30/17.
  */
 @Entity
-@Table(name="lot_table")
-public class LotInfo extends AbstractEntity<Long>{
+@Table(name = "lot_table")
+public class LotInfo extends AbstractEntity<Long> {
 
     private String lot;
 

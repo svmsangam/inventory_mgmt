@@ -18,53 +18,52 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
-		SimpleUrlAuthenticationSuccessHandler {
+        SimpleUrlAuthenticationSuccessHandler {
 
-	protected final Log logger = LogFactory.getLog(this.getClass());
-	private RequestCache requestCache = new HttpSessionRequestCache();
+    protected final Log logger = LogFactory.getLog(this.getClass());
+    private RequestCache requestCache = new HttpSessionRequestCache();
 
-	@Autowired
-	private SessionRegistry sessionRegistry;
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request,
-			HttpServletResponse response, Authentication authentication)
-			throws ServletException, IOException {
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response, Authentication authentication)
+            throws ServletException, IOException {
 
-		User user = (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
-		System.out.println("total principle :::: " + sessionRegistry.getAllPrincipals().size() );
-		System.out.println("session size of "+ user.getUsername() + " :: " + sessionRegistry.getAllSessions(authentication.getPrincipal() , false).size());
+        System.out.println("total principle :::: " + sessionRegistry.getAllPrincipals().size());
+        System.out.println("session size of " + user.getUsername() + " :: " + sessionRegistry.getAllSessions(authentication.getPrincipal(), false).size());
 
 
+        logger.debug("in onAuthenticationSuccess==>");
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        logger.debug("savedRequest==>" + savedRequest);
+        if (savedRequest == null) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
+        String targetUrlParameter = getTargetUrlParameter();
+        logger.debug("targetUrlParameter==>" + targetUrlParameter);
+        logger.debug("isAlwaysUseDefaultTargetUrl()==>"
+                + isAlwaysUseDefaultTargetUrl());
+        if (isAlwaysUseDefaultTargetUrl()
+                || (targetUrlParameter != null && StringUtils.hasText(request
+                .getParameter(targetUrlParameter)))) {
+            requestCache.removeRequest(request, response);
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
+        clearAuthenticationAttributes(request);
 
-		logger.debug("in onAuthenticationSuccess==>" );
-		SavedRequest savedRequest = requestCache.getRequest(request, response);
-		logger.debug("savedRequest==>" + savedRequest);
-		if (savedRequest == null) {
-			super.onAuthenticationSuccess(request, response, authentication);
-			return;
-		}
-		String targetUrlParameter = getTargetUrlParameter();
-		logger.debug("targetUrlParameter==>" + targetUrlParameter);
-		logger.debug("isAlwaysUseDefaultTargetUrl()==>"
-				+ isAlwaysUseDefaultTargetUrl());
-		if (isAlwaysUseDefaultTargetUrl()
-				|| (targetUrlParameter != null && StringUtils.hasText(request
-						.getParameter(targetUrlParameter)))) {
-			requestCache.removeRequest(request, response);
-			super.onAuthenticationSuccess(request, response, authentication);
-			return;
-		}
-		clearAuthenticationAttributes(request);
+        String targetUrl = savedRequest.getRedirectUrl();
+        logger.debug("targetUrl==>" + targetUrl);
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
 
-		String targetUrl = savedRequest.getRedirectUrl();
-		logger.debug("targetUrl==>" + targetUrl);
-		getRedirectStrategy().sendRedirect(request, response, targetUrl);
-	}
-
-	public void setRequestCache(RequestCache requestCache) {
-		this.requestCache = requestCache;
-	}
+    public void setRequestCache(RequestCache requestCache) {
+        this.requestCache = requestCache;
+    }
 
 }

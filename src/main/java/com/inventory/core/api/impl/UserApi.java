@@ -25,118 +25,118 @@ import java.util.List;
 @Transactional
 public class UserApi implements IUserApi {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserConverter userConverter;
+    @Autowired
+    private UserConverter userConverter;
 
-	@Autowired
-	private StoreInfoRepository storeInfoRepository;
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
-	@Autowired
-	private UserPermissionRepository userPermissionRepository;
+    @Autowired
+    private UserPermissionRepository userPermissionRepository;
 
-	@Override
-	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
+    @Override
+    public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
 
-		userDTO.setEnable(false);
+        userDTO.setEnable(false);
 
-		User user = userConverter.convertToEntity(userDTO);
+        User user = userConverter.convertToEntity(userDTO);
 
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-		user = userRepository.save(user);
+        user = userRepository.save(user);
 
-		return userConverter.convertToDto(user);
-	}
+        return userConverter.convertToDto(user);
+    }
 
-	public void changePassword(long userId, String newPassword) throws IOException, JSONException {
-		User user = userRepository.findOne(userId);
+    public void changePassword(long userId, String newPassword) throws IOException, JSONException {
+        User user = userRepository.findOne(userId);
 
-		user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
 
-		userRepository.save(user);
-	}
+        userRepository.save(user);
+    }
 
-	@Override
-	public InvUserDTO getUserWithId(long userId) {
-		return userConverter.convertToDto(userRepository.findByIdAndStatus(userId , Status.ACTIVE));
+    @Override
+    public InvUserDTO getUserWithId(long userId) {
+        return userConverter.convertToDto(userRepository.findByIdAndStatus(userId, Status.ACTIVE));
 
-	}
+    }
 
-	@Override
-	public InvUserDTO getUserPermission(InvUserDTO userDTO) {
+    @Override
+    public InvUserDTO getUserPermission(InvUserDTO userDTO) {
 
-		UserPermission userPermission = userPermissionRepository.findByPermissionUser(userDTO.getUserId());
+        UserPermission userPermission = userPermissionRepository.findByPermissionUser(userDTO.getUserId());
 
-		if (userPermission != null)
-			userDTO.setPermissionList(userPermission.getPermissionList());
+        if (userPermission != null)
+            userDTO.setPermissionList(userPermission.getPermissionList());
 
-		return userDTO;
-	}
+        return userDTO;
+    }
 
-	@Override
-	public List<Permission> getUserPermission(long userId) {
+    @Override
+    public List<Permission> getUserPermission(long userId) {
 
-		UserPermission userPermission = userPermissionRepository.findByPermissionUser(userId);
+        UserPermission userPermission = userPermissionRepository.findByPermissionUser(userId);
 
-		if (userPermission != null)
-			return userPermission.getPermissionList();
+        if (userPermission != null)
+            return userPermission.getPermissionList();
 
-		return null;
+        return null;
 
-	}
+    }
 
-	@Override
-	public InvUserDTO updateEnable(long userId) {
+    @Override
+    public InvUserDTO updateEnable(long userId) {
 
-		User user = userRepository.findById(userId);
+        User user = userRepository.findById(userId);
 
-		if (user.getEnabled()){
-			user.setEnabled(false);
+        if (user.getEnabled()) {
+            user.setEnabled(false);
 
-		}else {
-			user.setEnabled(true);
-		}
+        } else {
+            user.setEnabled(true);
+        }
 
-		return userConverter.convertToDto(userRepository.save(user));
-	}
+        return userConverter.convertToDto(userRepository.save(user));
+    }
 
-	@Override
-	public InvUserDTO getUserByUserName(String userName) {
+    @Override
+    public InvUserDTO getUserByUserName(String userName) {
 
-		User user = userRepository.findByUsername(userName);
+        User user = userRepository.findByUsername(userName);
 
-		return userConverter.convertToDto(user);
-	}
+        return userConverter.convertToDto(user);
+    }
 
-	@Override
-	public boolean nameExists(String userName) {
-		return userRepository.findByUsername(userName) != null;
-	}
+    @Override
+    public boolean nameExists(String userName) {
+        return userRepository.findByUsername(userName) != null;
+    }
 
-	@Override
-	public InvUserDTO changeStore(long userId, long storeId) {
+    @Override
+    public InvUserDTO changeStore(long userId, long storeId) {
 
-		User user = userRepository.findById(userId);
+        User user = userRepository.findById(userId);
 
-		user.setStoreInfo(storeInfoRepository.findById(storeId));
+        user.setStoreInfo(storeInfoRepository.findById(storeId));
 
-		return userConverter.convertToDto(userRepository.save(user));
-	}
+        return userConverter.convertToDto(userRepository.save(user));
+    }
 
-	@Override
-	public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status , List<UserType> userTypeList) {
-		return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status , userTypeList));
-	}
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList) {
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status, userTypeList));
+    }
 
-	@Override
-	public List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status ,List<UserType> userTypeList, long storeInfoId) {
-		return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndStoreInfo(status , userTypeList , storeInfoId));
-	}
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId) {
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndStoreInfo(status, userTypeList, storeInfoId));
+    }
 
 }

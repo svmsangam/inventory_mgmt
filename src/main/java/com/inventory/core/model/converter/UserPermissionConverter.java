@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserPermissionConverter implements IConvertable<UserPermission , UserPermissionDTO> {
+public class UserPermissionConverter implements IConvertable<UserPermission, UserPermissionDTO> {
 
     @Autowired
     private UserRepository userRepository;
@@ -34,7 +34,7 @@ public class UserPermissionConverter implements IConvertable<UserPermission , Us
     @Override
     public UserPermissionDTO convertToDto(UserPermission entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -52,7 +52,7 @@ public class UserPermissionConverter implements IConvertable<UserPermission , Us
     @Override
     public UserPermission copyConvertToEntity(UserPermissionDTO dto, UserPermission entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 

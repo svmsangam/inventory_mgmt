@@ -15,46 +15,46 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @MappedSuperclass
 public abstract class AbstractEntity<PK extends Serializable> extends AbstractPersistable<PK> {
 
-	private static final long serialVersionUID = 8453654076725018243L;
+    private static final long serialVersionUID = 8453654076725018243L;
 
-	@Basic(optional = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created = new Date();
+    @Basic(optional = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
 
-	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModified;
+    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
 
-	@Version
-	@Column
-	private int version;
+    @Version
+    @Column
+    private int version;
 
-	public AbstractEntity() {
-		setCreated(new Date());
-	}
+    public AbstractEntity() {
+        setCreated(new Date());
+    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public Date getCreated() {
-		return created;
-	}
+    public Date getCreated() {
+        return created;
+    }
 
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
 
-	public Date getLastModified() {
-		return lastModified;
-	}
+    public Date getLastModified() {
+        return lastModified;
+    }
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-	public int getVersion() {
-		return version;
-	}
+    public int getVersion() {
+        return version;
+    }
 
 }

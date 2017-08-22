@@ -15,23 +15,23 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface CategoryInfoRepository extends JpaRepository<CategoryInfo , Long> , JpaSpecificationExecutor<CategoryInfo> {
+public interface CategoryInfoRepository extends JpaRepository<CategoryInfo, Long>, JpaSpecificationExecutor<CategoryInfo> {
 
     //@Query("select c from CategoryInfo c where c.id = ?1")
     CategoryInfo findById(long categoryId);
 
     @Query("select c from CategoryInfo c where c.id = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
-    CategoryInfo findByIdAndStatusAndStoreInfo(long categoryId , Status status , long storeId);
+    CategoryInfo findByIdAndStatusAndStoreInfo(long categoryId, Status status, long storeId);
 
     @Query("select c from CategoryInfo c where c.name = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
-    CategoryInfo findByNameAndStatusAndStoreInfo(String categoryName , Status status , long storeId);
+    CategoryInfo findByNameAndStatusAndStoreInfo(String categoryName, Status status, long storeId);
 
     @Query("select c from CategoryInfo c where c.code = ?1 and c.status = ?2 and c.storeInfo.id = ?3")
-    CategoryInfo findByCodeAndStatusAndStoreInfo(String categoryCode , Status status , long storeId);
+    CategoryInfo findByCodeAndStatusAndStoreInfo(String categoryCode, Status status, long storeId);
 
     @Query("select c from CategoryInfo c where c.status = ?1 and c.storeInfo.id = ?2 order by c.id desc ")
-    List<CategoryInfo> findAllByStatusAndStoreInfo(Status status , long storeId);
+    List<CategoryInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
 
     @Query("select count (c) from CategoryInfo c where c.status = ?1 and c.storeInfo.id = ?2")
-    Long countAllByStatusAndStoreInfo(Status status , long storeId);
+    Long countAllByStatusAndStoreInfo(Status status, long storeId);
 }

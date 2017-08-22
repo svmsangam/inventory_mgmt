@@ -34,12 +34,12 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
 
     @Override
     public SubCategoryInfo convertToEntity(SubCategoryInfoDTO dto) {
-        return copyConvertToEntity(dto , new SubCategoryInfo());
+        return copyConvertToEntity(dto, new SubCategoryInfo());
     }
 
     @Override
     public SubCategoryInfoDTO convertToDto(SubCategoryInfo entity) {
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -62,7 +62,7 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
 
     @Override
     public SubCategoryInfo copyConvertToEntity(SubCategoryInfoDTO dto, SubCategoryInfo entity) {
-        if (dto == null | entity == null){
+        if (dto == null | entity == null) {
             return null;
         }
 

@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class AccountInfoConverter implements IConvertable<AccountInfo , AccountInfoDTO> , IListConvertable<AccountInfo , AccountInfoDTO>{
+public class AccountInfoConverter implements IConvertable<AccountInfo, AccountInfoDTO>, IListConvertable<AccountInfo, AccountInfoDTO> {
 
     @Override
     public AccountInfo convertToEntity(AccountInfoDTO dto) {
-        return copyConvertToEntity(dto , new AccountInfo());
+        return copyConvertToEntity(dto, new AccountInfo());
     }
 
     @Override
     public AccountInfoDTO convertToDto(AccountInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -43,7 +43,7 @@ public class AccountInfoConverter implements IConvertable<AccountInfo , AccountI
     @Override
     public AccountInfo copyConvertToEntity(AccountInfoDTO dto, AccountInfo entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 

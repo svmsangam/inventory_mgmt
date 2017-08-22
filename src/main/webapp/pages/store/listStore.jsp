@@ -39,55 +39,63 @@
                     <div class="box-body">
 
                         <div class="box-body">
-                        <table id="table2" class="table table-bordered table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th>SN</th>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Email</th>
-                                <th>City</th>
-                                <th>Street</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody id="myData">
-                            <c:forEach var="store" items="${storeList}" varStatus="i">
+                            <table id="table2" class="table table-bordered table-hover table-striped">
+                                <thead>
                                 <tr>
-                                    <td>${i.index + 1}</td>
-                                    <td><a href="javascript:void(0);" url="${pageContext.request.contextPath}/store/show/${store.storeId}" class="viewStoreInfo" data-toggle="modal"
-                                                data-target="#modal-view">
-                                            ${store.name}
-                                    </a></td>
-                                    <td>${store.contact}</td>
-                                    <td>${store.email}</td>
-                                    <td>${store.cityName}</td>
-                                    <td>${store.street}</td>
-                                    <td><c:if test="${store.status eq 'ACTIVE'}"><span class="label label-success">Active</span></c:if><c:if test="${store.status ne 'ACTIVE'}"><span class="label label-danger">Deactive</span></c:if></td>
-                                    <td>
-                                        <button type="button" url="${pageContext.request.contextPath}/store/show/${store.storeId}" class="btn btn-info btn-sm  btn-flat viewStoreInfo" data-toggle="modal"
-                                                data-target="#modal-view"><span class="glyphicon glyphicon-eye-open"></span>
-                                            View
-                                        </button>
-                                       <%-- <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal"
-                                                data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span>
-                                            Edit
-                                        </button>--%>
-                                        <%--<button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>--%>
-                                    </td>
+                                    <th>SN</th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Street</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody id="myData">
+                                <c:forEach var="store" items="${storeList}" varStatus="i">
+                                    <tr>
+                                        <td>${i.index + 1}</td>
+                                        <td><a href="javascript:void(0);"
+                                               url="${pageContext.request.contextPath}/store/show/${store.storeId}"
+                                               class="viewStoreInfo" data-toggle="modal"
+                                               data-target="#modal-view">
+                                                ${store.name}
+                                        </a></td>
+                                        <td>${store.contact}</td>
+                                        <td>${store.email}</td>
+                                        <td>${store.cityName}</td>
+                                        <td>${store.street}</td>
+                                        <td><c:if test="${store.status eq 'ACTIVE'}"><span class="label label-success">Active</span></c:if><c:if
+                                                test="${store.status ne 'ACTIVE'}"><span class="label label-danger">Deactive</span></c:if>
+                                        </td>
+                                        <td>
+                                            <button type="button"
+                                                    url="${pageContext.request.contextPath}/store/show/${store.storeId}"
+                                                    class="btn btn-info btn-sm  btn-flat viewStoreInfo"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-view"><span
+                                                    class="glyphicon glyphicon-eye-open"></span>
+                                                View
+                                            </button>
+                                                <%-- <button type="button" class="btn btn-warning btn-sm  btn-flat" data-toggle="modal"
+                                                         data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span>
+                                                     Edit
+                                                 </button>--%>
+                                                <%--<button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                                        class="glyphicon glyphicon-minus-sign"></span> Delete
+                                                </button>--%>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-body -->
+                    <!-- /.box -->
                 </div>
-                <!-- /.box -->
             </div>
-        </div>
     </section>
 
     <div class="modal fade" id="modal-view">
@@ -103,7 +111,7 @@
                     <div class="box-body">
 
                         <dl class="dl-horizontal">
-                            <dt >Email ID</dt>
+                            <dt>Email ID</dt>
                             <dd class="storeEmail"></dd>
                             <dt>Contact No</dt>
                             <dd class="storeContact"></dd>
@@ -127,8 +135,10 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left closeShow" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-warning btn-sm  btn-flat pull-right edit" data-dismiss="modal" data-toggle="modal"
+                        <button type="button" class="btn btn-danger pull-left closeShow" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm  btn-flat pull-right edit"
+                                data-dismiss="modal" data-toggle="modal"
                                 data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span>
                             Edit
                         </button>
@@ -162,7 +172,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="store name" required/>
+                                    <input type="text" class="form-control" name="name" id="name"
+                                           placeholder="store name" required/>
                                     <p class="form-error name"></p>
                                 </div>
                             </div>
@@ -170,7 +181,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Email</label>
-                                    <input type="text" class="form-control" name="email" id="email" placeholder="email" required/>
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="email"
+                                           required/>
                                     <p class="form-error email"></p>
                                 </div>
                             </div>
@@ -179,7 +191,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Contact no.</label>
-                                    <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact"
+                                    <input type="text" class="form-control" name="contact" id="contact"
+                                           placeholder="Contact"
                                            required/>
                                     <p class="form-error contact"></p>
                                 </div>
@@ -188,7 +201,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Mobile no</label>
-                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="mobile no"
+                                    <input type="text" class="form-control" name="mobile" id="mobile"
+                                           placeholder="mobile no"
                                            required/>
                                     <p class="form-error mobile"></p>
                                 </div>
@@ -201,7 +215,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Street Address</label>
-                                    <input type="text" class="form-control" name="street" id="street" placeholder="street address"
+                                    <input type="text" class="form-control" name="street" id="street"
+                                           placeholder="street address"
                                            required/>
                                     <p class="form-error street"></p>
                                 </div>
@@ -233,7 +248,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Regd no</label>
-                                    <input type="text" class="form-control" name="reg" id="reg" placeholder="Registration no"
+                                    <input type="text" class="form-control" name="reg" id="reg"
+                                           placeholder="Registration no"
                                            required/>
                                     <p class="form-error reg"></p>
                                 </div>
@@ -242,8 +258,12 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
-                        <button type="submit" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/store/save" class="btn btn-primary savestore">Save changes</button>
+                        <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" pagecontext="${pageContext.request.contextPath}"
+                                url="${pageContext.request.contextPath}/store/save" class="btn btn-primary savestore">
+                            Save changes
+                        </button>
                     </div>
                 </div>
 
@@ -274,18 +294,19 @@
                     <div class="box-body">
 
                         <div class="row">
-                           <%-- <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="control-label">Name</label>
-                                    <input type="text" class="form-control" name="name" id="nameEdit" placeholder="Name" required/>
-                                    <p class="form-error"></p>
-                                </div>
-                            </div>--%>
+                            <%-- <div class="col-lg-6">
+                                 <div class="form-group">
+                                     <label class="control-label">Name</label>
+                                     <input type="text" class="form-control" name="name" id="nameEdit" placeholder="Name" required/>
+                                     <p class="form-error"></p>
+                                 </div>
+                             </div>--%>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Email</label>
-                                    <input type="text" class="form-control" name="" id="emailEdit" placeholder="email" required/>
+                                    <input type="text" class="form-control" name="" id="emailEdit" placeholder="email"
+                                           required/>
                                     <p class="form-error email name"></p>
                                 </div>
                             </div>
@@ -294,7 +315,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Contact no.</label>
-                                    <input type="text" class="form-control" name="" id="contactEdit" placeholder="Contact"
+                                    <input type="text" class="form-control" name="" id="contactEdit"
+                                           placeholder="Contact"
                                            required/>
                                     <p class="form-error contact"></p>
                                 </div>
@@ -303,7 +325,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Mobile no</label>
-                                    <input type="text" class="form-control" name="" id="mobileEdit" placeholder="mobile no"
+                                    <input type="text" class="form-control" name="" id="mobileEdit"
+                                           placeholder="mobile no"
                                            required/>
                                     <p class="form-error mobile"></p>
                                 </div>
@@ -316,7 +339,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Street Address</label>
-                                    <input type="text" class="form-control" name="" id="streetEdit" placeholder="street address"
+                                    <input type="text" class="form-control" name="" id="streetEdit"
+                                           placeholder="street address"
                                            required/>
                                     <p class="form-error street"></p>
                                 </div>
@@ -344,7 +368,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="control-label">Regd no</label>
-                                    <input type="text" class="form-control" name="" id="regEdit" placeholder="Registration no"
+                                    <input type="text" class="form-control" name="" id="regEdit"
+                                           placeholder="Registration no"
                                            required/>
                                     <p class="form-error reg"></p>
                                 </div>
@@ -353,8 +378,11 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close</button>
-                        <button type="submit" id="storeIdEdit" url="${pageContext.request.contextPath}/store/update" class="btn btn-primary updatestore">Save changes</button>
+                        <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" id="storeIdEdit" url="${pageContext.request.contextPath}/store/update"
+                                class="btn btn-primary updatestore">Save changes
+                        </button>
                     </div>
                 </div>
 

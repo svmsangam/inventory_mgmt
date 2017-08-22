@@ -5,7 +5,7 @@ package com.inventory.web.error;
  */
 public class UserManageError {
 
-    private String error ;
+    private String error;
 
     private boolean valid;
 

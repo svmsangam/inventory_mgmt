@@ -5,7 +5,7 @@ package com.inventory.core.model.enumconstant;
  */
 public enum EmployeeStatus {
 
-    PENDING("Pending"), CONFIRM("Confirm"), REGINED("Regined"),FIRED("Fired"),;
+    PENDING("Pending"), CONFIRM("Confirm"), REGINED("Regined"), FIRED("Fired"),;
 
     private final String value;
 

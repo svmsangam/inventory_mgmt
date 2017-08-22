@@ -5,7 +5,7 @@ package com.inventory.core.model.enumconstant;
  */
 public enum AccountAssociateType {
 
-    EMPLOYEE("Employee") , CUSTOMER("Customer") , STORE("Store");
+    EMPLOYEE("Employee"), CUSTOMER("Customer"), STORE("Store");
 
     private final String value;
 

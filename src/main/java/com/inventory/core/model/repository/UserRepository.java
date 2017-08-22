@@ -17,18 +17,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-	User findByUsername(String username);
+    User findByUsername(String username);
 
-	User findByIdAndStatus(long userId , Status status);
+    User findByIdAndStatus(long userId, Status status);
 
-	User findById(long userId);
+    User findById(long userId);
 
-	@Query("select u from User u where u.status = ?1 and u.storeInfo.id = ?2 order by u.username asc ")
-	List<User> findAllByStatusAndStoreInfo(Status status , StoreInfo storeInfo);
+    @Query("select u from User u where u.status = ?1 and u.storeInfo.id = ?2 order by u.username asc ")
+    List<User> findAllByStatusAndStoreInfo(Status status, StoreInfo storeInfo);
 
-	@Query("select u from User u where u.status = ?1 and u.userType in (?2) order by u.username asc ")
-	List<User> findAllByStatusAndUserTypeIn(Status status , List<UserType> userTypeList);
+    @Query("select u from User u where u.status = ?1 and u.userType in (?2) order by u.username asc ")
+    List<User> findAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList);
 
-	@Query("select u from User u where u.status = ?1 and u.userType in (?2) and u.storeInfo.id = ?3 order by u.username asc ")
-	List<User> findAllByStatusAndUserTypeInAndStoreInfo(Status status , List<UserType> userTypeList , long storeId);
+    @Query("select u from User u where u.status = ?1 and u.userType in (?2) and u.storeInfo.id = ?3 order by u.username asc ")
+    List<User> findAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeId);
 }

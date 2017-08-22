@@ -29,228 +29,228 @@ import java.util.List;
 @Controller
 @RequestMapping("user")
 public class UserController {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private IUserApi userApi;
+    @Autowired
+    private IUserApi userApi;
 
-	@Autowired
-	private UserValidation userValidation;
+    @Autowired
+    private UserValidation userValidation;
 
-	@Autowired
-	private IUserPermissionApi userPermissionApi;
+    @Autowired
+    private IUserPermissionApi userPermissionApi;
 
-	@Autowired
-	private IStoreInfoApi storeInfoApi;
+    @Autowired
+    private IStoreInfoApi storeInfoApi;
 
 	/*@Autowired
-	private SessionInfo sessionInfo;*/
+    private SessionInfo sessionInfo;*/
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	public PasswordEncoder getPasswordEncoder() {
-		return passwordEncoder;
-	}
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
 
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	@GetMapping( value = "/list")
-	public String list(ModelMap modelMap  ,  HttpSession session,  RedirectAttributes redirectAttributes) {
-		try {
+    @GetMapping(value = "/list")
+    public String list(ModelMap modelMap, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
 
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			if (currentUser == null){
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-			if (currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+            if (currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-				List<UserType> userTypeList = new ArrayList<>();
+                List<UserType> userTypeList = new ArrayList<>();
 
-				userTypeList.add(UserType.SUPERADMIN);
+                userTypeList.add(UserType.SUPERADMIN);
 
-				modelMap.put(StringConstants.USERTYPE_LIST , userTypeList);
+                modelMap.put(StringConstants.USERTYPE_LIST, userTypeList);
 
-				modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
+                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE, userTypeList));
 
-				return "user/listUser";
+                return "user/listUser";
 
-			}else if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)){
+            } else if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-				List<UserType> userTypeList = new ArrayList<>();
+                List<UserType> userTypeList = new ArrayList<>();
 
-				userTypeList.add(UserType.ADMIN);
-				userTypeList.add(UserType.USER);
+                userTypeList.add(UserType.ADMIN);
+                userTypeList.add(UserType.USER);
 
-				modelMap.put(StringConstants.USERTYPE_LIST , userTypeList);
+                modelMap.put(StringConstants.USERTYPE_LIST, userTypeList);
 
-				modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE , userTypeList));
+                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE, userTypeList));
 
-				modelMap.put(StringConstants.STORE_LIST , storeInfoApi.list(Status.ACTIVE));
+                modelMap.put(StringConstants.STORE_LIST, storeInfoApi.list(Status.ACTIVE));
 
-				return "user/listUser";
+                return "user/listUser";
 
-			}else if(currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)){
+            } else if (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-				List<UserType> userTypeList = new ArrayList<>();
+                List<UserType> userTypeList = new ArrayList<>();
 
-				userTypeList.add(UserType.USER);
+                userTypeList.add(UserType.USER);
 
-				modelMap.put(StringConstants.USERTYPE_LIST , userTypeList);
+                modelMap.put(StringConstants.USERTYPE_LIST, userTypeList);
 
-				modelMap.put(StringConstants.USER_LIST , userApi.getAllByStatusAndUserTypeInAndStoreInfo(Status.ACTIVE , userTypeList , currentUser.getStoreId()));
+                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeInAndStoreInfo(Status.ACTIVE, userTypeList, currentUser.getStoreId()));
 
-				return "user/listUser";
-			}else {
+                return "user/listUser";
+            } else {
 
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
-				return "redirect:/";
-			}
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Stack trace: "  + Arrays.toString(e.getStackTrace()));
-			return "redirect:/";
-		}
-	}
-
-
-	@GetMapping( value = "/manage")
-	public String manage(@RequestParam("userId")long userId , ModelMap modelMap , RedirectAttributes redirectAttributes ) {
-		try {
-
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-			if (currentUser == null){
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
-
-			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/";
+        }
+    }
 
 
-				UserManageError error = userValidation.onManage(userId);
+    @GetMapping(value = "/manage")
+    public String manage(@RequestParam("userId") long userId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
 
-				if (!error.isValid()){
-					redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
-					return "redirect:/user/list";
-				}
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-				InvUserDTO userDTO = userApi.getUserWithId(userId);
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-				modelMap.put(StringConstants.USER , userDTO);
-				UserPermissionDTO userPermissionDTO = userPermissionApi.getByUserId(userId);
+            if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-				if (userPermissionDTO != null ){
-					if (userPermissionDTO.getPermissionList() != null)
-					modelMap.put(StringConstants.USER_PERMISSION , userPermissionDTO.getPermissionList());
-				}
 
-				if (userDTO.getStoreId() != null) {
-					modelMap.put(StringConstants.STORE, storeInfoApi.show(userDTO.getStoreId(), Status.ACTIVE));
-				}
+                UserManageError error = userValidation.onManage(userId);
 
-				return "user/manageUser";
+                if (!error.isValid()) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                    return "redirect:/user/list";
+                }
 
-			}else {
+                InvUserDTO userDTO = userApi.getUserWithId(userId);
 
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
-				return "redirect:/";
-			}
+                modelMap.put(StringConstants.USER, userDTO);
+                UserPermissionDTO userPermissionDTO = userPermissionApi.getByUserId(userId);
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
+                if (userPermissionDTO != null) {
+                    if (userPermissionDTO.getPermissionList() != null)
+                        modelMap.put(StringConstants.USER_PERMISSION, userPermissionDTO.getPermissionList());
+                }
 
-	@PostMapping( value = "/manage")
-	public String manage(@RequestAttribute("userpermission") UserPermissionDTO userPermissionDTO , ModelMap modelMap , RedirectAttributes redirectAttributes) {
-		try {
+                if (userDTO.getStoreId() != null) {
+                    modelMap.put(StringConstants.STORE, storeInfoApi.show(userDTO.getStoreId(), Status.ACTIVE));
+                }
 
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+                return "user/manageUser";
 
-			if (currentUser == null){
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
+            } else {
 
-			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";
+            }
 
-				UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
-				if (!error.isValid()){
-					redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
-					return "redirect:/user/list";
-				}
+    @PostMapping(value = "/manage")
+    public String manage(@RequestAttribute("userpermission") UserPermissionDTO userPermissionDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
 
-				UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-				if (userPermissionDTO1 == null){
-					userPermissionApi.save(userPermissionDTO);
-				}else {
-					userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
-					userPermissionApi.update(userPermissionDTO);
-				}
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user managed successfully");
+            if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-				return "redirect:/user/manage?userId="+userPermissionDTO.getUserId();
+                UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
 
-			}else {
+                if (!error.isValid()) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                    return "redirect:/user/list";
+                }
 
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
-				return "redirect:/";
-			}
+                UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
+                if (userPermissionDTO1 == null) {
+                    userPermissionApi.save(userPermissionDTO);
+                } else {
+                    userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
+                    userPermissionApi.update(userPermissionDTO);
+                }
 
-	@GetMapping( value = "/updateenable")
-	public String updateEnable(@RequestParam("userId")long userId , ModelMap modelMap , RedirectAttributes redirectAttributes) {
-		try {
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user managed successfully");
 
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+                return "redirect:/user/manage?userId=" + userPermissionDTO.getUserId();
 
-			if (currentUser == null){
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
-				return "redirect:/logout";
-			}
-			if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+            } else {
 
-				UserManageError error = userValidation.onUpadteEnable(userId);
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";
+            }
 
-				if (!error.isValid()){
-					redirectAttributes.addFlashAttribute(StringConstants.ERROR , error.getError());
-					return "redirect:/user/list";
-				}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 
-				InvUserDTO userDTO = userApi.updateEnable(userId);
+    @GetMapping(value = "/updateenable")
+    public String updateEnable(@RequestParam("userId") long userId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+            if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                UserManageError error = userValidation.onUpadteEnable(userId);
+
+                if (!error.isValid()) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                    return "redirect:/user/list";
+                }
+
+                InvUserDTO userDTO = userApi.updateEnable(userId);
 
 				/*if (!userDTO.getEnable()){
 					sessionInfo.list(userDTO.getInventoryuser());
 				}*/
 
-				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "user updated successfully");
-				return "redirect:/user/list";
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user updated successfully");
+                return "redirect:/user/list";
 
-			}else {
+            } else {
 
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Access deniled");
-				return "redirect:/";
-			}
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";
+            }
 
-		} catch (Exception e) {
-			logger.error("Stack trace: " + e.getStackTrace());
-			return "redirect:/";
-		}
-	}
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/";
+        }
+    }
 }

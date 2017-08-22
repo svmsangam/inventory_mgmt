@@ -9,98 +9,98 @@ import java.util.Date;
 @Table(name = "invoice_table")
 public class InvoiceInfo extends AbstractEntity<Long> {
 
-	private static final long serialVersionUID = 1075900993010080424L;
+    private static final long serialVersionUID = 1075900993010080424L;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private StoreInfo storeInfo;
-	
-	private String invoiceNo;
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	private OrderInfo orderInfo;
-	
-	private Date invoiceDate;
-	
-	private Status status;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StoreInfo storeInfo;
 
-	private double totalAmount;
+    private String invoiceNo;
 
-	private double receivableAmount;
-	
-	private String description;
+    @OneToOne(fetch = FetchType.EAGER)
+    private OrderInfo orderInfo;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private User createdBy;
+    private Date invoiceDate;
 
-	public StoreInfo getStoreInfo() {
-		return storeInfo;
-	}
+    private Status status;
 
-	public void setStoreInfo(StoreInfo storeInfo) {
-		this.storeInfo = storeInfo;
-	}
+    private double totalAmount;
 
-	public String getInvoiceNo() {
-		return invoiceNo;
-	}
+    private double receivableAmount;
 
-	public void setInvoiceNo(String invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
+    private String description;
 
-	public OrderInfo getOrderInfo() {
-		return orderInfo;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User createdBy;
 
-	public void setOrderInfo(OrderInfo orderInfo) {
-		this.orderInfo = orderInfo;
-	}
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
 
-	public Date getInvoiceDate() {
-		return invoiceDate;
-	}
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
+    }
 
-	public void setInvoiceDate(Date invoiceDate) {
-		this.invoiceDate = invoiceDate;
-	}
+    public String getInvoiceNo() {
+        return invoiceNo;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public void setInvoiceNo(String invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public OrderInfo getOrderInfo() {
+        return orderInfo;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setOrderInfo(OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
 
-	public double getTotalAmount() {
-		return totalAmount;
-	}
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
 
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public double getReceivableAmount() {
-		return receivableAmount;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-	public void setReceivableAmount(double receivableAmount) {
-		this.receivableAmount = receivableAmount;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public double getReceivableAmount() {
+        return receivableAmount;
+    }
+
+    public void setReceivableAmount(double receivableAmount) {
+        this.receivableAmount = receivableAmount;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 }

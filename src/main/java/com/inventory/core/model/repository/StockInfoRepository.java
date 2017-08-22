@@ -15,15 +15,15 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface StockInfoRepository extends JpaRepository<StockInfo , Long> , JpaSpecificationExecutor<StockInfo> {
+public interface StockInfoRepository extends JpaRepository<StockInfo, Long>, JpaSpecificationExecutor<StockInfo> {
 
     StockInfo findById(long stockInfoId);
 
-    StockInfo findByIdAndStatus(long stockInfoId , Status status);
+    StockInfo findByIdAndStatus(long stockInfoId, Status status);
 
     @Query("select s from StockInfo s where s.id = ?1 and s.status = ?2 and s.productInfo.id = ?3 ")
-    StockInfo findByIdAndStatusAndProductInfo(long stockInfoId , Status status , long productInfoId);
+    StockInfo findByIdAndStatusAndProductInfo(long stockInfoId, Status status, long productInfoId);
 
     @Query("select s from StockInfo s where s.status = ?1 and s.productInfo.storeInfo.id = ?2 order by s.productInfo.name asc ")
-    List<StockInfo> findAllByStatusAndStoreInfo(Status status , long storeId);
+    List<StockInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
 }

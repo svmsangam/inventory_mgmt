@@ -17,18 +17,18 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface StoreUserInfoRepository extends JpaRepository<StoreUserInfo , Long> , JpaSpecificationExecutor<StoreUserInfo> {
+public interface StoreUserInfoRepository extends JpaRepository<StoreUserInfo, Long>, JpaSpecificationExecutor<StoreUserInfo> {
 
     StoreUserInfo findById(long storeUserInfoId);
 
-    StoreUserInfo findByIdAndStatus(long storeUserInfoId , Status status);
+    StoreUserInfo findByIdAndStatus(long storeUserInfoId, Status status);
 
     @Query("select s from StoreUserInfo s where s.storeInfo.id = ?1 and s.user.id = ?2 and s.status = ?3")
-    StoreUserInfo findByStoreInfoAndUserAndStatus(long storeId , long userId , Status status);
+    StoreUserInfo findByStoreInfoAndUserAndStatus(long storeId, long userId, Status status);
 
     @Query("select s.user from StoreUserInfo s where s.storeInfo.id = ?1 and s.status = ?2 order by s.user.username asc ")
-    List<User> findAllByStoreInfoAndStatus(long storeId , Status status);
+    List<User> findAllByStoreInfoAndStatus(long storeId, Status status);
 
     @Query("select s.storeInfo from StoreUserInfo s where s.user.id = ?1 and s.status = ?2 order by s.storeInfo.name asc ")
-    List<StoreInfo> findAllByUserAndStatus(long userId ,Status status);
+    List<StoreInfo> findAllByUserAndStatus(long userId, Status status);
 }

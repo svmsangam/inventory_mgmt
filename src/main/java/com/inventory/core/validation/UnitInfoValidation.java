@@ -17,7 +17,7 @@ import java.util.List;
  * Created by dhiraj on 8/15/17.
  */
 @Service
-public class UnitInfoValidation extends GlobalValidation{
+public class UnitInfoValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -26,9 +26,9 @@ public class UnitInfoValidation extends GlobalValidation{
 
     UnitInfoError error = new UnitInfoError();
 
-    boolean valid ;
+    boolean valid;
 
-    public UnitInfoError onSave(UnitInfoDTO unitInfoDTO ,  BindingResult result){
+    public UnitInfoError onSave(UnitInfoDTO unitInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -51,22 +51,22 @@ public class UnitInfoValidation extends GlobalValidation{
             return error;
         }
 
-        error.setName(checkString(unitInfoDTO.getName() , 2 , 10, "tagName" , true));
+        error.setName(checkString(unitInfoDTO.getName(), 2, 10, "tagName", true));
 
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else if (unitInfoRepository.findByNameAndStatusAndStoreInfo(unitInfoDTO.getName().trim() , Status.ACTIVE , unitInfoDTO.getStoreInfoId()) != null){
+        } else if (unitInfoRepository.findByNameAndStatusAndStoreInfo(unitInfoDTO.getName().trim(), Status.ACTIVE, unitInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(unitInfoDTO.getCode() , 2 , 10, "tagCode" , true));
+        error.setCode(checkString(unitInfoDTO.getCode(), 2, 10, "tagCode", true));
 
-        if (!("".equals(error.getCode()))){
+        if (!("".equals(error.getCode()))) {
             valid = false;
-        }else if (unitInfoRepository.findByCodeAndStatusAndStoreInfo(unitInfoDTO.getCode().trim() , Status.ACTIVE , unitInfoDTO.getStoreInfoId()) != null){
+        } else if (unitInfoRepository.findByCodeAndStatusAndStoreInfo(unitInfoDTO.getCode().trim(), Status.ACTIVE, unitInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 

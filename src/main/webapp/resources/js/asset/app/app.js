@@ -5,9 +5,9 @@
 //user app start
 var userService = new UserService();
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-    $(document).on("click","#saveuser",function() {
+    $(document).on("click", "#saveuser", function () {
 
         var user = setUserData();
 
@@ -15,17 +15,17 @@ $(document).ready(function(){
 
         var pagecontext = $(this).attr("pagecontext");
 
-        userService.save(user , url , pagecontext);
+        userService.save(user, url, pagecontext);
     });
 
 
-    $(document).on("click",".addUser",function() {
+    $(document).on("click", ".addUser", function () {
 
         userService.clearError();
         userService.clearForm();
     });
 
-    $(document).on("click",".closeError",function() {
+    $(document).on("click", ".closeError", function () {
         $(".addError").removeClass("hide").removeClass("show").addClass("hide");
     });
 });
@@ -39,23 +39,23 @@ function setUserData() {
     var userType = $("#userType").val();
     var storeId = $("#storeId").val();
 
-    if(username === undefined){
+    if (username === undefined) {
         username = "";
     }
 
-    if (password === undefined){
+    if (password === undefined) {
         password = "";
     }
 
-    if (repassword === undefined){
+    if (repassword === undefined) {
         repassword = ""
     }
 
-    if (userType === undefined){
+    if (userType === undefined) {
         userType = "";
     }
 
-    if (storeId === undefined){
+    if (storeId === undefined) {
         storeId = 0;
     }
 
@@ -77,9 +77,9 @@ function setUserData() {
 //store app start
 var storeService = new StoreService();
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-    $(document).on("click",".savestore",function() {
+    $(document).on("click", ".savestore", function () {
 
         var store = setStoreData();
 
@@ -87,30 +87,30 @@ $(document).ready(function(){
 
         var pagecontext = $(this).attr("pagecontext");
 
-        storeService.save(store , url , pagecontext , true);
+        storeService.save(store, url, pagecontext, true);
     });
 
-    $(document).on("click",".edit",function() {
+    $(document).on("click", ".edit", function () {
         userService.clearError();
         userService.clearForm();
     });
 
-    $(document).on("click",".updatestore",function() {
+    $(document).on("click", ".updatestore", function () {
 
         var store = setStoreDataOnUpdate();
 
         var url = $(this).attr("url");
 
-        storeService.save(store , url , "nn" , false);
+        storeService.save(store, url, "nn", false);
     });
 
-    $(document).on("click",".addStore",function() {
+    $(document).on("click", ".addStore", function () {
 
         storeService.clearError();
         storeService.clearForm();
     });
 
-    $(document).on("click",".viewStoreInfo",function() {
+    $(document).on("click", ".viewStoreInfo", function () {
 
         var url = $(this).attr("url");
 
@@ -119,7 +119,7 @@ $(document).ready(function(){
         storeService.getById(url);
     });
 
-    $(document).on("click",".closeError",function() {
+    $(document).on("click", ".closeError", function () {
         $(".addError").removeClass("hide").removeClass("show").addClass("hide");
     });
 });
@@ -136,35 +136,35 @@ function setStoreData() {
     var pan = $("#pan").val();
     var cityId = $("#cityId").val();
 
-    if(name === undefined){
+    if (name === undefined) {
         name = "";
     }
 
-    if (contact === undefined){
+    if (contact === undefined) {
         contact = "";
     }
 
-    if (mobile === undefined){
+    if (mobile === undefined) {
         mobile = ""
     }
 
-    if (email === undefined){
+    if (email === undefined) {
         email = "";
     }
 
-    if(street === undefined){
+    if (street === undefined) {
         street = "";
     }
 
-    if (reg === undefined){
+    if (reg === undefined) {
         reg = "";
     }
 
-    if (cityId === undefined){
+    if (cityId === undefined) {
         cityId = 0
     }
 
-    if (pan === undefined){
+    if (pan === undefined) {
         pan = "";
     }
 
@@ -193,31 +193,31 @@ function setStoreDataOnUpdate() {
     var reg = $("#regEdit").val();
     var pan = $("#panEdit").val();
 
-    if(storeId === undefined){
+    if (storeId === undefined) {
         storeId = 0;
     }
 
-    if (contact === undefined){
+    if (contact === undefined) {
         contact = "";
     }
 
-    if (mobile === undefined){
+    if (mobile === undefined) {
         mobile = ""
     }
 
-    if (email === undefined){
+    if (email === undefined) {
         email = "";
     }
 
-    if(street === undefined){
+    if (street === undefined) {
         street = "";
     }
 
-    if (reg === undefined){
+    if (reg === undefined) {
         reg = "";
     }
 
-    if (pan === undefined){
+    if (pan === undefined) {
         pan = "";
     }
 

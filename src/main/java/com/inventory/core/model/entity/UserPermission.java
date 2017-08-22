@@ -9,27 +9,27 @@ import java.util.List;
 @Entity
 @Table(name = "userpermission")
 public class UserPermission extends AbstractEntity<Long> {
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	private User user;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="permissions" )
-	private List<Permission> permissionList = new ArrayList<Permission>();
+    @OneToOne(fetch = FetchType.EAGER)
+    private User user;
 
-	public User getUser() {
-		return user;
-	}
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "permissions")
+    private List<Permission> permissionList = new ArrayList<Permission>();
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<Permission> getPermissionList() {
-		return permissionList;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setPermissionList(List<Permission> permissionList) {
-		this.permissionList = permissionList;
-	}
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
 }

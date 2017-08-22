@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Created by dhiraj on 8/10/17.
  */
 @Service
-public class ProductInfoConverter implements IConvertable<ProductInfo , ProductInfoDTO> , IListConvertable<ProductInfo , ProductInfoDTO>{
+public class ProductInfoConverter implements IConvertable<ProductInfo, ProductInfoDTO>, IListConvertable<ProductInfo, ProductInfoDTO> {
 
     @Autowired
     private StoreInfoRepository storeInfoRepository;
@@ -43,13 +43,13 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
 
     @Override
     public ProductInfo convertToEntity(ProductInfoDTO dto) {
-        return copyConvertToEntity(dto , new ProductInfo());
+        return copyConvertToEntity(dto, new ProductInfo());
     }
 
     @Override
     public ProductInfoDTO convertToDto(ProductInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -76,7 +76,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
     @Override
     public ProductInfo copyConvertToEntity(ProductInfoDTO dto, ProductInfo entity) {
 
-        if (entity == null | dto == null){
+        if (entity == null | dto == null) {
             return null;
         }
 
@@ -106,7 +106,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
 
         List<ProductInfoDTO> dtoList = new ArrayList<>();
 
-        for (ProductInfo entity : entities){
+        for (ProductInfo entity : entities) {
             dtoList.add(convertToDto(entity));
         }
 

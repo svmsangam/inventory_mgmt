@@ -17,7 +17,7 @@ import java.util.List;
  * Created by dhiraj on 8/15/17.
  */
 @Service
-public class TagInfoValidation extends GlobalValidation{
+public class TagInfoValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,7 +28,7 @@ public class TagInfoValidation extends GlobalValidation{
 
     boolean valid;
 
-    public TagInfoError onSave(TagInfoDTO tagInfoDTO , BindingResult result){
+    public TagInfoError onSave(TagInfoDTO tagInfoDTO, BindingResult result) {
 
         valid = true;
 
@@ -51,22 +51,22 @@ public class TagInfoValidation extends GlobalValidation{
             return error;
         }
 
-        error.setName(checkString(tagInfoDTO.getName() , 2 , 10, "tagName" , true));
+        error.setName(checkString(tagInfoDTO.getName(), 2, 10, "tagName", true));
 
-        if (!("".equals(error.getName()))){
+        if (!("".equals(error.getName()))) {
             valid = false;
-        }else if (tagInfoRepository.findByNameAndStatusAndStoreInfo(tagInfoDTO.getName().trim() , Status.ACTIVE , tagInfoDTO.getStoreInfoId()) != null){
+        } else if (tagInfoRepository.findByNameAndStatusAndStoreInfo(tagInfoDTO.getName().trim(), Status.ACTIVE, tagInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(tagInfoDTO.getCode() , 2 , 10, "tagCode" , true));
+        error.setCode(checkString(tagInfoDTO.getCode(), 2, 10, "tagCode", true));
 
-        if (!("".equals(error.getCode()))){
+        if (!("".equals(error.getCode()))) {
             valid = false;
-        }else if (tagInfoRepository.findByCodeAndStatusAndStoreInfo(tagInfoDTO.getCode().trim() , Status.ACTIVE , tagInfoDTO.getStoreInfoId()) != null){
+        } else if (tagInfoRepository.findByCodeAndStatusAndStoreInfo(tagInfoDTO.getCode().trim(), Status.ACTIVE, tagInfoDTO.getStoreInfoId()) != null) {
 
             valid = false;
 

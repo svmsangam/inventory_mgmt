@@ -8,7 +8,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invdesignation")
-public class Designation extends AbstractEntity<Long>{
+public class Designation extends AbstractEntity<Long> {
 
     private String title;
 
