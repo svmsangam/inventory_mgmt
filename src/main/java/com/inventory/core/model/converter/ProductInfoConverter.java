@@ -56,11 +56,11 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
         ProductInfoDTO dto = new ProductInfoDTO();
 
         dto.setPoductId(entity.getId());
-        dto.setCode(entity.getCode().trim());
+        dto.setCode(entity.getCode());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
-        dto.setDescription(entity.getDescription().trim());
-        dto.setName(entity.getName().trim());
+        dto.setDescription(entity.getDescription());
+        dto.setName(entity.getName());
         dto.setStatus(entity.getStatus());
         dto.setStoreInfoId(entity.getStoreInfo().getId());
         dto.setSubCategoryId(entity.getSubCategoryInfo().getId());
@@ -80,10 +80,10 @@ public class ProductInfoConverter implements IConvertable<ProductInfo , ProductI
             return null;
         }
 
-        entity.setCode(dto.getCode());
+        entity.setCode(dto.getCode().trim());
         entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
-        entity.setDescription(dto.getDescription());
-        entity.setName(entity.getName());
+        entity.setDescription(dto.getDescription().trim());
+        entity.setName(entity.getName().trim());
         entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
         entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()));
         entity.setTrendingLevel(dto.getTrendingLevel());
