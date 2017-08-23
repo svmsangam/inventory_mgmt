@@ -1,41 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@include file="/pages/parts/header.jsp" %>
-<%@include file="/pages/parts/sidebar.jsp" %>
+<!DOCTYPE html>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ERROR 500</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
+</head>
+<body style="background-color: #ecf0f5">
+<div class="error-page">
+<div class="login-box-body">
 
-<div class="content-wrapper">
+    <h2 class="headline text-red">500</h2>
 
-    <section class="content">
+    <div class="error-content">
+        <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
 
-        <div class="error-page">
-            <h2 class="headline text-red">500</h2>
-
-            <div class="error-content">
-                <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
-
-                <p>
-                    We will work on fixing that right away.
-                    Meanwhile, you may <a href="">return to dashboard</a> or try using the search form.
-                </p>
-
-                <form class="search-form">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search">
-
-                        <div class="input-group-btn">
-                            <button type="submit" name="submit" class="btn btn-danger btn-flat"><i
-                                    class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- /.input-group -->
-                </form>
-            </div>
-        </div>
-        <!-- /.error-page -->
-
-    </section>
-    <!-- /.content -->
+        <p>
+            We will work on fixing that right away.<br>
+            Meanwhile, you may return to<br>
+        </p>
+        <a href="${pageContext.request.contextPath}/" class="btn btn-info btn-sm"><i class="fa fa-home"></i> HOMEPAGE</a>.
+    </div>
 </div>
-<%@include file="/pages/parts/footer.jsp" %>
+<!-- /.error-page -->
+</div>
+<!-- jQuery 3 -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
+
+</body>
+</html>

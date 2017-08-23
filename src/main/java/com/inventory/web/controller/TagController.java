@@ -76,7 +76,7 @@ public class TagController {
             return "redirect:/500";
         }
 
-        return "category/list";
+        return "tag/list";
     }
 
     @GetMapping(value = "/add")

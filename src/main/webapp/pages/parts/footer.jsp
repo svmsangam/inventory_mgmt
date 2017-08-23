@@ -112,8 +112,12 @@
                     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-link"></i>
                         <span>Unit</span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-link"></i>
-                        <span>Tag</span></a></li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/tag/list">
+                            <i class="fa fa-link"></i>
+                        <span>Tag</span>
+                        </a>
+                    </li>
 
                     <li><a href="${pageContext.request.contextPath}/lot/list"><i class="fa fa-link"></i>
                         <span>Lot</span></a></li>
