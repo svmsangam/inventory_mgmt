@@ -68,7 +68,7 @@ public class SubcategoryController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.SUBCATEGORY_VIEW))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -109,7 +109,7 @@ public class SubcategoryController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.SUBCATEGORY_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -150,7 +150,7 @@ public class SubcategoryController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.SUBCATEGORY_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }

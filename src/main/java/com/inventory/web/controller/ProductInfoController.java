@@ -67,7 +67,7 @@ public class ProductInfoController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -108,7 +108,7 @@ public class ProductInfoController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -153,7 +153,7 @@ public class ProductInfoController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -214,7 +214,7 @@ public class ProductInfoController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
