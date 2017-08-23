@@ -68,4 +68,14 @@ public class StringConstants {
     public static String UNIT_LIST = "unitList";
     public static String UNIT = "unit";
     public static String UNIT_ERROR = "unitError";
+
+    public static String PRODUCT_LIST = "productList";
+    public static String PRODUCT = "product";
+    public static String PRODUCT_ERROR = "productError";
+
+    public static String ITEM_LIST = "itemList";
+    public static String ITEM = "item";
+    public static String ITEM_ERROR = "itemError";
+
+    public static String TRENDING_LIST = "trendingtList";
 }
