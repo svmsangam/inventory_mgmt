@@ -60,7 +60,7 @@ public class UnitController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -80,7 +80,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "category/list";
+        return "unit/list";
     }
 
     @GetMapping(value = "/add")
@@ -101,7 +101,7 @@ public class UnitController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -118,7 +118,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "tag/add";
+        return "unit/add";
     }
 
     @PostMapping(value = "/save")
@@ -139,7 +139,7 @@ public class UnitController {
                 return "redirect:/logout";
             }
 
-            if (!(currentUser.getUserauthority().contains(Authorities.USER) & AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE))) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
