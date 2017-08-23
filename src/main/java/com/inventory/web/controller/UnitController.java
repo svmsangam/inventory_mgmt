@@ -42,15 +42,6 @@ public class UnitController {
     @Autowired
     private UnitInfoValidation unitInfoValidation;
 
-
-    @GetMapping(value = "/")
-    public String index(RedirectAttributes redirectAttributes) {
-
-        // user checking end
-
-        return "redirect:/unit/list";
-    }
-
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
