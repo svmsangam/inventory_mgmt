@@ -80,7 +80,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "category/list";
+        return "unit/list";
     }
 
     @GetMapping(value = "/add")
@@ -118,7 +118,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "tag/add";
+        return "unit/add";
     }
 
     @PostMapping(value = "/save")
