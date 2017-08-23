@@ -56,7 +56,7 @@ public class TagController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -97,7 +97,7 @@ public class TagController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -135,7 +135,7 @@ public class TagController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
