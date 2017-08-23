@@ -103,19 +103,19 @@
                     <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i>
                         <span>City</span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i> <span>Category</span></a>
+                    <li><a href="${pageContext.request.contextPath}/category/list"><i class="fa fa-link"></i> <span>Category</span></a>
                     </li>
 
-                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i> <span>SubCategory</span></a>
+                    <li><a href="${pageContext.request.contextPath}/subcategory/list"><i class="fa fa-link"></i> <span>SubCategory</span></a>
                     </li>
 
-                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i>
+                    <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-link"></i>
                         <span>Unit</span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-link"></i>
+                    <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-link"></i>
                         <span>Tag</span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-link"></i>
+                    <li><a href="${pageContext.request.contextPath}/lot/list"><i class="fa fa-link"></i>
                         <span>Lot</span></a></li>
 
                     <%--<li class="treeview">

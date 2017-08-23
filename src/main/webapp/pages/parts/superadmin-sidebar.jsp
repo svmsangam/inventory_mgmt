@@ -49,7 +49,7 @@
 
             <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
 
-            <li><a href="#"><i class="fa fa-link"></i> <span>Product</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-link"></i> <span>Product</span></a></li>
 
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Sales Order</span>
