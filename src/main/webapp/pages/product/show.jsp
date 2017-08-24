@@ -50,6 +50,7 @@
                                 <th>Unit</th>
                                 <th>Code</th>
                                 <th>Trend</th>
+                                <th>Category</th>
                                 <th>SubCategory</th>
                             </tr>
                             </thead>
@@ -58,10 +59,12 @@
                                     <td>${product.unitInfo.name}</td>
                                     <td>${product.code}</td>
                                     <td>${product.trendingLevel}</td>
+                                    <td>${product.subCategoryInfo.categoryInfoDto.name}</td>
                                     <td>${product.subCategoryInfo.name}</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <br><br>
                         <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/item/add" class="btn btn-info btn-sm btn-flat pull-left"><span class="glyphicon glyphicon-plus-sign"></span> Add New Item
                             </a>
@@ -107,6 +110,8 @@
                             </tr>
                             </tfoot>
                         </table>
+                        <br><br>
+                        ${product.description}
                     </div>
                     <!-- /.box-body -->
                 </div>

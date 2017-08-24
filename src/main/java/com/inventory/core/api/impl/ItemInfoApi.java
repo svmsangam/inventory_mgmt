@@ -1,6 +1,7 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IItemInfoApi;
+import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.model.converter.ItemInfoConverter;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.entity.ItemInfo;
@@ -25,6 +26,9 @@ public class ItemInfoApi implements IItemInfoApi{
     @Autowired
     private ItemInfoConverter itemInfoConverter;
 
+    @Autowired
+    private IStockInfoApi stockInfoApi;
+
     @Override
     public ItemInfoDTO save(ItemInfoDTO itemInfoDTO) {
 
@@ -32,7 +36,11 @@ public class ItemInfoApi implements IItemInfoApi{
 
         itemInfo.setStatus(Status.ACTIVE);
 
-        return itemInfoConverter.convertToDto(itemInfoRepository.save(itemInfo));
+        itemInfo = itemInfoRepository.save(itemInfo);
+
+        stockInfoApi.updateOnItemSave(itemInfo.getProductInfo().getId() , itemInfo.getInStock());
+
+        return itemInfoConverter.convertToDto(itemInfo);
     }
 
     @Override

@@ -189,7 +189,6 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
             logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
