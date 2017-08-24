@@ -25,13 +25,13 @@
 
                         <div class="form-group">
                             <label class="control-label">Name</label>
-                            <input type="text" class="form-control" name="name" placeholder="Name">
+                            <input type="text" class="form-control" value="${tag.name}" name="name" placeholder="Name">
                             <p class="error">${tagError.name}</p>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">Code</label>
-                            <input type="text" class="form-control" name="code" placeholder="code">
+                            <input type="text" class="form-control" value="${tag.code}" name="code" placeholder="code">
                             <p class="error">${tagError.code}</p>
                         </div>
 

@@ -159,6 +159,7 @@ public class CategoryController {
             }
 
             categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+            categoryInfoDTO.setCreatedById(currentUser.getUserId());
 
             CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
 

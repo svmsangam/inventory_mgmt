@@ -24,22 +24,28 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Unit</h3>
+                        <h3 class="box-title">Add Category</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/unit/save" method="post" modelAttribute="unit" >
+                    <form action="${pageContext.request.contextPath}/category/save" method="post" modelAttribute="category" >
                         <div class="box-body">
 
                             <div class="form-group">
                                 <label class="control-label">Name</label>
-                                <input type="text" class="form-control" value="${unit.name}" name="name" placeholder="Name">
-                                <p class="error">${unitError.name}</p>
+                                <input type="text" class="form-control" value="${category.name}" name="name" placeholder="Name">
+                                <p class="error">${categoryError.name}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Code</label>
-                                <input type="text" class="form-control" value="${unit.code}" name="code" placeholder="code">
-                                <p class="error">${unitError.code}</p>
+                                <input type="text" class="form-control" value="${category.code}" name="code" placeholder="code">
+                                <p class="error">${categoryError.code}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <input type="text" class="form-control" value="${category.description}" name="description" placeholder="code">
+                                <p class="error">${categoryError.description}</p>
                             </div>
 
                         </div>
