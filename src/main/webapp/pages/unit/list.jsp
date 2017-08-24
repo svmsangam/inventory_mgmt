@@ -28,9 +28,8 @@
                     <div class="box-header">
                         <h3 class="box-title">Unit List</h3>
                         <div class="box-tools">
-                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal"
-                                    data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span> Add
-                            </button>
+                            <a href="${pageContext.request.contextPath}/unit/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            </a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -45,7 +44,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="country" items="${unitList}" varStatus="i">
+                            <c:forEach var="unit" items="${unitList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${unit.name}</td>

@@ -157,6 +157,7 @@ public class UnitController {
             }
 
             unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
+            unitInfoDTO.setCreatedById(currentUser.getUserId());
 
             UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
 
