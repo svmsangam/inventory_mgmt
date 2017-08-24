@@ -6,4 +6,6 @@ package com.inventory.core.api.iapi;
 public interface IStockInfoApi {
 
     void updateOnItemSave(long productId , int quanity);
+
+    void saveOnProductSave(long productId);
 }

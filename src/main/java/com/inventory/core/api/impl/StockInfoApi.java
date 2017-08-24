@@ -2,6 +2,8 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.model.entity.StockInfo;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.StockInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class StockInfoApi implements IStockInfoApi{
     @Autowired
     private StockInfoRepository stockInfoRepository;
 
+    @Autowired
+    private ProductInfoRepository productInfoRepository;
+
     @Override
     public void updateOnItemSave(long productId, int quanity) {
 
@@ -24,6 +29,19 @@ public class StockInfoApi implements IStockInfoApi{
 
         stockInfo.setInStock(stockInfo.getInStock() + quanity);
         stockInfo.setQuantity(stockInfo.getQuantity() + quanity);
+
+        stockInfoRepository.save(stockInfo);
+    }
+
+    @Override
+    public void saveOnProductSave(long productId) {
+
+        StockInfo stockInfo = new StockInfo();
+
+        stockInfo.setProductInfo(productInfoRepository.findById(productId));
+        stockInfo.setQuantity(0);
+        stockInfo.setInStock(0);
+        stockInfo.setStatus(Status.ACTIVE);
 
         stockInfoRepository.save(stockInfo);
     }

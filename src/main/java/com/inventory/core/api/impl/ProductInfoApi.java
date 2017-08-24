@@ -1,13 +1,12 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IProductInfoApi;
+import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.model.converter.ProductInfoConverter;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
-import com.inventory.core.model.entity.StockInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ProductInfoRepository;
-import com.inventory.core.model.repository.StockInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,7 @@ public class ProductInfoApi implements IProductInfoApi{
     private ProductInfoConverter productInfoConverter;
 
     @Autowired
-    private StockInfoRepository stockInfoRepository;
+    private IStockInfoApi stockInfoApi;
 
     @Override
     public ProductInfoDTO save(ProductInfoDTO productInfoDTO) {
@@ -39,22 +38,9 @@ public class ProductInfoApi implements IProductInfoApi{
 
         productInfo = productInfoRepository.save(productInfo);
 
-        saveStock(productInfo.getId());
+        stockInfoApi.saveOnProductSave(productInfo.getId());
 
         return productInfoConverter.convertToDto(productInfo);
-    }
-
-    private void saveStock(long productId){
-
-        StockInfo stockInfo = new StockInfo();
-
-        stockInfo.setProductInfo(productInfoRepository.findById(productId));
-        stockInfo.setQuantity(0);
-        stockInfo.setInStock(0);
-        stockInfo.setStatus(Status.ACTIVE);
-
-        stockInfoRepository.save(stockInfo);
-
     }
 
     @Override
