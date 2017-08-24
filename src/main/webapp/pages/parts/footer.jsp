@@ -194,7 +194,15 @@ immediately after the control sidebar -->
 <!-- page script -->
 <script>
     $(function () {
-        $('#table1').DataTable();
+        $('#table1').DataTable({
+            'paging': false,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+
         $('#table2').DataTable({
             'paging': true,
             'lengthChange': false,
