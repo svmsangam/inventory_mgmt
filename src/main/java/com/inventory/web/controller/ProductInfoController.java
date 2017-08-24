@@ -171,7 +171,7 @@ public class ProductInfoController {
             }
 
             productInfoDTO.setStoreInfoId(currentUser.getStoreId());
-
+            productInfoDTO.setCreatedById(currentUser.getUserId());
 
             ProductInfoError error = productInfoValidation.onSave(productInfoDTO, bindingResult);
 
@@ -189,11 +189,12 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
-        return "redirect:/product/" + productInfoDTO.getPoductId();
+        return "redirect:/product/" + productInfoDTO.getProductId();
     }
 
     @GetMapping(value = "/{productId}")

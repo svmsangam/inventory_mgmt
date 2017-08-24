@@ -63,7 +63,7 @@
 
                             <div class="form-group">
                                 <label class="control-label">Description</label>
-                                <input type="text" class="form-control" value="${subcategory.description}" name="description" placeholder="code">
+                                <input type="text" class="form-control" value="${subcategory.description}" name="description" placeholder="description">
                                 <p class="form-error">${subcategoryError.description}</p>
                             </div>
 

@@ -162,4 +162,9 @@ input.auto-complete-active {
     margin-top: 0px;
 }
 
+.pull-center{
+    align-content: center;
+    margin-left: 48%;
+}
+
 /* END INVOICE DESIGN

@@ -79,6 +79,11 @@ public class ProductInfoValidation extends GlobalValidation {
 
         valid = valid && checkUnit(productInfoDTO.getUnitId(), productInfoDTO.getStoreInfoId());
 
+        if (productInfoDTO.getTrendingLevel() == null){
+            valid = false;
+            error.setTrendingLevel("trending level required");
+        }
+
         error.setValid(valid);
 
         return error;

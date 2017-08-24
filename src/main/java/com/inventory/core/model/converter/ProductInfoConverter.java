@@ -2,10 +2,7 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
-import com.inventory.core.model.repository.StoreInfoRepository;
-import com.inventory.core.model.repository.SubCategoryInfoRepository;
-import com.inventory.core.model.repository.UnitInfoRepository;
-import com.inventory.core.model.repository.UserRepository;
+import com.inventory.core.model.repository.*;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,12 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
     @Autowired
     private UnitInfoConverter unitInfoConverter;
 
+    @Autowired
+    private StockInfoRepository stockInfoRepository;
+
+    @Autowired
+    private StockInfoConverter stockInfoConverter;
+
     @Override
     public ProductInfo convertToEntity(ProductInfoDTO dto) {
         return copyConvertToEntity(dto, new ProductInfo());
@@ -55,7 +58,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
 
         ProductInfoDTO dto = new ProductInfoDTO();
 
-        dto.setPoductId(entity.getId());
+        dto.setProductId(entity.getId());
         dto.setCode(entity.getCode());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
@@ -69,6 +72,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         dto.setUnitId(entity.getUnitInfo().getId());
         dto.setUnitInfo(unitInfoConverter.convertToDto(entity.getUnitInfo()));
         dto.setVersion(entity.getVersion());
+        dto.setStockInfo(stockInfoConverter.convertToDto(stockInfoRepository.findByProductInfo(entity.getId())));
 
         return dto;
     }
@@ -83,7 +87,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         entity.setCode(dto.getCode().trim());
         entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
         entity.setDescription(dto.getDescription().trim());
-        entity.setName(entity.getName().trim());
+        entity.setName(dto.getName().trim());
         entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
         entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()));
         entity.setTrendingLevel(dto.getTrendingLevel());

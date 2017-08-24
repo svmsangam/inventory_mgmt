@@ -21,6 +21,9 @@ public interface StockInfoRepository extends JpaRepository<StockInfo, Long>, Jpa
 
     StockInfo findByIdAndStatus(long stockInfoId, Status status);
 
+    @Query("select s from StockInfo s where s.productInfo.id = ?1")
+    StockInfo findByProductInfo(long productInfoId);
+
     @Query("select s from StockInfo s where s.id = ?1 and s.status = ?2 and s.productInfo.id = ?3 ")
     StockInfo findByIdAndStatusAndProductInfo(long stockInfoId, Status status, long productInfoId);
 

@@ -8,7 +8,7 @@ import com.inventory.core.model.enumconstant.TrendingLevel;
  */
 public class ProductInfoDTO {
 
-    private Long poductId;
+    private Long productId;
 
     private String name;
 
@@ -28,6 +28,8 @@ public class ProductInfoDTO {
 
     private Long unitId;
 
+    private StockInfoDTO stockInfo;
+
     private Status status;
 
     private long createdById;
@@ -44,12 +46,12 @@ public class ProductInfoDTO {
         this.version = version;
     }
 
-    public Long getPoductId() {
-        return poductId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setPoductId(Long poductId) {
-        this.poductId = poductId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -146,5 +148,13 @@ public class ProductInfoDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public StockInfoDTO getStockInfo() {
+        return stockInfo;
+    }
+
+    public void setStockInfo(StockInfoDTO stockInfo) {
+        this.stockInfo = stockInfo;
     }
 }
