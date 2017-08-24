@@ -20,7 +20,7 @@
                         <h3 class="box-title">Add Tag</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="/tag/save" method="post">
+                    <form action="${pageContext.request.contextPath}/tag/save" method="post" modelAttribute="tag" >
                     <div class="box-body">
 
                         <div class="form-group">
@@ -38,8 +38,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                     </form>
                 </div>

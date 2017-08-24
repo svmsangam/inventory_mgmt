@@ -153,6 +153,7 @@ public class TagController {
             }
 
             tagInfoDTO.setStoreInfoId(currentUser.getStoreId());
+            tagInfoDTO.setCreatedById(currentUser.getUserId());
 
             TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
 
@@ -165,7 +166,7 @@ public class TagController {
             tagInfoApi.save(tagInfoDTO);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
