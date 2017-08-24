@@ -28,9 +28,8 @@
                     <div class="box-header">
                         <h3 class="box-title">Subcategory List</h3>
                         <div class="box-tools">
-                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal"
-                                    data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span> Add
-                            </button>
+                            <a href="${pageContext.request.contextPath}/subcategory/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            </a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -41,17 +40,17 @@
                                 <th>SN</th>
                                 <th>Name</th>
                                 <th>Code</th>
-                                <th>Description</th>
+                                <th>Category</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="country" items="${subcategoryList}" varStatus="i">
+                            <c:forEach var="subcategory" items="${subcategoryList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${subcategory.name}</td>
                                     <td>${subcategory.code}</td>
-                                    <td>${subcategory.decription}</td>
+                                    <td>${subcategory.categoryInfoDto.name}</td>
                                     <td>
                                         <button type="button" class="btn btn-warning btn-sm  btn-flat"
                                                 data-toggle="modal" data-target="#modal-edit"><span

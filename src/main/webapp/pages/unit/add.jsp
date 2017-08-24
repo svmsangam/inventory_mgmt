@@ -33,13 +33,13 @@
                             <div class="form-group">
                                 <label class="control-label">Name</label>
                                 <input type="text" class="form-control" value="${unit.name}" name="name" placeholder="Name">
-                                <p class="error">${unitError.name}</p>
+                                <p class="form-error">${unitError.name}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Code</label>
                                 <input type="text" class="form-control" value="${unit.code}" name="code" placeholder="code">
-                                <p class="error">${unitError.code}</p>
+                                <p class="form-error">${unitError.code}</p>
                             </div>
 
                         </div>

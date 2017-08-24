@@ -33,19 +33,19 @@
                             <div class="form-group">
                                 <label class="control-label">Name</label>
                                 <input type="text" class="form-control" value="${category.name}" name="name" placeholder="Name">
-                                <p class="error">${categoryError.name}</p>
+                                <p class="form-error">${categoryError.name}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Code</label>
                                 <input type="text" class="form-control" value="${category.code}" name="code" placeholder="code">
-                                <p class="error">${categoryError.code}</p>
+                                <p class="form-error">${categoryError.code}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Description</label>
                                 <input type="text" class="form-control" value="${category.description}" name="description" placeholder="code">
-                                <p class="error">${categoryError.description}</p>
+                                <p class="form-error">${categoryError.description}</p>
                             </div>
 
                         </div>

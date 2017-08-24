@@ -168,7 +168,7 @@ public class SubcategoryController {
             }
 
             subCategoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
-
+            subCategoryInfoDTO.setCreatedById(currentUser.getUserId());
 
             SubCategoryInfoError error = subCategoryInfoValidation.onSave(subCategoryInfoDTO, bindingResult);
 
