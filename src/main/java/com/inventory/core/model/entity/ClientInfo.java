@@ -12,8 +12,6 @@ import javax.persistence.Table;
 @Table(name = "invclient")
 public class ClientInfo extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = 1L;
-
     private String name;
 
     private String companyName;
@@ -35,10 +33,6 @@ public class ClientInfo extends AbstractEntity<Long> {
     private User createdBy;
 
     private Status status;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getName() {
         return name;

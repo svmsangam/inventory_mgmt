@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.Validator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,9 +32,6 @@ public class ProductInfoValidation extends GlobalValidation {
 
     @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;
-
-    @Autowired
-    private Validator validator;
 
     ProductInfoError error = new ProductInfoError();
 

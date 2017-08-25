@@ -40,7 +40,7 @@ public class StoreInfoApi implements IStoreInfoApi {
 
         storeInfo = storeInfoRepository.save(storeInfo);
 
-        accountInfoApi.save(storeInfo.getId(), AccountAssociateType.STORE, "S-");
+        accountInfoApi.save(storeInfo.getId(), AccountAssociateType.STORE, "STR-");
 
         storeUserInfoApi.save(currentUserId, storeInfo.getId());
 
