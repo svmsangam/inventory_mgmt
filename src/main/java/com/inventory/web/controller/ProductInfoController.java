@@ -237,7 +237,11 @@ public class ProductInfoController {
 
             modelMap.put(StringConstants.PRODUCT, productInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE));
 
-            modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE));
+            if (modelMap.get(StringConstants.PRODUCT) == null){
+                return "redirect:/400";
+            }
+
+            modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByProductAndStatusAndStore(productId, Status.ACTIVE , currentUser.getStoreId()));
 
         } catch (Exception e) {
 

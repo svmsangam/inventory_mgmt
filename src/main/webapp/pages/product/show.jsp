@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.Date" %><%--
   Created by IntelliJ IDEA.
   User: dhiraj
   Date: 8/24/17
@@ -38,7 +38,7 @@
                     <div class="box-header">
                         <h3 class="box-title">${product.name}</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/product/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            <a href="${pageContext.request.contextPath}/product/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add New Product
                             </a>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         </table>
                         <br><br>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/item/add" class="btn btn-info btn-sm btn-flat pull-left"><span class="glyphicon glyphicon-plus-sign"></span> Add New Item
+                            <a href="${pageContext.request.contextPath}/item/add?productId=${product.productId}" class="btn btn-info btn-sm btn-flat pull-left"><span class="glyphicon glyphicon-plus-sign"></span> Add New Item
                             </a>
                         </div>
                         <table id="table1" class="table table-bordered table-hover table-striped">
@@ -87,7 +87,7 @@
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${item.tagInfo.name}</td>
-                                    <td>${item.lotInfo.name}</td>
+                                    <td>${item.lotInfo.lot}</td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.costPrice}"/></td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.sellingPrice}"/></td>
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${item.expireDate}"/></td>

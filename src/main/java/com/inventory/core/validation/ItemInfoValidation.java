@@ -38,9 +38,11 @@ public class ItemInfoValidation extends GlobalValidation{
     @Autowired
     private TagInfoRepository tagInfoRepository;
 
-    ItemInfoError error = new ItemInfoError();
+    ItemInfoError error ;
 
     public ItemInfoError onSave(ItemInfoDTO itemInfoDTO , long storeId , BindingResult result){
+
+        error = new ItemInfoError();
 
         boolean valid = true;
 

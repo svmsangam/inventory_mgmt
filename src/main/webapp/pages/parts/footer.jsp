@@ -159,6 +159,8 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
 <!-- DataTables -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
+<%--bootstrap datepicker--%>
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -181,7 +183,7 @@ immediately after the control sidebar -->
 <script>
     $(function () {
         //Initialize Select2 Elements
-        $('.select2').select2()
+        $('.select2').select2();
 
         //iCheck for checkbox and radio inputs
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({

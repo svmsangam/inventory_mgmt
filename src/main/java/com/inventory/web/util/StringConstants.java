@@ -77,5 +77,9 @@ public class StringConstants {
     public static String ITEM = "item";
     public static String ITEM_ERROR = "itemError";
 
+    public static String LOT_LIST = "lotList";
+    public static String LOT = "lot";
+    public static String LOT_ERROR = "lotError";
+
     public static String TRENDING_LIST = "trendingtList";
 }

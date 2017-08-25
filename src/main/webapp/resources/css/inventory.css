@@ -167,4 +167,18 @@ input.auto-complete-active {
     margin-left: 48%;
 }
 
-/* END INVOICE DESIGN
+/* END INVOICE DESIGN*/
+
+/*number plus minus spiner hide start*/
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*number plus minus spiner hide end*/
+
