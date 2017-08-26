@@ -109,13 +109,11 @@ function UserService() {
             var row = "<tr>";
             row += "<td>0</td>";
             row += "<td>" + data.inventoryuser + "</td>";
+            row += "<td>" + data.storeName + "</td>";
             row += "<td>" + data.userType + "</td>";
             row += "<td>";
             if (data.enable === true) {
                 row += "<span class='label label-success'>Activated</span>";
-                if (data.userType === "USER") {
-                    row += "<a href='" + pagecontext + "/user/manage?userId=" + data.userId + "'><span class='label label-primary label-manage'>Manage</span></a>";
-                }
             } else {
                 row += "<span class='label label-danger'>Deactivated</span>";
             }
@@ -132,6 +130,11 @@ function UserService() {
             }
 
             row += "</td>";
+
+            if (data.userType === "USER") {
+                row += "<td><a href='" + pagecontext + "/user/manage?userId=" + data.userId + "' class='btn btn-xs bg-purple margin'><i class='fa fa-cogs'></i> Manage</a></td>";
+            }
+
             row += "</tr>";
 
             $("#myData").prepend(row);

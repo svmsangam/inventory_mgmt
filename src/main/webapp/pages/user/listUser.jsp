@@ -47,7 +47,7 @@
                                 <th>UserType</th>
                                 <th>Status</th>
                                 <th>Action</th>
-                                <th></th>
+                                <th>Manage</th>
                             </tr>
                             </thead>
                             <tbody id="myData">
@@ -74,7 +74,7 @@
                                     </td>
                                     <td>
                                         <c:if test="${user.userType eq 'USER'}">
-                                            <a class="btn btn-xs bg-purple margin"href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
+                                            <a class="btn btn-xs bg-purple margin" href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
                                                 <i class="fa fa-cogs"></i> Manage
                                             </a>
                                         </c:if>

@@ -1,5 +1,6 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IAccountInfoApi;
 import com.inventory.core.api.iapi.IClientInfoApi;
 import com.inventory.core.model.converter.ClientInfoConverter;
 import com.inventory.core.model.dto.ClientInfoDTO;
@@ -28,7 +29,7 @@ public class ClientInfoApi implements IClientInfoApi {
     private ClientInfoConverter clientInfoConverter;
 
     @Autowired
-    private AccountInfoApi accountInfoApi;
+    private IAccountInfoApi accountInfoApi;
 
     @Override
     public ClientInfoDTO save(ClientInfoDTO clientInfoDTO) {
