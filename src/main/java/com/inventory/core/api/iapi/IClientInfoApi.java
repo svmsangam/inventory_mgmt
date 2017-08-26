@@ -12,6 +12,8 @@ public interface IClientInfoApi {
 
     ClientInfoDTO update(ClientInfoDTO clientInfoDTO);
 
+    long countByStatusAndClientType(Status status , ClientType clientType);
+
     List<ClientInfoDTO> list(Status status , ClientType clientType , int page , int size);
 
     List<ClientInfoDTO> search(Status status , ClientType clientType , String q , int page , int size);

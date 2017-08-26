@@ -63,6 +63,11 @@ public class ClientInfoApi implements IClientInfoApi {
         return clientInfoConverter.convertToDto(clientInfoRepository.save(clientInfo));
     }
 
+    @Override
+    public long countByStatusAndClientType(Status status, ClientType clientType) {
+        return clientInfoRepository.countAllByStatusAndAndClientType(status , clientType);
+    }
+
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));

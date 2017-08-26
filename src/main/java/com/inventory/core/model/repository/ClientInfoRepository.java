@@ -22,6 +22,8 @@ public interface ClientInfoRepository extends JpaRepository<ClientInfo , Long> ,
 
     ClientInfo findByIdAndStatusAndClientType(long clientId , Status status , ClientType clientType);
 
+    long countAllByStatusAndAndClientType(Status status , ClientType clientType);
+
     List<ClientInfo> findAllByStatusAndClientType(Status status , ClientType clientType , Pageable pageable);
 
     ClientInfo findByContact(String contact);
@@ -29,6 +31,9 @@ public interface ClientInfoRepository extends JpaRepository<ClientInfo , Long> ,
     ClientInfo findByMobileNumber(String mobile);
 
     ClientInfo findByEmail(String email);
+
+    @Query("select count (c) from ClientInfo c where (c.status = ?1 and c.clientType = ?2 ) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
+    Long countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , ClientType clientType , String q);
 
     @Query("select c from ClientInfo c where (c.status = ?1 and c.clientType = ?2 ) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
     List<ClientInfo> findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , ClientType clientType , String q , Pageable pageable);

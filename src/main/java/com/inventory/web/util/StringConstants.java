@@ -81,5 +81,13 @@ public class StringConstants {
     public static String LOT = "lot";
     public static String LOT_ERROR = "lotError";
 
+    public static String CUSTOMER_LIST = "customerList";
+    public static String CUSTOMER = "customer";
+    public static String CUSTOMER_ERROR = "customerError";
+
+    public static String VENDOR_LIST = "vendorList";
+    public static String VENDOR = "vendor";
+    public static String VENDOR_ERROR = "vendorError";
+
     public static String TRENDING_LIST = "trendingtList";
 }
