@@ -119,9 +119,6 @@
                         </a>
                     </li>
 
-                    <li><a href="${pageContext.request.contextPath}/lot/list"><i class="fa fa-link"></i>
-                        <span>Lot</span></a></li>
-
                     <%--<li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
                                 <span class="pull-right-container">
