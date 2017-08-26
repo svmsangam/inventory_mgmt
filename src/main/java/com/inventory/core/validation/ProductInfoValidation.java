@@ -33,9 +33,11 @@ public class ProductInfoValidation extends GlobalValidation {
     @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;
 
-    ProductInfoError error = new ProductInfoError();
+    ProductInfoError error;
 
     public ProductInfoError onSave(ProductInfoDTO productInfoDTO, BindingResult result) {
+
+        error = new ProductInfoError();
 
         boolean valid = true;
 
