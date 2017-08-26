@@ -80,6 +80,8 @@ function UserService() {
             $("#inventoryuser").val("");
             $("#userpassword").val("");
             $("#userrepassword").val("");
+            $("#userType").prop('selectedIndex',0);
+            $("#storeId").prop('selectedIndex',0);
             /*$("#userType").val("");*/
         },
 
