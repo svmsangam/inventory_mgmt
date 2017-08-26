@@ -68,7 +68,7 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
 
         entity.setCityInfo(cityInfoRepository.findByIdAndStatus(dto.getCityId() , Status.ACTIVE));
         entity.setClientType(dto.getClientType());
-        entity.setCompanyName(entity.getCompanyName());
+        entity.setCompanyName(dto.getCompanyName());
         entity.setContact(dto.getContact());
         entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
         entity.setEmail(dto.getEmail());
