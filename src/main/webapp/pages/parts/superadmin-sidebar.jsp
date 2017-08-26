@@ -93,14 +93,14 @@
             </li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-user"></i> <span>Client</span>
+                <a href="#"><i class="fa fa-address-book-o"></i> <span>Client</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="${pageContext.request.contextPath}/customer/list"><i class="fa fa-male"></i> <span>Customer</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-male"></i> <span>Vendor</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-truck"></i> <span>Vendor</span></a></li>
                 </ul>
             </li>
 
