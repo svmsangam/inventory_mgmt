@@ -64,42 +64,56 @@
                         </table>
                     </div>
                     <!-- /.box-body -->
+                    <c:if test="${fn:length(pagelist) gt 1}">
 
+                        <div class="col-xs-12">
+                            <nav class="pull-right">
+                                <ul class="pagination">
+
+                                    <c:if test="${currentpage > 1}">
+                                        <li class="page-item">
+
+                                            <a href="${pageContext.request.contextPath}/vendor/list?pageNo=${currentpage-1}"
+                                               class="page-link">Prev</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach var="pagelist" items="${pagelist}">
+                                        <c:choose>
+                                            <c:when test="${pagelist == currentpage}">
+
+                                                <li class="page-item active">
+                                                  <span class="page-link">
+                                                    ${pagelist}
+                                                    <span class="sr-only">(current)</span>
+                                                  </span>
+                                                </li>
+
+                                            </c:when>
+                                            <c:otherwise>
+
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="${pageContext.request.contextPath}/vendor/list?pageNo=${pagelist}">${pagelist}</a>
+                                                </li>
+
+                                            </c:otherwise>
+
+                                        </c:choose>
+                                    </c:forEach>
+
+                                    <c:if test="${currentpage + 1 <= lastpage}">
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="${pageContext.request.contextPath}/vendor/list?pageNo=${currentpage+1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </c:if>
                 </div>
                 <!-- /.box -->
-                <c:if test="${fn:length(pagelist) gt 1}">
-
-                    <div class="col-md-10  pull-left">
-                        <ul	class="pagination no-margin col-md-10">
-                            <li>
-                                <c:if test="${currentpage > 1}">
-                                    <a href="${pageContext.request.contextPath}/vendor/list?pageNo=${currentpage-1}" class="btn btn-info btn-sm btn-flat">Prev</a>
-                                </c:if></li>
-
-                            <c:forEach   var="pagelist" items="${pagelist}" >
-                                <li> <c:choose>
-
-                                    <c:when test="${pagelist == currentpage}">
-
-                                        <span class="active" class="btn btn-info btn-sm btn-flat">${pagelist}</span>
-
-                                    </c:when>
-                                    <c:otherwise>
-
-                                        <a href="${pageContext.request.contextPath}/vendor/list?pageNo=${pagelist}" class="btn btn-info btn-sm btn-flat">${pagelist}</a>
-
-                                    </c:otherwise>
-
-                                </c:choose> </li>
-                            </c:forEach>
-                            <li>
-                                <c:if test="${currentpage + 1 <= lastpage}">
-                                    <a href="${pageContext.request.contextPath}/vendor/list?pageNo=${currentpage+1}" class="btn btn-info btn-sm btn-flat">Next</a>
-                                </c:if></li>
-                        </ul>
-                    </div>
-
-                </c:if>
             </div>
         </div>
     </section>

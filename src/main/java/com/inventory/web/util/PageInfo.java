@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class PageInfo {
 
-    public static double pageList = 2.0;
-    public static int numberOfPage = 2;
+    public static double pageList = 2.0;/*the munber of row on page*/
+    public static int numberOfPage = 10;/*the number of pagelist*/
 
     private static int decrement;
     private static int increment;
