@@ -48,13 +48,6 @@ public class CustomerController {
     @Autowired
     private ClientInfoValidation clientInfoValidation;
 
-    @GetMapping(value = "/")
-    public String index(RedirectAttributes redirectAttributes) {
-
-
-        return "redirect:/customer/list";
-    }
-
     @GetMapping(value = "/customer/list")
     public String listCustomer(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -195,6 +188,7 @@ public class CustomerController {
             }
 
             clientInfoDTO.setClientType(ClientType.CUSTOMER);
+            clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
 
@@ -345,6 +339,7 @@ public class CustomerController {
             }
 
             clientInfoDTO.setClientType(ClientType.VENDOR);
+            clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
 

@@ -99,8 +99,8 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-male"></i> <span>Customer</span></a></li>
-                    <li><a href="#"><i class="fa fa-male"></i> <span>Vendor</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/customer/list"><i class="fa fa-male"></i> <span>Customer</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-male"></i> <span>Vendor</span></a></li>
                 </ul>
             </li>
 
