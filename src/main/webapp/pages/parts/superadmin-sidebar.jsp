@@ -41,67 +41,66 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">SUPERADMIN HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a>
+            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-users"></i> <span>User</span></a>
             </li>
 
-            <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-link"></i>
+            <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-suitcase"></i>
                 <span>Store</span></a></li>
 
-            <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
+            <li><a href="#"><i class="fa fa-calendar"></i> <span>Ledger</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-link"></i> <span>Product</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Sales Order</span>
+                <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Order List</a></li>
-                    <li><a href="#">Order Add</a></li>
-                    <li><a href="#">Return List</a></li>
-                    <li><a href="#">Return Add</a></li>
-
+                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
+                    <li><a href="#"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
+                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>Return List</span></a></li>
+                    <li><a href="#"><i class="fa fa-plus"></i> <span>Return Add</span></a></li>
                 </ul>
             </li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Purchase Order</span>
+                <a href="#"><i class="fa fa-bar-chart"></i> <span>Purchase Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Order List</a></li>
-                    <li><a href="#">Order Add</a></li>
-                    <li><a href="#">Return List</a></li>
-                    <li><a href="#">Return Add</a></li>
+                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
+                    <li><a href="#"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
+                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>Return List</span></a></li>
+                    <li><a href="#"><i class="fa fa-plus"></i> <span>Return Add</span></a></li>
                 </ul>
             </li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Invoice</span>
+                <a href="#"><i class="fa  fa-file-text"></i> <span>Invoice</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">List</a></li>
-                    <li><a href="#">Add</a></li>
-                    <li><a href="#">Receivable</a></li>
+                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>List</span></a></li>
+                    <li><a href="#"><i class="fa fa-plus"></i> <span>Add</span></a></li>
+                    <li><a href="#"><i class="fa fa-outdent"></i> <span>Receivable</span></a></li>
                 </ul>
             </li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Client</span>
+                <a href="#"><i class="fa fa-user"></i> <span>Client</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Customer</a></li>
-                    <li><a href="#">Vendor</a></li>
+                    <li><a href="#"><i class="fa fa-male"></i> <span>Customer</span></a></li>
+                    <li><a href="#"><i class="fa fa-male"></i> <span>Vendor</span></a></li>
                 </ul>
             </li>
 

@@ -36,7 +36,7 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">${product.name}</h3>
+                        <h3 class="box-title text-bold">${product.name}</h3>
                         <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/product/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add New Product
                             </a>
