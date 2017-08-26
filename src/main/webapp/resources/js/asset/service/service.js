@@ -82,7 +82,6 @@ function UserService() {
             $("#userrepassword").val("");
             $("#userType").prop('selectedIndex',0);
             $("#storeId").prop('selectedIndex',0);
-            /*$("#userType").val("");*/
         },
 
         successMsg: function (msg) {
@@ -313,11 +312,10 @@ function StoreService() {
             $("#contact").val("");
             $("#email").val("");
             $("#mobile").val("");
-            $("#cityId").val("");
             $("#reg").val("");
             $("#pan").val("");
             $("#street").val("");
-            /*$("#cityId").val("");*/
+            /*$("#cityId").select2("val", "");*/
         },
 
         successMsg: function (msg) {
