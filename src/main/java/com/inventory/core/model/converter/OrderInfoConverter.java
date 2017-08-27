@@ -85,9 +85,6 @@ public class OrderInfoConverter implements IListConvertable<OrderInfo , OrderInf
         entity.setOrderDate(dto.getOrderDate());
         entity.setOrderNo(dto.getOrderNo());
         entity.setOrderType(dto.getOrderType());
-        entity.setPurchaseTrack(dto.getPurchaseTrack());
-        entity.setSaleTrack(dto.getSaleTrack());
-        entity.setStatus(dto.getStatus());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
         entity.setTax(dto.getTax());
         entity.setTotalAmount(dto.getTotalAmount());
