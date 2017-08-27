@@ -3,11 +3,16 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
 import com.inventory.core.model.dto.OrderInfoDTO;
+import com.inventory.core.model.entity.CodeGenerator;
 import com.inventory.core.model.entity.OrderInfo;
+import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.CodeGeneratorRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +34,12 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Autowired
     private OrderInfoConverter orderInfoConverter;
+    
+    @Autowired
+    private CodeGeneratorRepository codeGeneratorRepository;
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
@@ -72,5 +83,49 @@ public class OrderInfoApi implements IOrderInfoApi {
         }
 
         return count;
+    }
+
+    @Override
+    public String generatOrderNumber(long storeId) {
+
+        Long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Order);
+
+        if (count == null | 0 == count){
+            CodeGenerator codeGenerator = new CodeGenerator();
+
+            StoreInfo store = storeInfoRepository.findOne(storeId);
+
+            String prefix = "O" + store.getName().substring(0 , 2).toUpperCase();
+
+            codeGenerator.setStoreInfo(store);
+            codeGenerator.setNumber(100001);
+            codeGenerator.setNumberStatus(NumberStatus.Order);
+            codeGenerator.setPrefix(prefix);
+
+            codeGenerator = codeGeneratorRepository.save(codeGenerator);
+
+            return codeGenerator.getPrefix() + "-" + codeGenerator.getNumber();
+
+        } else {
+
+            StoreInfo store = storeInfoRepository.findOne(storeId);
+
+            long number = codeGeneratorRepository.findFirstByStoreInfoAndNumberStatusOrderByIdDesc(store, NumberStatus.Order).getNumber();
+
+            CodeGenerator codeGenerator = new CodeGenerator();
+
+
+            String prefix = "O" + store.getName().substring(0 , 2).toUpperCase();
+
+            codeGenerator.setStoreInfo(store);
+            codeGenerator.setNumber(number + 1);
+            codeGenerator.setNumberStatus(NumberStatus.Order);
+            codeGenerator.setPrefix(prefix);
+
+            codeGenerator = codeGeneratorRepository.save(codeGenerator);
+
+            return codeGenerator.getPrefix() + "-" + codeGenerator.getNumber();
+
+        }
     }
 }

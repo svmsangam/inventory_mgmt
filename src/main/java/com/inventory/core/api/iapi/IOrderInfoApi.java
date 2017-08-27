@@ -17,4 +17,6 @@ public interface IOrderInfoApi {
     List<OrderInfoDTO> list(Status status , long storeId , int page , int size);
 
     long countList(Status status , long storeId);
+
+    String generatOrderNumber(long storeId);
 }
