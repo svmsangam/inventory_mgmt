@@ -73,8 +73,8 @@
                                                 class="label label-success">Activate ?</span></a></c:if>
                                     </td>
                                     <td>
-                                        <c:if test="${user.userType eq 'USER'}">
-                                            <a class="btn btn-xs bg-purple margin" href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
+                                        <c:if test="${user.userType eq 'USER' and user.enable eq true}">
+                                            <a class="btn btn-xs bg-purple" href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
                                                 <i class="fa fa-cogs"></i> Manage
                                             </a>
                                         </c:if>

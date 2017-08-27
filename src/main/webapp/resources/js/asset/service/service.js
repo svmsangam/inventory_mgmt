@@ -133,7 +133,7 @@ function UserService() {
             row += "</td>";
 
             if (data.userType === "USER") {
-                row += "<td><a href='" + pagecontext + "/user/manage?userId=" + data.userId + "' class='btn btn-xs bg-purple margin'><i class='fa fa-cogs'></i> Manage</a></td>";
+                row += "<td><a href='" + pagecontext + "/user/manage?userId=" + data.userId + "' class='btn btn-xs bg-purple'><i class='fa fa-cogs'></i> Manage</a></td>";
             }
 
             row += "</tr>";
