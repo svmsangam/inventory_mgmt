@@ -25,9 +25,9 @@ public class HomeController {
     private IUserApi userApi;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String toTestJspPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+    public String toTestJspPage() {
 
-        return "tag/add";
+        return "sales/list";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
