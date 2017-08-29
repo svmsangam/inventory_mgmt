@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/order")
-public class OrderRequestController {
+@RequestMapping("order")
+public class OrderInfoController {
 
     @Autowired
     private IUserApi userApi;
@@ -20,8 +20,8 @@ public class OrderRequestController {
         return "redirect:/OrderInfo/list";
     }
 
-    @GetMapping(value = "/list/saleOrder")
-    public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    @GetMapping(value = "/sale/list")
+    public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -31,10 +31,10 @@ public class OrderRequestController {
             return "redirect:/";
         }
 
-        return "orderRequest/list";
+        return "order/listSale";
     }
 
-    @GetMapping(value = "/list/purchaseorder")
+    @GetMapping(value = "/purchaseorder/list")
     public String listPurchase(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
