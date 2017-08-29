@@ -34,6 +34,19 @@ public class OrderInfoController {
         return "order/listSale";
     }
 
+    @GetMapping(value = "/sale/add")
+    public String addOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+
+            return "order/addSale";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+    }
+
     @GetMapping(value = "/purchaseorder/list")
     public String listPurchase(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -46,19 +59,6 @@ public class OrderInfoController {
         }
 
         return "orderRequest/list";
-    }
-
-    @GetMapping(value = "/addsale")
-    public String addOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-            return "orderRequest/addSale";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
     }
 
     @GetMapping(value = "/addpurchase")
