@@ -38,6 +38,7 @@ input.auto-complete-active {
     color: #fff !important;
     border: none;
     text-align: center;
+    width: inherit;
 }
 
 .table-row, .data-row {

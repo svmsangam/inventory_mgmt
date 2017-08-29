@@ -25,6 +25,7 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Add Sales Order</h3>
+                        <div class="pull-right">Order No. #1234</div>
                     </div>
                     <!-- /.box-header -->
                     <form action="${pageContext.request.contextPath}/order/sale/save" method="post"
@@ -42,20 +43,15 @@
                                     <p class="form-error">${customerError.name}</p>
                                 </div>
 
-                                <div class="form-group col-xs-12">
-                                    <label name="orderDate">Order Date:
-                                        <input type="text" placeholder="select date" class="datepicker form-control"
-                                               id="orderDate" name="orderDate" value="${sales.orderDate}" required/>
-                                    </label>
-                                    <p>${error.orderDate}</p>
-                                </div>
-
-                                <div class="form-group col-xs-12">
-                                    <label name="deliveryDate">Delivery Date:
-                                        <input type="text" class="datepicker form-control" placeholder="select date"
-                                               id="deliveryDate" name="deliveryDate"
-                                               value="${sales.deliveryDate}" required/></label>
-                                    <p>${error.deliveryDate}</p>
+                                <div class="form-group col-xs-7">
+                                    <label class="control-label">Order Date</label>
+                                    <div class='input-group date datepicker'>
+                                        <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="expire on">
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                    <p class="form-error">${itemError.expireDate}</p>
                                 </div>
 
                             </div>
@@ -66,20 +62,19 @@
                             <%--col start--%>
                             <div class="col-xs-6 text-right">
 
-                                <div class="form-group">
-                                    <label>OrderNo #</label>
-                                        <strong>1234</strong>
+                                <div class="form-group margin">
+                                    <label class="control-label">Delivery Date:</label>
+                                    <div class='input-group date datepicker'>
+                                       <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                        <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="expire on">
+
+                                    </div>
+                                    <p class="form-error">${itemError.expireDate}</p>
                                 </div>
 
-                                <div class="form-group">
-                                    <label name="shipmentDate">Shipment Date:
-                                        <input type="text" class="datepicker form-control" placeholder="select date"
-                                               id="shipmentDate" name="shippingDate"
-                                               value="${sales.shipmentDate}" required/></label>
-                                    <p>${error.shipmentDate}</p>
-                                </div>
-
-                                <div class="form-group">
+                                <div class="form-group margin">
                                     <label>Deliver To:
                                         <input class="form-control searchTextField" value="" type="text"
                                                id="searchTextField" name="deliveredTo" placeholder="Enter Address"
@@ -95,34 +90,31 @@
                             <%--row start--%>
                             <div class="row">
 
-                                <div id="add_row" class="form-group">
-                                    <label class="btn btn-xs btn-primary">
+                                <div class="form-group margin">
+                                    <label class="btn btn-xs btn-primary" id="add_row">
                                         <span class="glyphicon glyphicon-plus"></span> Add Item
                                     </label>
                                 </div>
 
                                 <%--col start--%>
-                                <div class="col-xs-12 margin-bottom">
+                                <div class="col-xs-12 margin">
 
-                                    <%-- STATIC SEARCH DIV--%>
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>item</th>
+                                                <th>quantity</th>
+                                                <th>rate</th>
+                                                <th>discount(%)</th>
+                                                <th>total</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
 
-                                    <div class="row table-header table-row">
-                                        <div class="col-md-3">Item</div>
-                                        <div class="col-md-2">Quantity</div>
-                                        <div class="col-md-2">Rate</div>
-                                        <div class="col-md-2">Discount (%)</div>
-                                        <div class="col-md-2">Amount</div>
-                                        <div class="col-md-1"></div>
-                                    </div>
+                                            <tbody id="customFields">
 
-                                    <div id="customFields">
-
-
-                                    </div>
-
-                                    <%--END SEARCH DIV--%>
-
-
+                                            </tbody>
+                                        </table>
                                 </div>
                                     <%--col end--%>
 
@@ -217,18 +209,19 @@
                 return;
             }
 
-            var row = "<div class='row border-bottom table-row itemTable' >";
+            var row = "<tr class='border-bottom itemTable' >";
 
-            row += "<div class='col-md-3'><div class='result' id='result" + count + "'></div><input type='text' result='result" + count + "' id='search" + count + "' mystock='stock" + count + "' myrate='rate" + count + "' class='search form-control form-control-sm' placeholder='search productInfo ' /><input type='hidden' id='stock" + count + "' name='itemLotIdList' required/></div>";
-            row += "<div class='col-md-2'><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantityList' placeholder='enter quantity' required/></div>";
-            row += "<div class='col-md-2'><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rateList' required /></div>";
-            row += "<div class='col-md-2'><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discountList' onKeyup='calculate();' placeholder='enter tax percent'  required /></div>";
-            row += "<div class='col-md-2 text-right'>Rs.<span class='amount'>77778</span></div>";
-            row += "<div class='col-md-1'><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></div>";
+            row += "<td><select class='select2 form-control'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
+            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantityList' placeholder='enter quantity' required/></td>";
+            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rateList' required /></td>";
+            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discountList' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
+            row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
+            row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
 
-            row += "</div>";
+            row += "</tr>";
 
             $("#customFields").prepend(row);
+            $(".select2").select2();
             count++;
             max ++;
         });
