@@ -98,7 +98,7 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <button class="btn btn-xs btn-flat btn-primary pull-right" id="add_row">
+                                <button class="btn btn-xs btn-flat btn-primary pull-right" type="button" id="add_row">
                                     <span class="glyphicon glyphicon-plus"></span> Add Item
                                 </button>
                             </div>
