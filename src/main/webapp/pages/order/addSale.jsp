@@ -45,13 +45,10 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Customer Name</label>
+                                    <label>Customer Name</label><a href="" class="pull-right"> Create a New Customer</a>
                                     <input type="text" class="form-control" value="${customer.name}" name="name"
                                            placeholder="Name">
                                     <p class="form-error">${customerError.name}</p>
-                                </div>
-                                <div class="form-group">
-                                    or<a href=""> Create a New Customer</a>
                                 </div>
                             </div>
                             <div class="col-md-4">&nbsp;</div>
@@ -67,13 +64,13 @@
                                     <p class="form-error">${itemError.expireDate}</p>
                                 </div>
                             </div>
-                        </div>
+                        <%--</div>
 
-                        <div class="row">
+                        <div class="row">--%>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Delivery Date:</label>
-                                    <div class='input-group date'>
+                                    <div class='input-group date' style="position: relative;">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
