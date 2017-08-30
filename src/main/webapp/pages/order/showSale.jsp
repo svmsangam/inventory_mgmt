@@ -16,179 +16,154 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-
     <!-- Main content -->
-    <section class="content">
-        <c:if test="${not empty message}">
-            <div class="alert alert-success alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-                <strong>${message}</strong>
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> AdminLTE, Inc.
+                    <small class="pull-right">Date: 2/10/2014</small>
+                </h2>
             </div>
-        </c:if>
+            <!-- /.col -->
+        </div>
+        <!-- info row -->
+        <div class="row invoice-info">
+            <div class="col-sm-4 invoice-col">
+                From
+                <address>
+                    <strong>Admin, Inc.</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    Phone: (804) 123-5432<br>
+                    Email: info@almasaeedstudio.com
+                </address>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 invoice-col">
+                To
+                <address>
+                    <strong>John Doe</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    Phone: (555) 539-1037<br>
+                    Email: john.doe@example.com
+                </address>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 invoice-col">
+                <b>Invoice #007612</b><br>
+                <br>
+                <b>Order ID:</b> 4F3S8J<br>
+                <b>Payment Due:</b> 2/22/2014<br>
+                <b>Account:</b> 968-34567
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-                <strong>${error}</strong>
+        <!-- Table row -->
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Qty</th>
+                        <th>Product</th>
+                        <th>Serial #</th>
+                        <th>Description</th>
+                        <th>Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Call of Duty</td>
+                        <td>455-981-221</td>
+                        <td>El snort testosterone trophy driving gloves handsome</td>
+                        <td>$64.50</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Need for Speed IV</td>
+                        <td>247-925-726</td>
+                        <td>Wes Anderson umami biodiesel</td>
+                        <td>$50.00</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Monsters DVD</td>
+                        <td>735-845-642</td>
+                        <td>Terry Richardson helvetica tousled street art master</td>
+                        <td>$10.70</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Grown Ups Blue Ray</td>
+                        <td>422-568-642</td>
+                        <td>Tousled lomo letterpress</td>
+                        <td>$25.99</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        </c:if>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
         <div class="row">
-            <div class="col-md-12">
-                <div class="box box-info">
-                    <div class="box-header">
-                        <h3 class="box-title">Add Sales Order</h3>
-                        <div class="pull-right">Order No. #1234</div>
-                    </div>
-                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="customer">
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Customer Name</label>
-                                        <input type="text" class="form-control" value="${customer.name}" name="name"
-                                               placeholder="Name">
-                                        <p class="form-error">${customerError.name}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        or<a href=""> Create a New Customer</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">&nbsp;</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Order Date:</label>
-                                        <div class='input-group date'>
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="Expiry Date"/>
-                                        </div>
-                                        <p class="form-error">${itemError.expireDate}</p>
-                                    </div>
-                                </div>
-                            </div>
+            <!-- accepted payments column -->
+            <div class="col-xs-6">
+                <label>Description</label>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
+                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                </p>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-6">
+                <p class="lead">Amount Due 2/22/2014</p>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Delivery Date:</label>
-                                        <div class='input-group date'>
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="deliveryDate" placeholder="Delivery Date"/>
-                                        </div>
-                                        <p class="form-error">${itemError.expireDate}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">&nbsp;</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Deliver To:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-map-marker"></i>
-                                            </div>
-                                            <input class="form-control" value="" type="text" id="searchTextField" name="deliveredTo" placeholder="Enter Address" required/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button class="btn btn-xs btn-flat btn-primary pull-right" id="add_row">
-                                        <span class="glyphicon glyphicon-plus"></span> Add Item
-                                    </button>
-                                </div>
-
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>item</th>
-                                        <th>quantity</th>
-                                        <th>rate</th>
-                                        <th>discount(%)</th>
-                                        <th>total</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody id="customFields">
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="description">Description:</label><br/>
-                                    <textarea class="form-control" placeholder="write something.." name="description"
-                                              id="description" rows="3" cols="30" required>${sales.notes}</textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">&nbsp;</div>
-                            <div class="col-md-6">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="lable">Tax(%) </label>
-                                        <input type="number" value="0.0" id="tax" step="any"
-                                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
-                                               class="form-control" onKeyup="calculate();"
-                                               name="tax" required/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="lable">Total Cost </label>
-                                    <span>Rs.<strong>30000</strong></span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary btn-flat btn-sm pull-right">Save changes</button>
-                        </div>
-                    </form>
-                    <!-- /.box -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th style="width:50%">Subtotal:</th>
+                            <td>$250.30</td>
+                        </tr>
+                        <tr>
+                            <th>Tax (9.3%)</th>
+                            <td>$10.34</td>
+                        </tr>
+                        <tr>
+                            <th>Shipping:</th>
+                            <td>$5.80</td>
+                        </tr>
+                        <tr>
+                            <th>Total:</th>
+                            <td>$265.24</td>
+                        </tr>
+                    </table>
                 </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- this row will not appear when printing -->
+        <div class="row no-print">
+            <div class="col-xs-12">
+                <a href="" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
+                </button>
+                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> Generate PDF
+                </button>
             </div>
         </div>
     </section>
     <!-- /.content -->
+    <div class="clearfix"></div>
 </div>
 <!-- /.content-wrapper -->
-
 <%@include file="/pages/parts/footer.jsp" %>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var max = 1;
-        var count = 1;
-// for dynamically add or remove row
-        $("#add_row").click(function () {
-            //alert(count);
-            if (max === 10){
-                alert("max 10");
-                return;
-            }
-            var row = "<tr class='border-bottom itemTable' >";
-            row += "<td><select class='select2 form-control'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
-            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantityList' placeholder='enter quantity' required/></td>";
-            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rateList' required /></td>";
-            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discountList' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
-            row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
-            row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
-            row += "</tr>";
-            $("#customFields").prepend(row);
-            $(".select2").select2();
-            count++;
-            max ++;
-        });
-        $("#customFields").on('click', '.remCF', function () {
-            $(this).parent().parent().remove();
-            max--;
-            calculate();
-        });
-    });
-</script>

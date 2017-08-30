@@ -14,12 +14,6 @@ public class OrderInfoController {
     @Autowired
     private IUserApi userApi;
 
-    @GetMapping(value = "/")
-    public String index(RedirectAttributes redirectAttributes) {
-
-        return "redirect:/OrderInfo/list";
-    }
-
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
