@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ionicons.min.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-datepicker.min.css">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/blue.css">
     <!-- DataTables -->

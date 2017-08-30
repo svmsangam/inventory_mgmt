@@ -19,6 +19,19 @@
 
     <!-- Main content -->
     <section class="content">
+        <c:if test="${not empty message}">
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            <strong>${message}</strong>
+        </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+        <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            <strong>${error}</strong>
+        </div>
+        </c:if>
 
         <div class="row">
             <div class="col-md-12">
@@ -27,147 +40,118 @@
                         <h3 class="box-title">Add Sales Order</h3>
                         <div class="pull-right">Order No. #1234</div>
                     </div>
-                    <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post"
-                          modelAttribute="customer">
-                        <%--row start--%>
+                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="customer">
+                        <div class="box-body">
                         <div class="row">
-
-                            <%--col start--%>
-                            <div class="col-xs-6">
-
-                                <div class="form-group col-xs-6">
-                                    <label class="control-label">Buyer Name</label>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Customer Name</label>
                                     <input type="text" class="form-control" value="${customer.name}" name="name"
                                            placeholder="Name">
                                     <p class="form-error">${customerError.name}</p>
                                 </div>
-
-                                <div class="form-group col-xs-7">
-                                    <label class="control-label">Order Date</label>
-                                    <div class='input-group date datepicker'>
-                                        <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="expire on">
-                                        <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                <div class="form-group">
+                                    or<a href=""> Create a New Customer</a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">&nbsp;</div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Order Date:</label>
+                                    <div class='input-group date'>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="Expiry Date"/>
                                     </div>
                                     <p class="form-error">${itemError.expireDate}</p>
                                 </div>
-
                             </div>
+                        </div>
 
-                            <%--col end--%>
-
-
-                            <%--col start--%>
-                            <div class="col-xs-6 text-right">
-
-                                <div class="form-group margin">
-                                    <label class="control-label">Delivery Date:</label>
-                                    <div class='input-group date datepicker'>
-                                       <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                        <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="expire on">
-
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Delivery Date:</label>
+                                    <div class='input-group date'>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="deliveryDate" placeholder="Delivery Date"/>
                                     </div>
                                     <p class="form-error">${itemError.expireDate}</p>
                                 </div>
-
-                                <div class="form-group margin">
-                                    <label>Deliver To:
-                                        <input class="form-control searchTextField" value="" type="text"
-                                               id="searchTextField" name="deliveredTo" placeholder="Enter Address"
-                                               required/></label>
-                                </div>
-
                             </div>
-                            <%--col end--%>
-                        </div>
-                        <%--row end--%>
-                        <div class="box-body">
-
-                            <%--row start--%>
-                            <div class="row">
-
-                                <div class="form-group margin">
-                                    <label class="btn btn-xs btn-primary" id="add_row">
-                                        <span class="glyphicon glyphicon-plus"></span> Add Item
-                                    </label>
-                                </div>
-
-                                <%--col start--%>
-                                <div class="col-xs-12 margin">
-
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>item</th>
-                                                <th>quantity</th>
-                                                <th>rate</th>
-                                                <th>discount(%)</th>
-                                                <th>total</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody id="customFields">
-
-                                            </tbody>
-                                        </table>
-                                </div>
-                                    <%--col end--%>
-
-                                <%--col start--%>
-                                <div class="col-xs-6 pull-left">
-
-                                    <div class="form-group">
-                                        <label for="description">Description:</label><br/>
-                                        <textarea class="form-control" placeholder="write something.." name="description"
-                                                  id="description" rows="3" cols="30" required>${sales.notes}</textarea>
+                            <div class="col-md-4">&nbsp;</div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Deliver To:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <input class="form-control" value="" type="text" id="searchTextField" name="deliveredTo" placeholder="Enter Address" required/>
                                     </div>
-
                                 </div>
-                                <%--col end--%>
-
-                                <%--col start--%>
-                                <div class="col-xs-6 pull-right">
-
-                                    <div class="form-group">
-                                        <label class="lable">Tax(%) </label> <input type="number" value="0.0" id="tax" step="any"
-                                                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
-                                                                                    class="form-control" onKeyup="calculate();"
-                                                                                    name="tax" required/>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label class="lable">Total Cost </label>
-                                        <span>Rs.<strong>30000</strong></span>
-
-                                    </div>
-
-                                </div>
-                                <%--col end--%>
-
                             </div>
-
-                            <%--row end--%>
-
-                            <!-- /.box-body -->
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button class="btn btn-xs btn-flat btn-primary pull-right" id="add_row">
+                                    <span class="glyphicon glyphicon-plus"></span> Add Item
+                                </button>
+                            </div>
+
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>item</th>
+                                    <th>quantity</th>
+                                    <th>rate</th>
+                                    <th>discount(%)</th>
+                                    <th>total</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tbody id="customFields">
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="description">Description:</label><br/>
+                            <textarea class="form-control" placeholder="write something.." name="description"
+                                      id="description" rows="3" cols="30" required>${sales.notes}</textarea>
+                        </div>
+                        </div>
+                            <div class="col-md-6">&nbsp;</div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="lable">Tax(%) </label>
+                                <input type="number" value="0.0" id="tax" step="any"
+                                                                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
+                                                                            class="form-control" onKeyup="calculate();"
+                                                                            name="tax" required/>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Cost = </label>
+                                <span>Rs.<strong>30000</strong></span>
+                            </div>
+                        </div>
+
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary btn-flat btn-sm pull-right">Save changes</button>
+                        </div>
                     </form>
-                </div>
                 <!-- /.box -->
             </div>
         </div>
-
+        </div>
     </section>
     <!-- /.content -->
 </div>
@@ -175,51 +159,25 @@
 
 <%@include file="/pages/parts/footer.jsp" %>
 
-<script>
-
-    $(function () {
-        $(".datepicker").datepicker({
-            /* dateFormat: 'yy-mm-dd' */
-        });
-    });
-
-    $(document).ready(function () {
-
-        $(".select2").select2();
-    });
-</script>
-
-
 <script type="text/javascript">
-
-
     $(document).ready(function () {
-
-
         var max = 1;
         var count = 1;
-
 // for dynamically add or remove row
         $("#add_row").click(function () {
             //alert(count);
-
             if (max === 10){
-
                 alert("max 10");
                 return;
             }
-
             var row = "<tr class='border-bottom itemTable' >";
-
             row += "<td><select class='select2 form-control'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
             row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantityList' placeholder='enter quantity' required/></td>";
             row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rateList' required /></td>";
             row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discountList' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
             row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
-
             row += "</tr>";
-
             $("#customFields").prepend(row);
             $(".select2").select2();
             count++;
