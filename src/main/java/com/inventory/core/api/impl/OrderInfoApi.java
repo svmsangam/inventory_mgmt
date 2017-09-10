@@ -1,6 +1,7 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IOrderInfoApi;
+import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
@@ -41,6 +42,9 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Autowired
     private StoreInfoRepository storeInfoRepository;
 
+    @Autowired
+    private IOrderItemInfoApi orderItemInfoApi;
+
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
 
@@ -52,7 +56,13 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         orderInfo = orderInfoRepository.save(orderInfo);
 
-        return orderInfoConverter.convertToDto(orderInfo);
+        orderInfoDTO.setOrderId(orderInfo.getId());
+
+        orderInfo.setTotalAmount(orderItemInfoApi.save(orderInfoDTO));
+
+        orderInfo.setGrandTotal(orderInfo.getTotalAmount() + orderInfo.getTotalAmount() * orderInfo.getTax() / 100);
+
+        return orderInfoConverter.convertToDto(orderInfoRepository.save(orderInfo));
     }
 
     @Override

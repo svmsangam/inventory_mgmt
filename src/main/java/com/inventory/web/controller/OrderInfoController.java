@@ -1,6 +1,15 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.IItemInfoApi;
+import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.OrderInfoDTO;
+import com.inventory.core.model.enumconstant.Permission;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.util.Authorities;
+import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,11 +23,41 @@ public class OrderInfoController {
     @Autowired
     private IUserApi userApi;
 
+    @Autowired
+    private IItemInfoApi itemInfoApi;
+
+    @Autowired
+    private IOrderInfoApi orderInfoApi;
+
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
+                   /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,12 +72,52 @@ public class OrderInfoController {
 
         try {
 
+                   /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            modelMap.put(StringConstants.ITEM_LIST , itemInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+            modelMap.put(StringConstants.ORDERNO , orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
 
             return "order/addSale";
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }
+    }
+
+    @PostMapping(value = "/sale/save")
+    public String saveSaleOrder(@ModelAttribute("order")OrderInfoDTO orderInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+        return "redirect:/order/";
     }
 
     @GetMapping(value = "/purchaseorder/list")
@@ -68,18 +147,6 @@ public class OrderInfoController {
         }
     }
 
-    @PostMapping(value = "/savesale")
-    public String saveOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-        return "redirect:/order/";
-    }
 
     @PostMapping(value = "/savepurchase")
     public String saveOnPurchase(ModelMap modelMap, RedirectAttributes redirectAttributes) {

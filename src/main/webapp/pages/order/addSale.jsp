@@ -38,30 +38,30 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Add Sales Order</h3>
-                        <div class="pull-right">Order No. #1234</div>
+                        <div class="pull-right">Order No. #${orderNo}</div>
                     </div>
-                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="customer">
+                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="order">
                         <div class="box-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <input type="hidden" name="orderNo" value="${orderNo}"/>
                                     <label>Customer Name</label><a href="" class="pull-right"> Create a New Customer</a>
-                                    <input type="text" class="form-control" value="${customer.name}" name="name"
-                                           placeholder="Name">
+                                    <select class="choose1 form-control" name="clientId"></select>
                                     <p class="form-error">${customerError.name}</p>
                                 </div>
                             </div>
                             <div class="col-md-4">&nbsp;</div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Order Date:</label>
+                                    <label>Delivery Date:</label>
                                     <div class='input-group date'>
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="Expiry Date"/>
+                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>" name="deliveryDate" placeholder="Delivery Date"/>
                                     </div>
-                                    <p class="form-error">${itemError.expireDate}</p>
+                                    <p class="form-error">${itemError.deliveryDate}</p>
                                 </div>
                             </div>
                         <%--</div>
@@ -69,14 +69,14 @@
                         <div class="row">--%>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Delivery Date:</label>
+                                    <label>Order Date:</label>
                                     <div class='input-group date' style="position: relative;">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="deliveryDate" placeholder="Delivery Date"/>
+                                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.orderDate}"/>" name="orderDate" placeholder="Order Date"/>
                                     </div>
-                                    <p class="form-error">${itemError.expireDate}</p>
+                                    <p class="form-error">${itemError.orderDate}</p>
                                 </div>
                             </div>
                             <div class="col-md-4">&nbsp;</div>
@@ -87,7 +87,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-map-marker"></i>
                                         </div>
-                                        <input class="form-control" value="" type="text" id="searchTextField" name="deliveredTo" placeholder="Enter Address" required/>
+                                        <input class="form-control" value="" type="text" id="searchTextField" name="deliveryAddress" placeholder="Enter Address" required/>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +156,50 @@
 
 <%@include file="/pages/parts/footer.jsp" %>
 
+<script>
+    $(document).ready(function() {
+
+        $(".choose1").select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/',
+                dataType: 'json',
+                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data , params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+                        arr.push({
+                            id: value.clientId,
+                            text: value.name
+                        })
+                    })
+
+
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            placeholder: "Search Customer by Name & Mobile No"
+        });
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         var max = 1;
@@ -168,10 +212,10 @@
                 return;
             }
             var row = "<tr class='border-bottom itemTable' >";
-            row += "<td><select class='select2 form-control'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
-            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantityList' placeholder='enter quantity' required/></td>";
-            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rateList' required /></td>";
-            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discountList' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
+            row += "<td><select class='select2 form-control' name='itemInfoId'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
+            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantity' placeholder='enter quantity' required/></td>";
+            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rate' required /></td>";
+            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discount' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
             row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
             row += "</tr>";

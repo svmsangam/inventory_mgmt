@@ -90,4 +90,6 @@ public class StringConstants {
     public static String VENDOR_ERROR = "vendorError";
 
     public static String TRENDING_LIST = "trendingtList";
+
+    public static String ORDERNO = "orderNo";
 }
