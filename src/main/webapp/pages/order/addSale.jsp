@@ -223,13 +223,28 @@
             $(".select2").select2();
             count++;
             max ++;
+            updateName();
         });
         $("#customFields").on('click', '.remCF', function () {
             $(this).parent().parent().remove();
             max--;
-            calculate();
+            updateName();
         });
     });
+
+
+    function updateName() {
+        $("tr").each(function (index) {
+            console.log("item " + $(this).find("td:eq(0) > select").val());
+            console.log("quantity " + $(this).find("td:eq(1) > input").val());
+
+            index = index -1;
+            $(this).find("td:eq(0) > select").attr("name" , "").attr("name" , "orderItemInfoDTOList.itemInfoId["+index+"]");
+            $(this).find("td:eq(1) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.quantity["+index+"]");
+            $(this).find("td:eq(2) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.rate["+index+"]");
+            $(this).find("td:eq(3) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.discount["+index+"]");
+        })
+    }
 </script>
 
 
