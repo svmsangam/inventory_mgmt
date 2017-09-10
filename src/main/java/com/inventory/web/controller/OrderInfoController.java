@@ -13,8 +13,12 @@ import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("order")
@@ -108,10 +112,17 @@ public class OrderInfoController {
     }
 
     @PostMapping(value = "/sale/save")
-    public String saveSaleOrder(@ModelAttribute("order")OrderInfoDTO orderInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String saveSaleOrder(@ModelAttribute("order")OrderInfoDTO orderInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
+            if (bindingResult.hasErrors()) {
+
+                List<FieldError> errors = bindingResult.getFieldErrors();
+                for (FieldError errorResult : errors) {
+                        System.out.println(errorResult.getField());;
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
