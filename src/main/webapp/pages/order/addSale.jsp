@@ -161,7 +161,7 @@
 
         $(".choose1").select2({
             ajax: {
-                url: '${pageContext.request.contextPath}/',
+                url: '${pageContext.request.contextPath}/client/customer/search',
                 dataType: 'json',
                 headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
@@ -212,7 +212,7 @@
                 return;
             }
             var row = "<tr class='border-bottom itemTable' >";
-            row += "<td><select class='select2 form-control' name='itemInfoId'><option>select item</option><option>mattress</option><option>carpet</option></select></td>";
+            row += "<td><select class='select2 form-control' name='itemInfoId'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
             row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='quantity' placeholder='enter quantity' required/></td>";
             row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='rate' required /></td>";
             row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='discount' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
