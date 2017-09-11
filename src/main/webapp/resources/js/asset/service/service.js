@@ -42,6 +42,7 @@ function startLoading() {
 
 
 function stopLoading(spinner) {
+    var target = document.getElementById('foo');
     spinner.stop(target);
     document.getElementById("myNavSpinner").style.width = "0%";
 }
@@ -419,6 +420,7 @@ function OrderInfoService() {
     return {
 
         getItemById : function (itemId, url , event) {
+
             var that = new OrderInfoService();
 
             if (orderInfoRequest !== undefined) {
@@ -426,14 +428,16 @@ function OrderInfoService() {
             }
 
             var spinner = startLoading();
-            window.setInterval('cancelRequest()', 60000);
+
             orderInfoRequest = $.ajax({
                 type: "GET",
                 url: url,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
                 data: {itemId : itemId},
                 dataType: 'json',
-                timeout: 60000,
+                timeout: 30000,
+                tryCount : 0,
+                retryLimit : 3,
                 success: function (data) {
 
                     var result = data.detail;
@@ -448,6 +452,34 @@ function OrderInfoService() {
 
                     }else {
 
+                    }
+                },
+
+                error : function(xhr, textStatus, errorThrown ) {
+
+                    console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                    if (textStatus == 'timeout') {
+
+                        this.tryCount++;
+
+                        if (this.tryCount <= this.retryLimit) {
+                            //try again
+                            $.ajax(this);
+                            return;
+                        } else {
+                            //cancel request
+                            that.cancelRequest(spinner);
+
+                            return;
+                        }
+
+                    }
+
+                    if (xhr.status == 500) {
+                        //handle error
+                    } else {
+                        //handle error
                     }
                 }
             });
