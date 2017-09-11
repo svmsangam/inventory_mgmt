@@ -212,9 +212,9 @@
                 return;
             }
             var row = "<tr class='border-bottom itemTable' >";
-            row += "<td><select class='select2 form-control' name=''><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
+            row += "<td><select class='select2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
             row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm'  name='' placeholder='enter quantity' required/></td>";
-            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='' required /></td>";
+            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='' required readonly/></td>";
             row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='' placeholder='enter tax percent'  required /></td>";
             row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";

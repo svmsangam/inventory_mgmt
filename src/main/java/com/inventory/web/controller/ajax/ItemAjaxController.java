@@ -1,10 +1,9 @@
 package com.inventory.web.controller.ajax;
 
-import com.inventory.core.api.iapi.IClientInfoApi;
+import com.inventory.core.api.iapi.IItemInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
-import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -19,28 +18,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by dhiraj on 9/10/17.
+ * Created by dhiraj on 9/11/17.
  */
 @Controller
-@RequestMapping("client")
-@ResponseBody
-public class ClientInfoAjaxController {
+@RequestMapping("item")
+public class ItemAjaxController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private IUserApi userApi;
+    private IItemInfoApi itemInfoApi;
 
     @Autowired
-    private IClientInfoApi clientInfoApi;
+    private IUserApi userApi;
 
-    @GetMapping(value = "customer/search", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("term") String term, HttpServletRequest request) {
+    @GetMapping(value = "show", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("itemId") Long itemId, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
@@ -62,10 +59,22 @@ public class ClientInfoAjaxController {
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
+            if (itemId == null){
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("Item validation failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (itemId < 1){
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("Item validation failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
-            result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.CUSTOMER , term , 0 , 50));
+            result.setDetail(itemInfoApi.getByIdAndStoreAndStatus(itemId , currentUser.getStoreId() , Status.ACTIVE));
 
 
         } catch (Exception e) {
@@ -76,5 +85,4 @@ public class ClientInfoAjaxController {
 
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
-
 }

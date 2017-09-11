@@ -2,6 +2,51 @@
  * Created by dhiraj on 8/12/17.
  */
 
+
+var opts = {
+    lines: 13 // The number of lines to draw
+    , length: 2 // The length of each line
+    , width: 16 // The line thickness
+    , radius: 42 // The radius of the inner circle
+    , scale: 1.25 // Scales overall size of the spinner
+    , corners: 1 // Corner roundness (0..1)
+    , color: '#000' // #rgb or #rrggbb or array of colors
+    , opacity: 0 // Opacity of the lines
+    , rotate: 21 // The rotation offset
+    , direction: 1 // 1: clockwise, -1: counterclockwise
+    , speed: 1 // Rounds per second
+    , trail: 69 // Afterglow percentage
+    , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+    , zIndex: 2e9 // The z-index (defaults to 2000000000)
+    , className: 'spinner' // The CSS class to assign to the spinner
+    , top: '50%' // Top position relative to parent
+    , left: '50%' // Left position relative to parent
+    , shadow: false // Whether to render a shadow
+    , hwaccel: false // Whether to use hardware acceleration
+    , position: 'absolute' // Element positioning
+}
+
+
+function startLoading() {
+
+    document.getElementById("myNavSpinner").style.width = "100%";
+
+    var target = document.getElementById('foo');
+
+    var spinner = new Spinner(opts);
+
+    spinner.spin(target);
+
+    return spinner;
+}
+
+
+function stopLoading(spinner) {
+    spinner.stop(target);
+    document.getElementById("myNavSpinner").style.width = "0%";
+}
+//spinner
+
 // user service start
 
 function UserService() {
@@ -363,3 +408,64 @@ function StoreService() {
 }
 
 // store service end
+
+
+// orderInfo service start
+
+function OrderInfoService() {
+
+    var orderInfoRequest;
+
+    return {
+
+        getItemById : function (itemId, url , event) {
+            var that = new OrderInfoService();
+
+            if (orderInfoRequest !== undefined) {
+                orderInfoRequest.abort();
+            }
+
+            var spinner = startLoading();
+            window.setInterval('cancelRequest()', 60000);
+            orderInfoRequest = $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: {itemId : itemId},
+                dataType: 'json',
+                timeout: 60000,
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        that.setItemResult(result , event);
+
+                        stopLoading(spinner);
+
+                    }else {
+
+                    }
+                }
+            });
+        },
+
+        cancelRequest : function (spinner) {
+            stopLoading(spinner);
+            if (orderInfoRequest !== undefined) {
+                orderInfoRequest.abort();
+            }
+
+        },
+
+        setItemResult : function (result, event) {
+            $(event).parents("tr").find("td:eq(2)").find("input").val("").val(result.sellingPrice.toFixed(3));
+            $(event).parents("tr").find("td:eq(1)").find("input").attr("max" , "").attr("max" , result.inStock);
+        }
+    };
+
+}
+// orderInfo service end

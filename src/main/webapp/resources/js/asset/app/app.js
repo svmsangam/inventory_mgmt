@@ -235,3 +235,22 @@ function setStoreDataOnUpdate() {
 }
 //store app end
 
+//sale order add app start
+var orderInfoService = new OrderInfoService();
+$(document).ready(function () {
+
+    $(document).on("change" , ".item" , function () {
+        var itemId = $(this).val();
+
+        if (itemId === undefined || itemId === null || 1 > itemId){
+            return;
+        }else {
+            orderInfoService.getItemById(itemId , $(this).attr("url") , $(this));
+        }
+
+    });
+
+});
+
+//sale order add app end
+

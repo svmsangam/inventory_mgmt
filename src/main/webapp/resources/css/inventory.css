@@ -1,3 +1,46 @@
+
+/*spinner start*/
+.overlay {
+    margin-left: 0px;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(31, 7, 186, 0.26);
+    overflow-x: hidden;
+}
+
+.overlay.foo {
+    position: relative;
+    top: 1px;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    color: rgb(225, 225, 225);
+}
+
+.overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+    .overlay a {
+        font-size: 20px
+    }
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+
+/*spinner end*/
+
 /*Auto Complete*/
 
 .result {

@@ -163,6 +163,8 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
 <%--notification--%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-notify.min.js"></script>
+<%--js spinner--%>
+<script src="${pageContext.request.contextPath}/resources/js/spin.min.js"></script>
 <%--js model--%>
 <script src="${pageContext.request.contextPath}/resources/js/asset/model/model.js"></script>
 <%--js service--%>
