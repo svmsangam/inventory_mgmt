@@ -212,7 +212,7 @@
                 return;
             }
             var row = "<tr class='border-bottom itemTable' >";
-            row += "<td><select class='select2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
+            row += "<td><select class='form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
             row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm'  name='' placeholder='enter quantity' required/></td>";
             row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='' required readonly/></td>";
             row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='' placeholder='enter tax percent'  required /></td>";
@@ -220,7 +220,7 @@
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
             row += "</tr>";
             $("#customFields").prepend(row);
-            $(".select2").select2();
+            $(".item").select2();
             count++;
             max ++;
             updateName();
@@ -235,9 +235,6 @@
 
     function updateName() {
         $("tr").each(function (index) {
-            console.log("item " + $(this).find("td:eq(0) > select").val());
-            console.log("quantity " + $(this).find("td:eq(1) > input").val());
-
             index = index -1;
             $(this).find("td:eq(0) > select").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].itemInfoId");
             $(this).find("td:eq(1) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].quantity");
