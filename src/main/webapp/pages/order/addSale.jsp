@@ -131,7 +131,7 @@
                                 <label class="lable">Tax(%) </label>
                                 <input type="number" value="0.0" id="tax" step="any"
                                                                             onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
-                                                                            class="form-control" onKeyup="calculate();"
+                                                                            class="form-control"
                                                                             name="tax" required/>
                             </div>
                             <div class="form-group">
@@ -213,9 +213,9 @@
             }
             var row = "<tr class='border-bottom itemTable' >";
             row += "<td><select class='select2 form-control' name=''><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
-            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm' onKeyup='calculate();'  name='' placeholder='enter quantity' required/></td>";
+            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm'  name='' placeholder='enter quantity' required/></td>";
             row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='' required /></td>";
-            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='' onKeyup='calculate();' placeholder='enter tax percent'  required /></td>";
+            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='' placeholder='enter tax percent'  required /></td>";
             row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
             row += "</tr>";
@@ -239,10 +239,10 @@
             console.log("quantity " + $(this).find("td:eq(1) > input").val());
 
             index = index -1;
-            $(this).find("td:eq(0) > select").attr("name" , "").attr("name" , "orderItemInfoDTOList.itemInfoId["+index+"]");
-            $(this).find("td:eq(1) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.quantity["+index+"]");
-            $(this).find("td:eq(2) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.rate["+index+"]");
-            $(this).find("td:eq(3) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList.discount["+index+"]");
+            $(this).find("td:eq(0) > select").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].itemInfoId");
+            $(this).find("td:eq(1) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].quantity");
+            $(this).find("td:eq(2) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].rate");
+            $(this).find("td:eq(3) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].discount");
         })
     }
 </script>

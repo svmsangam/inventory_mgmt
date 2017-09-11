@@ -14,11 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("order")
@@ -116,19 +113,41 @@ public class OrderInfoController {
 
         try {
 
-            if (bindingResult.hasErrors()) {
+                     /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                List<FieldError> errors = bindingResult.getFieldErrors();
-                for (FieldError errorResult : errors) {
-                        System.out.println(errorResult.getField());;
-                }
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
             }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
+            orderInfoDTO.setCreatedById(currentUser.getUserId());
+
+            orderInfoApi.save(orderInfoDTO);
 
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
         }
-        return "redirect:/order/";
+        return "redirect:/order/sale/list";
     }
 
     @GetMapping(value = "/purchaseorder/list")
