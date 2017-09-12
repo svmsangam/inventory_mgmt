@@ -32,7 +32,7 @@ public interface ItemInfoRepository extends JpaRepository<ItemInfo, Long>, JpaSp
     @Query("select i from ItemInfo i where i.status = ?1 and i.productInfo.storeInfo.id = ?2 order by i.id desc ")
     List<ItemInfo> findAllByStatusAndStoreInfo(Status status, long storeInfoId);
 
-    @Query("select i from ItemInfo i where i.status = ?1 and i.productInfo.storeInfo.id = ?2 and i.inStock > 0 order by i.id desc ")
+    @Query("select i from ItemInfo i where i.status = ?1 and i.productInfo.storeInfo.id = ?2 and i.inStock >= 1 order by i.id desc ")
     List<ItemInfo> findAllByStatusAndStoreInfoHavingInStock(Status status, long storeInfoId);
 
     @Query("select i from ItemInfo i where i.status = ?1 and i.productInfo.storeInfo.id = ?2 and i.productInfo.id = ?3 order by i.id desc ")

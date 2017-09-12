@@ -34,6 +34,8 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
 
         for (OrderItemInfoDTO dto : orderInfoDTO.getOrderItemInfoDTOList()){
 
+            dto.setOrderInfoId(orderInfoDTO.getOrderId());
+
             OrderItemInfo orderItemInfo = orderItemInfoConverter.convertToEntity(dto);
 
             orderItemInfo.setStatus(Status.ACTIVE);

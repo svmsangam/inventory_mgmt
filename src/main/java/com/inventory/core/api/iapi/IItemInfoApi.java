@@ -1,6 +1,7 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.ItemInfoDTO;
+import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public interface IItemInfoApi {
 
     List<ItemInfoDTO> list(Status status, long storeId);
 
+    List<ItemInfoDTO> getAllByStatusAndStoreWithStock(Status status, long storeId);
+
     List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId, Status status, long storeId);
+
+    void updateInStockOnSaleTrack(SalesOrderStatus track , long orderId);
 }

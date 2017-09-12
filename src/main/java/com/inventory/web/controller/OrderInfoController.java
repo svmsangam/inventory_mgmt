@@ -98,7 +98,7 @@ public class OrderInfoController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.ITEM_LIST , itemInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+            modelMap.put(StringConstants.ITEM_LIST , itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE , currentUser.getStoreId()));
             modelMap.put(StringConstants.ORDERNO , orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
 
             return "order/addSale";

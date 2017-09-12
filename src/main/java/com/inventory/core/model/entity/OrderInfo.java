@@ -17,9 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "invorderinfo")
 public class OrderInfo extends AbstractEntity<Long> {
-
-    private static final long serialVersionUID = -6245833303340171164L;
-
+    
     private String orderNo;
 
     private Date orderDate;

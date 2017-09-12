@@ -1,5 +1,6 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IItemInfoApi;
 import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
@@ -7,10 +8,7 @@ import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.StoreInfo;
-import com.inventory.core.model.enumconstant.NumberStatus;
-import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
-import com.inventory.core.model.enumconstant.SalesOrderStatus;
-import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.CodeGeneratorRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
@@ -45,6 +43,9 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Autowired
     private IOrderItemInfoApi orderItemInfoApi;
 
+    @Autowired
+    private IItemInfoApi itemInfoApi;
+
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
 
@@ -53,6 +54,7 @@ public class OrderInfoApi implements IOrderInfoApi {
         orderInfo.setStatus(Status.ACTIVE);
         orderInfo.setPurchaseTrack(PurchaseOrderStatus.PENDDING);
         orderInfo.setSaleTrack(SalesOrderStatus.PENDDING);
+        orderInfo.setOrderType(OrderType.Sale);
 
         orderInfo = orderInfoRepository.save(orderInfo);
 
@@ -61,6 +63,8 @@ public class OrderInfoApi implements IOrderInfoApi {
         orderInfo.setTotalAmount(orderItemInfoApi.save(orderInfoDTO));
 
         orderInfo.setGrandTotal(orderInfo.getTotalAmount() + orderInfo.getTotalAmount() * orderInfo.getTax() / 100);
+
+        itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.PENDDING , orderInfo.getId());
 
         return orderInfoConverter.convertToDto(orderInfoRepository.save(orderInfo));
     }
@@ -137,5 +141,22 @@ public class OrderInfoApi implements IOrderInfoApi {
             return codeGenerator.getPrefix() + "-" + codeGenerator.getNumber();
 
         }
+    }
+
+    @Override
+    public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track) {
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+
+        orderInfo.setSaleTrack(track);
+
+        orderInfo = orderInfoRepository.save(orderInfo);
+
+        if (track.equals(SalesOrderStatus.CANCEL)){
+
+            itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
+        }
+
+        return orderInfoConverter.convertToDto(orderInfo);
     }
 }

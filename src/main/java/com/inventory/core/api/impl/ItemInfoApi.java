@@ -5,8 +5,11 @@ import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.model.converter.ItemInfoConverter;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.entity.ItemInfo;
+import com.inventory.core.model.entity.OrderItemInfo;
+import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ItemInfoRepository;
+import com.inventory.core.model.repository.OrderItemInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,9 @@ public class ItemInfoApi implements IItemInfoApi{
 
     @Autowired
     private IStockInfoApi stockInfoApi;
+
+    @Autowired
+    private OrderItemInfoRepository orderItemInfoRepository;
 
     @Override
     public ItemInfoDTO save(ItemInfoDTO itemInfoDTO) {
@@ -74,7 +80,35 @@ public class ItemInfoApi implements IItemInfoApi{
     }
 
     @Override
+    public List<ItemInfoDTO> getAllByStatusAndStoreWithStock(Status status, long storeId) {
+        return itemInfoConverter.convertToDtoList(itemInfoRepository.findAllByStatusAndStoreInfoHavingInStock(status , storeId));
+    }
+
+    @Override
     public List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId, Status status, long storeId) {
         return itemInfoConverter.convertToDtoList(itemInfoRepository.findAllByStatusAndStoreInfoAndProductInfo(status , storeId , productInfoId));
+    }
+
+    @Override
+    public void updateInStockOnSaleTrack(SalesOrderStatus track, long orderId) {
+
+        List<OrderItemInfo> orderItemInfoList = orderItemInfoRepository.findAllByStatusAndOrderInfo(Status.ACTIVE, orderId);
+
+        for (OrderItemInfo orderItemInfo : orderItemInfoList) {
+
+            ItemInfo itemInfo = itemInfoRepository.findById(orderItemInfo.getItemInfo().getId());
+
+            if (track.equals(SalesOrderStatus.PENDDING)) {
+
+                itemInfo.setInStock(itemInfo.getInStock() - orderItemInfo.getQuantity());
+
+            } else if (track.equals(SalesOrderStatus.CANCEL)) {
+
+                itemInfo.setInStock(itemInfo.getInStock() + orderItemInfo.getQuantity());
+            }
+
+            itemInfoRepository.save(itemInfo);
+
+        }
     }
 }
