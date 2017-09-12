@@ -92,4 +92,10 @@ public class StringConstants {
     public static String TRENDING_LIST = "trendingtList";
 
     public static String ORDERNO = "orderNo";
+
+    public static String ORDER = "order";
+    public static String ORDER_LIST = "orderList";
+    public static String ORDER_ERROR = "orderError";
+
+    public static String ORDER_ITEM_LIST = "orderItemList";
 }

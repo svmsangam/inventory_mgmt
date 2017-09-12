@@ -41,7 +41,6 @@
                                 <th>Customer Name</th>
                                 <th>Total Cost</th>
                                 <th>Order Date</th>
-                                <th>Shipment Date</th>
                                 <th>Delivery Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -49,18 +48,22 @@
                             </thead>
 
                             <tbody>
-                            <tr>
-                                <td><a href="">#1234</a></td>
-                                <td>ABC XYZ</td>
-                                <td>10000</td>
-                                <td>sept 1, 2017</td>
-                                <td>sept 1, 2017</td>
-                                <td>sept 1, 2017</td>
-                                <td><span class="label label-success">Delivered</span></td>
-                                <td>
+                            <c:forEach items="${orderList}" var="order">
 
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
+                                    <td>${order.clientInfo.name}</td>
+                                    <td>${order.grandTotal}</td>
+                                    <td>${order.deliveryDate}</td>
+                                    <td>${order.deliveryDate}</td>
+                                    <td><span class="label label-success">${order.saleTrack}</span></td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+
+                            </c:forEach>
+
                             </tbody>
                         </table>
                     </div>

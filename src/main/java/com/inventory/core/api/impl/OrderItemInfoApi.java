@@ -49,4 +49,9 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
 
         return amount;
     }
+
+    @Override
+    public List<OrderItemInfoDTO> getAllByStatusAndOrderInfo(Status status, long orderId) {
+        return orderItemInfoConverter.convertToDtoList(orderItemInfoRepository.findAllByStatusAndOrderInfo(status , orderId));
+    }
 }
