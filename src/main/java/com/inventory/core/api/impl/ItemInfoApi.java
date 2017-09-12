@@ -107,6 +107,8 @@ public class ItemInfoApi implements IItemInfoApi{
                 itemInfo.setInStock(itemInfo.getInStock() + orderItemInfo.getQuantity());
             }
 
+            stockInfoApi.updateOnItemUpdateInStockOnSaleTrack(track , itemInfo.getProductInfo().getId() , orderItemInfo.getQuantity());
+
             itemInfoRepository.save(itemInfo);
 
         }

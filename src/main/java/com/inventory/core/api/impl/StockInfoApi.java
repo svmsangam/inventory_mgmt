@@ -2,6 +2,7 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.model.entity.StockInfo;
+import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.StockInfoRepository;
@@ -29,6 +30,23 @@ public class StockInfoApi implements IStockInfoApi{
 
         stockInfo.setInStock(stockInfo.getInStock() + quanity);
         stockInfo.setQuantity(stockInfo.getQuantity() + quanity);
+
+        stockInfoRepository.save(stockInfo);
+    }
+
+    @Override
+    public void updateOnItemUpdateInStockOnSaleTrack(SalesOrderStatus track , long productId, int quanity) {
+
+        StockInfo stockInfo = stockInfoRepository.findByProductInfo(productId);
+
+        if (track.equals(SalesOrderStatus.PENDDING)) {
+
+            stockInfo.setInStock(stockInfo.getInStock() - quanity);
+
+        } else if (track.equals(SalesOrderStatus.CANCEL)) {
+
+            stockInfo.setInStock(stockInfo.getInStock() + quanity);
+        }
 
         stockInfoRepository.save(stockInfo);
     }
