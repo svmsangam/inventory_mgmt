@@ -132,11 +132,12 @@
                                 <input type="number" value="0.0" id="tax" step="any"
                                                                             onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
                                                                             class="form-control"
+                                       onkeyup='calculate(amountUpdate);'
                                                                             name="tax" required/>
                             </div>
                             <div class="form-group">
-                                <label>Total Cost = </label>
-                                <span>Rs.<strong>30000</strong></span>
+                                <label>Total Cost </label>
+                                <span>Rs.<strong id="total">0</strong></span>
                             </div>
                         </div>
 
@@ -213,10 +214,10 @@
             }
             var row = "<tr class='border-bottom itemTable' >";
             row += "<td><select class='form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
-            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control qty form-control-sm'  name='' placeholder='enter quantity' required/></td>";
-            row += "<td><input type='number' id='rate" + count + "' class='form-control form-control-sm rate' name='' required readonly/></td>";
-            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control discount form-control-sm' name='' placeholder='enter tax percent'  required /></td>";
-            row += "<td class='text-right'>Rs.<span class='amount'>77778</span></div>";
+            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' data-my='quantity' required/></td>";
+            row += "<td><input type='number' class='form-control form-control-sm rate' data-my='rate' name='' required readonly/></td>";
+            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' data-my='discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+            row += "<td class='text-right'>Rs.<span class='amount' data-my='amount'>0</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
             row += "</tr>";
             $("#customFields").prepend(row);
@@ -242,6 +243,7 @@
             $(this).find("td:eq(3) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].discount");
         })
     }
+
 </script>
 
 

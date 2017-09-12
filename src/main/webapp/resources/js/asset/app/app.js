@@ -254,3 +254,49 @@ $(document).ready(function () {
 
 //sale order add app end
 
+// order colculator start
+function calculate(cb) {
+
+    var subtotal = 0;
+    $("tr").each(function (index) {
+
+        var quantity = 0;
+        var rate = 0;
+        var discount = 0;
+
+        if ($(this).find("td:eq(1) > input").val() !== undefined || $(this).find("td:eq(1) > input").val() !== null || "" !== $(this).find("td:eq(1) > input").val() || 0 > $(this).find("td:eq(1) > input").val()) {
+            quantity = $(this).find("td:eq(1) > input").val();
+        }
+
+        if ($(this).find("td:eq(3) > input").val() !== undefined || $(this).find("td:eq(3) > input").val() !== null || "" !== $(this).find("td:eq(3) > input").val() || 0 > $(this).find("td:eq(3) > input").val()) {
+            discount = $(this).find("td:eq(3) > input").val();
+        }
+
+        if ($(this).find("td:eq(2) > input").val() !== undefined || $(this).find("td:eq(2) > input").val() !== null || "" !== $(this).find("td:eq(2) > input").val() || 0 > $(this).find("td:eq(2) > input").val()) {
+            rate = $(this).find("td:eq(2) > input").val();
+        }
+
+        if (quantity !== undefined && rate !== undefined && discount !== undefined) {
+            var amount = quantity * rate;
+            amount = amount - (amount * (discount / 100));
+            subtotal = subtotal + amount;
+            $(this).find("td:eq(4) > span").text("").text(amount.toFixed(2));
+        }
+
+    });
+
+    return cb(subtotal);
+
+}
+
+
+function amountUpdate(amount)  {
+
+    if($("#tax").val() !== undefined || $("#tax").val() !== null || "" !== $("#tax").val() || 0 > $("#tax").val()){
+        amount = amount + (amount * $("#tax").val() /100);
+        $("#total").text("").text(amount.toFixed(2));
+        console.log(" amountUpdate  "  + amount);
+    }
+}
+
+// order colculator end
