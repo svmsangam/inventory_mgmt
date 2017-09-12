@@ -214,10 +214,10 @@
             }
             var row = "<tr class='border-bottom itemTable' >";
             row += "<td><select class='form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
-            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' data-my='quantity' required/></td>";
-            row += "<td><input type='number' class='form-control form-control-sm rate' data-my='rate' name='' required readonly/></td>";
-            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' data-my='discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
-            row += "<td class='text-right'>Rs.<span class='amount' data-my='amount'>0</span></div>";
+            row += "<td><input type='number' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
+            row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
+            row += "<td><input type='number' step='any' onkeypress='return event.charCode > 47 && event.charCode < 58;' pattern='[0-9]{5}' class='form-control form-control-sm' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+            row += "<td class='text-right'>Rs.<span>0</span></div>";
             row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
             row += "</tr>";
             $("#customFields").prepend(row);
