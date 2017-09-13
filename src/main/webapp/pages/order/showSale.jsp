@@ -30,32 +30,28 @@
         <!-- info row -->
         <div class="row invoice-info">
             <div class="col-sm-4 invoice-col">
-                <b>Order Date: </b><p>sample</p><br>
-                <b>Delivery Date: </b><p>sample</p><br>
+                <address>
+                    <strong>Details</strong><br>
+                    Customer ABC<br>
+                    San Francisco, CA 94107<br>
+                    Mobile: (804) 123-5432<br>
+                </address>
             </div>
             <div class="col-sm-4 invoice-col">
                 <strong>Status</strong>
-                <div class="form-group">
-                    <label class="bg-orange-active color-palette">
-                        <input type="radio" name="r1" checked> Pending
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="radio" name="options" id="option1" value="pending" autocomplete="off"> Pending
                     </label>
-                    <label class="bg-aqua-active color-palette">
-                        <input type="radio" name="r1" checked> Packed
+                    <label class="btn btn-info">
+                        <input type="radio" name="options" value="packed" id="option2" autocomplete="off"> Packed
                     </label>
-                    <label class="bg-red-active color-palette">
-                        <input type="radio" name="r1"> Delivered
+                    <label class="btn btn-success">
+                        <input type="radio" name="options" value="delivered" id="option3" autocomplete="off"> Delivered
                     </label>
                 </div>
             </div>
-            <div class="col-sm-2 invoice-col">
-                <address>
-                    <strong>Billing Address</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                </address>
-            </div>
-            <div class="col-sm-2 invoice-col">
+            <div class="col-sm-4 invoice-col">
                 <address>
                     <strong>Shipping Address</strong><br>
                     795 Folsom Ave, Suite 600<br>
@@ -64,8 +60,17 @@
                 </address>
             </div>
         </div>
+        <div class="row invoice-info">
+            <div class="col-sm-3 invoice-col">
+                <b>Order Date: </b>sample
+            </div>
+            <div class="col-sm-6 invoice-col">&nbsp;</div>
+            <div class="col-sm-3 invoice-col">
+                <b>Delivery Date: </b>sample
+            </div>
+        </div>
         <!-- /.row -->
-
+        <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
             <div class="col-xs-12 table-responsive">
