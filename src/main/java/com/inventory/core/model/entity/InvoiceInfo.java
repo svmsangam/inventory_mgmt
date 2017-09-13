@@ -9,8 +9,6 @@ import java.util.Date;
 @Table(name = "invoice_table")
 public class InvoiceInfo extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = 1075900993010080424L;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 

@@ -21,5 +21,5 @@ public interface IOrderInfoApi {
 
     String generatOrderNumber(long storeId);
 
-    OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track);
+    OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track , long createdById);
 }

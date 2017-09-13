@@ -35,6 +35,16 @@ public class InvoiceInfoDTO {
 
     private Integer version;
 
+    private StoreInfoDTO storeInfoDTO;
+
+    public StoreInfoDTO getStoreInfoDTO() {
+        return storeInfoDTO;
+    }
+
+    public void setStoreInfoDTO(StoreInfoDTO storeInfoDTO) {
+        this.storeInfoDTO = storeInfoDTO;
+    }
+
     public Integer getVersion() {
         return version;
     }
