@@ -34,7 +34,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="table2" class="table table-bordered table-hover table-striped">
+                        <table class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>Order No</th>
@@ -43,7 +43,6 @@
                                 <th>Order Date</th>
                                 <th>Delivery Date</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                             </thead>
 
@@ -56,7 +55,32 @@
                                     <td>${order.grandTotal}</td>
                                     <td>${order.deliveryDate}</td>
                                     <td>${order.deliveryDate}</td>
-                                    <td><span class="label label-success">${order.saleTrack}</span></td>
+                                    <td>
+                                        <c:if test="${order.saleTrack eq 'PENDDING'}">
+                                        <span class="label label-warning">Pendding</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                                            <span class="label label-default">Accepted</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'PACKED'}">
+                                            <span class="label label-primary">Packed</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                                            <span class="label label-info">Shipped</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                                            <span class="label label-success">Delivered</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'CANCEL'}">
+                                            <span class="label label-danger">Canceled</span>
+                                        </c:if>
+
+                                    </td>
                                     <td>
 
                                     </td>
@@ -67,6 +91,56 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <c:if test="${fn:length(pagelist) gt 1}">
+
+                        <div class="col-xs-12">
+                            <nav class="pull-right">
+                                <ul class="pagination">
+
+                                    <c:if test="${currentpage > 1}">
+                                        <li class="page-item">
+
+                                            <a href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage-1}"
+                                               class="page-link">Prev</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach var="pagelist" items="${pagelist}">
+                                        <c:choose>
+                                            <c:when test="${pagelist == currentpage}">
+
+                                                <li class="page-item active">
+                                                  <span class="page-link">
+                                                    ${pagelist}
+                                                    <span class="sr-only">(current)</span>
+                                                  </span>
+                                                </li>
+
+                                            </c:when>
+                                            <c:otherwise>
+
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="${pageContext.request.contextPath}/order/sale/list?pageNo=${pagelist}">${pagelist}</a>
+                                                </li>
+
+                                            </c:otherwise>
+
+                                        </c:choose>
+                                    </c:forEach>
+
+                                    <c:if test="${currentpage + 1 <= lastpage}">
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage+1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </c:if>
+
                 </div>
             </div>
         </div>
