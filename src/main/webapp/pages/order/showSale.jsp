@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <p class="text-center">Order No. <b>#${orderNo}</b></p>
+                    <p class="text-center">Order No. <b>#${order.orderNo}</b></p>
                 </h2>
             </div>
             <!-- /.col -->
@@ -31,10 +31,28 @@
         <div class="row invoice-info">
             <div class="col-sm-4 invoice-col">
                 <address>
-                    <strong>Details</strong><br>
-                    Customer ABC<br>
-                    San Francisco, CA 94107<br>
-                    Mobile: (804) 123-5432<br>
+                    <strong>Buyer Details</strong><br>
+                    ${order.clientInfo.name}<br>
+
+                    <c:if test="${order.clientInfo.companyName ne null and order.clientInfo.companyName ne ''}">
+                        ${order.clientInfo.companyName}<br>
+                    </c:if>
+
+                    ${order.clientInfo.street}<br>
+                    Mobile: ${order.clientInfo.mobileNumber}<br>
+
+                    <c:if test="${order.clientInfo.companyName ne null and order.clientInfo.companyName ne ''}">
+                        Contact: ${order.clientInfo.contact}<br>
+                    </c:if>
+
+                    <c:if test="${order.clientInfo.email ne null and order.clientInfo.email ne ''}">
+                        Email: ${order.clientInfo.email}<br>
+                    </c:if>
+
+                    <c:if test="${order.clientInfo.cityInfoDTO ne null}">
+                        City: ${order.clientInfo.cityInfoDTO.cityName}<br>
+                    </c:if>
+
                 </address>
             </div>
             <div class="col-sm-4 invoice-col">
@@ -103,19 +121,18 @@
             <div class="col-sm-4 invoice-col">
                 <address>
                     <strong>Shipping Address</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (555) 539-1037<br>
+                    ${order.deliveryAddress}<br>
+                    Phone: ${order.clientInfo.mobileNumber}<br>
                 </address>
             </div>
         </div>
         <div class="row invoice-info">
             <div class="col-sm-3 invoice-col">
-                <b>Order Date: </b>sample
+                <b>Order Date: </b><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/>
             </div>
             <div class="col-sm-6 invoice-col">&nbsp;</div>
             <div class="col-sm-3 invoice-col">
-                <b>Delivery Date: </b>sample
+                <b>Delivery Date: </b><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/>
             </div>
         </div>
         <!-- /.row -->
@@ -126,21 +143,29 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th>SN</th>
                         <th>Item</th>
+                        <th>Item Lot</th>
                         <th>Quantity</th>
                         <th>Rate</th>
-                        <th>Discount</th>
+                        <th>Discount(%)</th>
                         <th>Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>aaaa</td>
-                        <td>aa</td>
-                        <td>aaa</td>
-                        <td>aa</td>
-                        <td>aaaa</td>
-                    </tr>
+
+                    <c:forEach items="${orderItemList}" var="orderItem" varStatus="i">
+                        <tr>
+                            <td>${i.index + 1}</td>
+                            <td>${orderItem.itemInfoDTO.productInfo.name}-${orderItem.itemInfoDTO.tagInfo.name}</td>
+                            <td>${orderItem.itemInfoDTO.lotInfo.lot}</td>
+                            <td>${orderItem.quantity} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${orderItem.rate}"/></td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${orderItem.discount}"/></td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${orderItem.amount}"/></td>
+                        </tr>
+                    </c:forEach>
+
                     </tbody>
                 </table>
             </div>
@@ -153,7 +178,7 @@
             <div class="col-xs-4">
                 <p class="lead">Description</p>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    Description here..
+                    ${order.description}
                 </p>
             </div>
             <!-- /.col -->
@@ -162,20 +187,12 @@
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th>Discount:</th>
-                            <td>$250.30</td>
-                        </tr>
-                        <tr>
-                            <th>Tax (9.3%)</th>
-                            <td>$10.34</td>
-                        </tr>
-                        <tr>
-                            <th>Shipping:</th>
-                            <td>$5.80</td>
+                            <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.tax}"/>%)</th>
+                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal - order.grandTotal * order.tax / 100}"/></td>
                         </tr>
                         <tr>
                             <th>Total:</th>
-                            <td>$265.24</td>
+                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal}"/></td>
                         </tr>
                     </table>
                 </div>
