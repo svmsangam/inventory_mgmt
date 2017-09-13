@@ -1,5 +1,6 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.IItemInfoApi;
 import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
@@ -45,6 +46,9 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Autowired
     private IItemInfoApi itemInfoApi;
+
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
 
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
@@ -144,7 +148,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
-    public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track) {
+    public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track , long createdById) {
 
         OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
 
@@ -155,6 +159,10 @@ public class OrderInfoApi implements IOrderInfoApi {
         if (track.equals(SalesOrderStatus.CANCEL)){
 
             itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
+        }
+
+        if (track.equals(SalesOrderStatus.SHIPPED)){
+            invoiceInfoApi.save(orderId , createdById);
         }
 
         return orderInfoConverter.convertToDto(orderInfo);

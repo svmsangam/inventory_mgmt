@@ -96,7 +96,7 @@ public class OrderInfoAjaxController {
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
-            result.setDetail(orderInfoApi.updateSaleTrack(orderId , track));
+            result.setDetail(orderInfoApi.updateSaleTrack(orderId , track , currentUser.getUserId()));
 
 
         } catch (Exception e) {

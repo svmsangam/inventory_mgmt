@@ -2,6 +2,8 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
+import com.inventory.core.model.entity.OrderInfo;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
@@ -10,6 +12,7 @@ import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -80,9 +83,26 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         entity.setInvoiceNo(dto.getInvoiceNo());
         entity.setOrderInfo(orderInfoRepository.findOne(dto.getOrderInfoId()));
         entity.setReceivableAmount(entity.getOrderInfo().getGrandTotal());
-        entity.setStatus(dto.getStatus());
         entity.setTotalAmount(entity.getOrderInfo().getGrandTotal());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
+
+        return entity;
+    }
+
+    public InvoiceInfo convertToEntity(long orderInfoId , long createdById) {
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(orderInfoId);
+
+        InvoiceInfo entity = new InvoiceInfo();
+
+        entity.setCreatedBy(userRepository.findOne(createdById));
+        entity.setDescription("");
+        entity.setInvoiceDate(new Date());
+        entity.setOrderInfo(orderInfo);
+        entity.setReceivableAmount(orderInfo.getGrandTotal());
+        entity.setStatus(Status.ACTIVE);
+        entity.setTotalAmount(orderInfo.getGrandTotal());
+        entity.setStoreInfo(orderInfo.getStoreInfo());
 
         return entity;
     }
