@@ -109,4 +109,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
     }
+
+    @Override
+    public long countlist(Status status, long storeId) {
+        return invoiceInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+    }
 }

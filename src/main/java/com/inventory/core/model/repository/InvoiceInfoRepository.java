@@ -30,4 +30,7 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
     @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2")
     List<InvoiceInfo> findAllByStatusAndStoreInfo(Status status , long storeInfoId , Pageable pageable);
 
+    @Query("select count (i) from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2")
+    long countAllByStatusAndStoreInfo(Status status , long storeInfoId);
+
 }

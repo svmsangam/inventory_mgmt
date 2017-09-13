@@ -12,6 +12,8 @@ import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,11 +21,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("order")
 public class OrderInfoController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -55,7 +60,7 @@ public class OrderInfoController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -93,7 +98,8 @@ public class OrderInfoController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
             return "redirect:/";
         }
 
@@ -118,7 +124,7 @@ public class OrderInfoController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -135,7 +141,8 @@ public class OrderInfoController {
 
             return "order/addSale";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
             return "redirect:/";
         }
     }
@@ -158,7 +165,7 @@ public class OrderInfoController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }
@@ -176,7 +183,8 @@ public class OrderInfoController {
             orderInfoApi.save(orderInfoDTO);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
             return "redirect:/";
         }
         return "redirect:/order/sale/list";
@@ -234,7 +242,8 @@ public class OrderInfoController {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
             return "redirect:/";
         }
         return "order/showSale";
