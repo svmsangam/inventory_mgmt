@@ -31,7 +31,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Order List</h3>
                         <div class="box-tools">
-                            <a href="" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> New Order
+                            <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> New Order
                             </a>
                         </div>
                     </div>
