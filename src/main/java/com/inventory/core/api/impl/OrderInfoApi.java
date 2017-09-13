@@ -52,7 +52,7 @@ public class OrderInfoApi implements IOrderInfoApi {
         OrderInfo orderInfo = orderInfoConverter.convertToEntity(orderInfoDTO);
 
         orderInfo.setStatus(Status.ACTIVE);
-        orderInfo.setPurchaseTrack(PurchaseOrderStatus.PENDDING);
+        orderInfo.setPurchaseTrack(PurchaseOrderStatus.PENDING);
         orderInfo.setSaleTrack(SalesOrderStatus.PENDDING);
         orderInfo.setOrderType(OrderType.Sale);
 

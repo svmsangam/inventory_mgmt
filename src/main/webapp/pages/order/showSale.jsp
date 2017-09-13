@@ -22,8 +22,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <i class="fa fa-globe"></i> AdminLTE, Inc.
-                    <small class="pull-right">Date: 2/10/2014</small>
+                    <p class="text-center">Order No. <b>#${orderNo}</b></p>
                 </h2>
             </div>
             <!-- /.col -->
@@ -31,35 +30,39 @@
         <!-- info row -->
         <div class="row invoice-info">
             <div class="col-sm-4 invoice-col">
-                From
+                <b>Order Date: </b><p>sample</p><br>
+                <b>Delivery Date: </b><p>sample</p><br>
+            </div>
+            <div class="col-sm-4 invoice-col">
+                <strong>Status</strong>
+                <div class="form-group">
+                    <label class="bg-orange-active color-palette">
+                        <input type="radio" name="r1" checked> Pending
+                    </label>
+                    <label class="bg-aqua-active color-palette">
+                        <input type="radio" name="r1" checked> Packed
+                    </label>
+                    <label class="bg-red-active color-palette">
+                        <input type="radio" name="r1"> Delivered
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-2 invoice-col">
                 <address>
-                    <strong>Admin, Inc.</strong><br>
+                    <strong>Billing Address</strong><br>
                     795 Folsom Ave, Suite 600<br>
                     San Francisco, CA 94107<br>
                     Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
                 </address>
             </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
-                To
+            <div class="col-sm-2 invoice-col">
                 <address>
-                    <strong>John Doe</strong><br>
+                    <strong>Shipping Address</strong><br>
                     795 Folsom Ave, Suite 600<br>
                     San Francisco, CA 94107<br>
                     Phone: (555) 539-1037<br>
-                    Email: john.doe@example.com
                 </address>
             </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
-                <b>Invoice #007612</b><br>
-                <br>
-                <b>Order ID:</b> 4F3S8J<br>
-                <b>Payment Due:</b> 2/22/2014<br>
-                <b>Account:</b> 968-34567
-            </div>
-            <!-- /.col -->
         </div>
         <!-- /.row -->
 
@@ -69,41 +72,20 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Qty</th>
-                        <th>Product</th>
-                        <th>Serial #</th>
-                        <th>Description</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Discount</th>
                         <th>Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>Call of Duty</td>
-                        <td>455-981-221</td>
-                        <td>El snort testosterone trophy driving gloves handsome</td>
-                        <td>$64.50</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Need for Speed IV</td>
-                        <td>247-925-726</td>
-                        <td>Wes Anderson umami biodiesel</td>
-                        <td>$50.00</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Monsters DVD</td>
-                        <td>735-845-642</td>
-                        <td>Terry Richardson helvetica tousled street art master</td>
-                        <td>$10.70</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Grown Ups Blue Ray</td>
-                        <td>422-568-642</td>
-                        <td>Tousled lomo letterpress</td>
-                        <td>$25.99</td>
+                        <td>aaaa</td>
+                        <td>aa</td>
+                        <td>aaa</td>
+                        <td>aa</td>
+                        <td>aaaa</td>
                     </tr>
                     </tbody>
                 </table>
@@ -114,21 +96,19 @@
 
         <div class="row">
             <!-- accepted payments column -->
-            <div class="col-xs-6">
-                <label>Description</label>
+            <div class="col-xs-4">
+                <p class="lead">Description</p>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                    Description here..
                 </p>
             </div>
             <!-- /.col -->
-            <div class="col-xs-6">
-                <p class="lead">Amount Due 2/22/2014</p>
-
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th style="width:50%">Subtotal:</th>
+                            <th>Discount:</th>
                             <td>$250.30</td>
                         </tr>
                         <tr>
@@ -150,17 +130,6 @@
         </div>
         <!-- /.row -->
 
-        <!-- this row will not appear when printing -->
-        <div class="row no-print">
-            <div class="col-xs-12">
-                <a href="" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-                <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
-                </button>
-                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> Generate PDF
-                </button>
-            </div>
-        </div>
     </section>
     <!-- /.content -->
     <div class="clearfix"></div>

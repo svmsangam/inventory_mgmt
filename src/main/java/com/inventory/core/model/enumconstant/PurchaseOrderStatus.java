@@ -2,7 +2,7 @@ package com.inventory.core.model.enumconstant;
 
 public enum PurchaseOrderStatus {
 
-    PENDDING("Pendding"), ISSUED("Issued"), RECEIVED("Received"), CANCELLED("Cancelled");
+    PENDING("Pending"), ISSUED("Issued"), RECEIVED("Received"), CANCELLED("Cancelled");
 
     private final String value;
 
