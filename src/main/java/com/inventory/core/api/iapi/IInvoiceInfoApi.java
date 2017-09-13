@@ -17,4 +17,6 @@ public interface IInvoiceInfoApi {
     InvoiceInfoDTO show(long invoiceId , long storeId , Status status);
 
     List<InvoiceInfoDTO> list(Status status , long storeId , int page , int size);
+
+    long countlist(Status status , long storeId);
 }

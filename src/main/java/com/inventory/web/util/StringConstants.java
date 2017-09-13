@@ -98,4 +98,7 @@ public class StringConstants {
     public static String ORDER_ERROR = "orderError";
 
     public static String ORDER_ITEM_LIST = "orderItemList";
+
+    public static String INVOICE = "invoice";
+    public static String INVOICE_LIST = "invoiceList";
 }
