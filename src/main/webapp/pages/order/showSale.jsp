@@ -40,15 +40,64 @@
             <div class="col-sm-4 invoice-col">
                 <%--<strong>Status</strong>--%>
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="radio" name="saleTrack" value="PENDING" autocomplete="off"> Pending
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="saleTrack" value="ACCEPT" autocomplete="off"> Accept
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off"> Cancel
-                    </label>
+
+                    <c:if test="${order.saleTrack eq 'PENDDING'}">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="saleTrack" value="PENDDING" autocomplete="off" checked> Pending
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="ACCEPTED" autocomplete="off"> Accept
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off"> Cancel
+                        </label>
+                    </c:if>
+
+                    <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="saleTrack" value="ACCEPTED" autocomplete="off" checked> Accepted
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="PACKED" autocomplete="off"> Packed
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off"> Cancel
+                        </label>
+                    </c:if>
+
+                    <c:if test="${order.saleTrack eq 'PACKED'}">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="saleTrack" value="PACKED" autocomplete="off" checked> Packed
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="SHIPPED" autocomplete="off"> shipped
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off"> Cancel
+                        </label>
+                    </c:if>
+
+                    <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="saleTrack" value="SHIPPED" autocomplete="off" checked> shipped
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="saleTrack" value="DELIVERED" autocomplete="off"> Delivered
+                        </label>
+                    </c:if>
+
+                    <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                        <label class="btn btn-success active">
+                            <input type="radio" name="saleTrack" value="DELIVERED" autocomplete="off" checked> Delivered
+                        </label>
+                    </c:if>
+
+                    <c:if test="${order.saleTrack eq 'CANCEL'}">
+                        <label class="btn btn-danger active">
+                            <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off" checked> Canceled
+                        </label>
+                    </c:if>
+
                 </div>
             </div>
             <div class="col-sm-4 invoice-col">
