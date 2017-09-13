@@ -38,16 +38,16 @@
                 </address>
             </div>
             <div class="col-sm-4 invoice-col">
-                <strong>Status</strong>
+                <%--<strong>Status</strong>--%>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary active">
-                        <input type="radio" name="options" id="option1" value="pending" autocomplete="off"> Pending
+                        <input type="radio" name="saleTrack" value="PENDING" autocomplete="off"> Pending
                     </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" value="packed" id="option2" autocomplete="off"> Packed
+                    <label class="btn btn-primary">
+                        <input type="radio" name="saleTrack" value="ACCEPT" autocomplete="off"> Accept
                     </label>
-                    <label class="btn btn-success">
-                        <input type="radio" name="options" value="delivered" id="option3" autocomplete="off"> Delivered
+                    <label class="btn btn-primary">
+                        <input type="radio" name="saleTrack" value="CANCEL" autocomplete="off"> Cancel
                     </label>
                 </div>
             </div>
