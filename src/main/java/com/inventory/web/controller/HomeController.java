@@ -27,7 +27,7 @@ public class HomeController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String toTestJspPage() {
 
-        return "order/showSale";
+        return "invoice/show";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
