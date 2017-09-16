@@ -9,6 +9,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.CategoryInfoValidation;
 import com.inventory.web.error.CategoryInfoError;
+import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 @Controller
@@ -45,7 +48,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
 
         try {
 
@@ -54,7 +57,10 @@ public class CategoryController {
 
             if (currentUser == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
             }
 
             if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
@@ -86,7 +92,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/add")
-    public String add(RedirectAttributes redirectAttributes) {
+    public String add(RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
 
         try {
 
@@ -95,7 +101,10 @@ public class CategoryController {
 
             if (currentUser == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
             }
 
             if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {

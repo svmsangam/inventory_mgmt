@@ -64,6 +64,10 @@ public class HomeController {
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String getLogin(@RequestParam(value = "error", required = false) Boolean error, HttpServletRequest request, ModelMap modelMap) throws IOException {
 
+        if (error == null){
+            error = false;
+        }
+
         if (error) {
             modelMap.put(StringConstants.ERROR, "wrong username or password");
         }

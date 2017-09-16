@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
@@ -21,7 +20,8 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
         SimpleUrlAuthenticationSuccessHandler {
 
     protected final Log logger = LogFactory.getLog(this.getClass());
-    private RequestCache requestCache = new HttpSessionRequestCache();
+
+    private RequestCache requestCache = RequestCacheUtil.get();
 
     @Autowired
     private SessionRegistry sessionRegistry;

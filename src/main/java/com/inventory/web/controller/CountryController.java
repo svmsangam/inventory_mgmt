@@ -5,6 +5,7 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.CountryInfoDTO;
 import com.inventory.core.validation.CountryValidation;
 import com.inventory.web.error.CountryError;
+import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
@@ -37,11 +39,14 @@ public class CountryController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String add(RedirectAttributes redirectAttributes) throws IOException {
+    public String add(RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) throws IOException {
         try {
 
             if (AuthenticationUtil.getCurrentUser(userApi) == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request , response);
+
                 return "redirect:/logout";
             }
 
@@ -85,12 +90,15 @@ public class CountryController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(HttpServletRequest request, ModelMap modelMap, RedirectAttributes redirectAttributes) throws IOException {
+    public String list(HttpServletRequest request , HttpServletResponse response, ModelMap modelMap, RedirectAttributes redirectAttributes) throws IOException {
         try {
 
             if (AuthenticationUtil.getCurrentUser(userApi) == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
             }
 
             modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
