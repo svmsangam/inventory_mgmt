@@ -91,7 +91,7 @@
                 <!-- Optionally, you can add icons to the links -->
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                    <li class="active"><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
 
@@ -210,6 +210,22 @@ immediately after the control sidebar -->
             'autoWidth': false
         })
     })
+</script>
+
+<%--for sidebar active--%>
+<script>
+    /** add active class and stay opened when selected */
+    var url = window.location;
+
+    // for sidebar menu entirely but not cover treeview
+    $('ul.sidebar-menu a').filter(function() {
+        return this.href == url;
+    }).parent().siblings().removeClass('active').end().addClass('active');
+
+    // for treeview
+    $('ul.treeview-menu a').filter(function() {
+        return this.href == url;
+    }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active').end().addClass('active');
 </script>
 </body>
 </html>
