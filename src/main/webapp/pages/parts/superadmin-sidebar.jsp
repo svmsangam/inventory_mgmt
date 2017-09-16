@@ -86,8 +86,8 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>List</span></a></li>
-                    <li><a href="#"><i class="fa fa-plus"></i> <span>Add</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-list-ul"></i> <span>List</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/invoice/add"><i class="fa fa-plus"></i> <span>Add</span></a></li>
                     <li><a href="#"><i class="fa fa-outdent"></i> <span>Receivable</span></a></li>
                 </ul>
             </li>
