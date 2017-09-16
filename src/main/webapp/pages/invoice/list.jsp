@@ -30,10 +30,10 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Invoice List</h3>
-                        <div class="box-tools">
+                       <%-- <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> New Order
                             </a>
-                        </div>
+                        </div>--%>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -42,51 +42,21 @@
                             <tr>
                                 <th>Invoice No</th>
                                 <th>Customer Name</th>
-                                <th>Total Cost</th>
+                                <th>Total Amount</th>
+                                <th>Amount Recievable</th>
                                 <th>Invoice Date</th>
-                                <th>Delivery Date</th>
-                                <th>Status</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            <c:forEach items="${orderList}" var="order">
+                            <c:forEach items="${invoiceList}" var="invoice">
 
                                 <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
-                                    <td>${order.clientInfo.name}</td>
-                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal}"/></td>
-                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
-                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
-                                    <td>
-                                        <c:if test="${order.saleTrack eq 'PENDDING'}">
-                                            <span class="label label-warning">Pending</span>
-                                        </c:if>
-
-                                        <c:if test="${order.saleTrack eq 'ACCEPTED'}">
-                                            <span class="label label-default">Accepted</span>
-                                        </c:if>
-
-                                        <c:if test="${order.saleTrack eq 'PACKED'}">
-                                            <span class="label label-primary">Packed</span>
-                                        </c:if>
-
-                                        <c:if test="${order.saleTrack eq 'SHIPPED'}">
-                                            <span class="label label-info">Shipped</span>
-                                        </c:if>
-
-                                        <c:if test="${order.saleTrack eq 'DELIVERED'}">
-                                            <span class="label label-success">Delivered</span>
-                                        </c:if>
-
-                                        <c:if test="${order.saleTrack eq 'CANCEL'}">
-                                            <span class="label label-danger">Canceled</span>
-                                        </c:if>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
+                                    <td>#${invoice.invoiceNo}</td>
+                                    <td>${invoice.orderInfo.clientInfo.name}</td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
+                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
                                 </tr>
 
                             </c:forEach>
@@ -104,7 +74,7 @@
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage-1}"
+                                            <a href="${pageContext.request.contextPath}/invoice/list?pageNo=${currentpage-1}"
                                                class="page-link">Prev</a>
                                         </li>
                                     </c:if>
@@ -124,7 +94,7 @@
                                             <c:otherwise>
 
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/order/sale/list?pageNo=${pagelist}">${pagelist}</a>
+                                                                         href="${pageContext.request.contextPath}/invoice/list?pageNo=${pagelist}">${pagelist}</a>
                                                 </li>
 
                                             </c:otherwise>
@@ -135,7 +105,7 @@
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage+1}">Next</a>
+                                               href="${pageContext.request.contextPath}/invoice/list?pageNo=${currentpage+1}">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>

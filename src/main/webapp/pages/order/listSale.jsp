@@ -55,7 +55,7 @@
                                 <tr>
                                     <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
                                     <td>${order.clientInfo.name}</td>
-                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal}"/></td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
                                     <td>

@@ -47,6 +47,8 @@
             <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-suitcase"></i>
                 <span>Store</span></a></li>
 
+            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+
             <li><a href="#"><i class="fa fa-calendar"></i> <span>Ledger</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
@@ -76,19 +78,6 @@
                     <li><a href="#"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
                     <li><a href="#"><i class="fa fa-list-ul"></i> <span>Return List</span></a></li>
                     <li><a href="#"><i class="fa fa-plus"></i> <span>Return Add</span></a></li>
-                </ul>
-            </li>
-
-            <li class="treeview">
-                <a href="#"><i class="fa  fa-file-text"></i> <span>Invoice</span>
-                    <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-list-ul"></i> <span>List</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/invoice/add"><i class="fa fa-plus"></i> <span>Add</span></a></li>
-                    <li><a href="#"><i class="fa fa-outdent"></i> <span>Receivable</span></a></li>
                 </ul>
             </li>
 
