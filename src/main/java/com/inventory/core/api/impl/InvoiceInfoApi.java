@@ -63,7 +63,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
 
-            long number = codeGeneratorRepository.findFirstByStoreInfoAndNumberStatusOrderByIdDesc(store, NumberStatus.Order).getNumber();
+            long number = codeGeneratorRepository.findFirstByStoreInfoAndNumberStatusOrderByIdDesc(store, NumberStatus.Invoice).getNumber();
 
             CodeGenerator codeGenerator = new CodeGenerator();
 
