@@ -1,6 +1,7 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
@@ -38,6 +39,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Autowired
     private InvoiceInfoConverter invoiceInfoConverter;
+
+    @Autowired
+    private ILedgerInfoApi ledgerInfoApi;
 
     @Override
     public String generatInvoiceNumber(long storeId) {
@@ -89,7 +93,11 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         invoiceInfo.setInvoiceNo(generatInvoiceNumber(invoiceInfo.getStoreInfo().getId()));
 
-        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.save(invoiceInfo));
+        invoiceInfo = invoiceInfoRepository.save(invoiceInfo);
+
+        ledgerInfoApi.save(invoiceInfo.getId());
+
+        return invoiceInfoConverter.convertToDto(invoiceInfo);
     }
 
     @Override
