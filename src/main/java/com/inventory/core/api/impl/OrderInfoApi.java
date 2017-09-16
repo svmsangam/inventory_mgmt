@@ -11,6 +11,7 @@ import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.StoreInfo;
 import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.CodeGeneratorRepository;
+import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
+
+    @Autowired
+    private InvoiceInfoRepository invoiceInfoRepository;
 
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
@@ -161,7 +165,7 @@ public class OrderInfoApi implements IOrderInfoApi {
             itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
         }
 
-        if (track.equals(SalesOrderStatus.SHIPPED)){
+        if (track.equals(SalesOrderStatus.SHIPPED) && invoiceInfoRepository.findByStatusAndStoreInfoAndAndOrderInfo(Status.ACTIVE , orderInfo.getStoreInfo().getId() , orderId) == null){
             invoiceInfoApi.save(orderId , createdById);
         }
 
