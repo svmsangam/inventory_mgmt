@@ -59,16 +59,24 @@
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
                                     <td>
+                                        <%--label css for track  status--%>
+                                        <%--<span class="label label-primary">Pending</span>
+                                        <span class="label label-teal">Accepted</span>
+                                        <span class="label label-warning">Packed</span>
+                                        <span class="label label-info">Shipped</span>
+                                        <span class="label label-success">Delivered</span>
+                                        <span class="label label-gray">Canceled</span>--%>
+
                                         <c:if test="${order.saleTrack eq 'PENDDING'}">
-                                        <span class="label label-warning">Pendding</span>
+                                        <span class="label label-primary">Pending</span>
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'ACCEPTED'}">
-                                            <span class="label label-default">Accepted</span>
+                                            <span class="label label-teal">Accepted</span>
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'PACKED'}">
-                                            <span class="label label-primary">Packed</span>
+                                            <span class="label label-warning">Packed</span>
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'SHIPPED'}">
@@ -80,7 +88,7 @@
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'CANCEL'}">
-                                            <span class="label label-danger">Canceled</span>
+                                            <span class="label label-gray">Canceled</span>
                                         </c:if>
 
                                     </td>

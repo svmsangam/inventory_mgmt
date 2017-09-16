@@ -5343,6 +5343,22 @@ table.text-center th {
     background-color: #00c0ef !important;
 }
 
+.bg-gray,
+.callout.callout-gray,
+.alert-gray,
+.label-gray,
+.modal-gray .modal-body {
+    background-color: #b5bbc8 !important;
+}
+
+.bg-teal,
+.callout.callout-teal,
+.alert-teal,
+.label-teal,
+.modal-teal .modal-body {
+    background-color: #30bbbb !important;
+}
+
 .bg-blue {
     background-color: #0073b7 !important;
 }
@@ -5366,7 +5382,8 @@ table.text-center th {
 }
 
 .bg-teal {
-    background-color: #39cccc !important;
+    background-color: #
+    !important;
 }
 
 .bg-olive {
