@@ -452,6 +452,7 @@ function OrderInfoService() {
 
                     }else {
 
+                        alert(msg);
                     }
                 },
 
@@ -496,6 +497,82 @@ function OrderInfoService() {
         setItemResult : function (result, event) {
             $(event).parents("tr").find("td:eq(2)").find("input").val("").val(result.sellingPrice.toFixed(3));
             $(event).parents("tr").find("td:eq(1)").find("input").attr("max" , "").attr("max" , result.inStock);
+        },
+
+
+        changeSaleTrack : function (url , track , orderId) {
+
+            var that = new OrderInfoService();
+
+            if (orderInfoRequest !== undefined) {
+                orderInfoRequest.abort();
+            }
+
+            var spinner = startLoading();
+
+            orderInfoRequest = $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: {orderId : orderId,
+                track : track},
+                dataType: 'json',
+                timeout: 30000,
+                tryCount : 0,
+                retryLimit : 3,
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        window.location.reload();
+                        stopLoading(spinner);
+
+
+                    }else {
+                        stopLoading(spinner);
+                        alert(msg);
+                    }
+                },
+
+                error : function(xhr, textStatus, errorThrown ) {
+
+                    console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                    if (textStatus == 'timeout') {
+
+                        this.tryCount++;
+
+                        if (this.tryCount <= this.retryLimit) {
+                            //try again
+                            $.ajax(this);
+                            return;
+                        } else {
+                            //cancel request
+                            that.cancelRequest(spinner);
+
+                            return;
+                        }
+
+                    }
+
+                    if (xhr.status === 500) {
+                        stopLoading(spinner);
+                        alert("internal server error cantact for support");
+                    } else if(xhr.status === 404) {
+                        //handle error
+                        stopLoading(spinner);
+                        alert("internal server error cantact for support");
+                    }else{
+                        //handle error
+                        stopLoading(spinner);
+                        alert("internal server error cantact for support");
+                    }
+                }
+            });
         }
     };
 

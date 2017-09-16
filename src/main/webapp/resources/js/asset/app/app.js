@@ -235,7 +235,7 @@ function setStoreDataOnUpdate() {
 }
 //store app end
 
-//sale order add app start
+//sale order app start
 var orderInfoService = new OrderInfoService();
 $(document).ready(function () {
 
@@ -250,9 +250,23 @@ $(document).ready(function () {
 
     });
 
+    $('input[type=radio][name=saleTrack]').change(function() {
+
+        if($(this).val() === undefined || $(this).val() === null){
+            return;
+        } else if($(this).attr("data-id") === undefined || $(this).attr("data-id") === null || "" === $(this).attr("data-id") || 1 > $(this).attr("data-id")){
+            return;
+        }else if($(this).attr("url") === undefined || $(this).attr("url") === null || "" === $(this).attr("url")){
+            return;
+        }else{
+            orderInfoService.changeSaleTrack($(this).attr("url") , $(this).val() , $(this).attr("data-id"));
+        }
+
+    });
+
 });
 
-//sale order add app end
+//sale order app end
 
 // order colculator start
 function calculate(cb) {
