@@ -72,7 +72,7 @@
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'ACCEPTED'}">
-                                            <span class="label label-teal">Accepted</span>
+                                            <span class="label label-default">Accepted</span>
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'PACKED'}">
@@ -88,7 +88,7 @@
                                         </c:if>
 
                                         <c:if test="${order.saleTrack eq 'CANCEL'}">
-                                            <span class="label label-gray">Canceled</span>
+                                            <span class="label label-danger">Canceled</span>
                                         </c:if>
 
                                     </td>
