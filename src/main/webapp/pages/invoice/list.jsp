@@ -52,7 +52,7 @@
                             <c:forEach items="${invoiceList}" var="invoice">
 
                                 <tr>
-                                    <td>#${invoice.invoiceNo}</td>
+                                    <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
                                     <td>${invoice.orderInfo.clientInfo.name}</td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
