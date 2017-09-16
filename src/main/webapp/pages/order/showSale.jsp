@@ -22,7 +22,8 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <p class="text-center">Order No. <b>#${order.orderNo}</b></p>
+                    <c:if test="${invoice ne null}"><p class="text-center"><span class="pull-left">Order No. <b>#${order.orderNo}</b></span> <span class="pull-right">Invoice No. <b><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></b></span></p></c:if>
+                    <c:if test="${invoice eq null}"><p class="text-center">Order No. <b>#${order.orderNo}</b></p></c:if>
                 </h2>
             </div>
             <!-- /.col -->

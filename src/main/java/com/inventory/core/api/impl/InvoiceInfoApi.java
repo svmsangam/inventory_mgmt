@@ -97,6 +97,11 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId , status , storeId));
     }
 
+    @Override
+    public InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId, Status status , long storeId) {
+        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByStatusAndStoreInfoAndAndOrderInfo(status , storeId , orderId));
+    }
+
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));

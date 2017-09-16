@@ -25,6 +25,9 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
     @Query("select i from InvoiceInfo i where i.id = ?1 and i.status = ?2 and i.storeInfo.id = ?3 and i.orderInfo.id = ?4")
     InvoiceInfo findByIdAndStatusAndStoreInfoAndAndOrderInfo(long invoiceId , Status status , long storeInfoId , long orderInfoId);
 
+    @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2 and i.orderInfo.id = ?3")
+    InvoiceInfo findByStatusAndStoreInfoAndAndOrderInfo(Status status , long storeInfoId , long orderInfoId);
+
     InvoiceInfo findByInvoiceNo(String invoiceNo);
 
     @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2")

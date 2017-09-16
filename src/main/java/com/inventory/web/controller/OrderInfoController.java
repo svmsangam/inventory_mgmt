@@ -1,9 +1,6 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.IItemInfoApi;
-import com.inventory.core.api.iapi.IOrderInfoApi;
-import com.inventory.core.api.iapi.IOrderItemInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
@@ -41,6 +38,9 @@ public class OrderInfoController {
 
     @Autowired
     private IOrderItemInfoApi orderItemInfoApi;
+
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
 
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -239,6 +239,7 @@ public class OrderInfoController {
 
             modelMap.put(StringConstants.ORDER, orderInfoDTO);
             modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderId));
+            modelMap.put(StringConstants.INVOICE , invoiceInfoApi.getByOrderIdAndStatusAndStoreId(orderId , Status.ACTIVE , currentUser.getStoreId()));
 
 
         } catch (Exception e) {
