@@ -91,7 +91,7 @@
                 <!-- Optionally, you can add icons to the links -->
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                    <li class="active"><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
 
