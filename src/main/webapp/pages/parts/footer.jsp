@@ -161,6 +161,8 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
+<!-- ChartJS -->
+<script src="${pageContext.request.contextPath}/resources/js/Chart.js"></script>
 <%--notification--%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-notify.min.js"></script>
 <%--js spinner--%>
