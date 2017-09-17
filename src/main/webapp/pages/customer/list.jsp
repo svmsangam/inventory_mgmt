@@ -40,6 +40,7 @@
                             <thead>
                             <tr>
                                 <th>SN</th>
+                                <th>AccountNo</th>
                                 <th>Name</th>
                                 <th>Company</th>
                                 <th>Contact</th>
@@ -53,6 +54,7 @@
                             <c:forEach var="customer" items="${customerList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
+                                    <td>${customer.accountNo}</td>
                                     <td>${customer.name}</td>
                                     <td>${customer.companyName}</td>
                                     <td>${customer.contact}</td>
