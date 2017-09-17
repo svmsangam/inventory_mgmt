@@ -14,8 +14,8 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <i class="fa fa-globe"></i> AdminLTE, Inc.
-                    <small class="pull-right">Date: 2/10/2014</small>
+                    <%--<i class="fa fa-globe"></i>--%> Invoice #${invoice.invoiceNo}
+                    <small class="pull-right">Date: <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></small>
                 </h2>
             </div>
             <!-- /.col -->
@@ -25,31 +25,42 @@
             <div class="col-sm-4 invoice-col">
                 From
                 <address>
-                    <strong>Admin, Inc.</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
+                    <strong>${invoice.storeInfoDTO.name}</strong><br>
+                    ${invoice.storeInfoDTO.cityName},${invoice.storeInfoDTO.stateName},${invoice.storeInfoDTO.countryName}<br>
+                    ${invoice.storeInfoDTO.street}<br>
+                    Phone: ${invoice.storeInfoDTO.contact},${invoice.storeInfoDTO.mobileNumber}<br>
+                    Pan No.:${invoice.storeInfoDTO.panNumber}<br>
+                    Email: ${invoice.storeInfoDTO.email}
                 </address>
             </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
                 To
                 <address>
-                    <strong>John Doe</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (555) 539-1037<br>
-                    Email: john.doe@example.com
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName eq null}">
+                        <strong>${invoice.orderInfo.clientInfo.name}</strong><br>
+                    </c:if>
+
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName ne null}">
+                        <strong>${invoice.orderInfo.clientInfo.companyName}</strong><br>
+                    </c:if>
+
+                    ${invoice.orderInfo.clientInfo.cityInfoDTO.cityName},${invoice.orderInfo.clientInfo.cityInfoDTO.stateName}, ${invoice.orderInfo.clientInfo.cityInfoDTO.countryName}<br>
+                    ${invoice.orderInfo.clientInfo.street}<br>
+                    Phone: ${invoice.orderInfo.clientInfo.contact}<c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
+                    Email: ${invoice.orderInfo.clientInfo.email}
                 </address>
             </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
-                <b>Invoice #007612</b><br>
-                <br>
-                <b>Order ID:</b> 4F3S8J<br>
-                <b>Payment Due:</b> 2/22/2014<br>
-                <b>Account:</b> 968-34567
+                <%--<b>Invoice #${invoice.invoiceNo}</b><br>
+                <br>--%>
+                <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
+                <c:if test="${invoice.receivableAmount gt 0}">
+                    <b>Payment Due:</b> ${invoice.receivableAmount}<br>
+                </c:if>
+
+                <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
             </div>
             <!-- /.col -->
         </div>
@@ -105,40 +116,34 @@
         <!-- /.row -->
 
         <div class="row">
-            <!-- accepted payments column -->
-            <div class="col-xs-6">
-                <p class="lead">Payment Methods:</p>
-                <img src="../../dist/img/credit/visa.png" alt="Visa">
-                <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
 
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                </p>
-            </div>
+            <c:if test="${invoice.description ne null and '' ne invoice.description}">
+                <!-- accepted payments column -->
+                <div class="col-xs-6">
+                    <p class="lead">Remark:</p>
+
+                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                            ${invoice.description}
+                    </p>
+                </div>
+            </c:if>
             <!-- /.col -->
-            <div class="col-xs-6">
-                <p class="lead">Amount Due 2/22/2014</p>
+            <div class="col-xs-3 pull-right">
+                <%--<p class="lead">Amount Due 2/22/2014</p>--%>
 
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
                             <th style="width:50%">Subtotal:</th>
-                            <td>$250.30</td>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/></td>
                         </tr>
                         <tr>
-                            <th>Tax (9.3%)</th>
-                            <td>$10.34</td>
-                        </tr>
-                        <tr>
-                            <th>Shipping:</th>
-                            <td>$5.80</td>
+                            <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.tax}"/>%)</th>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/></td>
                         </tr>
                         <tr>
                             <th>Total:</th>
-                            <td>$265.24</td>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                         </tr>
                     </table>
                 </div>

@@ -36,6 +36,10 @@ public class ClientInfoDTO {
 
     private Integer version;
 
+    private String accountNo;
+
+    private long accountId;
+
     public Integer getVersion() {
         return version;
     }
@@ -146,5 +150,21 @@ public class ClientInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 }

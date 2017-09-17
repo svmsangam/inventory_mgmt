@@ -41,6 +41,7 @@
                             <tr>
                                 <th>SN</th>
                                 <th>Name</th>
+                                <th>Company</th>
                                 <th>Contact</th>
                                 <th>mobile</th>
                                 <th>email</th>
@@ -53,6 +54,7 @@
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${customer.name}</td>
+                                    <td>${customer.companyName}</td>
                                     <td>${customer.contact}</td>
                                     <td>${customer.mobileNumber}</td>
                                     <td>${customer.email}</td>

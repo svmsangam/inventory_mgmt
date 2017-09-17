@@ -39,6 +39,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="control-label">Company Name</label>
+                                <input type="text" class="form-control" value="${customer.companyName}" name="companyName"
+                                       placeholder="Company Name">
+                                <p class="form-error">${customerError.companyName}</p>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="control-label">Contact</label>
                                 <input type="text" class="form-control" value="${customer.contact}" name="contact"
                                        placeholder="contact">

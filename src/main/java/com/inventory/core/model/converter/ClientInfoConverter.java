@@ -1,8 +1,11 @@
 package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.ClientInfoDTO;
+import com.inventory.core.model.entity.AccountInfo;
 import com.inventory.core.model.entity.ClientInfo;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.AccountInfoRepository;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
@@ -25,6 +28,9 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AccountInfoRepository accountInfoRepository;
     
     @Override
     public ClientInfo convertToEntity(ClientInfoDTO dto) {
@@ -54,6 +60,13 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
         dto.setStatus(entity.getStatus());
         dto.setStreet(entity.getStreet());
         dto.setVersion(entity.getVersion());
+
+        AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId() , AccountAssociateType.CUSTOMER);
+
+        if (accountInfo != null){
+            dto.setAccountId(accountInfo.getId());
+            dto.setAccountNo(accountInfo.getAcountNumber());
+        }
         
         return dto;
     }

@@ -70,7 +70,7 @@ public class ClientInfoValidation extends GlobalValidation{
         if (!"".equals(error.getMobileNumber())){
             valid = false;
         }else if (clientInfoRepository.findByMobileNumber(clientInfoDTO.getMobileNumber()) != null){
-            error.setContact("this mobile already registered");
+            error.setMobileNumber("this mobile already registered");
 
             valid = false;
         }

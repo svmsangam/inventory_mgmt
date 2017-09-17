@@ -177,10 +177,19 @@
                     params.page = params.page || 1;
                     var arr = []
                     $.each(data.detail, function (index, value) {
-                        arr.push({
-                            id: value.clientId,
-                            text: value.name
-                        })
+
+                        if(value.companyName === null) {
+
+                            arr.push({
+                                id: value.clientId,
+                                text: value.name
+                            })
+                        }else {
+                            arr.push({
+                                id: value.clientId,
+                                text: value.companyName
+                            })
+                        }
                     })
 
 

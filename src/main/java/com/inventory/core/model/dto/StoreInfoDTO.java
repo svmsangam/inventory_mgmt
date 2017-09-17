@@ -25,6 +25,10 @@ public class StoreInfoDTO {
 
     private String cityName;
 
+    private String stateName;
+
+    private String countryName;
+
     private Status status;
 
     private String email;
@@ -145,5 +149,21 @@ public class StoreInfoDTO {
 
     public void setAccountNo(String accountNo) {
         this.accountNo = accountNo;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

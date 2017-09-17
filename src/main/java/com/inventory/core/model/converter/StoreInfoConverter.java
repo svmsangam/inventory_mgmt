@@ -44,7 +44,7 @@ public class StoreInfoConverter implements IConvertable<StoreInfo, StoreInfoDTO>
 
         dto.setStoreId(entity.getId());
         dto.setCityId(entity.getCityInfo().getId());
-        dto.setCityName(entity.getName());
+        dto.setCityName(entity.getCityInfo().getName());
         dto.setContact(entity.getContact());
         dto.setEmail(entity.getEmail());
         dto.setMobileNumber(entity.getMobileNumber());
@@ -54,6 +54,8 @@ public class StoreInfoConverter implements IConvertable<StoreInfo, StoreInfoDTO>
         dto.setStatus(entity.getStatus());
         dto.setStreet(entity.getStreet());
         dto.setVersion(entity.getVersion());
+        dto.setStateName(entity.getCityInfo().getStateInfo().getName());
+        dto.setCountryName(entity.getCityInfo().getStateInfo().getCountryInfo().getName());
 
         AccountInfo accountInfo = accountInfoRepository.findByAssociateIdAndAssociateType(entity.getId(), AccountAssociateType.STORE);
 
