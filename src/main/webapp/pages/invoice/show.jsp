@@ -7,9 +7,87 @@
 <%@include file="/pages/parts/header.jsp" %>
 <%@include file="/pages/parts/sidebar.jsp" %>
 
+<style>
+    @media print {
+        *,
+        *:before,enter code here
+        *:after {
+            color: #000 !important;
+            text-shadow: none !important;
+            background: transparent !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+        }
+        a,
+        a:visited {
+            text-decoration: underline;
+        }
+        a[href]:after {
+            content: " (" attr(href) ")";
+        }
+        abbr[title]:after {
+            content: " (" attr(title) ")";
+        }
+        a[href^="#"]:after,
+        a[href^="javascript:"]:after {
+            content: "";
+        }
+        pre,
+        blockquote {
+            border: 1px solid #999;
+
+            page-break-inside: avoid;
+        }
+        thead {
+            display: table-header-group;
+        }
+        tr,
+        img {
+            page-break-inside: avoid;
+        }
+        img {
+            max-width: 100% !important;
+        }
+        p,
+        h2,
+        h3 {
+            orphans: 3;
+            widows: 3;
+        }
+        h2,
+        h3 {
+            page-break-after: avoid;
+        }
+        select {
+            background: #fff !important;
+        }
+        .navbar {
+            display: none;
+        }
+        .btn > .caret,
+        .dropup > .btn > .caret {
+            border-top-color: #000 !important;
+        }
+        .label {
+            border: 1px solid #000;
+        }
+        .table {
+            border-collapse: collapse !important;
+        }
+        .table td,
+        .table th {
+            background-color: #fff !important;
+        }
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #ddd !important;
+        }
+    }
+</style>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <section class="invoice">
+    <section class="invoice print">
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
@@ -68,7 +146,7 @@
 
         <!-- Table row -->
         <div class="row">
-            <div class="col-xs-12 table-responsive">
+            <div class="col-lg-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -113,7 +191,7 @@
                 </div>
             </c:if>
             <!-- /.col -->
-            <div class="col-xs-3 pull-right">
+            <div class="col-lg-3 pull-right">
                 <%--<p class="lead">Amount Due 2/22/2014</p>--%>
 
                 <div class="table-responsive">
@@ -140,9 +218,10 @@
         <!-- this row will not appear when printing -->
         <div class="row no-print">
             <div class="col-xs-12">
-                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+
                 <c:if test="${invoice.receivableAmount gt 0}">
-                    <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
+                    <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-payment"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </button>
                 </c:if>
 
@@ -154,5 +233,125 @@
     </section>
     <!-- /.content -->
     <div class="clearfix"></div>
+
+
+
+    <div class="modal fade" id="modal-payment">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Make Payment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" name="name" id="name"
+                                       placeholder="store name" required/>
+                                <p class="form-error name"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
+                                <input type="text" class="form-control" name="email" id="email" placeholder="email"
+                                       required/>
+                                <p class="form-error email"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Contact no.</label>
+                                <input type="text" class="form-control" name="contact" id="contact"
+                                       placeholder="Contact"
+                                       required/>
+                                <p class="form-error contact"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Mobile no</label>
+                                <input type="text" class="form-control" name="mobile" id="mobile"
+                                       placeholder="mobile no"
+                                       required/>
+                                <p class="form-error mobile"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Street Address</label>
+                                <input type="text" class="form-control" name="street" id="street"
+                                       placeholder="street address"
+                                       required/>
+                                <p class="form-error street"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">City</label>
+                                <select name="cityId" class="form-control select2" id="cityId">
+                                    <option value="">select city</option>
+                                    <c:forEach items="${cityList}" var="city">
+                                        <option value="${city.cityId}">${city.cityName}</option>
+                                    </c:forEach>
+                                </select>
+                                <p class="form-error cityId"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">PAN no</label>
+                                <input type="text" class="form-control" name="pan" id="pan" placeholder="PAN no"
+                                       required/>
+                                <p class="form-error pan"></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Regd no</label>
+                                <input type="text" class="form-control" name="reg" id="reg"
+                                       placeholder="Registration no"
+                                       required/>
+                                <p class="form-error reg"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger pull-left closeShow" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm  btn-flat pull-right edit"
+                                data-dismiss="modal" data-toggle="modal"
+                                data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span>
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
 </div>
 <%@include file="/pages/parts/footer.jsp" %>

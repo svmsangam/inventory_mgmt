@@ -184,7 +184,7 @@
             </div>
             <!-- /.col -->
             <div class="col-xs-4">&nbsp;</div>
-            <div class="col-xs-4">
+            <div class="col-lg-4">
                 <div class="table-responsive">
                     <table class="table">
                         <tr>

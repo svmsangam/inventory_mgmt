@@ -39,7 +39,7 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">SUPERADMIN HEADER</li>
+            <li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-users"></i> <span>User</span></a>
             </li>
