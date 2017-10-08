@@ -314,3 +314,85 @@ function amountUpdate(amount)  {
 }
 
 // order colculator end
+
+//invoice pdt generator start
+
+var doc = new jsPDF();
+var specialElementHandlers = {
+    '#editor': function (element, renderer) {
+        return true;
+    }
+};
+
+$(document).ready(function () {
+    $('#cmd').click(function () {
+
+        var invoiceNo = "" + $("#inv").text();
+
+        var pageContext = $("#page").val();
+
+        var css = "";
+
+        var myStylesLocation = pageContext + "/resources/css/bootstrap.min.css";
+
+        $.ajax({
+            url: myStylesLocation,
+            type: "GET",
+            async: false
+        }).done(function(data){
+            css += data;
+        })
+
+        var html = "<html><head><title></title>";
+        html += "<style type='text/css'>"+css+" </style>";
+        html += "</head><body >";
+        html = $('#contentPDF').html();
+        html += "</body></html>";
+
+
+        doc.fromHTML(html, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+        doc.save(invoiceNo);
+    });
+
+
+    $('#print').click(function () {
+
+        var pageContext = $("#page").val();
+
+        var html = $('#contentPDF').html();
+
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        var css = "";
+
+        var myStylesLocation = pageContext + "/resources/css/bootstrap.min.css";
+
+        $.ajax({
+            url: myStylesLocation,
+            type: "GET",
+            async: false
+        }).done(function(data){
+            css += data;
+        })
+
+        mywindow.document.write('<html><head><title></title>');
+        mywindow.document.write('<style type="text/css">'+css+' </style>');
+        //  mywindow.document.write('<link rel="stylesheet" href="${pageContext.request.contextPath}/ui/css/bootstrap.min.css" type="text/css" media="print"/>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(html);
+
+        mywindow.document.write("</body></html>");
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+    });
+
+});
+
+//invoice pdt generator end

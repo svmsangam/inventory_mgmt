@@ -84,7 +84,7 @@
         }
     }
 </style>
-
+<input type="hidden" value="${pageContext.request.contextPath}" id ="page">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <section class="content invoice">
@@ -104,11 +104,12 @@
         </c:if>
 
 
-        <!-- title row -->
+        <div id="contentPDF">
+            <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <%--<i class="fa fa-globe"></i>--%> Invoice #${invoice.invoiceNo}
+                    <%--<i class="fa fa-globe"></i>--%> Invoice <span id="inv">#${invoice.invoiceNo}</span>
                     <small class="pull-right">Date: <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></small>
                 </h2>
             </div>
@@ -230,18 +231,18 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-
+        </div>
         <!-- this row will not appear when printing -->
-        <div class="row no-print">
+        <div class="row no-print" id="editor">
             <div class="col-xs-12">
-                <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                <button class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
 
                 <c:if test="${invoice.receivableAmount gt 0}">
                     <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </button>
                 </c:if>
 
-                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <button type="button" id="cmd" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF
                 </button>
             </div>
