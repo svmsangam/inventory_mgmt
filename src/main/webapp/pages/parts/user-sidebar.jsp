@@ -39,8 +39,10 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">USER HEADER</li>
+            <li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
             <!-- Optionally, you can add icons to the links -->
+
+            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
 
             <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
 
@@ -72,19 +74,6 @@
                     <li><a href="#">Order Add</a></li>
                     <li><a href="#">Return List</a></li>
                     <li><a href="#">Return Add</a></li>
-                </ul>
-            </li>
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Invoice</span>
-                    <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#">List</a></li>
-                    <li><a href="#">Add</a></li>
-                    <li><a href="#">Receivable</a></li>
                 </ul>
             </li>
 

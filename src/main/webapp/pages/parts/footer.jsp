@@ -13,7 +13,7 @@
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+   <%-- <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
         <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
@@ -85,7 +85,7 @@
         --%>
         <!-- /.tab-pane -->
         <!-- Settings tab content -->
-        <div class="tab-pane" id="control-sidebar-settings-tab">
+    <div class="tab-pane" id="control-sidebar-settings-tab">
             <ul class="sidebar-menu tree" data-widget="tree">
                 <li class="header">Extra Settings</li>
                 <!-- Optionally, you can add icons to the links -->
@@ -109,6 +109,83 @@
                         <a href="${pageContext.request.contextPath}/tag/list">
                             <i class="fa fa-tags"></i>
                         <span>Tag</span>
+                        </a>
+                    </li>
+
+                    <%--<li class="treeview">
+                            <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display: none;">
+                                <li><a href="#">Category</a></li>
+                                <li><a href="#">SubCategory</a></li>
+                                <li><a href="#">Unit</a></li>
+                                <li><a href="#">Tag</a></li>
+                                <li><a href="#">Lot</a></li>
+                            </ul>
+                        </li>--%>
+                </sec:authorize>
+
+                <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')">
+
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-map"></i><span>State</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-map-marker"></i><span>City</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/category/list"><i class="fa fa-columns"></i> <span>Category</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/subcategory/list"><i class="fa fa-th-large"></i> <span>SubCategory</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
+
+                    <li>
+                        <a href="${pageContext.request.contextPath}/tag/list">
+                            <i class="fa fa-tags"></i>
+                            <span>Tag</span>
+                        </a>
+                    </li>
+
+                    <%--<li class="treeview">
+                            <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display: none;">
+                                <li><a href="#">Category</a></li>
+                                <li><a href="#">SubCategory</a></li>
+                                <li><a href="#">Unit</a></li>
+                                <li><a href="#">Tag</a></li>
+                                <li><a href="#">Lot</a></li>
+                            </ul>
+                        </li>--%>
+                </sec:authorize>
+
+
+                <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')">
+
+                    <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-map"></i><span>State</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/city/list"><i class="fa fa-map-marker"></i><span>City</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/category/list"><i class="fa fa-columns"></i> <span>Category</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/subcategory/list"><i class="fa fa-th-large"></i> <span>SubCategory</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
+
+                    <li>
+                        <a href="${pageContext.request.contextPath}/tag/list">
+                            <i class="fa fa-tags"></i>
+                            <span>Tag</span>
                         </a>
                     </li>
 

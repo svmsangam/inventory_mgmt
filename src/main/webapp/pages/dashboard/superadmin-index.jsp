@@ -89,7 +89,7 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Monthly Recap Report</h3>
+                        <h3 class="box-title">Monthly Sale And Purchase Report of Xyz pvt. ltd.</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -113,7 +113,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <p class="text-center">
-                                    <strong>Sales: 1 Jan, 2017 - 30 Dec, 2017</strong>
+                                    <strong>1 Jan, 2017 - 30 Dec, 2017</strong>
                                 </p>
 
                                 <div class="chart">
@@ -255,37 +255,37 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td><a href="#">OR9842</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR9842</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-success">Shipped</span></td>
                             </tr>
                             <tr>
-                                <td><a href="#">OR1848</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-warning">Pending</span></td>
                             </tr>
                             <tr>
-                                <td><a href="#">OR7429</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-danger">Delivered</span></td>
                             </tr>
                             <tr>
-                                <td><a href="#">OR7429</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-info">Processing</span></td>
                             </tr>
                             <tr>
-                                <td><a href="#">OR1848</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-warning">Pending</span></td>
                             </tr>
                             <tr>
-                                <td><a href="#">OR7429</a></td>
+                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
                                 <td>12 sept,2017</td>
                                 <td>15 sept,2017</td>
                                 <td><span class="label label-danger">Delivered</span></td>
