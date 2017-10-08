@@ -237,7 +237,7 @@
                 <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
 
                 <c:if test="${invoice.receivableAmount gt 0}">
-                    <button type="button" class="btn btn-success pull-right payment"><i class="fa fa-credit-card"></i> Proceed To Payment
+                    <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </button>
                 </c:if>
 
@@ -252,105 +252,3 @@
 
 </div>
 <%@include file="/pages/parts/footer.jsp" %>
-
-
-<%--
-
-payment
-
-<!-- info row -->
-<div class="row payment-info hidden">
-    <div class="col-md-12">
-        <div class="box box-info">
-            <div class="box-header">
-                <h3 class="box-title">Make Payment</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="col-sm-4 invoice-col">
-                Client
-                <address>
-                    <c:if test="${invoice.orderInfo.clientInfo.companyName eq null}">
-                        <strong>${invoice.orderInfo.clientInfo.name}</strong><br>
-                    </c:if>
-
-                    <c:if test="${invoice.orderInfo.clientInfo.companyName ne null}">
-                        <strong>${invoice.orderInfo.clientInfo.companyName}</strong><br>
-                    </c:if>
-
-                    ${invoice.orderInfo.clientInfo.cityInfoDTO.cityName},${invoice.orderInfo.clientInfo.cityInfoDTO.stateName}, ${invoice.orderInfo.clientInfo.cityInfoDTO.countryName}<br>
-                    ${invoice.orderInfo.clientInfo.street}<br>
-                    Phone: ${invoice.orderInfo.clientInfo.contact}<c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
-                    Email: ${invoice.orderInfo.clientInfo.email}
-                </address>
-            </div>
-
-            <div class="col-sm-4 invoice-col">
-
-                <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
-
-                <b>Invoice ID:</b> #${invoice.invoiceNo}<br>
-
-                <c:if test="${invoice.receivableAmount gt 0}">
-                    <b>Payment Due:</b> ${invoice.receivableAmount}<br>
-                </c:if>
-
-                <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
-            </div>
-
-            <div class="col-sm-4 invoice-col">
-
-                <b>Subtotal:</b> Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/><br>
-
-                <b>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.tax}"/>%):</b> Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/><br>
-
-                <b>Total:</b>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/><br>
-
-            </div>
-
-            <div class="clearfix"></div>
-
-            <form action="${pageContext.request.contextPath}/item/save" method="post" modelAttribute="item" >
-
-                <div class="box-body">
-
-                    <input type="hidden" name="accountNo" value="${invoice.orderInfo.clientInfo.accountNo}"/>
-
-                    <input type="hidden" name="invoiceId" value="${invoice.invoiceId}"/>
-                    <div class="row">
-                        <div class="col-lg-3 form-group">
-                            <label class="control-label">Payment Method</label>
-                            <select name="paymentMethod" class="form-control">
-
-                                <c:forEach items="${paymentMethodList}" var="paymentMethod">
-                                    &lt;%&ndash;<c:choose>
-                                        <c:when test="${tag.tagId eq item.tagId}">
-                                            <option value="${tag.tagId}" selected>${tag.name}</option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <option value="${tag.tagId}">${tag.name}</option>
-                                        </c:otherwise>
-                                    </c:choose>
-
-&ndash;%&gt;
-                                    <option value="${paymentMethod}">${paymentMethod}</option>
-
-                                </c:forEach>
-                            </select>
-                            <p class="form-error">${payment.paymentMethod}</p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-        </div>
-        <!-- /.box-body -->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left back">Back</button>
-
-            <button type="submit" class="btn btn-primary pull-right">Save changes</button>
-        </div>
-        </form>
-    </div>
-    <!-- /.box -->
-</div>--%>
