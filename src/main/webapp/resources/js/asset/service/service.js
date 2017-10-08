@@ -535,6 +535,7 @@ function OrderInfoService() {
                     }else {
                         stopLoading(spinner);
                         alert(msg);
+                        window.location.reload();
                     }
                 },
 

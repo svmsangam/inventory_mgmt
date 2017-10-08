@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CodeGeneratorRepository extends JpaRepository<CodeGenerator , Long> , JpaSpecificationExecutor<CodeGenerator>{
 
     @Query("select count (n) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2")
-    Long findByStoreAndNumberStatus(long storeId , NumberStatus numberStatus);
+    long findByStoreAndNumberStatus(long storeId , NumberStatus numberStatus);
 
     @Query("select max(n.id) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2")
     Long findLastRowByStoreAndNumberStatus(long storeId , NumberStatus numberStatus);

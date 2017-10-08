@@ -45,9 +45,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public String generatInvoiceNumber(long storeId) {
-        Long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Order);
+        long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Invoice);
 
-        if (count == null | 0 == count){
+        if (0 == count){
             CodeGenerator codeGenerator = new CodeGenerator();
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
