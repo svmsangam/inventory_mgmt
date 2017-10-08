@@ -29,10 +29,10 @@
                     <div class="inner">
                         <h3>150</h3>
 
-                        <p>Total Orders</p>
+                        <p>Total Stock</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-bag"></i>
+                        <i class="ion ion-cube"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -42,7 +42,7 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <h3>530000</h3>
 
                         <p>Total Sales</p>
                     </div>
@@ -57,12 +57,12 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3>440000</h3>
 
-                        <p>Total Customers</p>
+                        <p>Total Purchase</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="ion ion-bag"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -74,10 +74,10 @@
                     <div class="inner">
                         <h3>65</h3>
 
-                        <p>Total Products</p>
+                        <p>Total Users</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-cube"></i>
+                        <i class="ion ion-person-add"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -113,24 +113,52 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <p class="text-center">
-                                    <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                                    <strong>Sales: 1 Jan, 2017 - 30 Dec, 2017</strong>
                                 </p>
 
                                 <div class="chart">
                                     <!-- Sales Chart Canvas -->
-                                    <canvas id="salesChart" style="height: 180px;"></canvas>
+                                    <canvas id="salesChart" style="height: 250px;"></canvas>
                                 </div>
                                 <!-- /.chart-responsive -->
                             </div>
                             <!-- /.col -->
                             <div class="col-md-4">
                                 <p class="text-center">
-                                    <strong>Goal Completion</strong>
+                                    <strong>Sales Order Status</strong>
                                 </p>
 
                                 <div class="progress-group">
-                                    <span class="progress-text">Add Products to Cart</span>
-                                    <span class="progress-number"><b>160</b>/200</span>
+                                    <span class="progress-text">Order Pending</span>
+                                    <span class="progress-number"><b>160</b></span>
+
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-primary" style="width: 80%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="progress-group">
+                                    <span class="progress-text">Order Accepted</span>
+                                    <span class="progress-number"><b>160</b></span>
+
+                                    <div class="progress sm">
+                                        <div class="progress-bar label-default" style="width: 80%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- /.progress-group -->
+                                <div class="progress-group">
+                                    <span class="progress-text">Order Packed</span>
+                                    <span class="progress-number"><b>310</b></span>
+
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <!-- /.progress-group -->
+                                <div class="progress-group">
+                                    <span class="progress-text">Order Shipped</span>
+                                    <span class="progress-number"><b>480</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
@@ -138,29 +166,11 @@
                                 </div>
                                 <!-- /.progress-group -->
                                 <div class="progress-group">
-                                    <span class="progress-text">Complete Purchase</span>
-                                    <span class="progress-number"><b>310</b>/400</span>
+                                    <span class="progress-text">Order Cancelled</span>
+                                    <span class="progress-number"><b>250</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                                    </div>
-                                </div>
-                                <!-- /.progress-group -->
-                                <div class="progress-group">
-                                    <span class="progress-text">Visit Premium Page</span>
-                                    <span class="progress-number"><b>480</b>/800</span>
-
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                                    </div>
-                                </div>
-                                <!-- /.progress-group -->
-                                <div class="progress-group">
-                                    <span class="progress-text">Send Inquiries</span>
-                                    <span class="progress-number"><b>250</b>/500</span>
-
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
                                     </div>
                                 </div>
                                 <!-- /.progress-group -->
@@ -174,36 +184,36 @@
                         <div class="row">
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
-                                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                                   <%-- <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--%>
                                     <h5 class="description-header">$35,210.43</h5>
-                                    <span class="description-text">TOTAL REVENUE</span>
+                                    <span class="description-text">TOTAL COLLECTION</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
-                                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                                   <%-- <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--%>
                                     <h5 class="description-header">$10,390.90</h5>
-                                    <span class="description-text">TOTAL COST</span>
+                                    <span class="description-text">TOTAL RECIEVABLE</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
-                                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                                    <%--<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--%>
                                     <h5 class="description-header">$24,813.53</h5>
-                                    <span class="description-text">TOTAL PROFIT</span>
+                                    <span class="description-text">TODAYS SALE</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
-                                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                                    <%--<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--%>
                                     <h5 class="description-header">1200</h5>
-                                    <span class="description-text">GOAL COMPLETIONS</span>
+                                    <span class="description-text">TODAYS COLLECTION</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
@@ -287,8 +297,8 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a>
-                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                    <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a>
+                    <a href="${pageContext.request.contextPath}/order/sale/list" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -365,7 +375,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All Products</a>
+                    <a href="${pageContext.request.contextPath}product/list" class="uppercase">View All Products</a>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -398,7 +408,7 @@
         var salesChart       = new Chart(salesChartCanvas);
 
         var salesChartData = {
-            labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July' , 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [
                 {
                     label               : 'Electronics',
@@ -408,7 +418,7 @@
                     pointStrokeColor    : '#c1c7d1',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgb(220,220,220)',
-                    data                : [65, 59, 80, 81, 56, 55, 40]
+                    data                : [65, 59, 80, 81, 56, 55, 40 , 50 , 30 , 20, 10, 60]
                 },
                 {
                     label               : 'Digital Goods',
@@ -418,7 +428,7 @@
                     pointStrokeColor    : 'rgba(60,141,188,1)',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data                : [28, 48, 40, 19, 86, 27, 90]
+                    data                : [28, 48, 40, 19, 86, 27, 90 , 20 , 30 , 10 , 5 , 30]
                 }
             ]
         };
@@ -441,7 +451,7 @@
             // Number - Tension of the bezier curve between points
             bezierCurveTension      : 0.3,
             // Boolean - Whether to show a dot for each point
-            pointDot                : false,
+            pointDot                : true,
             // Number - Radius of each point dot in pixels
             pointDotRadius          : 4,
             // Number - Pixel width of point dot stroke

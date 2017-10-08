@@ -12,8 +12,6 @@ import javax.persistence.Table;
 @Table(name = "payment_table")
 public class Payment extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = -6245833303340171164L;
-
     private Double amount;
 
     private PaymentMethod paymentMethod;

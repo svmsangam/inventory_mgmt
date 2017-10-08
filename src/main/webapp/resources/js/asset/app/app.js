@@ -314,3 +314,26 @@ function amountUpdate(amount)  {
 }
 
 // order colculator end
+
+
+
+//invoice app start
+
+$(document).ready(function () {
+
+    $(document).on("click" , ".payment" , function () {
+
+        $(".invoice").removeClass("show").removeClass("hidden").addClass("hidden");
+        $(".payment-info").removeClass("show").removeClass("hidden").addClass("show");
+
+    });
+
+    $(document).on("click" , ".back" , function () {
+
+        $(".invoice").removeClass("show").removeClass("hidden").addClass("show");
+        $(".payment-info").removeClass("show").removeClass("hidden").addClass("hidden");
+
+    });
+});
+
+//invoice app end

@@ -87,7 +87,23 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <section class="invoice print">
+    <section class="content invoice">
+
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
+
+
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
@@ -221,7 +237,7 @@
                 <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
 
                 <c:if test="${invoice.receivableAmount gt 0}">
-                    <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-payment"><i class="fa fa-credit-card"></i> Proceed To Payment
+                    <button type="button" class="btn btn-success pull-right payment"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </button>
                 </c:if>
 
@@ -234,124 +250,107 @@
     <!-- /.content -->
     <div class="clearfix"></div>
 
-
-
-    <div class="modal fade" id="modal-payment">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Make Payment</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" name="name" id="name"
-                                       placeholder="store name" required/>
-                                <p class="form-error name"></p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Email</label>
-                                <input type="text" class="form-control" name="email" id="email" placeholder="email"
-                                       required/>
-                                <p class="form-error email"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Contact no.</label>
-                                <input type="text" class="form-control" name="contact" id="contact"
-                                       placeholder="Contact"
-                                       required/>
-                                <p class="form-error contact"></p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Mobile no</label>
-                                <input type="text" class="form-control" name="mobile" id="mobile"
-                                       placeholder="mobile no"
-                                       required/>
-                                <p class="form-error mobile"></p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Street Address</label>
-                                <input type="text" class="form-control" name="street" id="street"
-                                       placeholder="street address"
-                                       required/>
-                                <p class="form-error street"></p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">City</label>
-                                <select name="cityId" class="form-control select2" id="cityId">
-                                    <option value="">select city</option>
-                                    <c:forEach items="${cityList}" var="city">
-                                        <option value="${city.cityId}">${city.cityName}</option>
-                                    </c:forEach>
-                                </select>
-                                <p class="form-error cityId"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">PAN no</label>
-                                <input type="text" class="form-control" name="pan" id="pan" placeholder="PAN no"
-                                       required/>
-                                <p class="form-error pan"></p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Regd no</label>
-                                <input type="text" class="form-control" name="reg" id="reg"
-                                       placeholder="Registration no"
-                                       required/>
-                                <p class="form-error reg"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left closeShow" data-dismiss="modal">Close
-                        </button>
-                        <button type="button" class="btn btn-warning btn-sm  btn-flat pull-right edit"
-                                data-dismiss="modal" data-toggle="modal"
-                                data-target="#modal-edit"><span class="glyphicon glyphicon-edit"></span>
-                            Save
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
 </div>
 <%@include file="/pages/parts/footer.jsp" %>
+
+
+<%--
+
+payment
+
+<!-- info row -->
+<div class="row payment-info hidden">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Make Payment</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="col-sm-4 invoice-col">
+                Client
+                <address>
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName eq null}">
+                        <strong>${invoice.orderInfo.clientInfo.name}</strong><br>
+                    </c:if>
+
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName ne null}">
+                        <strong>${invoice.orderInfo.clientInfo.companyName}</strong><br>
+                    </c:if>
+
+                    ${invoice.orderInfo.clientInfo.cityInfoDTO.cityName},${invoice.orderInfo.clientInfo.cityInfoDTO.stateName}, ${invoice.orderInfo.clientInfo.cityInfoDTO.countryName}<br>
+                    ${invoice.orderInfo.clientInfo.street}<br>
+                    Phone: ${invoice.orderInfo.clientInfo.contact}<c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
+                    Email: ${invoice.orderInfo.clientInfo.email}
+                </address>
+            </div>
+
+            <div class="col-sm-4 invoice-col">
+
+                <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
+
+                <b>Invoice ID:</b> #${invoice.invoiceNo}<br>
+
+                <c:if test="${invoice.receivableAmount gt 0}">
+                    <b>Payment Due:</b> ${invoice.receivableAmount}<br>
+                </c:if>
+
+                <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
+            </div>
+
+            <div class="col-sm-4 invoice-col">
+
+                <b>Subtotal:</b> Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/><br>
+
+                <b>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.tax}"/>%):</b> Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/><br>
+
+                <b>Total:</b>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/><br>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <form action="${pageContext.request.contextPath}/item/save" method="post" modelAttribute="item" >
+
+                <div class="box-body">
+
+                    <input type="hidden" name="accountNo" value="${invoice.orderInfo.clientInfo.accountNo}"/>
+
+                    <input type="hidden" name="invoiceId" value="${invoice.invoiceId}"/>
+                    <div class="row">
+                        <div class="col-lg-3 form-group">
+                            <label class="control-label">Payment Method</label>
+                            <select name="paymentMethod" class="form-control">
+
+                                <c:forEach items="${paymentMethodList}" var="paymentMethod">
+                                    &lt;%&ndash;<c:choose>
+                                        <c:when test="${tag.tagId eq item.tagId}">
+                                            <option value="${tag.tagId}" selected>${tag.name}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${tag.tagId}">${tag.name}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+
+&ndash;%&gt;
+                                    <option value="${paymentMethod}">${paymentMethod}</option>
+
+                                </c:forEach>
+                            </select>
+                            <p class="form-error">${payment.paymentMethod}</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left back">Back</button>
+
+            <button type="submit" class="btn btn-primary pull-right">Save changes</button>
+        </div>
+        </form>
+    </div>
+    <!-- /.box -->
+</div>--%>

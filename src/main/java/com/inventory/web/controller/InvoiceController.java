@@ -5,6 +5,7 @@ import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -165,7 +166,7 @@ public class InvoiceController {
 
             modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
             modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
-
+            modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
 
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
