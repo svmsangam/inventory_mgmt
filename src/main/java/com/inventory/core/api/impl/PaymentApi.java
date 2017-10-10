@@ -26,8 +26,6 @@ public class PaymentApi implements IPaymentApi{
 
         Payment payment = paymentConverter.convertToEntity(paymentDTO);
 
-        payment.setStatus(Status.ACTIVE);
-
         return paymentConverter.convertToDto(paymentRepository.save(payment));
     }
 

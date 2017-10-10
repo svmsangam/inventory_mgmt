@@ -3,6 +3,7 @@ package com.inventory.core.model.converter;
 import com.inventory.core.model.dto.PaymentDTO;
 import com.inventory.core.model.entity.Payment;
 import com.inventory.core.model.enumconstant.PaymentMethod;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.IConvertable;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,9 @@ public class PaymentConverter implements IConvertable<Payment , PaymentDTO> {
             entity.setBankOfCheque(dto.getBankOfCheque());
             entity.setChequeDate(dto.getChequeDate());
             entity.setCommitedDateOfCheque(dto.getCommitedDateOfCheque());
+            entity.setStatus(Status.INACTIVE);
+        }else {
+            entity.setStatus(Status.ACTIVE);
         }
 
         return entity;
