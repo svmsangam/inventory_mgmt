@@ -311,42 +311,6 @@ immediately after the control sidebar -->
         return this.href == url;
     }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active').end().addClass('active');
 
-
-
-    $(document).ready(function () {
-        $('#testMe').click(function () {
-
-            $.ajax({
-                type: "GET",
-                url: "${pageContext.request.contextPath}/report/invoice/pdf",
-                contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                data : {invoiceId:1},
-                dataType: 'json',
-                timeout: 100000,
-                success: function (data) {
-
-                    var result = data.detail;
-
-                    var msg = data.message;
-
-                    if (data.status === 'Success') {
-
-                        alert(msg);
-                    }
-
-                    if (data.status === 'Failure') {
-                        alert(msg);
-                    }
-
-                    if (data.status === 'Validation Failed') {
-
-                        alert(msg);
-                    }
-                }
-            });
-        });
-    });
-
 </script>
 </body>
 </html>

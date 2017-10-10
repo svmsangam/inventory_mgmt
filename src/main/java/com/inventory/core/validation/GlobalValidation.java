@@ -176,6 +176,16 @@ public class GlobalValidation {
         return "";
     }
 
+    public String checkDate(Date dateStr, String target, boolean notNull, boolean isBefore, boolean isAfter) {
+
+        if (notNull && dateStr == null) {
+
+            return "Cannot Be Null";
+        }
+
+        return "";
+    }
+
 
     private String checkFraction(double value, int maxFraction) {
 

@@ -120,7 +120,13 @@ public class PaymentInfoValidation extends GlobalValidation{
 
     private boolean checkChequeDate(Date value){
 
-        error.setChequeDate(checkDate(value.toString() , "checque Date" , true , false , false));
+        try {
+            error.setChequeDate(checkDate(value , "checque Date" , true , false , false));
+
+        }catch (Exception e){
+            error.setChequeDate("invalid date");
+            return false;
+        }
 
         if (!"".equals(error.getChequeDate())){
             return false;
@@ -143,7 +149,14 @@ public class PaymentInfoValidation extends GlobalValidation{
 
     private boolean checkCommitedDateOfCheque(Date value ){
 
-        error.setCommitedDateOfCheque(checkDate(value.toString() , "commited Date" , true , false , true));
+        try {
+
+            error.setCommitedDateOfCheque(checkDate(value, "commited Date" , true , false , true));
+
+        }catch (Exception e){
+            error.setChequeDate("invalid date");
+            return false;
+        }
 
         if (!"".equals(error.getCommitedDateOfCheque())){
 

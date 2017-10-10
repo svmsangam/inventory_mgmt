@@ -423,3 +423,19 @@ $(document).ready(function () {
 });
 
 //invoice pdt generator end
+
+
+
+//payment add start
+
+$(document).ready(function () {
+   $(document).on("change" , "#paymentMethod" , function () {
+       if($(this).val() === 'CHEQUE'){
+           $(".cheque").removeClass("hidden").removeClass("show").addClass("show");
+       }else {
+           $(".cheque").removeClass("hidden").removeClass("show").addClass("hidden");
+       }
+   });
+});
+
+//payment add end
