@@ -47,8 +47,6 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         paymentInfoDTO.setPaymentId(paymentDTO.getPaymentId());
 
-        paymentInfoDTO.setRemark("payment made");
-
         PaymentInfo paymentInfo = paymentInfoConverter.convertToEntity(paymentInfoDTO);
 
         paymentInfo = paymentInfoRepository.save(paymentInfo);

@@ -74,6 +74,7 @@ public class PaymentInfoConverter implements IListConvertable<PaymentInfo , Paym
         entity.setReceivedPayment(paymentRepository.findById(dto.getPaymentId()));
         entity.setRemark(dto.getRemark());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
+        entity.setRemark(dto.getRemark());
 
         return entity;
     }

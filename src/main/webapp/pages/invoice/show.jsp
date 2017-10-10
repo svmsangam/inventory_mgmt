@@ -78,7 +78,7 @@
                     <b>Payment Due:</b> ${invoice.receivableAmount}<br>
                 </c:if>
 
-                <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
+                <b>Account:</b> <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}">${invoice.orderInfo.clientInfo.accountNo}</a>
             </div>
             <!-- /.col -->
         </div>
@@ -160,10 +160,8 @@
             <div class="col-xs-12">
                 <button class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
 
-                <c:if test="${invoice.receivableAmount gt 0}">
                     <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </a>
-                </c:if>
 
                 <button type="button" id="cmd" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF

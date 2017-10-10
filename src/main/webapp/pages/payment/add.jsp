@@ -72,13 +72,15 @@
                         <%--<b>Invoice #${invoice.invoiceNo}</b><br>
                         <br>--%>
                         <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
-                            <b>Invoice ID:</b> <a href="${pageContext.request.contextPath}/invoice/show/${invoice.invoiceId}">#${invoice.invoiceNo}</a><br>
+                            <b>Invoice ID:</b> <a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a><br>
                         <c:if test="${invoice.receivableAmount gt 0}">
-                            <b>Payment Due:</b> ${invoice.receivableAmount}<br>
+                            <b>Payment Due:</b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/><br>
                         </c:if>
-                            <b>Total Amount:</b> ${invoice.totalAmount}<br>
+                            <b>Total Amount:</b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/><br>
 
-                        <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
+                        <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}<br>
+
+                        <b>Invoice Date:</b> <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/>
                     </div>
 
                         <c:if test="${fn:length(paymentList) gt 0}">
@@ -118,8 +120,8 @@
 
                             <div class="form-group">
                                 <label class="control-label">Amount</label>
-                                <input type="number" class="form-control" value="${paymentInfo.receivedPayment.amount}" name="receivedPayment.amount" placeholder="amount">
-                                <p class="form-error">${error.amount}</p>
+                                <input type="text" onkeypress="return event.charCode >= 46 && event.charCode !== 47 && event.charCode < 58;" class="form-control" value="<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${paymentInfo.receivedPayment.amount}"/>" name="receivedPayment.amount" placeholder="amount">
+                                <p class="form-error">${paymentError.amount}</p>
                             </div>
 
                             <div class="form-group">
@@ -137,13 +139,13 @@
 
                                     </c:forEach>
                                 </select>
-                                <p class="form-error">${error.paymentMethod}</p>
+                                <p class="form-error">${paymentError.paymentMethod}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Remarks</label>
                                 <input type="text" class="form-control" value="${paymentInfo.remark}" name="remark" placeholder="remark">
-                                <p class="form-error">${error.remark}</p>
+                                <p class="form-error">${paymentError.remark}</p>
                             </div>
 
                         </div>
