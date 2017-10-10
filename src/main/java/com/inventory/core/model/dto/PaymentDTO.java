@@ -12,7 +12,7 @@ public class PaymentDTO {
 
     private long paymentId;
 
-    private Double amount;
+    private double amount;
 
     private PaymentMethod paymentMethod;
 
@@ -36,11 +36,11 @@ public class PaymentDTO {
         this.paymentId = paymentId;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "payment_table")
 public class Payment extends AbstractEntity<Long> {
 
-    private Double amount;
+    private double amount;
 
     private PaymentMethod paymentMethod;
 
@@ -30,11 +30,11 @@ public class Payment extends AbstractEntity<Long> {
 
     private Status status;
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

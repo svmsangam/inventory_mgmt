@@ -182,11 +182,11 @@ public class PaymentInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            logger.error("Exception on payment controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
         redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "payment made successfully");
-        return "redirect:/paymentinfo/add" + paymentInfoDTO.getInvoiceInfoId();
+        return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
     }
 }

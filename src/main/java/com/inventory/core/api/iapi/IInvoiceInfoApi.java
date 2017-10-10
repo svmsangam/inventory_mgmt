@@ -14,6 +14,8 @@ public interface IInvoiceInfoApi {
 
     InvoiceInfoDTO save(long orderInfoId , long createdById);
 
+    void updateOnPayment(long paymentInfoId);
+
     InvoiceInfoDTO show(long invoiceId , long storeId , Status status);
 
     InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId , Status status  , long storeId);

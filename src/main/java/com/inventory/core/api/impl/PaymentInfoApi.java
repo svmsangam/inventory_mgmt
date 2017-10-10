@@ -1,5 +1,6 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.api.iapi.IPaymentApi;
 import com.inventory.core.api.iapi.IPaymentInfoApi;
@@ -36,6 +37,9 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Autowired
     private ILedgerInfoApi ledgerInfoApi;
 
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
+
     @Override
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
 
@@ -51,6 +55,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
             ledgerInfoApi.saveOnPayment(paymentInfo.getId());
+            invoiceInfoApi.updateOnPayment(paymentInfo.getId());
         }
 
         return paymentInfoConverter.convertToDto(paymentInfo);

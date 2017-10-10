@@ -81,23 +81,25 @@
                         <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}
                     </div>
 
-                        <c:if test="${fn:length(paymentInfoList) gt 0}">
+                        <c:if test="${fn:length(paymentList) gt 0}">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <tr>
                                     <th>Date</th>
                                     <th>Amount</th>
                                     <th>Method</th>
+                                    <th>Remarks</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <c:forEach items="${paymentInfoList}" var="paymentInfo">
+                                <c:forEach items="${paymentList}" var="paymentInfo">
 
                                     <tr>
                                         <td><fmt:formatDate pattern="MMM dd, yyyy" value="${paymentInfo.paymentDate}"/></td>
                                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${paymentInfo.receivedPayment.amount}"/></td>
-                                        <td>${paymentInfo.paymentMethod}</td>
+                                        <td>${paymentInfo.receivedPayment.paymentMethod}</td>
+                                        <td>${paymentInfo.remark}</td>
                                     </tr>
 
                                 </c:forEach>

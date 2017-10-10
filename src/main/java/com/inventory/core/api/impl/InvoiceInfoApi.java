@@ -4,13 +4,12 @@ import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
-import com.inventory.core.model.entity.CodeGenerator;
-import com.inventory.core.model.entity.InvoiceInfo;
-import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CodeGeneratorRepository;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
+import com.inventory.core.model.repository.PaymentInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +41,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Autowired
     private ILedgerInfoApi ledgerInfoApi;
+
+    @Autowired
+    private PaymentInfoRepository paymentInfoRepository;
 
     @Override
     public String generatInvoiceNumber(long storeId) {
@@ -98,6 +100,22 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         ledgerInfoApi.save(invoiceInfo.getId());
 
         return invoiceInfoConverter.convertToDto(invoiceInfo);
+    }
+
+    @Override
+    public void updateOnPayment(long paymentInfoId) {
+
+        PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
+
+        if (paymentInfo != null) {
+
+            InvoiceInfo invoiceInfo = paymentInfo.getInvoiceInfo();
+
+            invoiceInfo.setReceivableAmount(invoiceInfo.getReceivableAmount() - paymentInfo.getReceivedPayment().getAmount());
+
+            invoiceInfoRepository.save(invoiceInfo);
+        }
+
     }
 
     @Override
