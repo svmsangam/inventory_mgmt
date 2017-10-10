@@ -161,8 +161,8 @@
                 <button class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
 
                 <c:if test="${invoice.receivableAmount gt 0}">
-                    <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
-                    </button>
+                    <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
+                    </a>
                 </c:if>
 
                 <button type="button" id="cmd" class="btn btn-primary pull-right" style="margin-right: 5px;">

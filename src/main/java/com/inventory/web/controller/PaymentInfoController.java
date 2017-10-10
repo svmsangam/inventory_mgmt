@@ -6,6 +6,7 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
+import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -103,13 +104,15 @@ public class PaymentInfoController {
 
             modelMap.put(StringConstants.PAYMENTLIST , paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList , currentUser.getStoreId() , invoiceId));
 
+            modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+
         } catch (Exception e) {
 
             logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
-        return "product/list";
+        return "payment/add";
     }
 
     @PostMapping(value = "/save")
@@ -162,6 +165,8 @@ public class PaymentInfoController {
                 modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
                 modelMap.put(StringConstants.INVOICE, invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE));
 
+                modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+
                 List<Status> statusList = new ArrayList<>();
 
                 statusList.add(Status.ACTIVE);
@@ -170,7 +175,7 @@ public class PaymentInfoController {
                 modelMap.put(StringConstants.PAYMENTLIST , paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList , currentUser.getStoreId() , paymentInfoDTO.getInvoiceInfoId()));
 
 
-                return "product/add";
+                return "payment/add";
             }
 
             paymentInfoApi.save(paymentInfoDTO);
