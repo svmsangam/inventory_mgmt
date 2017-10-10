@@ -40,6 +40,19 @@ public class LedgerInfoApi implements ILedgerInfoApi{
         ledgerInfoRepository.save(crLedgerInfo);
     }
 
+    @Override
+    public void saveOnPayment(long paymentInfoId) {
+
+        LedgerInfo drLedgerInfo = ledgerInfoConverter.convertPaymentInfoToDRLedger(paymentInfoId);
+
+        LedgerInfo crLedgerInfo = ledgerInfoConverter.convertPaymentInfoToCRLedger(paymentInfoId);
+
+        ledgerInfoRepository.save(drLedgerInfo);
+
+        ledgerInfoRepository.save(crLedgerInfo);
+
+    }
+
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));

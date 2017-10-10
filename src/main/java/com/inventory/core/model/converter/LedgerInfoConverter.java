@@ -3,12 +3,11 @@ package com.inventory.core.model.converter;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.LedgerInfo;
-import com.inventory.core.model.enumconstant.AccountAssociateType;
-import com.inventory.core.model.enumconstant.AccountEntryType;
-import com.inventory.core.model.enumconstant.LedgerEntryType;
-import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.entity.PaymentInfo;
+import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.AccountInfoRepository;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
+import com.inventory.core.model.repository.PaymentInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -36,6 +35,9 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
     @Autowired
     private InvoiceInfoRepository invoiceInfoRepository;
+
+    @Autowired
+    private PaymentInfoRepository paymentInfoRepository;
 
     @Override
     public LedgerInfo convertToEntity(LedgerInfoDTO dto) {
@@ -134,6 +136,63 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
         }
 
         entity.setStoreInfo(invoiceInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+
+        return entity;
+    }
+
+
+    public LedgerInfo convertPaymentInfoToDRLedger(long paymentInfoId) {
+
+        PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.DEBIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getId() , AccountAssociateType.CUSTOMER));
+        entity.setAmount(paymentInfo.getReceivedPayment().getAmount());
+
+        LedgerEntryType ledgerEntryType = LedgerEntryType.CASH;
+
+        if (paymentInfo.getReceivedPayment().getPaymentMethod().equals(PaymentMethod.CHEQUE)){
+            ledgerEntryType = LedgerEntryType.CHEQUE;
+        }else if (paymentInfo.getReceivedPayment().getPaymentMethod().equals(PaymentMethod.COUPON)) {
+            entity.setLedgerEntryType(LedgerEntryType.COUPON);
+        }
+
+        entity.setLedgerEntryType(ledgerEntryType);
+
+        if (paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getCompanyName() != null){
+            entity.setRemarks("payment Made By " + paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getCompanyName());
+        }else {
+            entity.setRemarks("payment Made By " + paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(paymentInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+
+        return entity;
+    }
+
+    public LedgerInfo convertPaymentInfoToCRLedger(long paymentInfoId) {
+
+        PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.CREDIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(paymentInfo.getInvoiceInfo().getOrderInfo().getStoreInfo().getId() , AccountAssociateType.STORE));
+        entity.setAmount(paymentInfo.getReceivedPayment().getAmount());
+
+        entity.setLedgerEntryType(LedgerEntryType.CASH);
+
+        if (paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getCompanyName() != null){
+            entity.setRemarks("payment Made By " + paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getCompanyName());
+        }else {
+            entity.setRemarks("payment Made By " + paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(paymentInfo.getStoreInfo());
         entity.setStatus(Status.ACTIVE);
 
         return entity;

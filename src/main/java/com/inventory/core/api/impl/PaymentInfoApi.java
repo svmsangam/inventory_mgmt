@@ -1,11 +1,13 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.api.iapi.IPaymentApi;
 import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.model.converter.PaymentInfoConverter;
 import com.inventory.core.model.dto.PaymentDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.entity.PaymentInfo;
+import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.PaymentInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     private IPaymentApi paymentApi;
 
     @Autowired
+    private ILedgerInfoApi ledgerInfoApi;
 
     @Override
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
@@ -44,7 +47,13 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         PaymentInfo paymentInfo = paymentInfoConverter.convertToEntity(paymentInfoDTO);
 
-        return paymentInfoConverter.convertToDto(paymentInfoRepository.save(paymentInfo));
+        paymentInfo = paymentInfoRepository.save(paymentInfo);
+
+        if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
+            ledgerInfoApi.saveOnPayment(paymentInfo.getId());
+        }
+
+        return paymentInfoConverter.convertToDto(paymentInfo);
     }
 
     @Override
