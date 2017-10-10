@@ -368,7 +368,15 @@ $(document).ready(function () {
 
         var css = "";
 
+        var js = "";
+
+        var script = "";
+
         var myStylesLocation = pageContext + "/resources/css/bootstrap.min.css";
+
+        var myJSScriptLocation = pageContext + "/resources/js/jquery.min.js";
+
+        var myScriptLocation = pageContext + "/resources/js/bootstrap.min.js";
 
         $.ajax({
             url: myStylesLocation,
@@ -378,8 +386,27 @@ $(document).ready(function () {
             css += data;
         })
 
+        $.ajax({
+            url: myJSScriptLocation,
+            type: "GET",
+            async: false
+        }).done(function(data){
+            js += data;
+        })
+
+        $.ajax({
+            url: myScriptLocation,
+            type: "GET",
+            async: false
+        }).done(function(data){
+            script += data;
+        })
+
         mywindow.document.write('<html><head><title></title>');
         mywindow.document.write('<style type="text/css">'+css+' </style>');
+        mywindow.document.write('<script'+js+' </script>');
+        mywindow.document.write('<script'+script+' </script>');
+        mywindow.document.write('<script>$(document).ready(function () {$(".no-print").hide(); alert("this is print");})</script>');
         //  mywindow.document.write('<link rel="stylesheet" href="${pageContext.request.contextPath}/ui/css/bootstrap.min.css" type="text/css" media="print"/>');
         mywindow.document.write('</head><body >');
         mywindow.document.write(html);

@@ -37,4 +37,43 @@ dependencies {
     //compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '3.2.0.RELEASE'
     compile 'org.springframework.security:spring-security-taglibs:3.2.7.RELEASE'
 
+
+
+    // https://mvnrepository.com/artifact/ar.com.fdvs/DynamicJasper
+    compile group: 'ar.com.fdvs', name: 'DynamicJasper', version: '5.1.0'
+
+
+    //mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.0.33'
+
+
+    // https://mvnrepository.com/artifact/tomcat/tomcat-juli
+    compile group: 'tomcat', name: 'tomcat-juli', version: '5.5.23'
+
+
+// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.0.33'
+
+    // https://mvnrepository.com/artifact/org.olap4j/olap4j
+    compile group: 'org.olap4j', name: 'olap4j', version: '1.2.0'
+
+
+// https://mvnrepository.com/artifact/com.lowagie/itext
+    compile group: 'com.lowagie', name: 'itext', version: '2.1.7'
+
+
+    compile ("net.sf.dozer:dozer:5+"){
+        exclude group: 'commons-collections'
+    }
+
+   // compile 'commons-collections:commons-collections:3.2.1'
+
+    compile ('ar.com.fdvs:DynamicJasper:5+'){
+        exclude group: 'org.springframework'
+        exclude group: 'commons-beanutils'
+        exclude group: 'commons-collections'
+        exclude group: 'commons-logging'
+        exclude group: 'aopalliance'
+    }
+
 }

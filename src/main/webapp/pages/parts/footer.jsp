@@ -112,6 +112,9 @@
                         </a>
                     </li>
 
+                    <li><a href="${pageContext.request.contextPath}/report/invoice/pdf?invoiceId=1" target="_blank"><i class="fa fa-square"></i><span>Test PDF</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/report/invoice/xls?invoiceId=1" target="_blank"><i class="fa fa-square"></i><span>Test XLS</span></a></li>
                     <%--<li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
                                 <span class="pull-right-container">
@@ -307,6 +310,43 @@ immediately after the control sidebar -->
     $('ul.treeview-menu a').filter(function() {
         return this.href == url;
     }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active').end().addClass('active');
+
+
+
+    $(document).ready(function () {
+        $('#testMe').click(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "${pageContext.request.contextPath}/report/invoice/pdf",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data : {invoiceId:1},
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        alert(msg);
+                    }
+
+                    if (data.status === 'Failure') {
+                        alert(msg);
+                    }
+
+                    if (data.status === 'Validation Failed') {
+
+                        alert(msg);
+                    }
+                }
+            });
+        });
+    });
+
 </script>
 </body>
 </html>

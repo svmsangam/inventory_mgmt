@@ -60,6 +60,8 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
         dto.setRemarks(entity.getRemarks());
         dto.setStatus(entity.getStatus());
         dto.setStoreInfoId(entity.getStoreInfo().getId());
+        dto.setDate(entity.getCreated());
+        dto.setAccountNo(entity.getAccountInfo().getAcountNumber());
 
         return dto;
     }

@@ -7,83 +7,6 @@
 <%@include file="/pages/parts/header.jsp" %>
 <%@include file="/pages/parts/sidebar.jsp" %>
 
-<style>
-    @media print {
-        *,
-        *:before,enter code here
-        *:after {
-            color: #000 !important;
-            text-shadow: none !important;
-            background: transparent !important;
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-        }
-        a,
-        a:visited {
-            text-decoration: underline;
-        }
-        a[href]:after {
-            content: " (" attr(href) ")";
-        }
-        abbr[title]:after {
-            content: " (" attr(title) ")";
-        }
-        a[href^="#"]:after,
-        a[href^="javascript:"]:after {
-            content: "";
-        }
-        pre,
-        blockquote {
-            border: 1px solid #999;
-
-            page-break-inside: avoid;
-        }
-        thead {
-            display: table-header-group;
-        }
-        tr,
-        img {
-            page-break-inside: avoid;
-        }
-        img {
-            max-width: 100% !important;
-        }
-        p,
-        h2,
-        h3 {
-            orphans: 3;
-            widows: 3;
-        }
-        h2,
-        h3 {
-            page-break-after: avoid;
-        }
-        select {
-            background: #fff !important;
-        }
-        .navbar {
-            display: none;
-        }
-        .btn > .caret,
-        .dropup > .btn > .caret {
-            border-top-color: #000 !important;
-        }
-        .label {
-            border: 1px solid #000;
-        }
-        .table {
-            border-collapse: collapse !important;
-        }
-        .table td,
-        .table th {
-            background-color: #fff !important;
-        }
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #ddd !important;
-        }
-    }
-</style>
 <input type="hidden" value="${pageContext.request.contextPath}" id ="page">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -147,7 +70,7 @@
                 </address>
             </div>
             <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
+            <div class="col-sm-4 invoice-col no-print">
                 <%--<b>Invoice #${invoice.invoiceNo}</b><br>
                 <br>--%>
                 <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
@@ -199,7 +122,7 @@
 
             <c:if test="${invoice.description ne null and '' ne invoice.description}">
                 <!-- accepted payments column -->
-                <div class="col-xs-6">
+                <div class="col-xs-6 no-print">
                     <p class="lead">Remark:</p>
 
                     <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
