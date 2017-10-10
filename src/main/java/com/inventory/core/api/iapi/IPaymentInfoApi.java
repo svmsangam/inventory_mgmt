@@ -20,6 +20,6 @@ public interface IPaymentInfoApi {
 
     PaymentInfoDTO getByIdAndStatusAndStoreAndInvoiceInfo(long paymentInfoId , Status status , long storeId , long invoiceInfoId);
 
-    List<PaymentInfoDTO> getByStatusAndStoreAndInvoiceInfo(Status status , long storeId , long invoiceInfoId);
+    List<PaymentInfoDTO> getAllByStatusInAndStoreAndInvoiceInfo(List<Status> status , long storeId , long invoiceInfoId);
 
 }

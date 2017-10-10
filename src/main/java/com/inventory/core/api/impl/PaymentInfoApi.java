@@ -68,7 +68,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     }
 
     @Override
-    public List<PaymentInfoDTO> getByStatusAndStoreAndInvoiceInfo(Status status, long storeId, long invoiceInfoId) {
-        return paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusAndStoreAndInvoiceInfo(status , storeId , invoiceInfoId));
+    public List<PaymentInfoDTO> getAllByStatusInAndStoreAndInvoiceInfo(List<Status> status, long storeId, long invoiceInfoId) {
+        return paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusInAndStoreAndInvoiceInfo(status , storeId , invoiceInfoId));
     }
 }
