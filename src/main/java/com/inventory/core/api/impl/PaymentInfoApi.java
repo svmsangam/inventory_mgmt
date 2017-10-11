@@ -7,10 +7,12 @@ import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.model.converter.PaymentInfoConverter;
 import com.inventory.core.model.dto.PaymentDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
+import com.inventory.core.model.entity.Payment;
 import com.inventory.core.model.entity.PaymentInfo;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.PaymentInfoRepository;
+import com.inventory.core.model.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,9 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     @Override
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
 
@@ -59,6 +64,23 @@ public class PaymentInfoApi implements IPaymentInfoApi{
         return paymentInfoConverter.convertToDto(paymentInfo);
     }
 
+    @Override
+    public long collectChuque(long paymentInfoId) {
+
+        PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
+
+        Payment payment = paymentInfo.getReceivedPayment();
+
+        payment.setStatus(Status.ACTIVE);
+
+        paymentRepository.save(payment);
+
+        invoiceInfoApi.updateOnPayment(paymentInfoId);
+
+        ledgerInfoApi.saveOnPayment(paymentInfoId);
+
+        return paymentInfo.getInvoiceInfo().getId();
+    }
     @Override
     public PaymentInfoDTO getById(long paymentInfoId) {
         return paymentInfoConverter.convertToDto(paymentInfoRepository.findById(paymentInfoId));

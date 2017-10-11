@@ -49,7 +49,7 @@ public class PaymentInfoController {
     private PaymentInfoValidation paymentInfoValidation;
 
     @GetMapping(value = "/add")
-    public String list(@RequestParam("invoiceId") Long invoiceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String add(@RequestParam("invoiceId") Long invoiceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -188,5 +188,61 @@ public class PaymentInfoController {
 
         redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "payment made successfully");
         return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
+    }
+
+    @GetMapping(value = "chuque/collect")
+    public String collectChuque(@RequestParam("paymentId") Long paymentId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+        /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_UPDATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            if (paymentId == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
+                return "redirect:/invoice/list";//store not assigned page
+            }
+
+            if (paymentId <= 0) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
+                return "redirect:/invoice/list";//store not assigned page
+            }
+
+            if (paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+                return "redirect:/invoice/list";//store not assigned page
+            }
+
+            long invoiceId = paymentInfoApi.collectChuque(paymentId);
+
+        } catch (Exception e) {
+
+            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "redirect:/paymentinfo/add?invoiceId=5";
     }
 }

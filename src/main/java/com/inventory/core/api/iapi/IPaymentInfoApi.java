@@ -12,6 +12,8 @@ public interface IPaymentInfoApi {
     
     PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO);
 
+    long collectChuque(long paymentInfoId);
+
     PaymentInfoDTO getById(long paymentInfoId);
 
     PaymentInfoDTO getByIdAndStatus(long paymentInfoId , Status status);
