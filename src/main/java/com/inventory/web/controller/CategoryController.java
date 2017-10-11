@@ -44,7 +44,7 @@ public class CategoryController {
     public String index(RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/CategoryInfo/listSale";
+        return "redirect:/CategoryInfo/list";
     }
 
     @GetMapping(value = "/list")
@@ -88,7 +88,7 @@ public class CategoryController {
             return "redirect:/500";
         }
 
-        return "category/listSale";
+        return "category/list";
     }
 
     @GetMapping(value = "/add")
@@ -186,7 +186,7 @@ public class CategoryController {
             return "redirect:/500";
         }
 
-        return "redirect:/category/listSale";
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/edit")

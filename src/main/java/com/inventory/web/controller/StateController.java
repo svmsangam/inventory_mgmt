@@ -47,7 +47,7 @@ public class StateController {
             }
 
             modelMap.put(StringConstants.STATE_LIST, stateService.list());
-            return "state/listStates";
+            return "state/list";
 
 
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class StateController {
             }
 
             stateService.delete(id);
-            return "redirect:/state/listSale";
+            return "redirect:/state/list";
 
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
@@ -106,7 +106,7 @@ public class StateController {
             stateError = stateValidation.stateValidationOnSave(stateDto);
             if (stateError.isValid()) {
                 stateService.save(stateDto);
-                return "redirect:/state/listSale";
+                return "redirect:/state/list";
             } else {
                 modelMap.put(StringConstants.ERROR, stateError);
                 modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());
@@ -152,7 +152,7 @@ public class StateController {
             stateError = stateValidation.stateValidationOnSave(stateDto);
             if (stateError.isValid()) {
                 stateService.update(stateDto);
-                return "redirect:/state/listSale";
+                return "redirect:/state/list";
             } else {
                 modelMap.put(StringConstants.ERROR, stateError);
                 modelMap.put(StringConstants.COUNTRY_LIST, countryService.list());

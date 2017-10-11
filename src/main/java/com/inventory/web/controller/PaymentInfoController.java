@@ -147,12 +147,12 @@ public class PaymentInfoController {
 
             if (paymentInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/listSale";
+                return "redirect:/invoice/list";
             }
 
             if (paymentInfoDTO.getInvoiceInfoId() <= 0){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/listSale";
+                return "redirect:/invoice/list";
             }
 
             paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
@@ -222,17 +222,17 @@ public class PaymentInfoController {
 
             if (paymentId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/listSale";//store not assigned page
+                return "redirect:/invoice/list";//store not assigned page
             }
 
             if (paymentId <= 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/listSale";//store not assigned page
+                return "redirect:/invoice/list";//store not assigned page
             }
 
             if (paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE) == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                return "redirect:/invoice/listSale";//store not assigned page
+                return "redirect:/invoice/list";//store not assigned page
             }
 
             long invoiceId = paymentInfoApi.collectChuque(paymentId);

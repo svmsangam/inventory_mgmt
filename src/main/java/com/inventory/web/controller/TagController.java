@@ -76,7 +76,7 @@ public class TagController {
             return "redirect:/500";
         }
 
-        return "tag/listSale";
+        return "tag/list";
     }
 
     @GetMapping(value = "/add")
@@ -170,7 +170,7 @@ public class TagController {
             return "redirect:/500";
         }
 
-        return "redirect:/tag/listSale";
+        return "redirect:/tag/list";
     }
 
 
@@ -195,7 +195,7 @@ public class TagController {
 
         try {
 
-            return "redirect:/tag/listSale";
+            return "redirect:/tag/list";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,7 +208,7 @@ public class TagController {
     @GetMapping(value = "/{tagId}")
     public String show(@PathVariable("tagId") Long tagId) {
 
-        return "redirect:/tag/listSale";
+        return "redirect:/tag/list";
     }
 
     @GetMapping(value = "/delete")
@@ -216,7 +216,7 @@ public class TagController {
 
         try {
 
-            return "redirect:/tag/listSale";
+            return "redirect:/tag/list";
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";

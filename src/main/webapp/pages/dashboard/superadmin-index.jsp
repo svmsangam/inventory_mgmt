@@ -351,7 +351,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer text-center">
-                    <a href="${pageContext.request.contextPath}product/list" class="uppercase">View All Products</a>
+                    <a href="${pageContext.request.contextPath}/invoice/list" class="uppercase">View All Invoices</a>
                 </div>
                 <!-- /.box-footer -->
             </div>

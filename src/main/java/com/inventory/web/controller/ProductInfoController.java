@@ -227,12 +227,12 @@ public class ProductInfoController {
 
             if (productId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid product");
-                return "redirect:/product/listSale";//store not assigned page
+                return "redirect:/product/list";//store not assigned page
             }
 
             if (productId < 1) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid product");
-                return "redirect:/product/listSale";//store not assigned page
+                return "redirect:/product/list";//store not assigned page
             }
 
             modelMap.put(StringConstants.PRODUCT, productInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE));

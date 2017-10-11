@@ -45,7 +45,7 @@ public class InvoiceController {
     @GetMapping(value = "/")
     public String index() {
 
-        return "redirect:/invoice/listSale";
+        return "redirect:/invoice/list";
     }
 
     @GetMapping(value = "/list")
@@ -111,7 +111,7 @@ public class InvoiceController {
 
             return "redirect:/";
         }
-        return "invoice/listSale";
+        return "invoice/list";
     }
 
     @GetMapping(value = "/{invoiceId}")
@@ -149,12 +149,12 @@ public class InvoiceController {
 
             if (invoiceId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
-                return "redirect:/invoice/listSale";
+                return "redirect:/invoice/list";
             }
 
             if (invoiceId < 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
-                return "redirect:/invoice/listSale";
+                return "redirect:/invoice/list";
             }
 
             InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId() , Status.ACTIVE);

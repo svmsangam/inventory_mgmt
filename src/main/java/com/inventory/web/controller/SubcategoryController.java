@@ -47,7 +47,7 @@ public class SubcategoryController {
     public String index(RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/subcategory/listSale";
+        return "redirect:/subcategory/list";
     }
 
     @GetMapping(value = "/list")
@@ -88,7 +88,7 @@ public class SubcategoryController {
             return "redirect:/500";
         }
 
-        return "subcategory/listSale";
+        return "subcategory/list";
     }
 
     @GetMapping(value = "/add")
@@ -187,7 +187,7 @@ public class SubcategoryController {
             return "redirect:/500";
         }
 
-        return "redirect:/subcategory/listSale";
+        return "redirect:/subcategory/list";
     }
 
     @GetMapping(value = "/edit")
@@ -200,18 +200,18 @@ public class SubcategoryController {
     @PostMapping(value = "/update")
     public String update(RedirectAttributes redirectAttributes) {
 
-        return "redirect:/subcategory/listSale";
+        return "redirect:/subcategory/list";
     }
 
     @GetMapping(value = "/show")
     public String show(RedirectAttributes redirectAttributes) {
 
-        return "redirect:/subcategory/listSale";
+        return "redirect:/subcategory/list";
     }
 
     @GetMapping(value = "/delete")
     public String delete(@RequestParam("subcategory") long subcategoryId, RedirectAttributes redirectAttributes) {
 
-        return "redirect:/subcategory/listSale";
+        return "redirect:/subcategory/list";
     }
 }
