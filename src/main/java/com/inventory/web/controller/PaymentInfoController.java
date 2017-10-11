@@ -80,19 +80,19 @@ public class PaymentInfoController {
 
             if (invoiceId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             if (invoiceId <= 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
 
             if (invoiceInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice not found");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
@@ -147,12 +147,12 @@ public class PaymentInfoController {
 
             if (paymentInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/list";
+                return "redirect:/invoice/listSale";
             }
 
             if (paymentInfoDTO.getInvoiceInfoId() <= 0){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/list";
+                return "redirect:/invoice/listSale";
             }
 
             paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
@@ -222,17 +222,17 @@ public class PaymentInfoController {
 
             if (paymentId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             if (paymentId <= 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             if (paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE) == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                return "redirect:/invoice/list";//store not assigned page
+                return "redirect:/invoice/listSale";//store not assigned page
             }
 
             long invoiceId = paymentInfoApi.collectChuque(paymentId);

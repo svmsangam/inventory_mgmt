@@ -80,7 +80,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "unit/list";
+        return "unit/listSale";
     }
 
     @GetMapping(value = "/add")
@@ -175,7 +175,7 @@ public class UnitController {
             return "redirect:/500";
         }
 
-        return "redirect:/unit/list";
+        return "redirect:/unit/listSale";
     }
 
     @GetMapping(value = "/edit")
@@ -201,7 +201,7 @@ public class UnitController {
 
 
             redirectAttributes.addFlashAttribute("message", "UnitInfo Edited Successfully");
-            return "redirect:/unit/list";
+            return "redirect:/unit/listSale";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +230,7 @@ public class UnitController {
 
         try {
 
-            return "redirect:/unit/list";
+            return "redirect:/unit/listSale";
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -92,9 +92,6 @@
                                         </c:if>
 
                                     </td>
-                                    <td>
-
-                                    </td>
                                 </tr>
 
                             </c:forEach>

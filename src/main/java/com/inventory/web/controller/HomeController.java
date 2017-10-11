@@ -1,7 +1,12 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.IOrderInfoApi;
+import com.inventory.core.api.iapi.IStockInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.ParameterConstants;
 import com.inventory.web.util.StringConstants;
@@ -23,6 +28,15 @@ public class HomeController {
 
     @Autowired
     private IUserApi userApi;
+
+    @Autowired
+    private IStockInfoApi stockInfoApi;
+
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
+
+    @Autowired
+    private IOrderInfoApi orderInfoApi;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String toTestJspPage() {
@@ -47,7 +61,7 @@ public class HomeController {
     //for business owner
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String getDashboard(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+    public String getDashboard(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes , ModelMap modelMap) throws IOException {
 
         InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
@@ -55,6 +69,20 @@ public class HomeController {
             redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
             return "redirect:/logout";
         }
+
+        if (currentUser.getStoreId() == null) {
+            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+            return "redirect:/logout";//store not assigned page
+        }
+
+        if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+            modelMap.put(StringConstants.TOTALSTOCK , stockInfoApi.getTotalStockByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.TOTALSALE , invoiceInfoApi.getTotalAmountByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.TOTALUSER , userApi.getTotalUserByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.listSale(Status.ACTIVE , currentUser.getStoreId() , 0 , 6));
+        }
+
 
         return "dashboard/index";
 

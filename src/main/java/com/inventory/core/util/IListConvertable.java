@@ -10,7 +10,7 @@ import java.util.List;
 public interface IListConvertable<E, D> {
 
     /***
-     * Convert Entity List to DTO list
+     * Convert Entity List to DTO listSale
      *
      * @param entities
      * @return

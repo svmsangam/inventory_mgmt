@@ -74,7 +74,7 @@ public class CountryController {
             if (countryError.isValid()) {
                 countryService.save(countryDto);
                 redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully saved");
-                return "redirect:/country/list";
+                return "redirect:/country/listSale";
             } else {
                 redirectAttributes.addAttribute(StringConstants.ERROR, "Failed to save check the field errors");
                 modelMap.put(StringConstants.ERROR, countryError);

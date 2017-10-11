@@ -107,4 +107,8 @@ public class StringConstants {
     public static String PAYMENTLIST = "paymentList";
     public static String PAYMENT = "payment";
     public static String PAYMENTERROR = "paymentError";
+
+    public static String TOTALSTOCK = "totalStock";
+    public static String TOTALSALE = "totalSale";
+    public static String TOTALUSER = "totalUser";
 }

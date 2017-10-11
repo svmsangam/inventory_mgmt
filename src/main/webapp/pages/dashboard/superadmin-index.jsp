@@ -27,9 +27,9 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>${totalStock}</h3>
 
-                        <p>Total Stock</p>
+                        <p>Total Stock (units)</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-cube"></i>
@@ -42,9 +42,9 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>530000</h3>
+                        <h3><fmt:formatNumber type="number" maxFractionDigits="2" groupingUsed="true" value="${totalSale}"/></h3>
 
-                        <p>Total Sales</p>
+                        <p>Total Sales (Rs)</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -72,7 +72,7 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>${totalUser}</h3>
 
                         <p>Total Users</p>
                     </div>
@@ -250,46 +250,52 @@
                                 <th>Order ID</th>
                                 <th>Order Date</th>
                                 <th>Delivery Date</th>
+                                <th>Amount</th>
                                 <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR9842</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                            </tr>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                            </tr>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-info">Processing</span></td>
-                            </tr>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                <td>12 sept,2017</td>
-                                <td>15 sept,2017</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                            </tr>
+
+                            <c:if test="${fn:length(orderList) gt 0}">
+                                <c:forEach items="${orderList}" var="order">
+
+                                    <tr>
+                                        <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
+                                        <td>
+
+                                        <c:if test="${order.saleTrack eq 'PENDDING'}">
+                                            <span class="label label-primary">Pending</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                                            <span class="label label-default">Accepted</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'PACKED'}">
+                                            <span class="label label-warning">Packed</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                                            <span class="label label-info">Shipped</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                                            <span class="label label-success">Delivered</span>
+                                        </c:if>
+
+                                        <c:if test="${order.saleTrack eq 'CANCEL'}">
+                                            <span class="label label-danger">Canceled</span>
+                                        </c:if>
+
+                                        </td>
+
+                                    </tr>
+                                </c:forEach>
+
+                            </c:if>
                             </tbody>
                         </table>
                     </div>

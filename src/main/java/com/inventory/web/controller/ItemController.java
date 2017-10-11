@@ -50,7 +50,7 @@ public class ItemController {
     public String index(RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/item/list";
+        return "redirect:/item/listSale";
     }
 
     @GetMapping(value = "/list")
@@ -63,7 +63,7 @@ public class ItemController {
             e.printStackTrace();
             return "redirect:/";
         }
-        return "item/list";
+        return "item/listSale";
     }
 
     @GetMapping(value = "/add")
@@ -98,17 +98,17 @@ public class ItemController {
 
             if (productId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Product required");
-                return "redirect:/product/list";
+                return "redirect:/product/listSale";
             }
 
             if (productId < 1) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid product");
-                return "redirect:/product/list";
+                return "redirect:/product/listSale";
             }
 
             if (productInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE) == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "product not found");
-                return "redirect:/product/list";
+                return "redirect:/product/listSale";
             }
 
             modelMap.put(StringConstants.PRODUCT, productId);
@@ -154,12 +154,12 @@ public class ItemController {
 
             if (itemInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Bad request");
-                return "redirect:/product/list";//store not assigned page
+                return "redirect:/product/listSale";//store not assigned page
             }
 
             if (itemInfoDTO.getProductId() == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Bad request");
-                return "redirect:/product/list";//store not assigned page
+                return "redirect:/product/listSale";//store not assigned page
             }
 
             ItemInfoError error = itemInfoValidation.onSave(itemInfoDTO, currentUser.getStoreId(), bindingResult);
@@ -187,13 +187,13 @@ public class ItemController {
     @GetMapping(value = "/edit")
     public String edit(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
 
-        return "redirect:/item/list";
+        return "redirect:/item/listSale";
     }
 
     @PostMapping(value = "/update")
     public String update() {
 
-        return "redirect:/item/list";
+        return "redirect:/item/listSale";
     }
 
     @GetMapping(value = "/{itemId}")
@@ -220,7 +220,7 @@ public class ItemController {
             return "redirect:/";
         }
 
-        return "redirect:/item/list";
+        return "redirect:/item/listSale";
     }
 
 }

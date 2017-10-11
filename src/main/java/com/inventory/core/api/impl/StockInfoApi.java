@@ -35,6 +35,11 @@ public class StockInfoApi implements IStockInfoApi{
     }
 
     @Override
+    public long getTotalStockByStoreInfoAndStatus(long storeInfoId, Status status) {
+        return stockInfoRepository.findTotalStockByStoreInfoAndStatus(storeInfoId , status);
+    }
+
+    @Override
     public void updateOnItemUpdateInStockOnSaleTrack(SalesOrderStatus track , long productId, int quanity) {
 
         StockInfo stockInfo = stockInfoRepository.findByProductInfo(productId);

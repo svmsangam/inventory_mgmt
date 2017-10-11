@@ -114,7 +114,7 @@ public class CustomerController {
             return "redirect:/500";
         }
 
-        return "customer/list";
+        return "customer/listSale";
     }
 
     @GetMapping(value = "/customer/add")
@@ -205,7 +205,7 @@ public class CustomerController {
             logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
-        return "redirect:/customer/list";
+        return "redirect:/customer/listSale";
     }
 
 
@@ -272,7 +272,7 @@ public class CustomerController {
             return "redirect:/500";
         }
 
-        return "vendor/list";
+        return "vendor/listSale";
     }
 
     @GetMapping(value = "/vendor/add")
@@ -362,6 +362,6 @@ public class CustomerController {
             logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
-        return "redirect:/vendor/list";
+        return "redirect:/vendor/listSale";
     }
 }

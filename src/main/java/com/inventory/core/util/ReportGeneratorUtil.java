@@ -30,13 +30,13 @@ import java.util.List;
  */
 public class ReportGeneratorUtil {
 
-/*    public JasperPrint invoiceReport(List<TransactionDTO> list, String title, String subTitle) throws ColumnBuilderException, JRException, ClassNotFoundException {
+/*    public JasperPrint invoiceReport(List<TransactionDTO> listSale, String title, String subTitle) throws ColumnBuilderException, JRException, ClassNotFoundException {
         Style headerStyle = createHeaderStyle();
         Style detailTextStyle = createDetailTextStyle();
         Style detailNumberStyle = createDetailNumberStyle();
         DynamicReport dynaReport = transactionReportProcessor(title, subTitle, headerStyle, detailTextStyle, detailNumberStyle);
         JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dynaReport, new ClassicLayoutManager(),
-                new JRBeanCollectionDataSource(list));
+                new JRBeanCollectionDataSource(listSale));
 
 //		jp.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
         return jp;

@@ -1,6 +1,7 @@
 package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.OrderInfo;
+import com.inventory.core.model.enumconstant.OrderType;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,11 +22,11 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo , Long>  , 
     @Query("select o from OrderInfo o where o.id = ?1 and o.status = ?2 and o.storeInfo.id = ?3")
     OrderInfo findByIdAndStatusAndStoreInfo(long orderId , Status status , long storeId);
 
-    @Query("select o from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2")
-    List<OrderInfo> findAllByStatusAndStoreInfo(Status status , long storeId , Pageable pageable);
+    @Query("select o from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3")
+    List<OrderInfo> findAllByStatusAndStoreInfoAAndOrderType(Status status , long storeId , OrderType orderType, Pageable pageable);
 
-    @Query("select count (o) from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2")
-    Long countAllByStatusAndStoreInfo(Status status , long storeId );
+    @Query("select count (o) from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3")
+    Long countAllByStatusAndStoreInfoAndOrderType(Status status , long storeId , OrderType orderType);
 
     @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2")
     OrderInfo findByOrderNo(String orderNo , long storeId);

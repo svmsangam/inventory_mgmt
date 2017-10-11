@@ -88,17 +88,17 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
-    public List<OrderInfoDTO> list(Status status, long storeId, int page, int size) {
+    public List<OrderInfoDTO> listSale(Status status, long storeId, int page, int size) {
 
         Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
 
-        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfoAAndOrderType(status , storeId  , OrderType.Sale, pageable));
     }
 
     @Override
-    public long countList(Status status, long storeId) {
+    public long countListSale(Status status, long storeId) {
 
-        Long count = orderInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+        Long count = orderInfoRepository.countAllByStatusAndStoreInfoAndOrderType(status , storeId , OrderType.Sale);
 
         if (count == null) {
             return 0;

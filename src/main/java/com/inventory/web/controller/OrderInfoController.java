@@ -82,7 +82,7 @@ public class OrderInfoController {
 
             int currentpage = page - 1;
 
-            long totalList = orderInfoApi.countList(Status.ACTIVE, currentUser.getStoreId());
+            long totalList = orderInfoApi.countListSale(Status.ACTIVE, currentUser.getStoreId());
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -92,7 +92,7 @@ public class OrderInfoController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.ACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
@@ -187,7 +187,7 @@ public class OrderInfoController {
 
             return "redirect:/";
         }
-        return "redirect:/order/sale/list";
+        return "redirect:/order/sale/listSale";
     }
 
     @GetMapping(value = "sale/{orderId}")
@@ -222,19 +222,19 @@ public class OrderInfoController {
 
             if (orderId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
+                return "redirect:/order/sale/listSale";
             }
 
             if (orderId < 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
+                return "redirect:/order/sale/listSale";
             }
 
             OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE, orderId, currentUser.getStoreId());
 
             if (orderInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
+                return "redirect:/order/sale/listSale";
             }
 
             modelMap.put(StringConstants.ORDER, orderInfoDTO);
@@ -261,7 +261,7 @@ public class OrderInfoController {
             return "redirect:/";
         }
 
-        return "orderRequest/list";
+        return "orderRequest/listSale";
     }
 
     @GetMapping(value = "/addpurchase")
@@ -294,19 +294,19 @@ public class OrderInfoController {
     @GetMapping(value = "/edit")
     public String edit() {
 
-        return "redirect:/orderRequest/list";
+        return "redirect:/orderRequest/listSale";
     }
 
     @PostMapping(value = "/update")
     public String update() {
 
-        return "redirect:/orderRequest/list";
+        return "redirect:/orderRequest/listSale";
     }
 
     @GetMapping(value = "/delete")
     public String delete() {
 
-        return "redirect:/orderRequest/list";
+        return "redirect:/orderRequest/listSale";
     }
 }
 

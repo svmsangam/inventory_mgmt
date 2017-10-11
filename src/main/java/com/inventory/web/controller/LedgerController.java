@@ -19,7 +19,7 @@ public class LedgerController {
     @GetMapping(value = "/")
     public String index() {
 
-        return "redirect:/Ledger/list";
+        return "redirect:/Ledger/listSale";
     }
 
     @GetMapping(value = "/list")
@@ -32,7 +32,7 @@ public class LedgerController {
             return "redirect:/";
         }
 
-        return "ledger/list";
+        return "ledger/listSale";
     }
 
 

@@ -138,7 +138,7 @@ public class UserController {
 
                 if (!error.isValid()) {
                     redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-                    return "redirect:/user/list";
+                    return "redirect:/user/listSale";
                 }
 
                 InvUserDTO userDTO = userApi.getUserWithId(userId);
@@ -186,7 +186,7 @@ public class UserController {
 
                 if (!error.isValid()) {
                     redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-                    return "redirect:/user/list";
+                    return "redirect:/user/listSale";
                 }
 
                 UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
@@ -230,17 +230,17 @@ public class UserController {
 
                 if (!error.isValid()) {
                     redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-                    return "redirect:/user/list";
+                    return "redirect:/user/listSale";
                 }
 
                 InvUserDTO userDTO = userApi.updateEnable(userId);
 
 				/*if (!userDTO.getEnable()){
-					sessionInfo.list(userDTO.getInventoryuser());
+					sessionInfo.listSale(userDTO.getInventoryuser());
 				}*/
 
                 redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user updated successfully");
-                return "redirect:/user/list";
+                return "redirect:/user/listSale";
 
             } else {
 

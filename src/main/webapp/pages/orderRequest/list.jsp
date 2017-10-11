@@ -56,7 +56,7 @@
                                         href="${pageContext.request.contextPath}/order/list/saleOrder?pageNo=${currentpage}&sort=deliveryDate&direction=${direction}">deliveryDate</a></c:when><c:otherwise><a
                                         href="${pageContext.request.contextPath}/order/list/saleOrder?pageNo=${currentpage}&sort=deliveryDate&direction=desc">deliveryDate</a></c:otherwise></c:choose>
                                 </th>
-                                <%-- <th><c:choose><c:when test="${sort eq 'orderType'}"><a href="${pageContext.request.contextPath}/order/list/saleOrder?pageNo=${currentpage}&sort=orderType&direction=${direction}">orderType</a></c:when><c:otherwise><a href="${pageContext.request.contextPath}/order/list/saleOrder?pageNo=${currentpage}&sort=orderType&direction=desc">orderType</a></c:otherwise></c:choose></th>--%>
+                                <%-- <th><c:choose><c:when test="${sort eq 'orderType'}"><a href="${pageContext.request.contextPath}/order/listSale/saleOrder?pageNo=${currentpage}&sort=orderType&direction=${direction}">orderType</a></c:when><c:otherwise><a href="${pageContext.request.contextPath}/order/listSale/saleOrder?pageNo=${currentpage}&sort=orderType&direction=desc">orderType</a></c:otherwise></c:choose></th>--%>
 
                                 <th><c:choose><c:when test="${sort eq 'totalAmount'}"><a
                                         href="${pageContext.request.contextPath}/order/list/saleOrder?pageNo=${currentpage}&sort=totalAmount&direction=${direction}">totalAmount</a></c:when><c:otherwise><a

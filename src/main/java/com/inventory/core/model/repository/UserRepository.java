@@ -31,4 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Query("select u from User u where u.status = ?1 and u.userType in (?2) and u.storeInfo.id = ?3 order by u.username asc ")
     List<User> findAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeId);
+
+    @Query("select count (u) from User u where u.storeInfo.id = ?1 and u.status = ?2 ")
+    long countAllByStoreInfoAndStatus(long storeInfoId , Status status);
 }

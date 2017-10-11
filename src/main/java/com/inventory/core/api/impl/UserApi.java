@@ -41,6 +41,11 @@ public class UserApi implements IUserApi {
     private UserPermissionRepository userPermissionRepository;
 
     @Override
+    public long getTotalUserByStoreInfoAndStatus(long storeInfoId, Status status) {
+        return userRepository.countAllByStoreInfoAndStatus(storeInfoId , status);
+    }
+
+    @Override
     public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
 
         userDTO.setEnable(false);

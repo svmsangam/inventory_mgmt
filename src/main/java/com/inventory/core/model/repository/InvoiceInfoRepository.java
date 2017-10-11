@@ -36,4 +36,6 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
     @Query("select count (i) from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2")
     long countAllByStatusAndStoreInfo(Status status , long storeInfoId);
 
+    @Query("select sum (i.totalAmount) from InvoiceInfo i where i.storeInfo.id = ?1 and i.status = ?2")
+    double findTotalAmountByStoreAndStatus(long storeInfoId , Status status);
 }

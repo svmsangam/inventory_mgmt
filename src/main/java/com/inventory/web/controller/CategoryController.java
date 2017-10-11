@@ -44,7 +44,7 @@ public class CategoryController {
     public String index(RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/CategoryInfo/list";
+        return "redirect:/CategoryInfo/listSale";
     }
 
     @GetMapping(value = "/list")
@@ -88,7 +88,7 @@ public class CategoryController {
             return "redirect:/500";
         }
 
-        return "category/list";
+        return "category/listSale";
     }
 
     @GetMapping(value = "/add")
@@ -186,7 +186,7 @@ public class CategoryController {
             return "redirect:/500";
         }
 
-        return "redirect:/category/list";
+        return "redirect:/category/listSale";
     }
 
     @GetMapping(value = "/edit")
@@ -199,19 +199,19 @@ public class CategoryController {
     @PostMapping(value = "/update")
     public String update(RedirectAttributes redirectAttributes) {
 
-        return "redirect:/category/list";
+        return "redirect:/category/listSale";
     }
 
     @GetMapping(value = "/{categoryId}")
     public String show() {
 
-        return "redirect:/category/list";
+        return "redirect:/category/listSale";
     }
 
     @GetMapping(value = "/delete")
     public String delete(@RequestParam("category") long categoryId, RedirectAttributes redirectAttributes) {
 
-        return "redirect:/category/list";
+        return "redirect:/category/listSale";
     }
 }
 

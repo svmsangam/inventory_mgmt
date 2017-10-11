@@ -29,4 +29,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo, Long>, Jpa
 
     @Query("select s from StockInfo s where s.status = ?1 and s.productInfo.storeInfo.id = ?2 order by s.productInfo.name asc ")
     List<StockInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
+
+    @Query("select sum (s.inStock) from StockInfo s where s.productInfo.storeInfo.id = ?1 and s.status = ?2")
+    long findTotalStockByStoreInfoAndStatus(long storeId , Status status);
 }

@@ -46,6 +46,11 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     private PaymentInfoRepository paymentInfoRepository;
 
     @Override
+    public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
+        return invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+    }
+
+    @Override
     public String generatInvoiceNumber(long storeId) {
         long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Invoice);
 

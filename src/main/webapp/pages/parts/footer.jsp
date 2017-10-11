@@ -56,22 +56,22 @@
 
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                    <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i>
+                    <li class="active"><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i>
                         <span>Sales Order Pending <span class="badge">26</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Accepted <span
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Accepted <span
                             class="badge">6</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Packed <span
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Packed <span
                             class="badge">14</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Sales Order Shipped <span
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Shipped <span
                             class="badge">10</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Pending <span
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Pending <span
                             class="badge">3</span></span></a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>Purchase Order Issued <span
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Issued <span
                             class="badge">1</span></span></a></li>
                 </sec:authorize>
             </ul>
