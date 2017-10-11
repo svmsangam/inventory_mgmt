@@ -24,5 +24,7 @@ public interface IInvoiceInfoApi {
 
     List<InvoiceInfoDTO> list(Status status , long storeId , int page , int size);
 
+    List<InvoiceInfoDTO> listTopReceivable(Status status , long storeId , int page , int size);
+
     long countlist(Status status , long storeId);
 }

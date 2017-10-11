@@ -87,7 +87,7 @@ public class ProductInfoController {
             return "redirect:/500";
         }
 
-        return "product/listSale";
+        return "product/list";
     }
 
     @GetMapping(value = "/add")

@@ -147,6 +147,14 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    public List<InvoiceInfoDTO> listTopReceivable(Status status, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"receivableAmount" , Sort.Direction.DESC);
+
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllTopReceivableByStatusAndStoreInfo(status , storeId , pageable));
+    }
+
+    @Override
     public long countlist(Status status, long storeId) {
         return invoiceInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
     }
