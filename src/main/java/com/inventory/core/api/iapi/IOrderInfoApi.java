@@ -19,6 +19,8 @@ public interface IOrderInfoApi {
 
     long countListSale(Status status , long storeId);
 
+    long countSaleByStatusAndStoreInfoAndSaleTrack(Status status , long storeId , SalesOrderStatus  track);
+
     String generatOrderNumber(long storeId);
 
     OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track , long createdById);

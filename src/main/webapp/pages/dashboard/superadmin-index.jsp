@@ -130,7 +130,7 @@
 
                                 <div class="progress-group">
                                     <span class="progress-text">Order Pending</span>
-                                    <span class="progress-number"><b>160</b></span>
+                                    <span class="progress-number"><b>${totalPendingSale}</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-primary" style="width: 80%"></div>
@@ -139,7 +139,7 @@
 
                                 <div class="progress-group">
                                     <span class="progress-text">Order Accepted</span>
-                                    <span class="progress-number"><b>160</b></span>
+                                    <span class="progress-number"><b>${totalAcceptedSale}</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar label-default" style="width: 80%"></div>
@@ -149,7 +149,7 @@
                                 <!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Order Packed</span>
-                                    <span class="progress-number"><b>310</b></span>
+                                    <span class="progress-number"><b>${totalPackedSale}</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
@@ -158,7 +158,7 @@
                                 <!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Order Shipped</span>
-                                    <span class="progress-number"><b>480</b></span>
+                                    <span class="progress-number"><b>${totalShipedSale}</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
@@ -167,7 +167,7 @@
                                 <!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Order Cancelled</span>
-                                    <span class="progress-number"><b>250</b></span>
+                                    <span class="progress-number"><b>${totalCanceledSale}</b></span>
 
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-red" style="width: 80%"></div>

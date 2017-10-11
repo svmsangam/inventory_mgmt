@@ -111,4 +111,10 @@ public class StringConstants {
     public static String TOTALSTOCK = "totalStock";
     public static String TOTALSALE = "totalSale";
     public static String TOTALUSER = "totalUser";
+
+    public static String TOTALPENDINGSALE = "totalPendingSale";
+    public static String TOTALACCEPTEDGSALE = "totalAcceptedSale";
+    public static String TOTALSHIPEDSALE = "totalShipedSale";
+    public static String TOTALPACKEDSALE = "totalPackedSale";
+    public static String TOTALCANCELEDSALE = "totalCanceledSale";
 }

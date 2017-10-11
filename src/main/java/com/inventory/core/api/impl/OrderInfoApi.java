@@ -108,6 +108,11 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
+    public long countSaleByStatusAndStoreInfoAndSaleTrack(Status status, long storeId, SalesOrderStatus track) {
+        return orderInfoRepository.countAllSaleByStatusAndStoreInfoAndOrderTypeAndSaleTrack(status , storeId , OrderType.Sale , track);
+    }
+
+    @Override
     public String generatOrderNumber(long storeId) {
 
         Long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Order);

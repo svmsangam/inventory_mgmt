@@ -2,6 +2,7 @@ package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.enumconstant.OrderType;
+import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,9 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo , Long>  , 
 
     @Query("select count (o) from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3")
     Long countAllByStatusAndStoreInfoAndOrderType(Status status , long storeId , OrderType orderType);
+
+    @Query("select count (o) from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3 and o.saleTrack = ?4")
+    long countAllSaleByStatusAndStoreInfoAndOrderTypeAndSaleTrack(Status status , long storeId , OrderType orderType , SalesOrderStatus track);
 
     @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2")
     OrderInfo findByOrderNo(String orderNo , long storeId);
