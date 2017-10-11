@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,7 +93,22 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
 
-        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfoAAndOrderType(status , storeId  , OrderType.Sale, pageable));
+        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfoAndOrderType(status , storeId  , OrderType.Sale, pageable));
+    }
+
+    @Override
+    public List<OrderInfoDTO> listTopSale(Status status, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"grandTotal" , Sort.Direction.DESC);
+
+        List<SalesOrderStatus> trackList = new ArrayList<>();
+
+        trackList.add(SalesOrderStatus.PENDDING);
+        trackList.add(SalesOrderStatus.ACCEPTED);
+        trackList.add(SalesOrderStatus.PACKED);
+        trackList.add(SalesOrderStatus.SHIPPED);
+
+        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfoAndOrderTypeAndSaleTrackIn(status , storeId  , OrderType.Sale, trackList, pageable));
     }
 
     @Override

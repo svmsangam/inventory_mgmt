@@ -82,7 +82,7 @@ public class HomeController {
             modelMap.put(StringConstants.TOTALSALE , invoiceInfoApi.getTotalAmountByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TOTALUSER , userApi.getTotalUserByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
 
-            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.listSale(Status.ACTIVE , currentUser.getStoreId() , 0 , 8));
+            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.listTopSale(Status.ACTIVE , currentUser.getStoreId() , 0 , 8));
             modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.listTopReceivable(Status.ACTIVE  , currentUser.getStoreId() , 0 , 5));
 
             modelMap.put(StringConstants.TOTALPENDINGSALE , orderInfoApi.countSaleByStatusAndStoreInfoAndSaleTrack(Status.ACTIVE , currentUser.getStoreId() , SalesOrderStatus.PENDDING));
