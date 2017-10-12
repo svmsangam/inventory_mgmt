@@ -187,7 +187,7 @@ public class OrderInfoController {
 
             return "redirect:/";
         }
-        return "redirect:/order/sale/listSale";
+        return "redirect:/order/sale/list";
     }
 
     @GetMapping(value = "sale/{orderId}")
