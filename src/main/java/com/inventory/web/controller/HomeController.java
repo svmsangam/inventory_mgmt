@@ -1,12 +1,10 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.IInvoiceInfoApi;
-import com.inventory.core.api.iapi.IOrderInfoApi;
-import com.inventory.core.api.iapi.IStockInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.ParameterConstants;
@@ -38,6 +36,9 @@ public class HomeController {
 
     @Autowired
     private IOrderInfoApi orderInfoApi;
+
+    @Autowired
+    private IPaymentInfoApi paymentInfoApi;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String toTestJspPage() {
@@ -71,9 +72,9 @@ public class HomeController {
             return "redirect:/logout";
         }
 
-        if (currentUser.getStoreId() == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-            return "redirect:/logout";//store not assigned page
+        if (!currentUser.getUserType().equals(UserType.SYSTEM) & currentUser.getStoreId() == null) {
+            modelMap.put(StringConstants.ERROR , "no store found");
+            return "dashboard/index";//store not assigned page
         }
 
         if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
@@ -90,6 +91,9 @@ public class HomeController {
             modelMap.put(StringConstants.TOTALPACKEDSALE , orderInfoApi.countSaleByStatusAndStoreInfoAndSaleTrack(Status.ACTIVE , currentUser.getStoreId() , SalesOrderStatus.PACKED));
             modelMap.put(StringConstants.TOTALSHIPEDSALE , orderInfoApi.countSaleByStatusAndStoreInfoAndSaleTrack(Status.ACTIVE , currentUser.getStoreId() , SalesOrderStatus.SHIPPED));
             modelMap.put(StringConstants.TOTALCANCELEDSALE , orderInfoApi.countSaleByStatusAndStoreInfoAndSaleTrack(Status.ACTIVE , currentUser.getStoreId() , SalesOrderStatus.CANCEL));
+
+            modelMap.put(StringConstants.TOTALPAYMENT , paymentInfoApi.getTotalPaymentByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.TOTALRECEIVABLE , invoiceInfoApi.getTotalReceivableByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
         }
 
 

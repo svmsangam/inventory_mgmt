@@ -22,6 +22,21 @@
     <!-- Main content -->
     <section class="content">
 
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
+
+<c:if test="${empty error}">
         <div class="row">
             <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
@@ -185,7 +200,7 @@
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                    <%-- <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--%>
-                                    <h5 class="description-header">$35,210.43</h5>
+                                    <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalPayment}"/></h5>
                                     <span class="description-text">TOTAL COLLECTION</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -194,7 +209,7 @@
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                    <%-- <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--%>
-                                    <h5 class="description-header">$10,390.90</h5>
+                                    <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalReceivable}"/></h5>
                                     <span class="description-text">TOTAL RECIEVABLE</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -358,6 +373,7 @@
             <!-- /.box -->
             </div>
         </div>
+</c:if>
     </section>
     <!-- /.content -->
 </div>

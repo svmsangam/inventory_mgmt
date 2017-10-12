@@ -158,4 +158,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     public long countlist(Status status, long storeId) {
         return invoiceInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
     }
+
+    @Override
+    public double getTotalReceivableByStoreInfoAndStatus(long storeInfoId, Status status) {
+        return invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+    }
 }

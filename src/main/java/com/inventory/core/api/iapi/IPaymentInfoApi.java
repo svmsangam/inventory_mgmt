@@ -24,4 +24,6 @@ public interface IPaymentInfoApi {
 
     List<PaymentInfoDTO> getAllByStatusInAndStoreAndInvoiceInfo(List<Status> status , long storeId , long invoiceInfoId);
 
+    double getTotalPaymentByStoreInfoAndStatus(long storeInfoId , Status status);
+
 }

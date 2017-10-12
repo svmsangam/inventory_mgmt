@@ -28,4 +28,7 @@ public interface PaymentInfoRepository extends JpaRepository<PaymentInfo , Long>
 
     @Query("select p from PaymentInfo p where p.receivedPayment.status in ( ?1 ) and p.storeInfo.id = ?2 and p.invoiceInfo.id = ?3")
     List<PaymentInfo> findByStatusInAndStoreAndInvoiceInfo(List<Status> status , long storeId , long invoiceInfoId);
+
+    @Query("select sum (p.receivedPayment.amount) from PaymentInfo p where p.storeInfo.id = ?1 and p.receivedPayment.status = ?2")
+    double findTotalPaymentByStoreInfoAndStatus(long storeInfoId , Status status);
 }
