@@ -14,9 +14,11 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.PaymentInfoRepository;
 import com.inventory.core.model.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     private PaymentRepository paymentRepository;
 
     @Override
+    @Lock(LockModeType.OPTIMISTIC)
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
 
         PaymentDTO paymentDTO = paymentApi.save(paymentInfoDTO.getReceivedPayment());
@@ -66,6 +69,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     }
 
     @Override
+    @Lock(LockModeType.OPTIMISTIC)
     public long collectChuque(long paymentInfoId) {
 
         PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);

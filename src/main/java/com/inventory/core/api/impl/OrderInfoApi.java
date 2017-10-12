@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,6 +175,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
+    @Lock(LockModeType.OPTIMISTIC)
     public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track , long createdById) {
 
         OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
