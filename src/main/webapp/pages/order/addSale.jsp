@@ -182,12 +182,12 @@
 
                             arr.push({
                                 id: value.clientId,
-                                text: value.name
+                                text: value.name + ' - ' + value.mobileNumber
                             })
                         }else {
                             arr.push({
                                 id: value.clientId,
-                                text: value.companyName
+                                text: value.companyName + ' - ' + value.mobileNumber
                             })
                         }
                     })

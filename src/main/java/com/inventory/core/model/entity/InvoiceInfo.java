@@ -17,6 +17,7 @@ public class InvoiceInfo extends AbstractEntity<Long> {
     @OneToOne(fetch = FetchType.EAGER)
     private OrderInfo orderInfo;
 
+    @Temporal(TemporalType.DATE)
     private Date invoiceDate;
 
     private Status status;

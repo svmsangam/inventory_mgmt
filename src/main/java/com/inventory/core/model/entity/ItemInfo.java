@@ -2,10 +2,7 @@ package com.inventory.core.model.entity;
 
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -25,6 +22,7 @@ public class ItemInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private LotInfo lotInfo;
 
+    @Temporal(TemporalType.DATE)
     private Date expireDate;
 
     private int inStock;

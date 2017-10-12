@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -51,6 +52,18 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
 
         if (amount == null){
+            return 0;
+        }
+
+        return amount;
+    }
+
+    @Override
+    public double getToDayTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
+
+        Double amount = invoiceInfoRepository.findToDayTotalAmountByStoreAndStatus(storeInfoId , status);
+
+        if (amount == null) {
             return 0;
         }
 

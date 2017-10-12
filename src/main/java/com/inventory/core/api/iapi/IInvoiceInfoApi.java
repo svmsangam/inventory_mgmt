@@ -12,6 +12,8 @@ public interface IInvoiceInfoApi {
 
     double getTotalAmountByStoreInfoAndStatus(long storeInfoId , Status status);
 
+    double getToDayTotalAmountByStoreInfoAndStatus(long storeInfoId , Status status);
+
     String generatInvoiceNumber(long storeId);
 
     InvoiceInfoDTO save(long orderInfoId , long createdById);

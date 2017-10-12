@@ -218,7 +218,7 @@
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                     <%--<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--%>
-                                    <h5 class="description-header">$24,813.53</h5>
+                                    <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${toDayTotalSale}"/></h5>
                                     <span class="description-text">TODAYS SALE</span>
                                 </div>
                                 <!-- /.description-block -->

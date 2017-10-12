@@ -5,10 +5,7 @@ import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -20,8 +17,10 @@ public class OrderInfo extends AbstractEntity<Long> {
     
     private String orderNo;
 
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
 
+    @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
     private OrderType orderType;

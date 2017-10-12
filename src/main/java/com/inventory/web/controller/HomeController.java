@@ -94,6 +94,7 @@ public class HomeController {
 
             modelMap.put(StringConstants.TOTALPAYMENT , paymentInfoApi.getTotalPaymentByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TOTALRECEIVABLE , invoiceInfoApi.getTotalReceivableByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.TODAYTOTALSALE , invoiceInfoApi.getToDayTotalAmountByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
         }
 
 

@@ -120,4 +120,5 @@ public class StringConstants {
 
     public static String TOTALPAYMENT = "totalPayment";
     public static String TOTALRECEIVABLE = "totalReceivable";
+    public static String TODAYTOTALSALE = "toDayTotalSale";
 }
