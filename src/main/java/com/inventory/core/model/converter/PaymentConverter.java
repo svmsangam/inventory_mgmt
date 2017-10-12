@@ -7,6 +7,8 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.IConvertable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by dhiraj on 10/10/17.
  */
@@ -63,6 +65,7 @@ public class PaymentConverter implements IConvertable<Payment , PaymentDTO> {
             entity.setStatus(Status.INACTIVE);
         }else {
             entity.setStatus(Status.ACTIVE);
+            entity.setPaymentDate(new Date());
         }
 
         return entity;

@@ -25,6 +25,16 @@ public class PaymentInfoDTO {
 
     private Date paymentDate;
 
+    private long invoiceVersion;
+
+    public long getInvoiceVersion() {
+        return invoiceVersion;
+    }
+
+    public void setInvoiceVersion(long invoiceVersion) {
+        this.invoiceVersion = invoiceVersion;
+    }
+
     public long getPaymentInfoId() {
         return paymentInfoId;
     }

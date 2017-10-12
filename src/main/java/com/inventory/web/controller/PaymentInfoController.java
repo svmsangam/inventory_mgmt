@@ -244,12 +244,13 @@ public class PaymentInfoController {
 
             long invoiceId = paymentInfoApi.collectChuque(paymentId);
 
+            return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
+
         } catch (Exception e) {
 
             logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
-        return "redirect:/paymentinfo/add?invoiceId=5";
     }
 }

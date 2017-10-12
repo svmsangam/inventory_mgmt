@@ -23,6 +23,9 @@ public class Payment extends AbstractEntity<Long> {
     private String remark;
 
     @Temporal(TemporalType.DATE)
+    private Date paymentDate;
+
+    @Temporal(TemporalType.DATE)
     private Date chequeDate;
 
     @Temporal(TemporalType.DATE)
@@ -96,5 +99,13 @@ public class Payment extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
 }

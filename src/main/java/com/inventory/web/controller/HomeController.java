@@ -93,6 +93,7 @@ public class HomeController {
             modelMap.put(StringConstants.TOTALCANCELEDSALE , orderInfoApi.countSaleByStatusAndStoreInfoAndSaleTrack(Status.ACTIVE , currentUser.getStoreId() , SalesOrderStatus.CANCEL));
 
             modelMap.put(StringConstants.TOTALPAYMENT , paymentInfoApi.getTotalPaymentByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
+            modelMap.put(StringConstants.TODAYTOTALPAYMENT , paymentInfoApi.getToDayTotalPaymentByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TOTALRECEIVABLE , invoiceInfoApi.getTotalReceivableByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TODAYTOTALSALE , invoiceInfoApi.getToDayTotalAmountByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
         }

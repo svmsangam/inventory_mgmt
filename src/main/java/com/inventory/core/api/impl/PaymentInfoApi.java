@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,6 +74,8 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         payment.setStatus(Status.ACTIVE);
 
+        payment.setPaymentDate(new Date());
+
         paymentRepository.save(payment);
 
         invoiceInfoApi.updateOnPayment(paymentInfoId);
@@ -110,6 +113,18 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     public double getTotalPaymentByStoreInfoAndStatus(long storeInfoId, Status status) {
 
         Double amount = paymentInfoRepository.findTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
+
+        if (amount == null) {
+            return 0;
+        }
+
+        return amount;
+    }
+
+    @Override
+    public double getToDayTotalPaymentByStoreInfoAndStatus(long storeInfoId, Status status) {
+
+        Double amount = paymentInfoRepository.findToDayTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
 
         if (amount == null) {
             return 0;

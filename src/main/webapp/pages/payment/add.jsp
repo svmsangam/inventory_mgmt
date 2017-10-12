@@ -136,10 +136,13 @@
 
                             <input type="hidden" name="invoiceInfoId" value="${invoice.invoiceId}"/>
 
+                            <input type="hidden" name="invoiceVersion" value="${invoice.version}"/>
+
                             <div class="form-group">
                                 <label class="control-label">Amount</label>
                                 <input type="text" onkeypress="return event.charCode >= 46 && event.charCode !== 47 && event.charCode < 58;" class="form-control" value="<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${paymentInfo.receivedPayment.amount}"/>" name="receivedPayment.amount" placeholder="amount">
                                 <p class="form-error">${paymentError.amount}</p>
+                                <p class="form-error">${paymentError.invoice}</p>
                             </div>
 
                             <div class="form-group">
@@ -238,7 +241,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary save">Save changes</button>
                         </div>
                     </form>
                 </div>

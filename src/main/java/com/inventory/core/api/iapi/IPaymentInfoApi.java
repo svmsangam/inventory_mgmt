@@ -26,4 +26,6 @@ public interface IPaymentInfoApi {
 
     double getTotalPaymentByStoreInfoAndStatus(long storeInfoId , Status status);
 
+    double getToDayTotalPaymentByStoreInfoAndStatus(long storeInfoId , Status status);
+
 }

@@ -227,7 +227,7 @@
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
                                     <%--<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--%>
-                                    <h5 class="description-header">1200</h5>
+                                    <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${toDayTotalPayment}"/></h5>
                                     <span class="description-text">TODAYS COLLECTION</span>
                                 </div>
                                 <!-- /.description-block -->

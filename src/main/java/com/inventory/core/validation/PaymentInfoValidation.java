@@ -37,32 +37,58 @@ public class PaymentInfoValidation extends GlobalValidation{
 
         if (result.hasErrors()) {
 
+            valid = true;
+
             List<FieldError> errors = result.getFieldErrors();
 
             for (FieldError errorResult : errors) {
 
                 if (errorResult.getField().equals("receivedPayment.amount")) {
                     error.setAmount("invalid amount");
+                    valid = false;
                 } else if (errorResult.getField().equals("paymentMethod")) {
                     error.setPaymentMethod("receivedPayment.invalid paymentMethod");
+                    valid = false;
                 } else if (errorResult.getField().equals("remark")) {
                     error.setRemark("invalid remark");
+                    valid = false;
                 } else if (errorResult.getField().equals("receivedPayment.chequeDate")) {
-                    error.setChequeDate("invalid chequeDate");
+                   if (paymentInfoDTO.getReceivedPayment() != null){
+                       if (PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+                           error.setChequeDate("invalid chequeDate");
+                           valid = false;
+                       }
+                   }
+
                 } else if (errorResult.getField().equals("receivedPayment.commitedDateOfCheque")) {
-                    error.setCommitedDateOfCheque("invalid commitedDateOfCheque");
+
+                    if (paymentInfoDTO.getReceivedPayment() != null){
+                        if (PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+                            error.setCommitedDateOfCheque("invalid commitedDateOfCheque");
+                            valid = false;
+                        }
+                    }
+
                 } else if (errorResult.getField().equals("receivedPayment.bankOfCheque")) {
                     error.setBankOfCheque("invalid bank");
+                    valid = false;
                 } else if (errorResult.getField().equals("receivedPayment.bankAccountNumber")) {
                     error.setBankAccountNumber("invalid bankAccountNumber");
+                    valid = false;
                 } else if (errorResult.getField().equals("invoiceInfoId")) {
                     error.setInvoice("invalid invoiceInfo");
+                    valid = false;
+                } else if (errorResult.getField().equals("invoiceVersion")) {
+                    error.setInvoice("invalid invoice version");
+                    valid = false;
                 }
             }
 
-            error.setValid(false);
+            if (!valid) {
+                error.setValid(valid);
 
-            return error;
+                return error;
+            }
         }
 
 
@@ -93,7 +119,7 @@ public class PaymentInfoValidation extends GlobalValidation{
             valid = false;
         }
 
-        valid = valid && checkInvoice(invoiceId , storeId);
+        valid = valid && checkInvoice(invoiceId , storeId , paymentInfoDTO.getInvoiceVersion());
 
         error.setValid(valid);
 
@@ -188,10 +214,15 @@ public class PaymentInfoValidation extends GlobalValidation{
         return true;
     }
 
-    private boolean checkInvoice(long invoiceId , long storeId){
+    private boolean checkInvoice(long invoiceId , long storeId , long invoiceVersion){
 
-        if (invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId , Status.ACTIVE , storeId) == null){
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId , Status.ACTIVE , storeId);
+
+        if (invoiceInfo == null){
             error.setInvoice("invoice not found");
+            return false;
+        }else if (invoiceInfo.getVersion() != invoiceVersion){
+            error.setInvoice("payment of this invoice is already updated");
             return false;
         }
 
