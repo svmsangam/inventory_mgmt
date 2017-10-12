@@ -172,37 +172,40 @@
 
                             <c:choose>
                                 <c:when test="${paymentInfo.receivedPayment ne null}">
-                                    <div class="form-group cheque">
-                                        <label class="control-label">Cheque Date</label>
-                                        <div class='input-group date'>
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+
+                                    <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
+                                            <div class="form-group cheque">
+                                                <label class="control-label">Cheque Date</label>
+                                                <div class='input-group date'>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                <input type="text" class="form-control datepicker" onkeyup="return false;" onkeypress="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${paymentInfo.receivedPayment.chequeDate}"/>" name="receivedPayment.chequeDate" placeholder="select date">
+                                                <p class="form-error">${paymentError.chequeDate}</p>
                                             </div>
-                                        <input type="text" class="form-control datepicker" onkeyup="return false;" onkeypress="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${paymentInfo.receivedPayment.chequeDate}"/>" name="receivedPayment.chequeDate" placeholder="select date">
-                                        <p class="form-error">${paymentError.chequeDate}</p>
-                                    </div>
 
-                                    <div class="form-group cheque">
-                                        <label class="control-label">Commited Date Of Cheque</label>
-                                        <div class='input-group date'>
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+                                            <div class="form-group cheque">
+                                                <label class="control-label">Commited Date Of Cheque</label>
+                                                <div class='input-group date'>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                <input type="text" class="form-control datepicker" onkeyup="return false;" onkeypress="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/>" name="receivedPayment.commitedDateOfCheque" placeholder="select date">
+                                                <p class="form-error">${paymentError.commitedDateOfCheque}</p>
                                             </div>
-                                        <input type="text" class="form-control datepicker" onkeyup="return false;" onkeypress="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/>" name="receivedPayment.commitedDateOfCheque" placeholder="select date">
-                                        <p class="form-error">${paymentError.commitedDateOfCheque}</p>
-                                    </div>
 
-                                    <div class="form-group cheque">
-                                        <label class="control-label">Bank Name</label>
-                                        <input type="text" class="form-control" value="${paymentInfo.receivedPayment.bankOfCheque}" name="receivedPayment.bankOfCheque" placeholder="Bank Name">
-                                        <p class="form-error">${paymentError.bankOfCheque}</p>
-                                    </div>
+                                            <div class="form-group cheque">
+                                                <label class="control-label">Bank Name</label>
+                                                <input type="text" class="form-control" value="${paymentInfo.receivedPayment.bankOfCheque}" name="receivedPayment.bankOfCheque" placeholder="Bank Name">
+                                                <p class="form-error">${paymentError.bankOfCheque}</p>
+                                            </div>
 
-                                    <div class="form-group cheque">
-                                        <label class="control-label">Bank Account Number</label>
-                                        <input type="text" class="form-control" value="${paymentInfo.receivedPayment.bankAccountNumber}" name="receivedPayment.bankAccountNumber" placeholder="Bank Account Number">
-                                        <p class="form-error">${paymentError.bankAccountNumber}</p>
-                                    </div>
+                                            <div class="form-group cheque">
+                                                <label class="control-label">Bank Account Number</label>
+                                                <input type="text" class="form-control" value="${paymentInfo.receivedPayment.bankAccountNumber}" name="receivedPayment.bankAccountNumber" placeholder="Bank Account Number">
+                                                <p class="form-error">${paymentError.bankAccountNumber}</p>
+                                            </div>
+                                    </c:if>
                                 </c:when>
 
                                 <c:otherwise>
@@ -241,7 +244,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary save">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
                 </div>
