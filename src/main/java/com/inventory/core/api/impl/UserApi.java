@@ -9,6 +9,7 @@ import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.StoreUserInfoRepository;
 import com.inventory.core.model.repository.UserPermissionRepository;
 import com.inventory.core.model.repository.UserRepository;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,6 +41,9 @@ public class UserApi implements IUserApi {
 
     @Autowired
     private UserPermissionRepository userPermissionRepository;
+
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
 
     @Override
     public long getTotalUserByStoreInfoAndStatus(long storeInfoId, Status status) {
@@ -136,7 +141,21 @@ public class UserApi implements IUserApi {
 
     @Override
     public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList) {
-        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status, userTypeList));
+        return null;
+    }
+
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeInAndSuperAdmin(Status status, List<UserType> userTypeList , long userId) {
+
+        List<Long> storeList = storeUserInfoRepository.findAllStoreIdByUserAndStatus(userId , Status.ACTIVE);
+
+        if (storeList == null){
+            storeList = new ArrayList<>();
+
+            storeList.add((long)0);
+        }
+
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndSuperAdmin(status, userTypeList , storeList));
     }
 
     @Override

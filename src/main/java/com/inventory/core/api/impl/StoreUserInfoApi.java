@@ -59,4 +59,9 @@ public class StoreUserInfoApi implements IStoreUserInfoApi {
     public List<StoreInfoDTO> getAllStoreByUser(long userId) {
         return storeInfoConverter.convertToDtoList(storeUserInfoRepository.findAllByUserAndStatus(userId, Status.ACTIVE));
     }
+
+    @Override
+    public List<Long> getAllStoreIdStoreByUser(long userId) {
+        return storeUserInfoRepository.findAllStoreIdByUserAndStatus(userId , Status.ACTIVE);
+    }
 }

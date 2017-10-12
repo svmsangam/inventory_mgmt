@@ -15,4 +15,6 @@ public interface IStoreUserInfoApi {
     StoreUserInfoDTO getByUserAndStore(long userId, long storeId);
 
     List<StoreInfoDTO> getAllStoreByUser(long userId);
+
+    List<Long> getAllStoreIdStoreByUser(long userId);
 }

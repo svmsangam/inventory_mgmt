@@ -34,6 +34,8 @@ public interface IUserApi {
 
     List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList);
 
+    List<InvUserDTO> getAllByStatusAndUserTypeInAndSuperAdmin(Status status, List<UserType> userTypeList , long userId);
+
     List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId);
 
 }

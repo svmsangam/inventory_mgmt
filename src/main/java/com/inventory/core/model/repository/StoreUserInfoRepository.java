@@ -31,4 +31,7 @@ public interface StoreUserInfoRepository extends JpaRepository<StoreUserInfo, Lo
 
     @Query("select s.storeInfo from StoreUserInfo s where s.user.id = ?1 and s.status = ?2 order by s.storeInfo.name asc ")
     List<StoreInfo> findAllByUserAndStatus(long userId, Status status);
+
+    @Query("select s.storeInfo.id from StoreUserInfo s where s.user.id = ?1 and s.status = ?2 ")
+    List<Long> findAllStoreIdByUserAndStatus(long userId, Status status);
 }

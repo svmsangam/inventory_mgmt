@@ -93,7 +93,7 @@ public class UserController {
 
                 modelMap.put(StringConstants.USERTYPE_LIST, userTypeList);
 
-                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE, userTypeList));
+                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeInAndSuperAdmin(Status.ACTIVE, userTypeList , currentUser.getUserId()));
 
                 modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
