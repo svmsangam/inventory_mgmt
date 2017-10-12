@@ -268,7 +268,8 @@ immediately after the control sidebar -->
         })
 
         $('.datepicker').datepicker({
-            autoclose: true
+            autoclose: true,
+            todayHighlight: true
         })
     })
 </script>

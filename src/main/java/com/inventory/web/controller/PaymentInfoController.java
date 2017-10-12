@@ -230,7 +230,14 @@ public class PaymentInfoController {
                 return "redirect:/invoice/list";//store not assigned page
             }
 
-            if (paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE) == null) {
+            PaymentInfoDTO paymentInfoDTO = paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE);
+
+            if (paymentInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+                return "redirect:/invoice/list";//store not assigned page
+            }
+
+            if (invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE) == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
                 return "redirect:/invoice/list";//store not assigned page
             }

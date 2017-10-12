@@ -61,10 +61,6 @@ function UserService() {
 
             var that = new UserService();
 
-            if (userRequest !== undefined) {
-                userRequest.abort();
-            }
-
             userRequest = $.ajax({
                 type: "POST",
                 url: url,
@@ -72,6 +68,12 @@ function UserService() {
                 data: user,
                 dataType: 'json',
                 timeout: 100000,
+                beforeSend: function() {
+                    // setting a timeout
+                    if (userRequest !== undefined) {
+                        userRequest.abort();
+                    }
+                },
                 success: function (data) {
 
                     var result = data.detail;
