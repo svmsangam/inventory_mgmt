@@ -104,7 +104,7 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
         }
 
-        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 20, "email", true));
+        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 50, "email", true));
 
         if (!("".equals(error.getEmail()))) {
             valid = false;

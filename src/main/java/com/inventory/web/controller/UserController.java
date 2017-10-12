@@ -1,6 +1,7 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.api.iapi.IUserPermissionApi;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -42,6 +43,9 @@ public class UserController {
 
     @Autowired
     private IStoreInfoApi storeInfoApi;
+
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
 
 	/*@Autowired
     private SessionInfo sessionInfo;*/
@@ -91,7 +95,7 @@ public class UserController {
 
                 modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE, userTypeList));
 
-                modelMap.put(StringConstants.STORE_LIST, storeInfoApi.list(Status.ACTIVE));
+                modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
                 return "user/listUser";
 

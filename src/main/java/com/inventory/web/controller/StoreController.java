@@ -2,9 +2,9 @@ package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.ICityInfoApi;
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
-import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
@@ -35,6 +35,9 @@ public class StoreController {
     @Autowired
     private IUserApi userApi;
 
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
+
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
         try {
@@ -50,7 +53,7 @@ public class StoreController {
 
                 modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-                modelMap.put(StringConstants.STORE_LIST, storeInfoApi.list(Status.ACTIVE));
+                modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
                 return "store/listStore";
             } else {

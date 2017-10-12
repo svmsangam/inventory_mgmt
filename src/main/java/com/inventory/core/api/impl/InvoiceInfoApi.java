@@ -47,7 +47,14 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
-        return invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+
+        Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+
+        if (amount == null){
+            return 0;
+        }
+
+        return amount;
     }
 
     @Override
@@ -161,6 +168,12 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public double getTotalReceivableByStoreInfoAndStatus(long storeInfoId, Status status) {
-        return invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+
+        Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+
+        if (amount == null){
+            return 0;
+        }
+        return amount;
     }
 }

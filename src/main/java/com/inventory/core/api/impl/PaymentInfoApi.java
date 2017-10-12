@@ -108,6 +108,13 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
     @Override
     public double getTotalPaymentByStoreInfoAndStatus(long storeInfoId, Status status) {
-        return paymentInfoRepository.findTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
+
+        Double amount = paymentInfoRepository.findTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
+
+        if (amount == null) {
+            return 0;
+        }
+
+        return amount;
     }
 }
