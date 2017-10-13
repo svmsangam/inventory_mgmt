@@ -63,6 +63,8 @@ public class PaymentInfoApi implements IPaymentInfoApi{
         if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
             ledgerInfoApi.saveOnPayment(paymentInfo.getId());
             invoiceInfoApi.updateOnPayment(paymentInfo.getId());
+        } else if (PaymentMethod.CHEQUE.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
+            invoiceInfoApi.updateVersion(paymentInfoDTO.getInvoiceInfoId());
         }
 
         return paymentInfoConverter.convertToDto(paymentInfo);

@@ -128,7 +128,7 @@ public class PaymentInfoValidation extends GlobalValidation{
 
     private boolean checkAmount(Double value , long invoiceId ){
 
-        error.setAmount(checkDouble(value , 1, 3 , "amount" , true));
+        error.setAmount(checkDouble(value , 0, 3 , "amount" , true));
 
         if (!"".equals(error.getAmount())){
             return false;
@@ -223,6 +223,9 @@ public class PaymentInfoValidation extends GlobalValidation{
             return false;
         }else if (invoiceInfo.getVersion() != invoiceVersion){
             error.setInvoice("payment of this invoice is already updated");
+            return false;
+        } else if (invoiceInfo.getReceivableAmount() == 0){
+            error.setInvoice("receivable cleared");
             return false;
         }
 

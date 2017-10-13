@@ -237,9 +237,16 @@ public class PaymentInfoController {
                 return "redirect:/invoice/list";//store not assigned page
             }
 
-            if (invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE) == null){
+            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE);
+
+            if (invoiceInfoDTO == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
                 return "redirect:/invoice/list";//store not assigned page
+            }
+
+            if (invoiceInfoDTO.getReceivableAmount() < paymentInfoDTO.getReceivedPayment().getAmount()){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "amount greater than receivable amount");
+                return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
             }
 
             long invoiceId = paymentInfoApi.collectChuque(paymentId);

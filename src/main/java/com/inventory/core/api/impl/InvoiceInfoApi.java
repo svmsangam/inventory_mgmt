@@ -4,7 +4,10 @@ import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
-import com.inventory.core.model.entity.*;
+import com.inventory.core.model.entity.CodeGenerator;
+import com.inventory.core.model.entity.InvoiceInfo;
+import com.inventory.core.model.entity.PaymentInfo;
+import com.inventory.core.model.entity.StoreInfo;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CodeGeneratorRepository;
@@ -18,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -141,6 +143,16 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
             invoiceInfoRepository.save(invoiceInfo);
         }
 
+    }
+
+    @Override
+    public void updateVersion(long invoiceId) {
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        invoiceInfo.setVersion(invoiceInfo.getVersion() + 1);
+
+        invoiceInfoRepository.save(invoiceInfo);
     }
 
     @Override

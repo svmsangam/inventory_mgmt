@@ -20,6 +20,8 @@ public interface IInvoiceInfoApi {
 
     void updateOnPayment(long paymentInfoId);
 
+    void updateVersion(long invoiceId);
+
     InvoiceInfoDTO show(long invoiceId , long storeId , Status status);
 
     InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId , Status status  , long storeId);

@@ -73,9 +73,15 @@
                         <br>--%>
                         <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
                             <b>Invoice ID:</b> <a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a><br>
-                        <c:if test="${invoice.receivableAmount gt 0}">
-                            <b>Payment Due:</b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/><br>
-                        </c:if>
+
+                            <c:if test="${invoice.receivableAmount le 1}">
+                            <b><label class="label label-success"> Payment Due:</label></b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/><br>
+                            </c:if>
+
+                            <c:if test="${invoice.receivableAmount gt 1 or invoice.receivableAmount eq 1}">
+                                <b><label class="label label-warning"> Payment Due:</label></b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/><br>
+                            </c:if>
+
                             <b>Total Amount:</b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/><br>
 
                         <b>Account:</b> ${invoice.orderInfo.clientInfo.accountNo}<br>
@@ -130,7 +136,7 @@
                     </div>
 
                     <div class="clearfix"></div>
-
+<c:if test="${invoice.receivableAmount gt 1 or invoice.receivableAmount eq 1}">
                     <form action="${pageContext.request.contextPath}/paymentinfo/save" method="post" modelAttribute="payment" >
                         <div class="box-body">
 
@@ -171,9 +177,8 @@
 
 
                             <c:choose>
-                                <c:when test="${paymentInfo.receivedPayment ne null}">
+                                <c:when test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
 
-                                    <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
                                             <div class="form-group cheque">
                                                 <label class="control-label">Cheque Date</label>
                                                 <div class='input-group date'>
@@ -205,7 +210,6 @@
                                                 <input type="text" class="form-control" value="${paymentInfo.receivedPayment.bankAccountNumber}" name="receivedPayment.bankAccountNumber" placeholder="Bank Account Number">
                                                 <p class="form-error">${paymentError.bankAccountNumber}</p>
                                             </div>
-                                    </c:if>
                                 </c:when>
 
                                 <c:otherwise>
@@ -246,7 +250,10 @@
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
+
+                </div>
                     </form>
+</c:if>
                 </div>
                 <!-- /.box -->
             </div>
