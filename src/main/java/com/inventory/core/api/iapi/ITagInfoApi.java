@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ITagInfoApi {
 
-    TagInfoDTO save(TagInfoDTO tagInfoDTO);
+    TagInfoDTO save(TagInfoDTO tagInfoDTO) throws InterruptedException;
 
     TagInfoDTO update(TagInfoDTO tagInfoDTO);
 

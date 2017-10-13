@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by dhiraj on 8/9/17.
@@ -25,14 +26,35 @@ public class TagInfoApi implements ITagInfoApi {
     @Autowired
     private TagInfoRepository tagInfoRepository;
 
+    private static final int MAX_AVAILABLE = 1;
+
+    private final Semaphore available = new Semaphore(MAX_AVAILABLE, true);
+
     @Override
-    public TagInfoDTO save(TagInfoDTO tagInfoDTO) {
+    public TagInfoDTO save(TagInfoDTO tagInfoDTO) throws InterruptedException {
 
-        TagInfo tagInfo = tagInfoConverter.convertToEntity(tagInfoDTO);
+        available.acquire();
 
-        tagInfo.setStatus(Status.ACTIVE);
+        TagInfo tagInfo = lock(tagInfoDTO);
 
-        return tagInfoConverter.convertToDto(tagInfoRepository.save(tagInfo));
+        available.release();
+
+        return tagInfoConverter.convertToDto(tagInfo);
+    }
+
+    private TagInfo lock(TagInfoDTO tagInfoDTO){
+
+        if (tagInfoRepository.findByName(tagInfoDTO.getName()) == null) {
+
+            TagInfo tagInfo = tagInfoConverter.convertToEntity(tagInfoDTO);
+
+            tagInfo.setStatus(Status.ACTIVE);
+
+            return tagInfoRepository.save(tagInfo);
+
+        }
+
+        return null;
     }
 
     @Override
