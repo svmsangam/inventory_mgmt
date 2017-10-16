@@ -148,13 +148,13 @@
                                             <c:choose>
                                                 <c:when test="${store.storeId eq superAdminStore}">
                                                     <label class="switch">
-                                                        <input type="checkbox" checked>
+                                                        <input type="checkbox" disabled class="selectedStore" url="${pageContext.request.contextPath}/store/select" value="${store.storeId}" checked>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <label class="switch">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" class="selectedStore" url="${pageContext.request.contextPath}/store/select" value="${store.storeId}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </c:otherwise>

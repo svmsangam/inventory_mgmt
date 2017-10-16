@@ -25,6 +25,14 @@ $(document).ready(function () {
         userService.clearForm();
     });
 
+    $(document).on("click", ".selectedStore", function () {
+
+        console.log("hello you clicked");
+        if((!!this.checked)){
+            userService.changeStore($(this).val() , $(this).attr("url") , $(this));
+        }
+    });
+
     $(document).on("click", ".closeError", function () {
         $(".addError").removeClass("hide").removeClass("show").addClass("hide");
     });

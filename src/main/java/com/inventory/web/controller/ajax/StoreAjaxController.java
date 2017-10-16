@@ -1,10 +1,12 @@
 package com.inventory.web.controller.ajax;
 
 import com.inventory.core.api.iapi.IStoreInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
 import com.inventory.core.model.dto.StoreInfoDTO;
+import com.inventory.core.model.dto.StoreUserInfoDTO;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -41,6 +43,9 @@ public class StoreAjaxController {
 
     @Autowired
     private IUserApi userApi;
+
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
 
     @PostMapping(value = "save", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store") StoreInfoDTO storeInfoDTO, BindingResult bindingResult, HttpServletRequest request) {
@@ -141,7 +146,6 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            e.getStackTrace();
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
@@ -192,6 +196,60 @@ public class StoreAjaxController {
             } else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("unauthorized user");
+            }
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            result.setStatus(ResponseStatus.FAILURE.getValue());
+            result.setMessage("internal server error");
+        }
+
+        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/select", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> select(@RequestParam("storeId") Long storeId, HttpServletRequest request) {
+        RestResponseDTO result = new RestResponseDTO();
+
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                request.getSession().invalidate();
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (storeId == null) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("store not found");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (storeId < 0) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("store not found");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+
+                StoreUserInfoDTO storeUserInfoDTO = storeUserInfoApi.getByUserAndStore(currentUser.getUserId() , storeId);
+
+                if (storeUserInfoDTO == null) {
+                    result.setStatus(ResponseStatus.FAILURE.getValue());
+                    result.setMessage("store not found");
+                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+                }
+
+                result.setStatus(ResponseStatus.SUCCESS.getValue());
+                result.setMessage("store successfully saved");
+
+                userApi.changeStore(currentUser.getUserId() , storeId);
+
             }
 
         } catch (Exception e) {

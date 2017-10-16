@@ -106,6 +106,78 @@ function UserService() {
 
         },
 
+        changeStore : function (storeId , url , that) {
+            var sppiner;
+            userRequest = $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: storeId,
+                dataType: 'json',
+                timeout: 30000,
+                tryCount : 0,
+                retryLimit : 3,
+                beforeSend: function() {
+                    // setting a timeout
+                    if (userRequest !== undefined) {
+                        userRequest.abort();
+                    }
+
+                    sppiner = startLoading();
+                },
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        that.prop("disabled" , true);
+                        stopLoading(spinner);
+                    }
+
+                    if (data.status === 'Failure') {
+                        window.location.reload();
+                    }
+
+                    if (data.status === 'Validation Failed') {
+
+                        window.location.reload();
+                    }
+                },
+                error : function(xhr, textStatus, errorThrown ) {
+
+                    console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                    if (textStatus == 'timeout') {
+
+                        this.tryCount++;
+
+                        if (this.tryCount <= this.retryLimit) {
+                            //try again
+                            $.ajax(this);
+                            return;
+                        } else {
+                            //cancel request
+                            window.location.reload();
+
+                            return;
+                        }
+
+                    }
+
+                    if (xhr.status == 500) {
+                        //handle error
+                        window.location.reload();
+                    } else {
+                        //handle error
+                        window.location.reload();
+                    }
+                }
+            });
+        },
+
         setError: function (error) {
             $(".inventoryuser").text(error.username);
             $(".userpassword").text(error.password);
