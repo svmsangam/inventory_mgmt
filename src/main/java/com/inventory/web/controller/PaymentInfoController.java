@@ -155,30 +155,32 @@ public class PaymentInfoController {
                 return "redirect:/invoice/list";
             }
 
-            paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            paymentInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
+                paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                paymentInfoDTO.setCreatedById(currentUser.getUserId());
 
-            PaymentInfoError error = paymentInfoValidation.onSave(paymentInfoDTO  , currentUser.getStoreId() , paymentInfoDTO.getInvoiceInfoId(), bindingResult);
+                PaymentInfoError error = paymentInfoValidation.onSave(paymentInfoDTO, currentUser.getStoreId(), paymentInfoDTO.getInvoiceInfoId(), bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.PAYMENTERROR, error);
-                modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
-                modelMap.put(StringConstants.INVOICE, invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE));
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.PAYMENTERROR, error);
+                    modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
+                    modelMap.put(StringConstants.INVOICE, invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(), currentUser.getStoreId(), Status.ACTIVE));
 
-                modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+                    modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
 
-                List<Status> statusList = new ArrayList<>();
+                    List<Status> statusList = new ArrayList<>();
 
-                statusList.add(Status.ACTIVE);
-                statusList.add(Status.INACTIVE);
+                    statusList.add(Status.ACTIVE);
+                    statusList.add(Status.INACTIVE);
 
-                modelMap.put(StringConstants.PAYMENTLIST , paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList , currentUser.getStoreId() , paymentInfoDTO.getInvoiceInfoId()));
+                    modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList, currentUser.getStoreId(), paymentInfoDTO.getInvoiceInfoId()));
 
 
-                return "payment/add";
+                    return "payment/add";
+                }
+
+                paymentInfoApi.save(paymentInfoDTO);
             }
-
-            paymentInfoApi.save(paymentInfoDTO);
 
         } catch (Exception e) {
 
@@ -230,28 +232,32 @@ public class PaymentInfoController {
                 return "redirect:/invoice/list";//store not assigned page
             }
 
-            PaymentInfoDTO paymentInfoDTO = paymentInfoApi.getByIdAndStatus(paymentId , Status.INACTIVE);
+            synchronized (this.getClass()) {
 
-            if (paymentInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                return "redirect:/invoice/list";//store not assigned page
+                PaymentInfoDTO paymentInfoDTO = paymentInfoApi.getByIdAndStatus(paymentId, Status.INACTIVE);
+
+                if (paymentInfoDTO == null) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+                    return "redirect:/invoice/list";//store not assigned page
+                }
+
+                InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(), currentUser.getStoreId(), Status.ACTIVE);
+
+                if (invoiceInfoDTO == null) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+                    return "redirect:/invoice/list";//store not assigned page
+                }
+
+                if (invoiceInfoDTO.getReceivableAmount() < paymentInfoDTO.getReceivedPayment().getAmount()) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "amount greater than receivable amount");
+                    return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
+                }
+
+                long invoiceId = paymentInfoApi.collectChuque(paymentId);
+
+
+                return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
             }
-
-            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId() , currentUser.getStoreId() , Status.ACTIVE);
-
-            if (invoiceInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                return "redirect:/invoice/list";//store not assigned page
-            }
-
-            if (invoiceInfoDTO.getReceivableAmount() < paymentInfoDTO.getReceivedPayment().getAmount()){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "amount greater than receivable amount");
-                return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
-            }
-
-            long invoiceId = paymentInfoApi.collectChuque(paymentId);
-
-            return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
 
         } catch (Exception e) {
 

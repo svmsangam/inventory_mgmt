@@ -79,26 +79,27 @@ public class OrderInfoAjaxController {
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE , orderId , currentUser.getStoreId());
+            synchronized (this.getClass()) {
+                OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE, orderId, currentUser.getStoreId());
 
-            if (orderInfoDTO == null){
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("order validation failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+                if (orderInfoDTO == null) {
+                    result.setStatus(ResponseStatus.FAILURE.getValue());
+                    result.setMessage("order validation failed");
+                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+                }
+
+                if (orderInfoDTO.getSaleTrack().equals(SalesOrderStatus.CANCEL)) {
+                    result.setStatus(ResponseStatus.FAILURE.getValue());
+                    result.setMessage("order validation failed");
+                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+                }
+
+
+                result.setStatus(ResponseStatus.SUCCESS.getValue());
+                result.setMessage("store successfully saved");
+                result.setDetail(orderInfoApi.updateSaleTrack(orderId, track, currentUser.getUserId()));
+
             }
-
-            if (orderInfoDTO.getSaleTrack().equals(SalesOrderStatus.CANCEL)){
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("order validation failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-
-            result.setStatus(ResponseStatus.SUCCESS.getValue());
-            result.setMessage("store successfully saved");
-            result.setDetail(orderInfoApi.updateSaleTrack(orderId , track , currentUser.getUserId()));
-
-
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());

@@ -152,18 +152,22 @@ public class TagController {
                 return "redirect:/tag/add";
             }
 
-            tagInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            tagInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()){
+                tagInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                tagInfoDTO.setCreatedById(currentUser.getUserId());
 
-            TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
+                TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.TAG_ERROR, error);
-                modelMap.put(StringConstants.TAG, tagInfoDTO);
-                return "tag/add";
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.TAG_ERROR, error);
+                    modelMap.put(StringConstants.TAG, tagInfoDTO);
+                    System.out.println("validation failed");
+                    return "tag/add";
+                }
+
+                System.out.println("save");
+                tagInfoApi.save(tagInfoDTO);
             }
-
-            tagInfoApi.save(tagInfoDTO);
 
         } catch (Exception e) {
             e.printStackTrace();

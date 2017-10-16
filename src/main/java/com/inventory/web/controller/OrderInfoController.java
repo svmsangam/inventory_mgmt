@@ -182,23 +182,25 @@ public class OrderInfoController {
 
         /*current user checking end*/
 
-            orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            orderInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
+                orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                orderInfoDTO.setCreatedById(currentUser.getUserId());
 
-            OrderError error = orderValidation.onSaleSave(orderInfoDTO , bindingResult);
+                OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
 
-            if (!error.isValid()){
+                if (!error.isValid()) {
 
-                modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
-                modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+                    modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
 
-                modelMap.put(StringConstants.ORDER_ERROR , error);
-                modelMap.put(StringConstants.ORDER , orderInfoDTO);
+                    modelMap.put(StringConstants.ORDER_ERROR, error);
+                    modelMap.put(StringConstants.ORDER, orderInfoDTO);
 
-                return "order/addSale";
+                    return "order/addSale";
+                }
+
+                orderInfoApi.save(orderInfoDTO);
             }
-
-            orderInfoApi.save(orderInfoDTO);
 
         } catch (Exception e) {
             logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
