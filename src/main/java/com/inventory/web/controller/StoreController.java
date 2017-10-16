@@ -55,6 +55,12 @@ public class StoreController {
 
                 modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
+                if (currentUser.getStoreId() == null){
+                    modelMap.put(StringConstants.SUPERADMINSELECTSTORE , 0);
+                }else {
+                    modelMap.put(StringConstants.SUPERADMINSELECTSTORE , currentUser.getStoreId());
+                }
+
                 return "store/listStore";
             } else {
 
