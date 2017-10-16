@@ -59,26 +59,28 @@ public class StoreAjaxController {
 
             if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                StoreInfoError error = new StoreInfoError();
+                synchronized (this.getClass()) {
+                    StoreInfoError error = new StoreInfoError();
 
-                error = storeInfoValidation.onSave(storeInfoDTO, bindingResult);
+                    error = storeInfoValidation.onSave(storeInfoDTO, bindingResult);
 
-                if (error.isValid()) {
+                    if (error.isValid()) {
 
-                    storeInfoDTO = storeInfoApi.save(storeInfoDTO, currentUser.getUserId());
+                        storeInfoDTO = storeInfoApi.save(storeInfoDTO, currentUser.getUserId());
 
-                    if (currentUser.getStoreId() == null) {
-                        userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
+                        if (currentUser.getStoreId() == null) {
+                            userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
+                        }
+
+                        result.setStatus(ResponseStatus.SUCCESS.getValue());
+                        result.setMessage("store successfully saved");
+                        result.setDetail(storeInfoDTO);
+
+                    } else {
+                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                        result.setMessage("store validation failed");
+                        result.setDetail(error);
                     }
-
-                    result.setStatus(ResponseStatus.SUCCESS.getValue());
-                    result.setMessage("store successfully saved");
-                    result.setDetail(storeInfoDTO);
-
-                } else {
-                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                    result.setMessage("store validation failed");
-                    result.setDetail(error);
                 }
 
             } else {

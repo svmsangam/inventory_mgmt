@@ -167,18 +167,21 @@ public class CategoryController {
                 return "redirect:/category/add";
             }
 
-            categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            categoryInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
 
-            CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
+                categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                categoryInfoDTO.setCreatedById(currentUser.getUserId());
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.CATEGORY_ERROR, error);
-                modelMap.put(StringConstants.CATEGORY, categoryInfoDTO);
-                return "category/add";
+                CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
+
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.CATEGORY_ERROR, error);
+                    modelMap.put(StringConstants.CATEGORY, categoryInfoDTO);
+                    return "category/add";
+                }
+
+                categoryInfoApi.save(categoryInfoDTO);
             }
-
-            categoryInfoApi.save(categoryInfoDTO);
 
         } catch (Exception e) {
 

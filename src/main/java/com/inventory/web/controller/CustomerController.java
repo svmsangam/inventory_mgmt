@@ -187,6 +187,7 @@ public class CustomerController {
 
         /*current user checking end*/
 
+        synchronized (this.getClass()) {
             ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
             if (!error.isValid()) {
@@ -200,6 +201,7 @@ public class CustomerController {
             clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
+        }
 
         } catch (Exception e) {
             logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
@@ -344,6 +346,8 @@ public class CustomerController {
 
         /*current user checking end*/
 
+        synchronized (this.getClass()) {
+
             ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
             if (!error.isValid()) {
@@ -357,6 +361,7 @@ public class CustomerController {
             clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
+        }
 
         } catch (Exception e) {
             logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));

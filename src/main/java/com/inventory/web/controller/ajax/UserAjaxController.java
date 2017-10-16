@@ -78,43 +78,48 @@ public class UserAjaxController {
                     userDTO.setStoreId((long) 0);
                 }
 
-                UserError error = new UserError();
+                synchronized (this.getClass()) {
+                    UserError error = new UserError();
 
-                error = userValidation.saveValidation(userDTO, bindingResult);
+                    error = userValidation.saveValidation(userDTO, bindingResult);
 
-                if (error.isValid()) {
-                    userDTO = userApi.save(userDTO);
-                    result.setStatus(ResponseStatus.SUCCESS.getValue());
-                    result.setMessage("user successfully saved");
-                    result.setDetail(userDTO);
-                } else {
-                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                    result.setMessage("user validation failed");
-                    result.setDetail(error);
+                    if (error.isValid()) {
+                        userDTO = userApi.save(userDTO);
+                        result.setStatus(ResponseStatus.SUCCESS.getValue());
+                        result.setMessage("user successfully saved");
+                        result.setDetail(userDTO);
+                    } else {
+                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                        result.setMessage("user validation failed");
+                        result.setDetail(error);
+                    }
                 }
             } else if (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                userDTO.setStoreId(currentUser.getStoreId());
+                synchronized (this.getClass()) {
+                    userDTO.setStoreId(currentUser.getStoreId());
 
-                UserError error = new UserError();
+                    UserError error = new UserError();
 
-                error = userValidation.saveValidation(userDTO, bindingResult);
+                    error = userValidation.saveValidation(userDTO, bindingResult);
 
-                if (error.isValid()) {
-                    userDTO = userApi.save(userDTO);
-                    result.setStatus(ResponseStatus.SUCCESS.getValue());
-                    result.setMessage("user successfully saved");
-                    result.setDetail(userDTO);
-                } else {
-                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                    result.setMessage("user validation failed");
-                    result.setDetail(error);
+                    if (error.isValid()) {
+                        userDTO = userApi.save(userDTO);
+                        result.setStatus(ResponseStatus.SUCCESS.getValue());
+                        result.setMessage("user successfully saved");
+                        result.setDetail(userDTO);
+                    } else {
+                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                        result.setMessage("user validation failed");
+                        result.setDetail(error);
+                    }
+
                 }
-
             } else {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("unauthorized user");
             }
+
 
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());

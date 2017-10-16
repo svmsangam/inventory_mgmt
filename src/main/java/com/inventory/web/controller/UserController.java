@@ -186,25 +186,27 @@ public class UserController {
 
             if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
+                synchronized (this.getClass()) {
+                    UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
 
-                if (!error.isValid()) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-                    return "redirect:/user/list";
+                    if (!error.isValid()) {
+                        redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                        return "redirect:/user/list";
+                    }
+
+                    UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
+
+                    if (userPermissionDTO1 == null) {
+                        userPermissionApi.save(userPermissionDTO);
+                    } else {
+                        userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
+                        userPermissionApi.update(userPermissionDTO);
+                    }
+
+                    redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user managed successfully");
+
+                    return "redirect:/user/manage?userId=" + userPermissionDTO.getUserId();
                 }
-
-                UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
-
-                if (userPermissionDTO1 == null) {
-                    userPermissionApi.save(userPermissionDTO);
-                } else {
-                    userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
-                    userPermissionApi.update(userPermissionDTO);
-                }
-
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user managed successfully");
-
-                return "redirect:/user/manage?userId=" + userPermissionDTO.getUserId();
 
             } else {
 
@@ -230,14 +232,16 @@ public class UserController {
             }
             if ((currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) || currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
-                UserManageError error = userValidation.onUpadteEnable(userId);
+                synchronized (this.getClass()) {
+                    UserManageError error = userValidation.onUpadteEnable(userId);
 
-                if (!error.isValid()) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-                    return "redirect:/user/list";
+                    if (!error.isValid()) {
+                        redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                        return "redirect:/user/list";
+                    }
+
+                    InvUserDTO userDTO = userApi.updateEnable(userId);
                 }
-
-                InvUserDTO userDTO = userApi.updateEnable(userId);
 
 				/*if (!userDTO.getEnable()){
 					sessionInfo.listSale(userDTO.getInventoryuser());

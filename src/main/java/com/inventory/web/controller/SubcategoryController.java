@@ -167,19 +167,21 @@ public class SubcategoryController {
                 return "redirect:/subcategory/add";
             }
 
-            subCategoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            subCategoryInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
+                subCategoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                subCategoryInfoDTO.setCreatedById(currentUser.getUserId());
 
-            SubCategoryInfoError error = subCategoryInfoValidation.onSave(subCategoryInfoDTO, bindingResult);
+                SubCategoryInfoError error = subCategoryInfoValidation.onSave(subCategoryInfoDTO, bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
-                modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                return "subcategory/add";
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
+                    modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
+                    modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    return "subcategory/add";
+                }
+
+                subcategoryInfoApi.save(subCategoryInfoDTO);
             }
-
-            subcategoryInfoApi.save(subCategoryInfoDTO);
 
         } catch (Exception e) {
 

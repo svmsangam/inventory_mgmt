@@ -162,18 +162,20 @@ public class ItemController {
                 return "redirect:/product/list";//store not assigned page
             }
 
-            ItemInfoError error = itemInfoValidation.onSave(itemInfoDTO, currentUser.getStoreId(), bindingResult);
+            synchronized (this.getClass()) {
+                ItemInfoError error = itemInfoValidation.onSave(itemInfoDTO, currentUser.getStoreId(), bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.PRODUCT, itemInfoDTO.getProductId());
-                modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
-                modelMap.put(StringConstants.ITEM_ERROR, error);
-                modelMap.put(StringConstants.ITEM, itemInfoDTO);
-                return "item/add";
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.PRODUCT, itemInfoDTO.getProductId());
+                    modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
+                    modelMap.put(StringConstants.ITEM_ERROR, error);
+                    modelMap.put(StringConstants.ITEM, itemInfoDTO);
+                    return "item/add";
+                }
+
+                itemInfoDTO = itemInfoApi.save(itemInfoDTO);
             }
-
-            itemInfoDTO = itemInfoApi.save(itemInfoDTO);
 
         } catch (Exception e) {
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));

@@ -156,18 +156,20 @@ public class UnitController {
                 return "redirect:/unit/add";
             }
 
-            unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            unitInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
+                unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                unitInfoDTO.setCreatedById(currentUser.getUserId());
 
-            UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
+                UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.UNIT_ERROR, error);
-                modelMap.put(StringConstants.UNIT, unitInfoDTO);
-                return "tag/add";
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.UNIT_ERROR, error);
+                    modelMap.put(StringConstants.UNIT, unitInfoDTO);
+                    return "tag/add";
+                }
+
+                unitInfoApi.save(unitInfoDTO);
             }
-
-            unitInfoApi.save(unitInfoDTO);
 
         } catch (Exception e) {
 

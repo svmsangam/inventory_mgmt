@@ -170,22 +170,24 @@ public class ProductInfoController {
                 return "redirect:/product/add";
             }
 
-            productInfoDTO.setStoreInfoId(currentUser.getStoreId());
-            productInfoDTO.setCreatedById(currentUser.getUserId());
+            synchronized (this.getClass()) {
+                productInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                productInfoDTO.setCreatedById(currentUser.getUserId());
 
-            ProductInfoError error = productInfoValidation.onSave(productInfoDTO, bindingResult);
+                ProductInfoError error = productInfoValidation.onSave(productInfoDTO, bindingResult);
 
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.PRODUCT_ERROR, error);
-                modelMap.put(StringConstants.PRODUCT, productInfoDTO);
-                modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.PRODUCT_ERROR, error);
+                    modelMap.put(StringConstants.PRODUCT, productInfoDTO);
+                    modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
 
-                return "product/add";
+                    return "product/add";
+                }
+
+                productInfoDTO = productInfoApi.save(productInfoDTO);
             }
-
-            productInfoDTO = productInfoApi.save(productInfoDTO);
 
         } catch (Exception e) {
 
