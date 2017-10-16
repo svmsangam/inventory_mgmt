@@ -109,10 +109,10 @@ function UserService() {
         changeStore : function (storeId , url , that) {
             var sppiner;
             userRequest = $.ajax({
-                type: "POST",
+                type: "GET",
                 url: url,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                data: storeId,
+                data: {storeId:storeId},
                 dataType: 'json',
                 timeout: 30000,
                 tryCount : 0,
@@ -134,15 +134,26 @@ function UserService() {
                     if (data.status === 'Success') {
 
                         that.prop("disabled" , true);
-                        stopLoading(spinner);
+                        $('#table2 input[type=checkbox]').each(function () {
+                            console.log( $(this).val() + "-" + (this.checked ? "checked" : "not checked"));
+
+                            if((!!this.checked)){
+                                if (storeId !== $(this).val()){
+                                    $(this).prop("disabled" , false).click();
+
+                                }
+                            }
+                        });
+                        stopLoading(sppiner);
                     }
 
                     if (data.status === 'Failure') {
+                        stopLoading(sppiner);
                         window.location.reload();
                     }
 
                     if (data.status === 'Validation Failed') {
-
+                        stopLoading(sppiner);
                         window.location.reload();
                     }
                 },
@@ -160,6 +171,7 @@ function UserService() {
                             return;
                         } else {
                             //cancel request
+                            stopLoading(sppiner);
                             window.location.reload();
 
                             return;
@@ -169,9 +181,11 @@ function UserService() {
 
                     if (xhr.status == 500) {
                         //handle error
-                        window.location.reload();
+                        stopLoading(sppiner);
+                       window.location.reload();
                     } else {
                         //handle error
+                        stopLoading(sppiner);
                         window.location.reload();
                     }
                 }
