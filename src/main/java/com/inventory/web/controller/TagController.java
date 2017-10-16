@@ -166,6 +166,7 @@ public class TagController {
             tagInfoApi.save(tagInfoDTO);
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }

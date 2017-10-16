@@ -6,6 +6,8 @@ import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.validation.OrderValidation;
+import com.inventory.web.error.OrderError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
@@ -41,6 +43,9 @@ public class OrderInfoController {
 
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
+
+    @Autowired
+    private OrderValidation orderValidation;
 
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -180,11 +185,25 @@ public class OrderInfoController {
             orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
             orderInfoDTO.setCreatedById(currentUser.getUserId());
 
+            OrderError error = orderValidation.onSaleSave(orderInfoDTO , bindingResult);
+
+            if (!error.isValid()){
+
+                modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
+                modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+
+                modelMap.put(StringConstants.ORDER_ERROR , error);
+                modelMap.put(StringConstants.ORDER , orderInfoDTO);
+
+                return "order/addSale";
+            }
+
             orderInfoApi.save(orderInfoDTO);
 
         } catch (Exception e) {
             logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
+            e.printStackTrace();
             return "redirect:/";
         }
         return "redirect:/order/sale/list";

@@ -38,7 +38,7 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Add Sales Order</h3>
-                        <div class="pull-right">Order No. #${orderNo}</div>
+                        <div class="pull-right">Order No. #${orderNo}<p class="form-error">${orderError.orderNo}</p><p class="form-error">${orderError.error}</p></div>
                     </div>
                     <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="order">
                         <div class="box-body">
@@ -48,7 +48,7 @@
                                     <input type="hidden" name="orderNo" value="${orderNo}"/>
                                     <label>Customer Name</label><a href="" class="pull-right"> Create a New Customer</a>
                                     <select class="choose1 form-control" name="clientId"></select>
-                                    <p class="form-error">${customerError.name}</p>
+                                    <p class="form-error">${orderError.clientInfo}</p>
                                 </div>
                             </div>
                             <div class="col-md-4">&nbsp;</div>
@@ -122,7 +122,8 @@
                         <div class="form-group">
                             <label for="description">Description:</label><br/>
                             <textarea class="form-control" placeholder="write something.." name="description"
-                                      id="description" rows="3" cols="30" required>${sales.notes}</textarea>
+                                      id="description" rows="3" cols="30" required>${order.description}</textarea>
+                            <p class="form-error">${orderError.description}</p>
                         </div>
                         </div>
                             <div class="col-md-6">&nbsp;</div>

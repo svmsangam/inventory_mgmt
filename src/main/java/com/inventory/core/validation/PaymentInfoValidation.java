@@ -29,7 +29,7 @@ public class PaymentInfoValidation extends GlobalValidation{
 
     PaymentInfoError error;
 
-    public PaymentInfoError onSave(PaymentInfoDTO paymentInfoDTO , long storeId , long invoiceId, BindingResult result) {
+    public synchronized PaymentInfoError onSave(PaymentInfoDTO paymentInfoDTO , long storeId , long invoiceId, BindingResult result) {
 
         error = new PaymentInfoError();
 

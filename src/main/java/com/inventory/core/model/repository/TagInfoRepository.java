@@ -24,6 +24,7 @@ public interface TagInfoRepository extends JpaRepository<TagInfo, Long>, JpaSpec
 
     TagInfo findByName(String tagName);
 
+    //@Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select t from TagInfo t where t.name = ?1 and t.status = ?2 and t.storeInfo.id = ?3")
     TagInfo findByNameAndStatusAndStoreInfo(String tagName, Status status, long storeId);
 

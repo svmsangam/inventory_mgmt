@@ -75,7 +75,7 @@
                 <br>--%>
                 <b>Order ID:</b> <a href="${pageContext.request.contextPath}/order/sale/${invoice.orderInfo.orderId}">#${invoice.orderInfo.orderNo}</a><br>
                 <c:if test="${invoice.receivableAmount gt 0}">
-                    <b>Payment Due:</b> ${invoice.receivableAmount}<br>
+                    <b>Payment Due:</b> <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/><br>
                 </c:if>
 
                 <b>Account:</b> <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}">${invoice.orderInfo.clientInfo.accountNo}</a>

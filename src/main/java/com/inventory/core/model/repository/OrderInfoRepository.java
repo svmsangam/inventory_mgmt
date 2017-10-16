@@ -23,6 +23,9 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo , Long>  , 
     @Query("select o from OrderInfo o where o.id = ?1 and o.status = ?2 and o.storeInfo.id = ?3")
     OrderInfo findByIdAndStatusAndStoreInfo(long orderId , Status status , long storeId);
 
+    @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2")
+    OrderInfo findByOrderNoAndStoreInfo(String orderNo , long storeInfoId);
+
     @Query("select o from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3")
     List<OrderInfo> findAllByStatusAndStoreInfoAndOrderType(Status status , long storeId , OrderType orderType, Pageable pageable);
 
@@ -34,7 +37,4 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo , Long>  , 
 
     @Query("select count (o) from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3 and o.saleTrack = ?4")
     long countAllSaleByStatusAndStoreInfoAndOrderTypeAndSaleTrack(Status status , long storeId , OrderType orderType , SalesOrderStatus track);
-
-    @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2")
-    OrderInfo findByOrderNo(String orderNo , long storeId);
 }
