@@ -30,6 +30,7 @@ $(document).ready(function () {
         console.log("hello you clicked");
         if((!!this.checked)){
             userService.changeStore($(this).val() , $(this).attr("url") , $(this));
+            $(this).blur();
         }
     });
 

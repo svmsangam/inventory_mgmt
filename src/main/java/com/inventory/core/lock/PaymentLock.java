@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.Thread.sleep;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by dhiraj on 10/13/17.
@@ -17,37 +17,46 @@ public class PaymentLock {
 
     private final static Semaphore semaphore = new Semaphore(MAX_AVAILABLE, true);
 
+    private static ReadWriteLock lock = new ReentrantReadWriteLock();
+
+    private static long usedId = 0;
+    private static long unusedId = 0;
 
     public static boolean lockOnSave(long invoiceId){
         boolean permit = false;
-        long usedId = 0;
-        long unusedId = 0;
+
         try {
             permit = semaphore.tryAcquire(1, TimeUnit.SECONDS);
 
             if (permit & usedId != invoiceId){
                 System.out.println("Semaphore acquired");
-                sleep(5);
+                lock.writeLock().lock();
+                System.out.println("Lock acquired");
             }
             else if (permit & usedId == invoiceId & unusedId == invoiceId) {
                 System.out.println("Semaphore acquired");
-                sleep(5);
+                lock.writeLock().lock();
+                System.out.println("Lock acquired");
 
             } else {
                 System.out.println("Could not acquire semaphore");
             }
         } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (permit) {
-                semaphore.release();
-                unusedId = invoiceId;
-                System.out.println("Semaphore release");
-                return permit;
-            }
-
-            return false;
+            lock.writeLock().unlock();
+            semaphore.release();
+            unusedId = invoiceId;
+            System.out.println("Semaphore release");
+            return permit;
         }
+
+        return false;
+
+    }
+
+    public static void unlockOnSave(long invoiceId){
+        lock.writeLock().unlock();
+        semaphore.release();
+        unusedId = invoiceId;
     }
 
 }
