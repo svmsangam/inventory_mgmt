@@ -2,7 +2,10 @@ package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.ICountryInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.lock.CountryLock;
 import com.inventory.core.model.dto.CountryInfoDTO;
+import com.inventory.core.model.dto.LockResponseDTO;
+import com.inventory.core.model.enumconstant.LockResponse;
 import com.inventory.core.validation.CountryValidation;
 import com.inventory.web.error.CountryError;
 import com.inventory.web.session.RequestCacheUtil;
@@ -62,6 +65,9 @@ public class CountryController {
     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public String addCountry(ModelMap modelMap, @ModelAttribute("countryDto") CountryInfoDTO countryDto,
                              RedirectAttributes redirectAttributes) {
+
+        LockResponseDTO responseDTO = new LockResponseDTO();
+
         try {
 
             if (AuthenticationUtil.getCurrentUser(userApi) == null) {
@@ -72,17 +78,60 @@ public class CountryController {
             CountryError countryError = new CountryError();
             countryError = countryValidation.countryValidateOnSave(countryDto);
             if (countryError.isValid()) {
+
+                responseDTO = CountryLock.acquire(countryValidation , countryDto);
+
+                if (LockResponse.TRUE.equals(responseDTO.getResponse())) {
+
+                    System.out.println("locked");
+
+                    countryService.save(countryDto);
+
+                    CountryLock.release(responseDTO.getKey());
+
+                    redirectAttributes.addFlashAttribute("message", "country.add.successfully");
+
+                    return "redirect:/country";
+                } else if (LockResponse.FALSE.equals(responseDTO.getResponse())){ //discart
+
+                    System.out.println("Max while locking");
+                    redirectAttributes.addFlashAttribute("error" , responseDTO.getMessage());
+                    return "redirect:/addcountry";
+
+                }else if (LockResponse.Validation_Failed.equals(responseDTO.getResponse())){
+                    modelMap.put(StringConstants.ERROR, countryError);
+                    modelMap.put(StringConstants.COUNTRY, countryDto);
+                    System.out.println("validation failed");
+                    return "country/addCountry";
+
+                } else if (LockResponse.Exception.equals(responseDTO.getResponse())){
+
+                    System.out.println("Exception while locking");
+                    redirectAttributes.addFlashAttribute("error" , responseDTO.getMessage());
+                    return "redirect:/addcountry";
+
+                } else {
+
+                    System.out.println("locked thread recalling.....");
+                    addCountry(modelMap , countryDto , redirectAttributes);
+                }
+
                 countryService.save(countryDto);
                 redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully saved");
                 return "redirect:/country/listSale";
             } else {
                 redirectAttributes.addAttribute(StringConstants.ERROR, "Failed to save check the field errors");
                 modelMap.put(StringConstants.ERROR, countryError);
-                modelMap.put(StringConstants.CITY_ERROR, countryDto);
+                modelMap.put(StringConstants.COUNTRY, countryDto);
                 return "country/addCountry";
             }
 
         } catch (Exception e) {
+
+            if (LockResponse.TRUE.equals( responseDTO.getResponse())) {
+                CountryLock.release(responseDTO.getKey());
+            }
+
             logger.error("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
