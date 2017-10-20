@@ -65,6 +65,11 @@ public class AccountInfoApi implements IAccountInfoApi {
     }
 
     @Override
+    public AccountInfoDTO getByAssociateIdAndAccountAssociateType(long associateId, AccountAssociateType associateType) {
+        return accountInfoConverter.convertToDto(accountInfoRepository.findByAssociateIdAndAssociateType(associateId , associateType));
+    }
+
+    @Override
     public List<AccountInfoDTO> list(Status status, long storeId) {
         return null;
     }

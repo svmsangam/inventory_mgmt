@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dhiraj
+  Date: 10/20/17
+  Time: 1:38 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -41,7 +48,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Client Name</label>
-                                        <select class="choose1 form-control" name="clientId"></select>
+                                        <select class="choose1 form-control" name="clientId">
+                                            
+                                        </select>
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
@@ -55,33 +64,32 @@
                                             </div>
                                             <input type="text" class="form-control datepicker"
                                                    onkeypress="return false;" onkeyup="return false;"
-                                                   value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
+                                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>
                                                    name="from" placeholder="Delivery Date"/>
                                         </div>
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
 
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>To Date:</label>
-                                            <div class='input-group date'>
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <input type="text" class="form-control datepicker"
-                                                       onkeypress="return false;" onkeyup="return false;"
-                                                       value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                                       name="to" placeholder="Delivery Date"/>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date:</label>
+                                        <div class='input-group date'>
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
                                             </div>
-                                            <p class="form-error"></p>
+                                            <input type="text" class="form-control datepicker"
+                                                   onkeypress="return false;" onkeyup="return false;"
+                                                   name="to" placeholder="Delivery Date" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"/>
                                         </div>
+                                        <p class="form-error"></p>
                                     </div>
+                                </div>
                                 <div class="margin">
                                     <button type="submit" class="btn btn-primary btn-flat btn-lg">filter</button>
                                 </div>
 
-                                </div>
+                            </div>
                         </form>
 
                         <table class="table table-bordered table-hover table-striped">
@@ -119,7 +127,7 @@
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/ledger/list?pageNo=${currentpage-1}"
+                                            <a href="${pageContext.request.contextPath}/ledger/list?pageNo=${currentpage-1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"
                                                class="page-link">Prev</a>
                                         </li>
                                     </c:if>
@@ -139,7 +147,7 @@
                                             <c:otherwise>
 
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/ledger/list?pageNo=${pagelist}">${pagelist}</a>
+                                                                         href="${pageContext.request.contextPath}/ledger/list?pageNo=${pagelist}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">${pagelist}</a>
                                                 </li>
 
                                             </c:otherwise>
@@ -150,7 +158,7 @@
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="${pageContext.request.contextPath}/ledger/list?pageNo=${currentpage+1}">Next</a>
+                                               href="${pageContext.request.contextPath}/ledger/filter?pageNo=${currentpage+1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>
@@ -220,3 +228,4 @@
         });
     });
 </script>
+

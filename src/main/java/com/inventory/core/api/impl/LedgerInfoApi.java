@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,5 +70,25 @@ public class LedgerInfoApi implements ILedgerInfoApi{
     @Override
     public long countAllByStatusAndStore(Status status, long storeId) {
         return ledgerInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+    }
+
+    @Override
+    public List<LedgerInfoDTO> filter(Status status, long storeId, long accountId, Date from, Date to, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return ledgerInfoConverter.convertToDtoList(ledgerInfoRepository.filter(status , storeId , accountId , from , to , pageable));
+    }
+
+    @Override
+    public Long filterCount(Status status, long storeId, long accountId, Date from, Date to) {
+
+        Long count = ledgerInfoRepository.filterCount(status , storeId , accountId , from , to);
+
+        if (count == null) {
+            return null;
+        }
+
+        return count;
     }
 }

@@ -16,6 +16,8 @@ public interface IAccountInfoApi {
 
     AccountInfoDTO show(long accountId, long storeId, Status status);
 
+    AccountInfoDTO getByAssociateIdAndAccountAssociateType(long associateId , AccountAssociateType associateType);
+
     List<AccountInfoDTO> list(Status status, long storeId);
 
 }
