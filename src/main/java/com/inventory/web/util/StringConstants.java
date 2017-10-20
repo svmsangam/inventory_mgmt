@@ -124,4 +124,7 @@ public class StringConstants {
     public static String TODAYTOTALSALE = "toDayTotalSale";
 
     public static String SUPERADMINSELECTSTORE = "superAdminStore";
+
+    public static String LEDGER = "ledger";
+    public static String LEDGERLIST = "ledgerList";
 }

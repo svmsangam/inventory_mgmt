@@ -49,7 +49,7 @@
 
             <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
 
-            <li><a href="#"><i class="fa fa-calendar"></i> <span>Ledger</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-calendar"></i> <span>Ledger</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
 
