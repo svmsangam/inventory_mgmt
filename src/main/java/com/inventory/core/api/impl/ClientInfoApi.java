@@ -64,6 +64,11 @@ public class ClientInfoApi implements IClientInfoApi {
     }
 
     @Override
+    public ClientInfoDTO show(Status status, long clientId) {
+        return clientInfoConverter.convertToDto(clientInfoRepository.findByIdAndStatus(clientId , status));
+    }
+
+    @Override
     public long countByStatusAndClientType(Status status, ClientType clientType) {
         return clientInfoRepository.countAllByStatusAndAndClientType(status , clientType);
     }
@@ -87,6 +92,15 @@ public class ClientInfoApi implements IClientInfoApi {
         Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
 
         return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , clientType , q , pageable));
+
+    }
+
+    @Override
+    public List<ClientInfoDTO> search(Status status, String q, int page, int size) {
+
+        Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
+
+        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , q , pageable));
 
     }
 }

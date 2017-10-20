@@ -36,12 +36,12 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Ledger List</h3>
+                        <h3 class="box-title">Ledger Filter of Account &nbsp; ${accountNo} &nbsp; ${clientName}</h3>
 
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form action="${pageContext.request.contextPath}/ledger/filter" method="post" modelAttribute="terms">
+                        <form action="${pageContext.request.contextPath}/ledger/filter" method="GET" modelAttribute="terms">
 
                             <div class="row well well-sm">
 
@@ -49,7 +49,7 @@
                                     <div class="form-group">
                                         <label>Client Name</label>
                                         <select class="choose1 form-control" name="clientId">
-                                            
+
                                         </select>
                                         <p class="form-error"></p>
                                     </div>
@@ -102,18 +102,36 @@
                                 <th>Ledger Entry</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="border-bottom">
                             <c:forEach var="ledger" items="${ledgerList}" varStatus="counter">
                                 <tr>
 
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${ledger.date}"/></td>
                                     <td>${ledger.accountInfo.acountNumber}</td>
-                                    <td>${ledger.amount}</td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${ledger.amount}"/></td>
                                     <td>${ledger.accountEntryType}</td>
                                     <td>${ledger.ledgerEntryType}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>
+                            <tfoot>
+                            <tr >
+                                <th colspan="4">Debit Amount &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterDr}"/></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Credit Amount &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr}"/></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Balance &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr - totalFilterDr}"/></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4" >Total Balance</th>
+                                <th colspan="4" >Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalCr - totalDr}"/></th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
 
@@ -127,7 +145,7 @@
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/ledger/list?pageNo=${currentpage-1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"
+                                            <a href="${pageContext.request.contextPath}/ledger/filter?pageNo=${currentpage-1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"
                                                class="page-link">Prev</a>
                                         </li>
                                     </c:if>
@@ -147,7 +165,7 @@
                                             <c:otherwise>
 
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/ledger/list?pageNo=${pagelist}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">${pagelist}</a>
+                                                                         href="${pageContext.request.contextPath}/ledger/filter?pageNo=${pagelist}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">${pagelist}</a>
                                                 </li>
 
                                             </c:otherwise>
@@ -180,7 +198,7 @@
 
         $(".choose1").select2({
             ajax: {
-                url: '${pageContext.request.contextPath}/client/customer/search',
+                url: '${pageContext.request.contextPath}/client/search',
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,

@@ -12,9 +12,13 @@ public interface IClientInfoApi {
 
     ClientInfoDTO update(ClientInfoDTO clientInfoDTO);
 
+    ClientInfoDTO show(Status status , long clientId);
+
     long countByStatusAndClientType(Status status , ClientType clientType);
 
     List<ClientInfoDTO> list(Status status , ClientType clientType , int page , int size);
 
     List<ClientInfoDTO> search(Status status , ClientType clientType , String q , int page , int size);
+
+    List<ClientInfoDTO> search(Status status , String q , int page , int size);
 }

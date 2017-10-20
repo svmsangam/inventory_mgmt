@@ -1,6 +1,7 @@
 package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.LedgerInfo;
+import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,10 @@ public interface LedgerInfoRepository extends JpaRepository<LedgerInfo , Long> ,
 
     @Query("select count (l) from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.accountInfo.id = ?3 and l.created between ?4 and ?5")
     Long filterCount(Status status , long storeId , long accountId , Date from , Date to);
+
+    @Query("select sum (l.amount) from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.accountInfo.id = ?3 and l.created between ?4 and ?5 and l.accountEntryType = ?6")
+    Double filterTotalAmount(Status status , long storeId , long accountId , Date from , Date to , AccountEntryType accountEntryType);
+
+    @Query("select sum (l.amount) from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.accountInfo.id = ?3 and l.accountEntryType = ?4")
+    Double findTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status status , long storeId , long accountId, AccountEntryType accountEntryType);
 }

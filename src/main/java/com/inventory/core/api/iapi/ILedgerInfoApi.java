@@ -1,6 +1,7 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.LedgerInfoDTO;
+import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.Date;
@@ -22,4 +23,9 @@ public interface ILedgerInfoApi {
     List<LedgerInfoDTO> filter(Status status , long storeId , long accountId , Date from , Date to, int page , int size);
 
     Long filterCount(Status status , long storeId , long accountId , Date from , Date to);
+
+    double filterTotalAmount(Status status , long storeId , long accountId , Date from , Date to , AccountEntryType accountEntryType);
+
+    double getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status status , long storeId , long accountId, AccountEntryType accountEntryType);
+
 }

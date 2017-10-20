@@ -142,7 +142,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
     }
 
 
-    public LedgerInfo convertPaymentInfoToDRLedger(long paymentInfoId) {
+    public LedgerInfo convertPaymentInfoToCRLedger(long paymentInfoId) {
 
         PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
 
@@ -174,7 +174,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
         return entity;
     }
 
-    public LedgerInfo convertPaymentInfoToCRLedger(long paymentInfoId) {
+    public LedgerInfo convertPaymentInfoToDRLedger(long paymentInfoId) {
 
         PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
 

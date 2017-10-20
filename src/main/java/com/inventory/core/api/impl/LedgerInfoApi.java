@@ -4,6 +4,7 @@ import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.LedgerInfoConverter;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.LedgerInfo;
+import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.LedgerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,29 @@ public class LedgerInfoApi implements ILedgerInfoApi{
         }
 
         return count;
+    }
+
+    @Override
+    public double filterTotalAmount(Status status, long storeId, long accountId, Date from, Date to, AccountEntryType accountEntryType) {
+
+        Double amount = ledgerInfoRepository.filterTotalAmount(status , storeId , accountId , from , to , accountEntryType);
+
+        if (amount == null) {
+            return 0;
+        }
+
+        return amount;
+    }
+
+    @Override
+    public double getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status status, long storeId, long accountId, AccountEntryType accountEntryType) {
+
+        Double amount = ledgerInfoRepository.findTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(status , storeId , accountId , accountEntryType);
+
+        if (amount == null) {
+            return 0;
+        }
+
+        return amount;
     }
 }

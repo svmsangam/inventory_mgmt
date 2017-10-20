@@ -37,4 +37,7 @@ public interface ClientInfoRepository extends JpaRepository<ClientInfo , Long> ,
 
     @Query("select c from ClientInfo c where (c.status = ?1 and c.clientType = ?2 ) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
     List<ClientInfo> findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , ClientType clientType , String q , Pageable pageable);
+
+    @Query("select c from ClientInfo c where (c.status = ?1) and (c.name like concat('%' , ?2 , '%') or c.companyName like concat('%' , ?2 , '%') or c.contact like concat('%' , ?2 , '%') or c.mobileNumber like concat('%' , ?2 , '%'))")
+    List<ClientInfo> findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , String q , Pageable pageable);
 }

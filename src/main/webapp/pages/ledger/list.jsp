@@ -34,7 +34,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form action="${pageContext.request.contextPath}/ledger/filter" method="post" modelAttribute="terms">
+                        <form action="${pageContext.request.contextPath}/ledger/filter" method="GET" modelAttribute="terms">
 
                             <div class="row well well-sm">
 
