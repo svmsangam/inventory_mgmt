@@ -64,7 +64,7 @@
                                             </div>
                                             <input type="text" class="form-control datepicker"
                                                    onkeypress="return false;" onkeyup="return false;"
-                                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>
+                                                    value="<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>"
                                                    name="from" placeholder="Delivery Date"/>
                                         </div>
                                         <p class="form-error"></p>
