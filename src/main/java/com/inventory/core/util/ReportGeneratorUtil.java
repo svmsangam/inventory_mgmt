@@ -107,9 +107,9 @@ public class ReportGeneratorUtil {
         AbstractColumn accountEntryType = createColumn("accountEntryType", AccountEntryType.class, "Account Entry", 20, headerStyle, detailTextStyle);
         AbstractColumn remarks = createColumn("remarks", String.class, "Remarks", 68, headerStyle, detailTextStyle);
 
-
         report.addColumn(dateTime).addColumn(accountNo).addColumn(amount).addColumn(ledgerEntryType)
                 .addColumn(accountEntryType).addColumn(remarks);
+
 
         StyleBuilder titleStyle = new StyleBuilder(true);
         titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);

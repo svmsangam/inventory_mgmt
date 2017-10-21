@@ -3,6 +3,7 @@ package com.inventory.web.controller;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.*;
 import com.inventory.core.model.enumconstant.AccountAssociateType;
+import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -327,6 +328,8 @@ public class ReportInfoController {
                 clientName = clientInfoDTO.getName();
             }
 
+            double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
+
    /*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
             modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
 
@@ -335,9 +338,10 @@ public class ReportInfoController {
 
         */
 
+
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo());
+            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )");
             reportServiceApi.writePdfReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
 
 
