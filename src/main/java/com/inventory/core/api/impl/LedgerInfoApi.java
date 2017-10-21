@@ -82,6 +82,11 @@ public class LedgerInfoApi implements ILedgerInfoApi{
     }
 
     @Override
+    public List<LedgerInfoDTO> filterReport(Status status, long storeId, long accountId, Date from, Date to) {
+        return ledgerInfoConverter.convertToDtoList(ledgerInfoRepository.filter(status , storeId , accountId , from , to ));
+    }
+
+    @Override
     public Long filterCount(Status status, long storeId, long accountId, Date from, Date to) {
 
         Long count = ledgerInfoRepository.filterCount(status , storeId , accountId , from , to);

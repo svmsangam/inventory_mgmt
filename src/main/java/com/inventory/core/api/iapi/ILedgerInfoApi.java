@@ -22,6 +22,8 @@ public interface ILedgerInfoApi {
 
     List<LedgerInfoDTO> filter(Status status , long storeId , long accountId , Date from , Date to, int page , int size);
 
+    List<LedgerInfoDTO> filterReport(Status status , long storeId , long accountId , Date from , Date to);
+
     Long filterCount(Status status , long storeId , long accountId , Date from , Date to);
 
     double filterTotalAmount(Status status , long storeId , long accountId , Date from , Date to , AccountEntryType accountEntryType);

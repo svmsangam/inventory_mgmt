@@ -38,6 +38,15 @@
                     <div class="box-header">
                         <h3 class="box-title">Ledger Filter of Account &nbsp; ${accountNo} &nbsp; ${clientName}</h3>
 
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download Report
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">PDF</a></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">XLS</a></li>
+                            </ul>
+                        </div>
+
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
