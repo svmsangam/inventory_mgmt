@@ -50,12 +50,10 @@
 
 <%--for loading spinner end--%>
 
-<div class="wrapper">
+<div class="wrapper" style="overflow: hidden">
 
     <!-- Main Header -->
     <header class="main-header">
-
-
 
         <!-- Logo -->
         <a href="/" class="logo">

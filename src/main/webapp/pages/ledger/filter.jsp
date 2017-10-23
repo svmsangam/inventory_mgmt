@@ -37,22 +37,12 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Ledger Filter of Account &nbsp; ${accountNo} &nbsp; ${clientName}</h3>
-
-                        <div class="dropdown pull-right">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download Report
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">PDF</a></li>
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">XLS</a></li>
-                            </ul>
-                        </div>
-
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <form action="${pageContext.request.contextPath}/ledger/filter" method="GET" modelAttribute="terms">
 
-                            <div class="row well well-sm">
+                            <div class="well well-sm">
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -94,14 +84,23 @@
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
-                                <div class="margin">
-                                    <button type="submit" class="btn btn-primary btn-flat btn-lg">filter</button>
+                                <div class="margin" style="margin-top: 25px;">
+                                    <button type="submit" class="btn btn-info btn-flat">Filter!</button>
                                 </div>
 
                             </div>
                         </form>
 
-                        <table class="table table-bordered table-hover table-striped">
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                <li class="divider"></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                            </ul>
+                        </div>
+                        <table class="table table-bordered table-hover table-striped table-condensed">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -124,21 +123,25 @@
                             </c:forEach>
                             </tbody>
                             <tfoot>
-                            <tr >
-                                <th colspan="4">Debit Amount &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
-                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterDr}"/></td>
+                            <tr>
+                                <td colspan="3"></td>
+                                <th>Debit Amount <br> (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> to <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td>Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterDr}"/></td>
                             </tr>
                             <tr>
-                                <th colspan="4">Credit Amount &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
-                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr}"/></td>
+                                <td colspan="3"></td>
+                                <th>Credit Amount <br> (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> to <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td>Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr}"/></td>
                             </tr>
                             <tr>
-                                <th colspan="4">Balance &nbsp; (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> &nbsp; to &nbsp; <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
-                                <td colspan="4">Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr - totalFilterDr}"/></td>
+                                <td colspan="3"></td>
+                                <th>Balance <br> (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> to <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
+                                <td>Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalFilterCr - totalFilterDr}"/></td>
                             </tr>
                             <tr>
-                                <th colspan="4" >Total Balance</th>
-                                <th colspan="4" >Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalCr - totalDr}"/></th>
+                                <td colspan="3"></td>
+                                <th>Total Balance</th>
+                                <td><b>Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalCr - totalDr}"/></b></td>
                             </tr>
                             </tfoot>
                         </table>

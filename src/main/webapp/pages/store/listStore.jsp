@@ -129,7 +129,7 @@
                                         <td>
                                             <button type="button"
                                                     url="${pageContext.request.contextPath}/store/show/${store.storeId}"
-                                                    class="btn btn-info btn-sm  btn-flat viewStoreInfo"
+                                                    class="btn btn-info btn-xs  btn-flat viewStoreInfo"
                                                     data-toggle="modal"
                                                     data-target="#modal-view"><span
                                                     class="glyphicon glyphicon-eye-open"></span>

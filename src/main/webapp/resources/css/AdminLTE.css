@@ -598,6 +598,7 @@ a:focus {
 .sidebar-menu > li > a {
     padding: 12px 5px 12px 15px;
     display: block;
+    color: #b8c7ce;
 }
 
 .sidebar-menu > li > a > .fa,
