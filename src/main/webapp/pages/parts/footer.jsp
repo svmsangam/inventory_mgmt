@@ -112,9 +112,6 @@
                         </a>
                     </li>
 
-                    <li><a href="${pageContext.request.contextPath}/report/invoice/pdf?invoiceId=1" target="_blank"><i class="fa fa-square"></i><span>Test PDF</span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/report/invoice/xls?invoiceId=1" target="_blank"><i class="fa fa-square"></i><span>Test XLS</span></a></li>
                     <%--<li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
                                 <span class="pull-right-container">
