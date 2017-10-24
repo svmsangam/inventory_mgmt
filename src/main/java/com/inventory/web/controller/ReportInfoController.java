@@ -215,11 +215,15 @@ public class ReportInfoController {
 
         */
 
+            double totalFilterDr =  ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT);
+            double totalFilterCr = ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT);
+            double filterBalance = totalFilterCr - totalFilterDr;
+
             double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )");
+            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )" , totalFilterDr , totalFilterCr , filterBalance);
             reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
 
 
@@ -310,6 +314,11 @@ public class ReportInfoController {
 
             double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
 
+            double totalFilterDr =  ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT);
+            double totalFilterCr = ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT);
+            double filterBalance = totalFilterCr - totalFilterDr;
+
+
    /*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
             modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
 
@@ -321,7 +330,7 @@ public class ReportInfoController {
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )");
+            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )" , totalFilterDr ,  totalFilterCr , filterBalance);
             reportServiceApi.writePdfReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
 
 

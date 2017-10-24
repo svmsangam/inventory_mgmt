@@ -14,26 +14,23 @@ import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import com.inventory.core.model.dto.LedgerInfoDTO;
+import com.inventory.core.model.dto.LedgerReportFooterDTO;
 import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.LedgerEntryType;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.base.JRBasePrintPage;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import java.awt.*;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dhiraj on 10/10/17.
  */
 public class ReportGeneratorUtil {
 
-    public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle) throws ColumnBuilderException, JRException, ClassNotFoundException {
+    public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle , double dr , double cr , double balance) throws ColumnBuilderException, JRException, ClassNotFoundException {
 
         Style headerStyle = createHeaderStyle();
         Style detailTextStyle = createDetailTextStyle();
@@ -45,26 +42,27 @@ public class ReportGeneratorUtil {
         JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dynaReport, new ClassicLayoutManager(),
                 new JRBeanCollectionDataSource(list));
 
-        JRPrintPage page = new JRBasePrintPage();
+        List<LedgerReportFooterDTO> ledgerReportFooterDTOS = new ArrayList<>();
 
-        page.
+        LedgerReportFooterDTO ledgerReportFooterDTO = new LedgerReportFooterDTO();
 
-        Map<String , Object> map = new HashMap<>();
+        ledgerReportFooterDTO.setCr(cr);
+        ledgerReportFooterDTO.setDr(dr);
+        ledgerReportFooterDTO.setBalance(balance);
 
-        map.put("dr" , 100.00);
-        map.put("cr" , 200.00);
-        map.put("balance" , 100.00);
+        ledgerReportFooterDTOS.add(ledgerReportFooterDTO);
+
 
         DynamicReport dynaReportFooter = ledgerReportProcessorFooter(headerStyle , detailNumberStyle);
 
-        JasperPrint jp1 = DynamicJasperHelper.generateJasperPrint(dynaReportFooter, new ClassicLayoutManager(),map);
+        JasperPrint jp1 = DynamicJasperHelper.generateJasperPrint(dynaReportFooter, new ClassicLayoutManager(),new JRBeanCollectionDataSource(ledgerReportFooterDTOS));
 
         for (int i = 0; i < jp1.getPages().size(); i++) {
             jp.addPage(jp1.getPages().get(i));
         }
 
 
-        return jp1;
+        return jp;
     }
 
     private Style createHeaderStyle() {
@@ -167,19 +165,20 @@ public class ReportGeneratorUtil {
 
     }
 
-    private DynamicReport ledgerReportProcessorFooter( Style headerStyle,Style detailNumStyle)
+    private DynamicReport ledgerReportProcessorFooter(Style hraderStyle , Style detailNumStyle)
             throws ColumnBuilderException, ClassNotFoundException {
 
         DynamicReportBuilder report = new DynamicReportBuilder();
 
-        AbstractColumn dr = createColumn("dr", Double.class, "DR", 45, headerStyle, detailNumStyle);
-        AbstractColumn cr = createColumn("cr", Double.class, "CR", 45, headerStyle, detailNumStyle);
-        AbstractColumn balance = createColumn("balance", Double.class, "Balance", 45, headerStyle, detailNumStyle);
+       AbstractColumn dr = createColumn("dr", Object.class, "Debit Amount", 45, hraderStyle, detailNumStyle);
+        AbstractColumn cr = createColumn("cr", Object.class, "Credit Amount", 45, hraderStyle, detailNumStyle);
+        AbstractColumn balance = createColumn("balance", Object.class, "Balance", 45, hraderStyle, detailNumStyle);
 
-        report.addColumn(dr).addColumn(cr).addColumn(balance);
+        report.addColumn(dr).addColumn(cr).addColumn(balance).setPrintBackgroundOnOddRows(true)
+                .setOddRowBackgroundStyle(oddRowStyle()).setColumnsPerPage(1)
+                .setUseFullPageWidth(true).setColumnSpace(5);
 
         report.setUseFullPageWidth(true);
-
         return report.build();
 
     }
