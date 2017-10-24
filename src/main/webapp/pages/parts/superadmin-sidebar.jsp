@@ -47,9 +47,9 @@
             <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-suitcase"></i>
                 <span>Store</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar-check-o"></i> <span>Invoice</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-calendar"></i> <span>Ledger</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
 

@@ -36,7 +36,7 @@
                     <div class="box-body">
                         <form action="${pageContext.request.contextPath}/ledger/filter" method="GET" modelAttribute="terms">
 
-                            <div class="row well well-sm">
+                            <div class="well well-sm">
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -56,7 +56,7 @@
                                             <input type="text" class="form-control datepicker"
                                                    onkeypress="return false;" onkeyup="return false;"
                                                    value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                                   name="from" placeholder="Delivery Date"/>
+                                                   name="from" placeholder="From Date"/>
                                         </div>
                                         <p class="form-error"></p>
                                     </div>
@@ -72,19 +72,18 @@
                                                 <input type="text" class="form-control datepicker"
                                                        onkeypress="return false;" onkeyup="return false;"
                                                        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                                       name="to" placeholder="Delivery Date"/>
+                                                       name="to" placeholder="To Date"/>
                                             </div>
                                             <p class="form-error"></p>
                                         </div>
                                     </div>
-                                <div class="margin">
-                                    <button type="submit" class="btn btn-primary btn-flat btn-lg">filter</button>
+                                <div class="margin" style="margin-top: 25px;">
+                                      <button type="submit" class="btn btn-info btn-flat">Filter!</button>
                                 </div>
-
                                 </div>
                         </form>
 
-                        <table class="table table-bordered table-hover table-striped">
+                        <table class="table table-bordered table-hover table-striped table-condensed">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -216,7 +215,7 @@
                 return markup;
             },
             minimumInputLength: 1,
-            placeholder: "Search Customer by Name & Mobile No"
+            placeholder: "Search Customer by Name or Mobile No"
         });
     });
 </script>
