@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,6 +48,15 @@ public class ReportInfoController {
 
     @Autowired
     private IClientInfoApi clientInfoApi;
+
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
+
+    @Autowired
+    private IOrderInfoApi orderInfoApi;
+
+    @Autowired
+    private IOrderItemInfoApi orderItemInfoApi;
 
     @GetMapping(value = "invoice/pdf", produces = "application/pdf")
     public void getpdf(@RequestParam("invoiceId") Long invoiceId, HttpServletRequest request , final HttpServletResponse response) {
@@ -83,14 +91,20 @@ public class ReportInfoController {
                 return ;
             }
 
-            List<LedgerInfoDTO> ledgerList = ledgerInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 10);
+            if (invoiceId == null){
+                return;
+            }
 
-            System.out.println("ledger size  :::  "+ledgerList.size());
+            if (invoiceId < 0){
+                return;
+            }
+
+            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId , currentUser.getStoreId() , Status.ACTIVE);
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerList, "Ledger List", "Ledger List " + new Date().toString());
-            reportServiceApi.writePdfReport(jp, response, "Ledger Report " + new Date().toString());
+            //JasperPrint jp = rp.invoiceReport(invoiceInfoDTO, "Invoice", "Invoice " + new Date().toString());
+           // reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
 
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
@@ -106,42 +120,6 @@ public class ReportInfoController {
 
         try {
 
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            if (currentUser.getStoreId() == null) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            List<LedgerInfoDTO> ledgerList = ledgerInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 10);
-
-            System.out.println("ledger size  :::  "+ledgerList.size());
-
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
-
-            JasperPrint jp = rp.ledgerReport(ledgerList, "Ledger List", "Ledger List " + new Date().toString());
-            reportServiceApi.writeXlsxReport(jp, response, "Ledger Report " + new Date().toString());
 
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
@@ -237,10 +215,12 @@ public class ReportInfoController {
 
         */
 
+            double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
+
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo());
-            reportServiceApi.writeXlsxReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
+            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )");
+            reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
 
 
         } catch (Exception e) {

@@ -17,12 +17,16 @@ import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.LedgerEntryType;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.base.JRBasePrintPage;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import java.awt.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dhiraj on 10/10/17.
@@ -30,15 +34,37 @@ import java.util.List;
 public class ReportGeneratorUtil {
 
     public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle) throws ColumnBuilderException, JRException, ClassNotFoundException {
+
         Style headerStyle = createHeaderStyle();
         Style detailTextStyle = createDetailTextStyle();
         Style detailNumberStyle = createDetailNumberStyle();
+
         DynamicReport dynaReport = ledgerReportProcessor(title, subTitle, headerStyle, detailTextStyle, detailNumberStyle);
+
+
         JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dynaReport, new ClassicLayoutManager(),
                 new JRBeanCollectionDataSource(list));
 
+        JRPrintPage page = new JRBasePrintPage();
 
-        return jp;
+        page.
+
+        Map<String , Object> map = new HashMap<>();
+
+        map.put("dr" , 100.00);
+        map.put("cr" , 200.00);
+        map.put("balance" , 100.00);
+
+        DynamicReport dynaReportFooter = ledgerReportProcessorFooter(headerStyle , detailNumberStyle);
+
+        JasperPrint jp1 = DynamicJasperHelper.generateJasperPrint(dynaReportFooter, new ClassicLayoutManager(),map);
+
+        for (int i = 0; i < jp1.getPages().size(); i++) {
+            jp.addPage(jp1.getPages().get(i));
+        }
+
+
+        return jp1;
     }
 
     private Style createHeaderStyle() {
@@ -84,6 +110,18 @@ public class ReportGeneratorUtil {
         return sb.build();
     }
 
+    private Style oddRowStyle(){
+
+        Style oddRowStyle = new Style();
+
+        oddRowStyle.setBorder(Border.NO_BORDER());
+        Color veryLightGrey = new Color(230, 230, 230);
+        oddRowStyle.setBackgroundColor(veryLightGrey);
+        oddRowStyle.setTransparency(Transparency.OPAQUE);
+
+        return oddRowStyle;
+    }
+
     private AbstractColumn createColumn(String property, Class<?> type, String title, int width, Style headerStyle, Style detailStyle)
             throws ColumnBuilderException {
         AbstractColumn columnState = ColumnBuilder.getNew()
@@ -108,8 +146,9 @@ public class ReportGeneratorUtil {
         AbstractColumn remarks = createColumn("remarks", String.class, "Remarks", 68, headerStyle, detailTextStyle);
 
         report.addColumn(dateTime).addColumn(accountNo).addColumn(amount).addColumn(ledgerEntryType)
-                .addColumn(accountEntryType).addColumn(remarks);
-
+                .addColumn(accountEntryType).addColumn(remarks).setPrintBackgroundOnOddRows(true)
+                .setOddRowBackgroundStyle(oddRowStyle()).setColumnsPerPage(1)
+                .setUseFullPageWidth(true).setColumnSpace(5);
 
         StyleBuilder titleStyle = new StyleBuilder(true);
         titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
@@ -124,6 +163,23 @@ public class ReportGeneratorUtil {
         report.setSubtitle(subTitle);
         report.setSubtitleStyle(subTitleStyle.build());
         report.setUseFullPageWidth(true);
+        return report.build();
+
+    }
+
+    private DynamicReport ledgerReportProcessorFooter( Style headerStyle,Style detailNumStyle)
+            throws ColumnBuilderException, ClassNotFoundException {
+
+        DynamicReportBuilder report = new DynamicReportBuilder();
+
+        AbstractColumn dr = createColumn("dr", Double.class, "DR", 45, headerStyle, detailNumStyle);
+        AbstractColumn cr = createColumn("cr", Double.class, "CR", 45, headerStyle, detailNumStyle);
+        AbstractColumn balance = createColumn("balance", Double.class, "Balance", 45, headerStyle, detailNumStyle);
+
+        report.addColumn(dr).addColumn(cr).addColumn(balance);
+
+        report.setUseFullPageWidth(true);
+
         return report.build();
 
     }

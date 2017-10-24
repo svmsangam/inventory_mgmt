@@ -42,7 +42,7 @@ class ReportServiceApi implements IReportServiceApi{
         IOUtils.closeQuietly(outStream);
     }
 
-    public void writeXlsxReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException{
+    public void writeXlsReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException{
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-disposition", "inline; filename=" + (reportName == null ? jp.getName() : reportName).replace('"', '_') + ".xlsx");
 

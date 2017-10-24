@@ -13,5 +13,5 @@ public interface IReportServiceApi {
 
     void writePdfReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException;
 
-    void writeXlsxReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException;
+    void writeXlsReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException;
 }
