@@ -14,8 +14,6 @@ import javax.persistence.Table;
 @Table(name = "order_item_table")
 public class OrderItemInfo extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = -6245833303340171164L;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private ItemInfo itemInfo;
 
@@ -23,6 +21,8 @@ public class OrderItemInfo extends AbstractEntity<Long> {
     private OrderInfo orderInfo;
 
     private int quantity;
+    
+    private int returnQuantity;
 
     private double rate;
 
@@ -86,5 +86,13 @@ public class OrderItemInfo extends AbstractEntity<Long> {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+
+    public int getReturnQuantity() {
+        return returnQuantity;
+    }
+
+    public void setReturnQuantity(int returnQuantity) {
+        this.returnQuantity = returnQuantity;
     }
 }

@@ -26,11 +26,11 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
+        <form method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
               </button>
             </span>
             </div>
@@ -62,12 +62,11 @@
                 <ul class="treeview-menu">
                     <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
-                    <li><a href="#"><i class="fa fa-list-ul"></i> <span>Return List</span></a></li>
-                    <li><a href="#"><i class="fa fa-plus"></i> <span>Return Add</span></a></li>
+
                 </ul>
             </li>
 
-            <li class="treeview">
+           <%-- <li class="treeview">
                 <a href="#"><i class="fa fa-bar-chart"></i> <span>Purchase Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -79,7 +78,7 @@
                     <li><a href="#"><i class="fa fa-list-ul"></i> <span>Return List</span></a></li>
                     <li><a href="#"><i class="fa fa-plus"></i> <span>Return Add</span></a></li>
                 </ul>
-            </li>
+            </li>--%>
 
             <li class="treeview">
                 <a href="#"><i class="fa fa-address-book-o"></i> <span>Client</span>

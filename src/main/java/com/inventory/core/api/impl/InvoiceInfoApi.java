@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -201,4 +202,37 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         }
         return amount;
     }
+
+    public List<Double> getTotalSellOfYearByStore(long storeId, String year) {
+
+        List<Double> totalSales = new ArrayList<Double>();
+
+        for(int i= 0 ; i<12 ; i++){
+            totalSales.add(0.0);
+        }
+
+        List<Object[]> objectList = invoiceInfoRepository.findTotalSellOfYearByStore(storeId , year);
+
+        for(Object[] object : objectList){
+
+            System.out.println("month " + (String) object[1]);
+
+            if ((Double) object[0] == null){
+                totalSales.add(Integer.parseInt((String) object[1]) - 1, 0.0);
+            }else {
+                totalSales.add(Integer.parseInt((String) object[1]) - 1, limitPrecision((Double) object[0] , 2));
+            }
+        }
+
+        return totalSales;
+    }
+
+    private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {
+
+        int multiplier = (int) Math.pow(10, maxDigitsAfterDecimal);
+        double truncated = (double) ((long) ((dblAsString) * multiplier)) / multiplier;
+        System.out.println(dblAsString + " ==> " + truncated);
+        return truncated;
+    }
+
 }

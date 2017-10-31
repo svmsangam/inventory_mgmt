@@ -74,7 +74,7 @@
                     <div class="inner">
                         <h3>440000</h3>
 
-                        <p>Total Purchase</p>
+                        <p>Total Something</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -104,7 +104,7 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Monthly Sale And Purchase Report of Xyz pvt. ltd.</h3>
+                        <h3 class="box-title">Monthly Sale Report of Xyz pvt. ltd.</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -402,7 +402,7 @@
         var salesChartData = {
             labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July' , 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [
-                {
+               /* {
                     label               : 'Electronics',
                     fillColor           : 'rgb(210, 214, 222)',
                     strokeColor         : 'rgb(210, 214, 222)',
@@ -411,7 +411,7 @@
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgb(220,220,220)',
                     data                : [65, 59, 80, 81, 56, 55, 40 , 50 , 30 , 20, 10, 60]
-                },
+                },*/
                 {
                     label               : 'Digital Goods',
                     fillColor           : 'rgba(60,141,188,0.9)',
@@ -420,7 +420,7 @@
                     pointStrokeColor    : 'rgba(60,141,188,1)',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data                : [28, 48, 40, 19, 86, 27, 90 , 20 , 30 , 10 , 5 , 30]
+                    data                : ${cartSaleDate}
                 }
             ]
         };
