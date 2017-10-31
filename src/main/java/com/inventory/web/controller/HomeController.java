@@ -107,6 +107,8 @@ public class HomeController {
 
             modelMap.put(StringConstants.CART_SALE_DATA , invoiceInfoApi.getTotalSellOfYearByStore(currentUser.getStoreId() , yearStr));
 
+            modelMap.put(StringConstants.STORE , currentUser.getStoreName());
+
 
         }
 
