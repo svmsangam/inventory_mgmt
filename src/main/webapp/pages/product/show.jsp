@@ -80,6 +80,8 @@
                                 <th>Expire On</th>
                                 <th>Instock</th>
                                 <th>Quantity</th>
+                                <th>Total Costing</th>
+                                <th>Total Selling</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,6 +95,8 @@
                                     <td><fmt:formatDate pattern="MMM dd, yyyy" value="${item.expireDate}"/></td>
                                     <td><c:choose><c:when test="${item.threshold gt item.inStock or item.threshold eq item.inStock}"><span class="form-error">${item.inStock}</span></c:when><c:otherwise>${item.inStock}</c:otherwise></c:choose></td>
                                     <td>${item.quantity}</td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.totalCost}"/></td>
+                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.totalSale}"/></td>
                                 </tr>
                             </c:forEach>
                             </tbody>

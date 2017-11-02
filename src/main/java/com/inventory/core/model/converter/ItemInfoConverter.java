@@ -1,5 +1,6 @@
 package com.inventory.core.model.converter;
 
+import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.entity.ItemInfo;
 import com.inventory.core.model.repository.LotInfoRepository;
@@ -38,6 +39,9 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
     @Autowired
     private LotInfoRepository lotInfoRepository;
 
+    @Autowired
+    private IOrderItemInfoApi orderItemInfoApi;
+
     @Override
     public ItemInfo convertToEntity(ItemInfoDTO dto) {
         return copyConvertToEntity(dto, new ItemInfo());
@@ -67,6 +71,37 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setTagId(entity.getTagInfo().getId());
         dto.setThreshold(entity.getThreshold());
         dto.setVersion(entity.getVersion());
+        //dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
+
+        return dto;
+    }
+
+
+    public ItemInfoDTO convertToDtoWithSaleAmount(ItemInfo entity) {
+
+        if (entity == null) {
+            return null;
+        }
+
+        ItemInfoDTO dto = new ItemInfoDTO();
+
+        dto.setItemId(entity.getId());
+        dto.setTagInfo(tagInfoConverter.convertToDto(entity.getTagInfo()));
+        dto.setCostPrice(entity.getCostPrice());
+        dto.setExpireDate(entity.getExpireDate());
+        dto.setInStock(entity.getInStock());
+        dto.setLotId(entity.getLotInfo().getId());
+        dto.setLotInfo(lotInfoConverter.convertToDto(entity.getLotInfo()));
+        dto.setProductId(entity.getProductInfo().getId());
+        dto.setProductInfo(productInfoConverter.convertToDto(entity.getProductInfo()));
+        dto.setQuantity(entity.getQuantity());
+        dto.setSellingPrice(entity.getSellingPrice());
+        dto.setStatus(entity.getStatus());
+        dto.setTagId(entity.getTagInfo().getId());
+        dto.setThreshold(entity.getThreshold());
+        dto.setVersion(entity.getVersion());
+        dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
+        dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfItem(entity.getId()));
 
         return dto;
     }
@@ -94,6 +129,10 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
     @Override
     public List<ItemInfoDTO> convertToDtoList(List<ItemInfo> entities) {
         return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    public List<ItemInfoDTO> convertToDtoListWithSaleAmount(List<ItemInfo> entities) {
+        return entities.parallelStream().map(this::convertToDtoWithSaleAmount).collect(Collectors.toList());
     }
 
     @Override

@@ -15,4 +15,5 @@ public interface IOrderItemInfoApi {
 
     List<OrderItemInfoDTO> getAllByStatusAndOrderInfo(Status status , long orderId);
 
+    double getTotalSaleAmountOfItem(long itemId );
 }

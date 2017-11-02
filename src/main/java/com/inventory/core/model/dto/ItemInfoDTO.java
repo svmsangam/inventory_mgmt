@@ -39,6 +39,26 @@ public class ItemInfoDTO {
 
     private Integer version;
 
+    private double totalCost;
+
+    private double totalSale;
+
+    public double getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(double totalSale) {
+        this.totalSale = totalSale;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+    }
+
     public Integer getVersion() {
         return version;
     }

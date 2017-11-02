@@ -26,4 +26,7 @@ public interface OrderItemInfoRepository extends JpaRepository<OrderItemInfo , L
 
     @Query("select o from OrderItemInfo o where o.status = ?1 and o.orderInfo.id = ?2")
     List<OrderItemInfo> findAllByStatusAndOrderInfo(Status status , long orderInfoId);
+
+    @Query("select ((o.quantity * o.rate) - (o.quantity * o.rate * o.discount / 100)) from OrderItemInfo o where o.itemInfo.id = ?1")
+    Object[] findTotalSaleAmountOfItem(long itemId );
 }

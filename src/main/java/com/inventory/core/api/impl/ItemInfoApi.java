@@ -86,7 +86,7 @@ public class ItemInfoApi implements IItemInfoApi{
 
     @Override
     public List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId, Status status, long storeId) {
-        return itemInfoConverter.convertToDtoList(itemInfoRepository.findAllByStatusAndStoreInfoAndProductInfo(status , storeId , productInfoId));
+        return itemInfoConverter.convertToDtoListWithSaleAmount(itemInfoRepository.findAllByStatusAndStoreInfoAndProductInfo(status , storeId , productInfoId));
     }
 
     @Override

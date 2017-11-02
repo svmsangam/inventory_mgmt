@@ -54,4 +54,25 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
     public List<OrderItemInfoDTO> getAllByStatusAndOrderInfo(Status status, long orderId) {
         return orderItemInfoConverter.convertToDtoList(orderItemInfoRepository.findAllByStatusAndOrderInfo(status , orderId));
     }
+
+    @Override
+    public double getTotalSaleAmountOfItem(long itemId) {
+
+        Object[] list = orderItemInfoRepository.findTotalSaleAmountOfItem(itemId);
+
+        if (list == null){
+            return 0;
+        }
+
+        double amount = 0.0;
+
+        for (Object o : list){
+
+            if (o != null){
+                amount = amount + (Double)o;
+            }
+        }
+
+        return amount;
+    }
 }
