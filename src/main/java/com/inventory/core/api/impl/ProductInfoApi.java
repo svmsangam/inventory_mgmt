@@ -6,6 +6,7 @@ import com.inventory.core.model.converter.ProductInfoConverter;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class ProductInfoApi implements IProductInfoApi{
 
     @Autowired
     private IStockInfoApi stockInfoApi;
+
+    @Autowired
+    private ItemInfoRepository itemInfoRepository;
 
     @Override
     public ProductInfoDTO save(ProductInfoDTO productInfoDTO) {
@@ -70,11 +74,32 @@ public class ProductInfoApi implements IProductInfoApi{
 
     @Override
     public ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status) {
-        return productInfoConverter.convertToDto(productInfoRepository.findByIdAndStatusAndStoreInfo(productInfoId , status , storeId));
+        return productInfoConverter.convertToDtoDetail(productInfoRepository.findByIdAndStatusAndStoreInfo(productInfoId , status , storeId));
     }
 
     @Override
     public List<ProductInfoDTO> list(Status status, long storeId) {
         return productInfoConverter.convertToDtoList(productInfoRepository.findAllByStatusAndStoreInfo(status , storeId));
+    }
+
+    @Override
+    public double getTotalCosting(long productId) {
+
+        Object[] amountList = itemInfoRepository.findAllTotalCostByProduct(productId);
+
+        if (amountList == null){
+            return 0.0;
+        }
+
+        double amount = 0.0;
+
+        for (Object o :amountList){
+
+            if (o != null){
+                amount = amount + (Double) o;
+            }
+        }
+
+        return amount;
     }
 }

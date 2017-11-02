@@ -38,6 +38,26 @@ public class ProductInfoDTO {
 
     private Integer version;
 
+    private double totalSale;
+
+    private double totalCosting;
+
+    public double getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(double totalSale) {
+        this.totalSale = totalSale;
+    }
+
+    public double getTotalCosting() {
+        return totalCosting;
+    }
+
+    public void setTotalCosting(double totalCosting) {
+        this.totalCosting = totalCosting;
+    }
+
     public Integer getVersion() {
         return version;
     }

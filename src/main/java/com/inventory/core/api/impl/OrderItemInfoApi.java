@@ -58,19 +58,22 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
     @Override
     public double getTotalSaleAmountOfItem(long itemId) {
 
-        Object[] list = orderItemInfoRepository.findTotalSaleAmountOfItem(itemId);
+        Double amount = orderItemInfoRepository.findTotalSaleAmountOfItem(itemId);
 
-        if (list == null){
+        if (amount == null){
             return 0;
         }
 
-        double amount = 0.0;
+        return amount;
+    }
 
-        for (Object o : list){
+    @Override
+    public double getTotalSaleAmountOfProduct(long productId) {
 
-            if (o != null){
-                amount = amount + (Double)o;
-            }
+        Double amount = orderItemInfoRepository.findTotalSaleAmountOfProduct(productId);
+
+        if (amount == null){
+            return 0;
         }
 
         return amount;

@@ -21,4 +21,6 @@ public interface IProductInfoApi {
     ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status);
 
     List<ProductInfoDTO> list(Status status, long storeId);
+
+    double getTotalCosting(long productId);
 }

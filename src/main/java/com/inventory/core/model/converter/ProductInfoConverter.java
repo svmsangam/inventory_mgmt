@@ -1,5 +1,7 @@
 package com.inventory.core.model.converter;
 
+import com.inventory.core.api.iapi.IOrderItemInfoApi;
+import com.inventory.core.api.iapi.IProductInfoApi;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
 import com.inventory.core.model.repository.*;
@@ -44,6 +46,12 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
     @Autowired
     private StockInfoConverter stockInfoConverter;
 
+    @Autowired
+    private IOrderItemInfoApi orderItemInfoApi;
+
+    @Autowired
+    private IProductInfoApi productInfoApi;
+
     @Override
     public ProductInfo convertToEntity(ProductInfoDTO dto) {
         return copyConvertToEntity(dto, new ProductInfo());
@@ -76,6 +84,36 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
 
         return dto;
     }
+
+    public ProductInfoDTO convertToDtoDetail(ProductInfo entity) {
+
+        if (entity == null) {
+            return null;
+        }
+
+        ProductInfoDTO dto = new ProductInfoDTO();
+
+        dto.setProductId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setCreatedById(entity.getCreatedBy().getId());
+        dto.setCreatedByName(entity.getCreatedBy().getUsername());
+        dto.setDescription(entity.getDescription());
+        dto.setName(entity.getName());
+        dto.setStatus(entity.getStatus());
+        dto.setStoreInfoId(entity.getStoreInfo().getId());
+        dto.setSubCategoryId(entity.getSubCategoryInfo().getId());
+        dto.setSubCategoryInfo(subCategoryInfoConverter.convertToDto(entity.getSubCategoryInfo()));
+        dto.setTrendingLevel(entity.getTrendingLevel());
+        dto.setUnitId(entity.getUnitInfo().getId());
+        dto.setUnitInfo(unitInfoConverter.convertToDto(entity.getUnitInfo()));
+        dto.setVersion(entity.getVersion());
+        dto.setStockInfo(stockInfoConverter.convertToDto(stockInfoRepository.findByProductInfo(entity.getId())));
+        dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfProduct(entity.getId()));
+        dto.setTotalCosting(productInfoApi.getTotalCosting(entity.getId()));
+
+        return dto;
+    }
+
 
     @Override
     public ProductInfo copyConvertToEntity(ProductInfoDTO dto, ProductInfo entity) {

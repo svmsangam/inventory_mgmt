@@ -107,10 +107,11 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><strong>Stock</strong></td>
+                                <td><strong>Total</strong></td>
                                 <td><strong>${product.stockInfo.inStock}</strong></td>
                                 <td><strong>${product.stockInfo.quantity}</strong></td>
-                                <td></td>
+                                <td><strong><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.totalCosting}"/></strong></td>
+                                <td><strong><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.totalSale}"/></strong></td>
                             </tr>
                             </tfoot>
                         </table>
