@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Created by dhiraj on 10/17/17.
  */
@@ -34,7 +36,7 @@ public class CountryLock {
             if (permit){
 
                 System.out.println("Semaphore acquired");
-
+                sleep(5);
                 if (!keyValidation(dto.getCountryName())){
 
                     semaphore.release();

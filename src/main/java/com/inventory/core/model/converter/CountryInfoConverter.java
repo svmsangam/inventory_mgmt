@@ -2,6 +2,7 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.CountryInfoDTO;
 import com.inventory.core.model.entity.CountryInfo;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class CountryInfoConverter implements IConvertable<CountryInfo, CountryIn
 
         entity.setName(dto.getCountryName().trim());
         entity.setISO(dto.getCountryISO().trim());
-        entity.setStatus(dto.getCountryStatus());
+        entity.setStatus(Status.ACTIVE);
 
         return entity;
     }

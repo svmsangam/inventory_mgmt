@@ -10,10 +10,10 @@ import javax.persistence.Table;
 @Table(name = "country")
 public class CountryInfo extends AbstractEntity<Long> {
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private String ISO;
 
     @Column(nullable = false)

@@ -75,8 +75,8 @@ public class CountryController {
                 return "redirect:/logout";
             }
 
-            CountryError countryError = new CountryError();
-            countryError = countryValidation.countryValidateOnSave(countryDto);
+            CountryError countryError = countryValidation.countryValidateOnSave(countryDto);
+
             if (countryError.isValid()) {
 
                 responseDTO = CountryLock.acquire(countryValidation , countryDto);
