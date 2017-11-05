@@ -31,7 +31,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-body table-responsive">
+                    <div class="panel-body">
+                        <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -133,6 +134,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
 

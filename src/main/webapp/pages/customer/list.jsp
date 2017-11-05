@@ -36,6 +36,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -66,6 +67,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                     <!-- /.box-body -->
                     <c:if test="${fn:length(pagelist) gt 1}">

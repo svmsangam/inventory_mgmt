@@ -89,6 +89,7 @@
                             <input type="hidden" id="orderId" value="${order.orderId}">
 
                             <span class="col-xs-offset-5 no-print hidden-print"><strong>Track Index</strong></span>
+                            <div class="table-responsive">
                             <table class="table no-print hidden-print" style="border-bottom-color: 2px blue;">
                                 <thead class="thead-inverse">
                                 <c:choose>
@@ -237,10 +238,11 @@
 
                                 </tbody>
                             </table>
-
+                            </div>
 
                             <div class="well col-xs-12">
                                 <span class="text-center "><strong>Delivery Details</strong></span><br>
+                                <div class="table-responsive">
                                 <table class="center-block" style="margin-top: 10px;">
                                     <tbody>
                                     <tr>
@@ -255,8 +257,9 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
+                                </div>
                                 <br>
+
                                 <table class="center-block">
                                     <tbody>
                                     <tr>
@@ -289,6 +292,7 @@
                             <c:if test="${orderItemList ne null}">
                                 <div class="form-group table-responsive" id="inputDiv">
                                     <c:if test="${fn:length(orderItemList) gt 0}">
+                                        <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
@@ -337,6 +341,7 @@
                                             </tr>
                                             </tfoot>
                                         </table>
+                                        </div>
                                     </c:if>
                                 </div>
                             </c:if>

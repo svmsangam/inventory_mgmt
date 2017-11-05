@@ -140,7 +140,7 @@
         <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
-            <div class="col-xs-12 table-responsive">
+            <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>

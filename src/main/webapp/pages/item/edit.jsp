@@ -138,7 +138,7 @@
                             <div id="add_row" class="btn btn-xs btn-primary pull-left"><span
                                     class="glyphicon glyphicon-plus"></span> Add Row
                             </div>
-
+                            <div class="table-responsive">
                             <table id="customFields" class="table">
                                 <thead>
                                 <th>tagInfo</th>
@@ -211,7 +211,7 @@
                                 </c:if>
                                 </tbody>
                             </table>
-
+                            </div>
                         </div>
 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

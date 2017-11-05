@@ -82,7 +82,7 @@
                                 </div>
                                 </div>
                         </form>
-
+                        <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped table-condensed">
                             <thead>
                             <tr>
@@ -106,6 +106,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
 

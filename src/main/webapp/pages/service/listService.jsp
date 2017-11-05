@@ -31,6 +31,7 @@
                     <a href="${pageContext.request.contextPath}/app/addservice">
                         <button class="btn btn-primary btn-sm pull-right">Add New Service</button>
                     </a>
+                    <div class="table-responsive">
                     <table class="table table-responsive table-striped table-bordered">
                         <thead class="thead-inverse">
                         <tr>
@@ -59,6 +60,7 @@
                         </c:forEach>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

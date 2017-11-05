@@ -100,6 +100,8 @@
                                 <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
                             </ul>
                         </div>
+
+                        <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped table-condensed">
                             <thead>
                             <tr>
@@ -145,6 +147,7 @@
                             </tr>
                             </tfoot>
                         </table>
+                        </div>
                     </div>
 
 

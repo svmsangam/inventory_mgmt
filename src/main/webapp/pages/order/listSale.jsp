@@ -37,6 +37,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -98,6 +99,7 @@
 
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
                     <c:if test="${fn:length(pagelist) gt 1}">
