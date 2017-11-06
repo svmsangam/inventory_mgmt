@@ -44,28 +44,25 @@
             <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a>
             </li>
 
-            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar-check-o"></i> <span>Invoice</span></a></li>
 
-            <li><a href="#"><i class="fa fa-link"></i> <span>Ledger</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
 
-            <li><a href="#"><i class="fa fa-link"></i> <span>Product</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Sales Order</span>
+                <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Order List</a></li>
-                    <li><a href="#">Order Add</a></li>
-                    <li><a href="#">Return List</a></li>
-                    <li><a href="#">Return Add</a></li>
-
+                    <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></a></li>
                 </ul>
             </li>
 
-            <li class="treeview">
+            <%--<li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Purchase Order</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -77,17 +74,17 @@
                     <li><a href="#">Return List</a></li>
                     <li><a href="#">Return Add</a></li>
                 </ul>
-            </li>
+            </li>--%>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Client</span>
+                <a href="#"><i class="fa fa-address-book-o"></i> <span>Client</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Customer</a></li>
-                    <li><a href="#">Vendor</a></li>
+                    <li><a href="${pageContext.request.contextPath}/customer/list"><i class="fa fa-male"></i> <span>Customer</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-truck"></i> <span>Vendor</span></a></li>
                 </ul>
             </li>
 

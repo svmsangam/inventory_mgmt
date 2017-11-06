@@ -62,7 +62,6 @@
                 <ul class="treeview-menu">
                     <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
-
                 </ul>
             </li>
 
