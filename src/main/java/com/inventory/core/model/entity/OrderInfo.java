@@ -1,9 +1,6 @@
 package com.inventory.core.model.entity;
 
-import com.inventory.core.model.enumconstant.OrderType;
-import com.inventory.core.model.enumconstant.SalesOrderStatus;
-import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
-import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,8 +20,6 @@ public class OrderInfo extends AbstractEntity<Long> {
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
-    private OrderType orderType;
-
     private SalesOrderStatus saleTrack;
 
     private PurchaseOrderStatus purchaseTrack;
@@ -35,14 +30,15 @@ public class OrderInfo extends AbstractEntity<Long> {
 
     private Status status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private ClientInfo clientInfo;
+    private long buyerId;
+
+    private BuyerType buyerType;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private StoreInfo storeInfo;
+    private StoreInfo sellerInfo;
 
     private double totalAmount;
 
@@ -72,14 +68,6 @@ public class OrderInfo extends AbstractEntity<Long> {
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
-    }
-
-    public OrderType getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(OrderType orderType) {
-        this.orderType = orderType;
     }
 
     public SalesOrderStatus getSaleTrack() {
@@ -130,22 +118,6 @@ public class OrderInfo extends AbstractEntity<Long> {
         this.createdBy = createdBy;
     }
 
-    public ClientInfo getClientInfo() {
-        return clientInfo;
-    }
-
-    public void setClientInfo(ClientInfo clientInfo) {
-        this.clientInfo = clientInfo;
-    }
-
-    public StoreInfo getStoreInfo() {
-        return storeInfo;
-    }
-
-    public void setStoreInfo(StoreInfo storeInfo) {
-        this.storeInfo = storeInfo;
-    }
-
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -168,5 +140,29 @@ public class OrderInfo extends AbstractEntity<Long> {
 
     public void setGrandTotal(double grandTotal) {
         this.grandTotal = grandTotal;
+    }
+
+    public long getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(long buyerId) {
+        this.buyerId = buyerId;
+    }
+
+    public BuyerType getBuyerType() {
+        return buyerType;
+    }
+
+    public void setBuyerType(BuyerType buyerType) {
+        this.buyerType = buyerType;
+    }
+
+    public StoreInfo getSellerInfo() {
+        return sellerInfo;
+    }
+
+    public void setSellerInfo(StoreInfo sellerInfo) {
+        this.sellerInfo = sellerInfo;
     }
 }

@@ -12,10 +12,6 @@ public class ItemInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private ProductInfo productInfo;
 
-    private double costPrice;
-
-    private double sellingPrice;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private TagInfo tagInfo;
 
@@ -25,12 +21,6 @@ public class ItemInfo extends AbstractEntity<Long> {
     @Temporal(TemporalType.DATE)
     private Date expireDate;
 
-    private int inStock;
-
-    private long quantity;
-
-    private int threshold;
-
     private Status status;
 
     public ProductInfo getProductInfo() {
@@ -39,22 +29,6 @@ public class ItemInfo extends AbstractEntity<Long> {
 
     public void setProductInfo(ProductInfo productInfo) {
         this.productInfo = productInfo;
-    }
-
-    public double getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public double getSellingPrice() {
-        return sellingPrice;
-    }
-
-    public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
     }
 
     public TagInfo getTagInfo() {
@@ -79,30 +53,6 @@ public class ItemInfo extends AbstractEntity<Long> {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
-    }
-
-    public int getInStock() {
-        return inStock;
-    }
-
-    public void setInStock(int inStock) {
-        this.inStock = inStock;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
     }
 
     public Status getStatus() {

@@ -11,8 +11,6 @@ import javax.persistence.Table;
 @Table(name = "store_table")
 public class StoreInfo extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = 1L;
-
     private String name;
 
     private String street;
