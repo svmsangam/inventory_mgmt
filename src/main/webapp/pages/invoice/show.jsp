@@ -86,7 +86,7 @@
 
         <!-- Table row -->
         <div class="row">
-            <div class="col-lg-12 table-responsive">
+            <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>

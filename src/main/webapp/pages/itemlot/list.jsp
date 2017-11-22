@@ -45,6 +45,7 @@
                     </a>
                     </div>
                     <div class="panel-body">
+                        <div class="table-responsive">
                         <table id="example" class="cell-border" cellspacing="0"
                                width="100%">
                             <thead class="thead-inverse">
@@ -82,6 +83,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
 

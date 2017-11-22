@@ -35,6 +35,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <div class="table-responsive">
                         <table id="table2" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -63,6 +64,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                     <!-- /.box-body -->
                 </div>

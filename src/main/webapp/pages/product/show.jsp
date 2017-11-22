@@ -44,6 +44,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <div class="table-responsive">
                         <table class="table">
                             <thead>
                             <tr>
@@ -64,11 +65,13 @@
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                         <br><br>
                         <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/item/add?productId=${product.productId}" class="btn btn-info btn-sm btn-flat pull-left"><span class="glyphicon glyphicon-plus-sign"></span> Add New Item
                             </a>
                         </div>
+                            <div class="table-responsive">
                         <table id="table1" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -115,6 +118,7 @@
                             </tr>
                             </tfoot>
                         </table>
+                            </div>
                         <br><br>
                         ${product.description}
                     </div>

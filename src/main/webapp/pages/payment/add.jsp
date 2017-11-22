@@ -90,6 +90,7 @@
                     </div>
 
                         <c:if test="${fn:length(paymentList) gt 0}">
+                        <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <tr>
@@ -132,6 +133,7 @@
 
                                 </tbody>
                             </table>
+                        </div>
                         </c:if>
                     </div>
 

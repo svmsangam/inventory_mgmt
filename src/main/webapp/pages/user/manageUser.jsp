@@ -76,7 +76,7 @@
                         <form method="POST"
                               action="${pageContext.request.contextPath}/user/manage?userId=${user.userId}"
                               modelAttribute="userpermission">
-
+                            <div class="table-responsive">
                             <table class="table table-hover table-bordered">
                                 <thead>
                                 <tr>
@@ -710,7 +710,7 @@
 
                                 </tbody>
                             </table>
-
+                            </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input type="submit" value="update changes" class="btn btn-success btn-sm pull-right"/>
                         </form>

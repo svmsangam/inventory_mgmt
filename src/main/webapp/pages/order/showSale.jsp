@@ -22,8 +22,9 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <c:if test="${invoice ne null}"><p class="text-center"><span class="pull-left">Order No. <b>#${order.orderNo}</b></span> <span class="pull-right">Invoice No. <b><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></b></span></p></c:if>
-                    <c:if test="${invoice eq null}"><p class="text-center">Order No. <b>#${order.orderNo}</b></p></c:if>
+                    <c:if test="${invoice ne null}"><span>Order No. <b>#${order.orderNo}</b></span>
+                    <span class="pull-right">Invoice No. <b><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></b></span></c:if>
+                    <c:if test="${invoice eq null}">Order No. <b>#${order.orderNo}</b></c:if>
                 </h2>
             </div>
             <!-- /.col -->
@@ -140,7 +141,6 @@
         <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
-            <div class="col-xs-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -169,7 +169,6 @@
 
                     </tbody>
                 </table>
-            </div>
             <!-- /.col -->
         </div>
         <!-- /.row -->
@@ -185,7 +184,6 @@
             <!-- /.col -->
             <div class="col-xs-4">&nbsp;</div>
             <div class="col-lg-4">
-                <div class="table-responsive">
                     <table class="table">
                         <tr>
                             <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.tax}"/>%)</th>
@@ -196,7 +194,6 @@
                             <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal}"/></td>
                         </tr>
                     </table>
-                </div>
             </div>
             <!-- /.col -->
         </div>

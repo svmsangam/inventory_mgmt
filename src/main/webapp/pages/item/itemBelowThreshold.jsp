@@ -32,6 +32,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Item/s below threshold</div>
                     <div class="panel-body">
+                        <div class="table-responsive">
                         <table id="example" class="display" cellspacing="0" width="100%">
 
                             <thead class="thead-inverse">
@@ -75,6 +76,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
