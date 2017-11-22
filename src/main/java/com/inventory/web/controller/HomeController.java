@@ -57,7 +57,11 @@ public class HomeController {
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String getLogin(HttpServletRequest request) throws IOException {
 
-		return "dashboard/login";
+		if (AuthenticationUtil.getCurrentUser() == null) {
+			return "dashboard/login";
+		} else {
+			return "redirect:/";
+		}
 	}
 
 	@RequestMapping(value = "admin/panels", method = RequestMethod.GET)

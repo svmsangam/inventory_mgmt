@@ -1,9 +1,5 @@
 package com.inventory.core.model.repository;
 
-import java.util.Date;
-import java.util.List;
-
-import com.inventory.core.model.entity.User;
 import com.inventory.core.model.entity.UserSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface UserSessionRepository extends CrudRepository<UserSession, String> {
@@ -26,12 +24,11 @@ public interface UserSessionRepository extends CrudRepository<UserSession, Strin
 	@Query("select s from UserSession s WHERE s.user.id = ?1")
 	List<UserSession> getUserSessionsIncludingExpired(Long userId);
 
-	//@Query("select distinct(s.user) from usersession s WHERE s.expired=false")
-	@Query("select s.user from UserSession s WHERE s.expired=false")
-	Page<User> findActiveUsers(Pageable page);
+	/*@Query("select distinct(s.user) from UserSession s WHERE s.expired=false")
+    Page<User> findActiveUsers(Pageable page);*/
 
 	@Query("select s from UserSession s WHERE s.expired=false")
-	Page<UserSession> findActiveSessions(Pageable page);
+    Page<UserSession> findActiveSessions(Pageable page);
 
 	@Query("select count(s) from UserSession s WHERE s.expired=false")
 	long countActiveSessions();
@@ -46,7 +43,7 @@ public interface UserSessionRepository extends CrudRepository<UserSession, Strin
 
 	@Transactional
 	@Modifying
-	@Query("update UserSession s set s.lastRequest = now() where s.sessionId=?1")
+	@Query("update UserSession s set s.lastRequest = CURRENT_TIMESTAMP where s.sessionId=?1")
 	void refreshSession(String sessionId);
 
 	@Query("select s from UserSession s where s.expired = false")

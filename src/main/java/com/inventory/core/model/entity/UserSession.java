@@ -1,16 +1,14 @@
 package com.inventory.core.model.entity;
 
-import java.util.Date;
-
-import javax.persistence.*;
-
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @Entity
-@Table(name="usersession")
+@Table(name = "userSession")
 public class UserSession extends AbstractPersistable<Long> {
-	private static final long serialVersionUID = 1L;
-	
+
 	@Column(nullable = false, unique = true)
 	private String sessionId;
 

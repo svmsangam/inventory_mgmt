@@ -1,17 +1,15 @@
 package com.inventory.web.session;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
+import java.util.Collection;
+
 public class UserDetailsWrapper implements UserDetails, Serializable, Comparable<UserDetailsWrapper> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final Collection<GrantedAuthority> authorities;
 	private final User user;
@@ -35,7 +33,7 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 
 	@Override
 	public String getPassword() {
-		return user.getPassword(); 
+		return user.getPassword();
 	}
 
 	@Override
@@ -45,24 +43,36 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 
 	@Override
 	public boolean isAccountNonExpired() {
-        return !user.getStatus().equals(Status.DELETED);
-    }
- 
+		if (user.getStatus().equals(Status.DELETED)) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean isAccountNonLocked() {
-        return user.getStatus().equals(Status.ACTIVE);
-        // return !user.isDisabled();
+		if (user.getStatus().equals(Status.ACTIVE)) {
+			return true;
+		}
+		return false;
+		// return !user.isDisabled();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-        return user.getStatus().equals(Status.ACTIVE);
-    }
+		if (user.getStatus().equals(Status.ACTIVE)) {
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public boolean isEnabled() {
-        return user.getStatus().equals(Status.ACTIVE);
-    }
+		if (user.getStatus().equals(Status.ACTIVE)) {
+			return true;
+		}
+		return false;
+	}
 
 	public User getUser() {
 		return user;
@@ -100,4 +110,3 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 	}
 
 }
-

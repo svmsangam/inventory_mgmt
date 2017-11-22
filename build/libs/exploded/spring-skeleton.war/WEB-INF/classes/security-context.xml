@@ -12,7 +12,7 @@
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')"
                                 requires-channel="any"/>
         <security:form-login login-page="/main" authentication-failure-url="/login?error=loginFail"
-                             authentication-success-handler-ref="successHandler"/>
+                             authentication-success-handler-ref="successHandler" always-use-default-target="false" default-target-url="/" />
         <security:logout logout-url="/logout" logout-success-url="/"/>
 
     </security:http>
@@ -30,9 +30,11 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <security:jdbc-user-service id="userService"
-                                data-source-ref="dataSource"
-                                users-by-username-query="select username,password,true from invuser where username=? and status=0 and enabled=1 "
-                                authorities-by-username-query="select username, authority from invuser where username=?"/>
+    <bean id="userService"
+                class="com.inventory.web.session.UserDetailsServiceImpl">
+
+        <constructor-arg ref="userRepository"/>
+    </bean>
+
 </beans>
            

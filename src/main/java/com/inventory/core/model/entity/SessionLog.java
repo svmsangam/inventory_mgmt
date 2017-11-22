@@ -1,14 +1,13 @@
 package com.inventory.core.model.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
-@Table(name="sessionlog")
+@Table(name = "sessionLog")
 public class SessionLog extends AbstractEntity<Long> {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private long userId;
