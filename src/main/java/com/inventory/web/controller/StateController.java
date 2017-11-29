@@ -47,7 +47,7 @@ public class StateController {
             }
 
             modelMap.put(StringConstants.STATE_LIST, stateService.list());
-            return "state/list";
+            return "state/listStates";
 
 
         } catch (Exception e) {

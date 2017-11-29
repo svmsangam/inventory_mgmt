@@ -15,6 +15,8 @@ import javax.persistence.Table;
 @Table(name = "product_table")
 public class ProductInfo extends AbstractEntity<Long> {
 
+    private static final long serialVersionUID = -6245833303340171164L;
+
     private String name;
 
     private String code;
@@ -25,6 +27,9 @@ public class ProductInfo extends AbstractEntity<Long> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private SubCategoryInfo subCategoryInfo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StoreInfo storeInfo;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private UnitInfo unitInfo;
@@ -72,6 +77,14 @@ public class ProductInfo extends AbstractEntity<Long> {
 
     public void setSubCategoryInfo(SubCategoryInfo subCategoryInfo) {
         this.subCategoryInfo = subCategoryInfo;
+    }
+
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
     }
 
     public UnitInfo getUnitInfo() {

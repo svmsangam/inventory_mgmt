@@ -17,7 +17,7 @@ public class OrderItemInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private ItemInfo itemInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private OrderInfo orderInfo;
 
     private int quantity;

@@ -8,15 +8,14 @@ import javax.persistence.*;
 @Table(name = "stock_table")
 public class StockInfo extends AbstractEntity<Long> {
 
+    private static final long serialVersionUID = -4641958444066651153L;
+
     private int inStock;
 
     private long quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private ProductInfo productInfo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private StoreInfo storeInfo;
 
     private Status status;
 
@@ -50,13 +49,5 @@ public class StockInfo extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public StoreInfo getStoreInfo() {
-        return storeInfo;
-    }
-
-    public void setStoreInfo(StoreInfo storeInfo) {
-        this.storeInfo = storeInfo;
     }
 }

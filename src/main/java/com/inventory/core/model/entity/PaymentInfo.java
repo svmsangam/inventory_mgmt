@@ -9,18 +9,18 @@ import javax.persistence.*;
 @Table(name = "paymentdetail_tables")
 public class PaymentInfo extends AbstractEntity<Long> {
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     private Payment receivedPayment;
 
     private String remark;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private InvoiceInfo invoiceInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private StoreInfo storeInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User createdBy;
 
     public Payment getReceivedPayment() {

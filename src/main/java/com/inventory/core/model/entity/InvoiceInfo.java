@@ -1,6 +1,5 @@
 package com.inventory.core.model.entity;
 
-import com.inventory.core.model.enumconstant.BuyerType;
 import com.inventory.core.model.enumconstant.Status;
 
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import java.util.Date;
 @Table(name = "invoice_table")
 public class InvoiceInfo extends AbstractEntity<Long> {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
     private String invoiceNo;
@@ -29,9 +28,8 @@ public class InvoiceInfo extends AbstractEntity<Long> {
 
     private String description;
 
-    private long buyerId;
-
-    private BuyerType buyerType;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User createdBy;
 
     public StoreInfo getStoreInfo() {
         return storeInfo;
@@ -97,19 +95,11 @@ public class InvoiceInfo extends AbstractEntity<Long> {
         this.receivableAmount = receivableAmount;
     }
 
-    public long getBuyerId() {
-        return buyerId;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setBuyerId(long buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    public BuyerType getBuyerType() {
-        return buyerType;
-    }
-
-    public void setBuyerType(BuyerType buyerType) {
-        this.buyerType = buyerType;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }
