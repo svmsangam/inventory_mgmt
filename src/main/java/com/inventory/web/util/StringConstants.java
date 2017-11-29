@@ -2,6 +2,10 @@ package com.inventory.web.util;
 
 public class StringConstants {
 
+    public static String PAGE_LAST = "lastpage";
+    public static String PAGE_CURRENT = "currentpage";
+    public static String PAGE_LIST = "pagelist";
+
     public static String USER_ADMIN = "admin";
     public static String USER_SYSADMIN = "sysadmin";
     public static String USER_SUPERAGENT = "superAgent";

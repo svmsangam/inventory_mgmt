@@ -227,6 +227,19 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         return totalSales;
     }
 
+    @Override
+    public List<InvoiceInfoDTO> getAllByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndBuyerAndStoreInfo(status , clientId , storeId , pageable));
+    }
+
+    @Override
+    public long countAllByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId) {
+        return invoiceInfoRepository.countAllByStatusAndBuyerAndStoreInfo(status , clientId , storeId);
+    }
+
     private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {
 
         int multiplier = (int) Math.pow(10, maxDigitsAfterDecimal);

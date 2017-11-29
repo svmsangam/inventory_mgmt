@@ -35,4 +35,9 @@ public interface IInvoiceInfoApi {
     double getTotalReceivableByStoreInfoAndStatus(long storeInfoId , Status status);
 
     List<Double> getTotalSellOfYearByStore(long storeId, String year);
+
+    List<InvoiceInfoDTO> getAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId , int page , int size);
+
+    long countAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId);
+
 }

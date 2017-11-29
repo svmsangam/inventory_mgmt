@@ -25,14 +25,39 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-info">
+
+
+
                     <div class="box-header">
-                        <h3 class="box-title">Customer List</h3>
-                        <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/customer/add"
-                               class="btn btn-info btn-sm btn-flat pull-right"><span
-                                    class="glyphicon glyphicon-plus-sign"></span> Add
-                            </a>
+
+                        <div class="col-md-4"><h3 class="box-title">Customer List</h3></div>
+
+                        <div class="col-md-4">
+
+                            <!-- search form (Optional) -->
+                            <form action="#" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
+                            <!-- /.search form -->
+
                         </div>
+
+                        <div class="col-md-4">
+
+                            <div class="box-tools">
+                                <a href="${pageContext.request.contextPath}/customer/add"
+                                   class="btn btn-info btn-sm btn-flat pull-right"><span
+                                        class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </div>
+
+                        </div>
+
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -45,10 +70,11 @@
                                 <th>Name</th>
                                 <th>Company</th>
                                 <th>Contact</th>
-                                <th>mobile</th>
-                                <th>email</th>
-                                <th>city</th>
-                                <th>street</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>City</th>
+                                <th>Street</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,6 +89,10 @@
                                     <td>${customer.email}</td>
                                     <td>${customer.cityInfoDTO.cityName}</td>
                                     <td>${customer.street}</td>
+                                    <td>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}">invoice</a>
+                                        <a class="btn btn-info" href="#">order</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
