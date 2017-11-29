@@ -83,7 +83,7 @@
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/customer/invoice?pageNo=${currentpage-1}&clientId=${customer}"
+                                            <a href="${pageContext.request.contextPath}/customer/incoice?pageNo=${currentpage-1}&clientId=${customer}"
                                                class="page-link">Prev</a>
                                         </li>
                                     </c:if>
@@ -103,7 +103,7 @@
                                             <c:otherwise>
 
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/customer/invoice?pageNo=${pagelist}&clientId=${customer}">${pagelist}</a>
+                                                                         href="${pageContext.request.contextPath}/customer/incoice?pageNo=${pagelist}&clientId=${customer}">${pagelist}</a>
                                                 </li>
 
                                             </c:otherwise>
@@ -114,7 +114,7 @@
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="${pageContext.request.contextPath}/customer/invoice?pageNo=${currentpage+1}&clientId=${customer}">Next</a>
+                                               href="${pageContext.request.contextPath}/customer/incoice?pageNo=${currentpage+1}&clientId=${customer}">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>

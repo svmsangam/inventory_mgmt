@@ -90,8 +90,8 @@
                                     <td>${customer.cityInfoDTO.cityName}</td>
                                     <td>${customer.street}</td>
                                     <td>
-                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}">invoice</a>
-                                        <a class="btn btn-info" href="#">order</a>
+                                        <a class="btn btn-success" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}"><i class="fa fa-calendar-check-o"></i>&nbsp;invoice</a>
+                                        <a class="btn btn-primary" href="#"><i class="fa fa-line-chart"></i>&nbsp;order</a>
                                     </td>
                                 </tr>
                             </c:forEach>

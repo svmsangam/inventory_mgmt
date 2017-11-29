@@ -375,7 +375,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping(value = "/incoice")
+    @GetMapping(value = "/customer/incoice")
     public String invoice(@RequestParam(value = "pageNo" , required = false)Integer page , @RequestParam("clientId")Long clientId , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
 
         try {
