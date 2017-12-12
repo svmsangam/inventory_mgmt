@@ -1,9 +1,12 @@
 package com.inventory.web.session;
 
-import java.io.Serializable;
-import java.util.Collection;
+import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.Status;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 public class UserDetailsWrapper implements UserDetails, Serializable, Comparable<UserDetailsWrapper> {
     /**
