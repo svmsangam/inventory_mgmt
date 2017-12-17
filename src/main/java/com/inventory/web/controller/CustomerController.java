@@ -121,6 +121,72 @@ public class CustomerController {
         return "customer/list";
     }
 
+    @GetMapping(value = "/customer/search")
+    public String searchCustomer(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam("q")String q , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+
+        try {
+
+             /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER, currentpage, (int) PageInfo.pageList));
+            modelMap.put("lastpage", totalpage);
+            modelMap.put("currentpage", page);
+            modelMap.put("pagelist", pagesnumbers);
+
+        } catch (Exception e) {
+            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "customer/list";
+    }
+
     @GetMapping(value = "/customer/add")
     public String addCustomer(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
 

@@ -96,6 +96,11 @@ public class ClientInfoApi implements IClientInfoApi {
     }
 
     @Override
+    public long searchCount(Status status, ClientType clientType, String q) {
+        return 0;
+    }
+
+    @Override
     public List<ClientInfoDTO> search(Status status, String q, int page, int size) {
 
         Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);

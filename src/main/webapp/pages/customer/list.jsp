@@ -35,7 +35,7 @@
                         <div class="col-md-4">
 
                             <!-- search form (Optional) -->
-                            <form action="#" method="GET">
+                            <form action="${pageContext.request.contextPath}/customer/search" method="GET">
                                 <div class="input-group">
                                     <input type="text" name="q" class="form-control" placeholder="Search...">
                                     <span class="input-group-btn">

@@ -20,5 +20,7 @@ public interface IClientInfoApi {
 
     List<ClientInfoDTO> search(Status status , ClientType clientType , String q , int page , int size);
 
+    long searchCount(Status status , ClientType clientType , String q );
+
     List<ClientInfoDTO> search(Status status , String q , int page , int size);
 }
