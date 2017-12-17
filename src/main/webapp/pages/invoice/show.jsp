@@ -137,7 +137,7 @@
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th style="width:50%">Subtotal:</th>
+                            <th style="width:50%">Net Total:</th>
                             <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/></td>
                         </tr>
                         <tr>
@@ -145,7 +145,7 @@
                             <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/></td>
                         </tr>
                         <tr>
-                            <th>Total:</th>
+                            <th>Grand Total:</th>
                             <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                         </tr>
                         <tr>
@@ -164,8 +164,7 @@
             <div class="col-xs-12">
                 <a href="${pageContext.request.contextPath}/invoice/print?invoiceId=${invoice.invoiceId}" class="btn btn-default" target="_blank"><i class="fa fa-print"></i> Print</a>
 
-                    <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
-                    </a>
+                    <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment </a>
 
                 <button type="button" id="cmd" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF

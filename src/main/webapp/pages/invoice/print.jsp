@@ -125,7 +125,7 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <th style="width:50%">Subtotal:</th>
+                                <th style="width:50%">Net Total:</th>
                                 <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/></td>
                             </tr>
                             <tr>
@@ -133,7 +133,7 @@
                                 <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/></td>
                             </tr>
                             <tr>
-                                <th>Total:</th>
+                                <th>Grand Total:</th>
                                 <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                             </tr>
                             <tr>
