@@ -57,10 +57,16 @@
                         <div class="col-md-4">
 
                             <div class="box-tools">
+                                <a href="${pageContext.request.contextPath}/customer/list"
+                                   class="btn btn-primary btn-sm btn-flat pull-right"><span
+                                        class="glyphicon glyphicon-list"></span> List All
+                                </a>
+
                                 <a href="${pageContext.request.contextPath}/customer/add"
                                    class="btn btn-info btn-sm btn-flat pull-right"><span
-                                        class="glyphicon glyphicon-plus-sign"></span> Add
+                                        class="glyphicon glyphicon-plus-sign"></span> Add New
                                 </a>
+
                             </div>
 
                         </div>
