@@ -85,9 +85,9 @@
         <!-- /.row -->
 
         <!-- Table row -->
-        <div class="row">
+        <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
                         <th>SN</th>
@@ -232,20 +232,15 @@
 
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h4>logger</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <table class="table-responsive table-striped table">
+                    <div class="col-md-6">
+                        <h4 class="text-center">Printed Logs</h4>
+                        <table class="table">
                             <thead>
                             <tr>
                                 <th>S.N.</th>
-                                <th>username</th>
-                                <th>log</th>
-                                <th>date</th>
+                                <th>Username</th>
+                                <th>Log</th>
+                                <th>Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -254,7 +249,7 @@
                                     <td>${i.index + 1}</td>
                                     <td>${log.username}</td>
                                     <td>${log.log}</td>
-                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${log.date}"/></td>
+                                    <td><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value = "${log.date}" /></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
