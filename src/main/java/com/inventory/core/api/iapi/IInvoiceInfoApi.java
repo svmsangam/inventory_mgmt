@@ -3,6 +3,7 @@ package com.inventory.core.api.iapi;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,5 +40,9 @@ public interface IInvoiceInfoApi {
     List<InvoiceInfoDTO> getAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId , int page , int size);
 
     long countAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId);
+
+    List<InvoiceInfoDTO> getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to , int page , int size);
+
+    long countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to);
 
 }

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -238,6 +239,26 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public long countAllByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId) {
         return invoiceInfoRepository.countAllByStatusAndBuyerAndStoreInfo(status , clientId , storeId);
+    }
+
+    @Override
+    public List<InvoiceInfoDTO> getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status, long storeId, Date from, Date to, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfoAndInvoiceDateBetween(status , storeId , from , to , pageable));
+    }
+
+    @Override
+    public long countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status, long storeId, Date from, Date to) {
+
+        Long count = invoiceInfoRepository.countAllByStatusAndStoreInfoAndInvoiceDateBetween(status , storeId , from , to);
+
+        if (count == null){
+            return 0;
+        }
+
+        return count;
     }
 
     private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {

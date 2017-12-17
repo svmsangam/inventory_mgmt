@@ -38,72 +38,82 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <div class="well well-sm">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="${pageContext.request.contextPath}/invoice/filter" method="GET">
+                                    <div class="well well-sm">
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>From Date:</label>
-                                    <div class='input-group date'>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>From Date:</label>
+                                                <div class='input-group date'>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control datepicker"
+                                                           onkeypress="return false;" onkeyup="return false;"
+                                                           name="from" placeholder="From Date"/>
+                                                </div>
+                                                <p class="form-error"></p>
+                                            </div>
                                         </div>
-                                        <input type="text" class="form-control datepicker"
-                                               onkeypress="return false;" onkeyup="return false;"
-                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                               name="from" placeholder="From Date"/>
-                                    </div>
-                                    <p class="form-error"></p>
-                                </div>
-                            </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>To Date:</label>
-                                    <div class='input-group date'>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>To Date:</label>
+                                                <div class='input-group date'>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control datepicker"
+                                                           onkeypress="return false;" onkeyup="return false;"
+                                                           name="to" placeholder="To Date"/>
+                                                </div>
+                                                <p class="form-error"></p>
+                                            </div>
                                         </div>
-                                        <input type="text" class="form-control datepicker"
-                                               onkeypress="return false;" onkeyup="return false;"
-                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                               name="to" placeholder="To Date"/>
+                                        <div class="margin" style="margin-top: 25px;">
+                                            <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+                                        </div>
+
                                     </div>
-                                    <p class="form-error"></p>
-                                </div>
-                            </div>
-                            <div class="margin" style="margin-top: 25px;">
-                                <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+                                </form>
                             </div>
                         </div>
 
-                        <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th>Invoice No</th>
-                                <th>Customer Name</th>
-                                <th>Total Amount</th>
-                                <th>Amount Recievable</th>
-                                <th>Invoice Date</th>
-                            </tr>
-                            </thead>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Invoice No</th>
+                                            <th>Customer Name</th>
+                                            <th>Total Amount</th>
+                                            <th>Amount Recievable</th>
+                                            <th>Invoice Date</th>
+                                        </tr>
+                                        </thead>
 
-                            <tbody>
-                            <c:forEach items="${invoiceList}" var="invoice">
+                                        <tbody>
+                                        <c:forEach items="${invoiceList}" var="invoice">
 
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
-                                    <td>${invoice.orderInfo.clientInfo.name}</td>
-                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
-                                    <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
-                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
-                                </tr>
+                                            <tr>
+                                                <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
+                                                <td>${invoice.orderInfo.clientInfo.name}</td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
+                                            </tr>
 
-                            </c:forEach>
+                                        </c:forEach>
 
-                            </tbody>
-                        </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
 
                     <c:if test="${fn:length(pagelist) gt 1}">

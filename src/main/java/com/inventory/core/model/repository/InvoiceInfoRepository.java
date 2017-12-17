@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,5 +57,11 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
 
     @Query("select count (i) from InvoiceInfo i where i.status = ?1 and i.orderInfo.clientInfo.id = ?2 and i.storeInfo.id =?3")
     long countAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId);
+
+    @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2 and (i.invoiceDate between ?3 and ?4)")
+    List<InvoiceInfo> findAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to , Pageable pageable);
+
+    @Query("select count (i) from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2 and (i.invoiceDate between ?3 and ?4)")
+    Long countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to);
 
 }
