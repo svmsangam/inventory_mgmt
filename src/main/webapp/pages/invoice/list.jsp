@@ -37,6 +37,45 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+
+                        <div class="well well-sm">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>From Date:</label>
+                                    <div class='input-group date'>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker"
+                                               onkeypress="return false;" onkeyup="return false;"
+                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
+                                               name="from" placeholder="From Date"/>
+                                    </div>
+                                    <p class="form-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>To Date:</label>
+                                    <div class='input-group date'>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker"
+                                               onkeypress="return false;" onkeyup="return false;"
+                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
+                                               name="to" placeholder="To Date"/>
+                                    </div>
+                                    <p class="form-error"></p>
+                                </div>
+                            </div>
+                            <div class="margin" style="margin-top: 25px;">
+                                <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+                            </div>
+                        </div>
+
                         <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
