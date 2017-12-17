@@ -148,7 +148,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         LedgerInfo entity = new LedgerInfo();
 
-        entity.setAccountEntryType(AccountEntryType.DEBIT);
+        entity.setAccountEntryType(AccountEntryType.CREDIT);
         entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(paymentInfo.getInvoiceInfo().getOrderInfo().getClientInfo().getId() , AccountAssociateType.CUSTOMER));
         entity.setAmount(paymentInfo.getReceivedPayment().getAmount());
 
@@ -180,7 +180,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         LedgerInfo entity = new LedgerInfo();
 
-        entity.setAccountEntryType(AccountEntryType.CREDIT);
+        entity.setAccountEntryType(AccountEntryType.DEBIT);
         entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(paymentInfo.getInvoiceInfo().getOrderInfo().getStoreInfo().getId() , AccountAssociateType.STORE));
         entity.setAmount(paymentInfo.getReceivedPayment().getAmount());
 
