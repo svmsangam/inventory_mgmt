@@ -101,7 +101,7 @@
 
                             <div class="form-group">
                                 <label class="control-label">Description</label>
-                                <input type="text" class="form-control" value="${product.description}" name="description" placeholder="code">
+                                <input type="text" class="form-control" value="${product.description}" name="description" placeholder="Description">
                                 <p class="form-error">${productError.description}</p>
                             </div>
 
