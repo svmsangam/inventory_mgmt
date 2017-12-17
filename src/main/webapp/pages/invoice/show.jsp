@@ -173,6 +173,60 @@
             </div>
         </div>
 
+        <c:if test="${fn:length(paymentList) gt 0}">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row"><div class="col-md-12"><h4>Payment Details</h4></div> </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Remarks</th>
+                                    <th>Cheque Date</th>
+                                    <th>Exp-Withdrawable Date</th>
+                                    <th>Bank Name</th>
+                                    <th>Bank Account</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <c:forEach items="${paymentList}" var="paymentInfo">
+
+                                    <tr>
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${paymentInfo.paymentDate}"/></td>
+                                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${paymentInfo.receivedPayment.amount}"/></td>
+                                        <td>${paymentInfo.receivedPayment.paymentMethod}</td>
+                                        <td>${paymentInfo.remark}</td>
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${paymentInfo.receivedPayment.chequeDate}"/></td>
+
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/></td>
+                                        <td>${paymentInfo.receivedPayment.bankOfCheque}</td>
+                                        <td>${paymentInfo.receivedPayment.bankAccountNumber}</td>
+                                        <th>
+                                            <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
+                                                <c:choose>
+                                                    <c:when test="${paymentInfo.receivedPayment.status eq 'INACTIVE'}"><a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/paymentinfo/chuque/collect?paymentId=${paymentInfo.paymentInfoId}">Is Collected ?</a></c:when>
+                                                    <c:otherwise><label class="label label-success">collected</label> </c:otherwise>
+                                                </c:choose>
+                                            </c:if>
+                                        </th>
+                                    </tr>
+
+                                </c:forEach>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
         <c:if test="${fn:length(logger) gt 0}">
             <div class="row" style="margin-top: 10px;">
 

@@ -1,9 +1,6 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.IInvoiceInfoApi;
-import com.inventory.core.api.iapi.ILoggerApi;
-import com.inventory.core.api.iapi.IOrderItemInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.LogType;
@@ -25,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +43,9 @@ public class InvoiceController {
 
     @Autowired
     private ILoggerApi loggerApi;
+
+    @Autowired
+    private IPaymentInfoApi paymentInfoApi;
 
 
     @GetMapping(value = "/")
@@ -236,6 +237,13 @@ public class InvoiceController {
             modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
             modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
             modelMap.put(StringConstants.LOGGER, loggerApi.getAllByStatusAndAssociateIdAndTypeAndStore(Status.ACTIVE, invoiceId, LogType.Invoice_Print, currentUser.getStoreId()));
+
+            List<Status> statusList = new ArrayList<>();
+
+            statusList.add(Status.ACTIVE);
+            statusList.add(Status.INACTIVE);
+
+            modelMap.put(StringConstants.PAYMENTLIST , paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList , currentUser.getStoreId() , invoiceId));
 
 
         } catch (Exception e) {
