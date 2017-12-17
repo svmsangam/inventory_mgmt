@@ -1,10 +1,12 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.ILoggerApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.enumconstant.LogType;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
@@ -41,11 +43,77 @@ public class InvoiceController {
     @Autowired
     private IOrderItemInfoApi orderItemInfoApi;
 
+    @Autowired
+    private ILoggerApi loggerApi;
+
 
     @GetMapping(value = "/")
     public String index() {
 
+
         return "redirect:/invoice/list";
+    }
+
+    @GetMapping(value = "/print")
+    public String print(@RequestParam("invoiceId")long invoiceId , ModelMap modelMap , RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
+
+        try {
+
+                     /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            if (invoiceId < 0) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                return "redirect:/invoice/list";
+            }
+
+            synchronized (this.getClass()) {
+
+                loggerApi.save(invoiceId, LogType.Invoice_Print, currentUser.getStoreId(), currentUser.getUserId(), "invoice printed");
+
+                InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
+
+                if (invoiceInfoDTO == null) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                    return "redirect:/order/sale/listSale";
+                }
+
+                modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
+                modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
+            }
+
+        } catch (Exception e) {
+            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/";
+        }
+
+        return "invoice/print";
     }
 
     @GetMapping(value = "/list")
@@ -167,6 +235,8 @@ public class InvoiceController {
             modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
             modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
             modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+            modelMap.put(StringConstants.LOGGER, loggerApi.getAllByStatusAndAssociateIdAndTypeAndStore(Status.ACTIVE, invoiceId, LogType.Invoice_Print, currentUser.getStoreId()));
+
 
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));

@@ -106,6 +106,8 @@ public class StringConstants {
     public static String INVOICE = "invoice";
     public static String INVOICE_LIST = "invoiceList";
 
+    public static String LOGGER = "logger";
+
     public static String PAYMENTMETHODLIST = "paymentMethodList";
 
     public static String PAYMENTLIST = "paymentList";

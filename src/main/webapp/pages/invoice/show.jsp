@@ -148,6 +148,10 @@
                             <th>Total:</th>
                             <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                         </tr>
+                        <tr>
+                            <td>Entered By :</td>
+                            <td>${invoice.createdByName}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -158,7 +162,7 @@
         <!-- this row will not appear when printing -->
         <div class="row no-print" id="editor">
             <div class="col-xs-12">
-                <button class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
+                <a href="${pageContext.request.contextPath}/invoice/print?invoiceId=${invoice.invoiceId}" class="btn btn-default" target="_blank"><i class="fa fa-print"></i> Print</a>
 
                     <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment
                     </a>
@@ -168,6 +172,44 @@
                 </button>
             </div>
         </div>
+
+        <c:if test="${fn:length(logger) gt 0}">
+            <div class="row" style="margin-top: 10px;">
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>logger</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <table class="table-responsive table-striped table">
+                            <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>username</th>
+                                <th>log</th>
+                                <th>date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach varStatus="i" items="${logger}" var="log">
+                                <tr>
+                                    <td>${i.index + 1}</td>
+                                    <td>${log.username}</td>
+                                    <td>${log.log}</td>
+                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${log.date}"/></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </c:if>
     </section>
     <!-- /.content -->
     <div class="clearfix"></div>
