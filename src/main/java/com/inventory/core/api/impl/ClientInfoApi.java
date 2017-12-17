@@ -97,7 +97,14 @@ public class ClientInfoApi implements IClientInfoApi {
 
     @Override
     public long searchCount(Status status, ClientType clientType, String q) {
-        return 0;
+
+        Long count = clientInfoRepository.countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , clientType , q);
+
+        if (count == null){
+            return 0;
+        }
+
+        return count;
     }
 
     @Override

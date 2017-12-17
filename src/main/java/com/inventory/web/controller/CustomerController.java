@@ -164,7 +164,7 @@ public class CustomerController {
 
             int currentpage = page - 1;
 
-            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER);
+            long totalList = clientInfoApi.searchCount(Status.ACTIVE, ClientType.CUSTOMER , q);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -174,17 +174,19 @@ public class CustomerController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER, currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.search(Status.ACTIVE, ClientType.CUSTOMER, q , currentpage, (int) PageInfo.pageList));
+
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
+            modelMap.put("query" , q);
 
         } catch (Exception e) {
             logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
-        return "customer/list";
+        return "customer/search";
     }
 
     @GetMapping(value = "/customer/add")
