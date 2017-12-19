@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by dhiraj on 10/15/17.
@@ -89,7 +86,7 @@ public class OrderValidation extends GlobalValidation {
         if (!"".equals(error.getOrderNo())){
             return false;
         } else if (orderInfoRepository.findByOrderNoAndStoreInfo(value , storeId) != null){
-            error.setOrderNo("this order number is already in use");
+            error.setOrderNo("that order number was already in use now try again with this no");
             return false;
         }
         return true;
@@ -107,13 +104,13 @@ public class OrderValidation extends GlobalValidation {
             return false;
         }
 
-        Set<Long> longSet = new HashSet<>();
+        boolean flag = false;
+
+        List<Long> longList = new ArrayList<>();
 
         try {
 
             for (OrderItemInfoDTO orderItemInfoDTO : orderItemInfoDTOList) {
-
-                longSet.add(orderItemInfoDTO.getItemInfoId());
 
                 ItemInfo itemInfo = itemInfoRepository.findByIdAndStatusAndStoreInfo(orderItemInfoDTO.getItemInfoId() , Status.ACTIVE , storeId);
 
@@ -127,12 +124,18 @@ public class OrderValidation extends GlobalValidation {
                     return false;
                 }
 
-                for (Long itemId : longSet){
+                longList.add(orderItemInfoDTO.getItemInfoId());
 
-                    if (Objects.equals(itemId, itemInfo.getId())){
-                        error.setError(itemInfo.getProductInfo().getName() + " selected multiple times");
-                        return false;
+                if (flag) {
+                    for (Long itemId : longList) {
+
+                        if (Objects.equals(itemId, itemInfo.getId())) {
+                            error.setError(itemInfo.getProductInfo().getName() + " selected multiple times");
+                            return false;
+                        }
                     }
+                } else {
+                    flag = true;
                 }
             }
         } catch (Exception e){
