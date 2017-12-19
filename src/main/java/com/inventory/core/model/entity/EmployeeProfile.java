@@ -1,13 +1,8 @@
 package com.inventory.core.model.entity;
 
-import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
+import javax.persistence.*;
 
 /**
  * Created by dhiraj on 8/1/17.
@@ -40,17 +35,10 @@ public class EmployeeProfile extends AbstractEntity<Long> {
 
     private String email;
 
-    @Temporal(TemporalType.DATE)
-    private Date startingDate;
-
-    @Temporal(TemporalType.DATE)
-    private Date endingDate;
-
-    private Designation designation;
-
-    private EmployeeStatus employeeStatus;
-
     private User createdBy;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private User user;
 
     private Status status;
 
@@ -150,38 +138,6 @@ public class EmployeeProfile extends AbstractEntity<Long> {
         this.email = email;
     }
 
-    public Date getStartingDate() {
-        return startingDate;
-    }
-
-    public void setStartingDate(Date startingDate) {
-        this.startingDate = startingDate;
-    }
-
-    public Date getEndingDate() {
-        return endingDate;
-    }
-
-    public void setEndingDate(Date endingDate) {
-        this.endingDate = endingDate;
-    }
-
-    public Designation getDesignation() {
-        return designation;
-    }
-
-    public void setDesignation(Designation designation) {
-        this.designation = designation;
-    }
-
-    public EmployeeStatus getEmployeeStatus() {
-        return employeeStatus;
-    }
-
-    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
     public User getCreatedBy() {
         return createdBy;
     }
@@ -196,5 +152,13 @@ public class EmployeeProfile extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

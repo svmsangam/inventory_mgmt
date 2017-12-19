@@ -18,7 +18,7 @@ public interface DesignationRepository extends JpaRepository<Designation, Long>,
 
     Designation findById(long designationId);
 
-    Designation findByTitle(long title);
+    Designation findByTitle(String title);
 
     @Query("select d from Designation d order by d.title asc ")
     List<Designation> findAll();
