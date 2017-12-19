@@ -1,9 +1,6 @@
 package com.inventory.core.model.dto;
 
-import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
-
-import java.util.Date;
 
 /**
  * Created by dhiraj on 8/6/17.
@@ -42,19 +39,13 @@ public class EmployeeProfileDTO {
 
     private String email;
 
-    private Date startingDate;
-
-    private Date endingDate;
-
-    private DesignationInfoDTO designationInfoDTO;
-
-    private Long designationId;
-
-    private EmployeeStatus employeeStatus;
-
     private long createdById;
 
     private String createdByName;
+
+    private long userId;
+
+    private String username;
 
     private Status status;
 
@@ -196,46 +187,6 @@ public class EmployeeProfileDTO {
         this.email = email;
     }
 
-    public Date getStartingDate() {
-        return startingDate;
-    }
-
-    public void setStartingDate(Date startingDate) {
-        this.startingDate = startingDate;
-    }
-
-    public Date getEndingDate() {
-        return endingDate;
-    }
-
-    public void setEndingDate(Date endingDate) {
-        this.endingDate = endingDate;
-    }
-
-    public DesignationInfoDTO getDesignationInfoDTO() {
-        return designationInfoDTO;
-    }
-
-    public void setDesignationInfoDTO(DesignationInfoDTO designationInfoDTO) {
-        this.designationInfoDTO = designationInfoDTO;
-    }
-
-    public Long getDesignationId() {
-        return designationId;
-    }
-
-    public void setDesignationId(Long designationId) {
-        this.designationId = designationId;
-    }
-
-    public EmployeeStatus getEmployeeStatus() {
-        return employeeStatus;
-    }
-
-    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
     public long getCreatedById() {
         return createdById;
     }
@@ -258,5 +209,21 @@ public class EmployeeProfileDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
