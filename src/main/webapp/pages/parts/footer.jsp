@@ -91,7 +91,7 @@
                 <!-- Optionally, you can add icons to the links -->
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
 
-                    <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/profile/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
 
@@ -105,12 +105,7 @@
 
                     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
 
-                    <li>
-                        <a href="${pageContext.request.contextPath}/tag/list">
-                            <i class="fa fa-tags"></i>
-                        <span>Tag</span>
-                        </a>
-                    </li>
+                    <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
 
                     <%--<li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
@@ -144,27 +139,8 @@
 
                     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
 
-                    <li>
-                        <a href="${pageContext.request.contextPath}/tag/list">
-                            <i class="fa fa-tags"></i>
-                            <span>Tag</span>
-                        </a>
-                    </li>
+                    <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
 
-                    <%--<li class="treeview">
-                            <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none;">
-                                <li><a href="#">Category</a></li>
-                                <li><a href="#">SubCategory</a></li>
-                                <li><a href="#">Unit</a></li>
-                                <li><a href="#">Tag</a></li>
-                                <li><a href="#">Lot</a></li>
-                            </ul>
-                        </li>--%>
                 </sec:authorize>
 
 
@@ -182,27 +158,8 @@
 
                     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
 
-                    <li>
-                        <a href="${pageContext.request.contextPath}/tag/list">
-                            <i class="fa fa-tags"></i>
-                            <span>Tag</span>
-                        </a>
-                    </li>
+                    <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
 
-                    <%--<li class="treeview">
-                            <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none;">
-                                <li><a href="#">Category</a></li>
-                                <li><a href="#">SubCategory</a></li>
-                                <li><a href="#">Unit</a></li>
-                                <li><a href="#">Tag</a></li>
-                                <li><a href="#">Lot</a></li>
-                            </ul>
-                        </li>--%>
                 </sec:authorize>
             </ul>
         </div>
