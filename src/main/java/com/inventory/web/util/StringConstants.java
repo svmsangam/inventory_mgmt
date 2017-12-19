@@ -136,4 +136,6 @@ public class StringConstants {
     public static String LEDGERLIST = "ledgerList";
 
     public static String CART_SALE_DATA = "cartSaleDate";
+
+    public static String EMPLOYEE_PROFILE = "profile";
 }
