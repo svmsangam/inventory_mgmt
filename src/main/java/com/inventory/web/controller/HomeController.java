@@ -42,6 +42,10 @@ public class HomeController {
     @Autowired
     private IPaymentInfoApi paymentInfoApi;
 
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
+
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String toTestJspPage() {
 
@@ -108,6 +112,10 @@ public class HomeController {
             modelMap.put(StringConstants.CART_SALE_DATA , invoiceInfoApi.getTotalSellOfYearByStore(currentUser.getStoreId() , yearStr));
 
             modelMap.put(StringConstants.STORE , currentUser.getStoreName());
+
+            modelMap.put(StringConstants.STORE_LIST , storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
+
+
 
 
         }
