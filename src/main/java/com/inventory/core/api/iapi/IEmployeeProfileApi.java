@@ -17,4 +17,6 @@ public interface IEmployeeProfileApi {
     EmployeeProfileDTO update(EmployeeProfileDTO employeeProfileDTO);
 
     List<EmployeeProfileDTO> list(Status status);
+
+    EmployeeProfileDTO getByStatusAndUser(Status status , long userId);
 }
