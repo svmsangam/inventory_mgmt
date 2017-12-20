@@ -176,7 +176,6 @@ public class InvoiceController {
 
             synchronized (this.getClass()) {
 
-                loggerApi.save(invoiceId, LogType.Invoice_Print, currentUser.getStoreId(), currentUser.getUserId(), "invoice printed");
 
                 InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
 
@@ -184,6 +183,8 @@ public class InvoiceController {
                     redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
                     return "redirect:/order/sale/listSale";
                 }
+
+                loggerApi.save(invoiceId, LogType.Invoice_Print, currentUser.getStoreId(), currentUser.getUserId(), "invoice printed");
 
                 modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
                 modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
@@ -437,30 +438,35 @@ public class InvoiceController {
                                     if (invoiceInfoDTO != null) {
 
 
-                                        String file = Long.toString(System.currentTimeMillis());
+                                        synchronized (this.getClass()) {
+                                            String file = Long.toString(System.currentTimeMillis());
 
-                                        String path = reportServiceApi.pdfWriterForInvoice(invoiceInfoDTO);
+                                            String path = reportServiceApi.pdfWriterForInvoice(invoiceInfoDTO);
 
-                                        int BUFF_SIZE = 1024;
-                                        byte[] buffer = new byte[BUFF_SIZE];
-                                        response.setContentType("application/pdf");
-                                        response.setHeader("Content-Type", "application/pdf");
-                                        File pdfFile = new File(path);
-                                        FileInputStream fis = new FileInputStream(pdfFile);
-                                        OutputStream os = response.getOutputStream();
-                                        try {
-                                            response.setContentLength((int) pdfFile.length());
-                                            int byteRead = 0;
-                                            while ((byteRead = fis.read()) != -1) {
-                                                os.write(byteRead);
+                                            int BUFF_SIZE = 1024;
+                                            byte[] buffer = new byte[BUFF_SIZE];
+                                            response.setContentType("application/pdf");
+                                            response.setHeader("Content-Type", "application/pdf");
+                                            File pdfFile = new File(path);
+                                            FileInputStream fis = new FileInputStream(pdfFile);
+                                            OutputStream os = response.getOutputStream();
+                                            try {
+                                                response.setContentLength((int) pdfFile.length());
+                                                int byteRead = 0;
+                                                while ((byteRead = fis.read()) != -1) {
+                                                    os.write(byteRead);
+                                                }
+                                                os.flush();
+
+                                                loggerApi.save(invoiceId, LogType.Invoice_Print, currentUser.getStoreId(), currentUser.getUserId(), "pdf generated of invoice");
+
+                                            } catch (Exception excp) {
+                                                excp.printStackTrace();
+                                            } finally {
+                                                os.close();
+                                                fis.close();
+                                                pdfFile.delete();
                                             }
-                                            os.flush();
-                                        } catch (Exception excp) {
-                                            excp.printStackTrace();
-                                        } finally {
-                                            os.close();
-                                            fis.close();
-                                            pdfFile.delete();
                                         }
                                     }
                                 }
