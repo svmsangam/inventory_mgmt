@@ -63,6 +63,8 @@ dependencies {
 // https://mvnrepository.com/artifact/com.lowagie/itext
     compile group: 'com.lowagie', name: 'itext', version: '2.1.7'
 
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    compile group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
 
     compile ("net.sf.dozer:dozer:5+"){
         exclude group: 'commons-collections'

@@ -166,9 +166,9 @@
 
                     <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment </a>
 
-                <button type="button" id="cmd" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <a href="${pageContext.request.contextPath}/invoice/pdf?invoiceId=${invoice.invoiceId}" class="btn btn-primary pull-right" target="_blank" style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF
-                </button>
+                </a>
             </div>
         </div>
 
