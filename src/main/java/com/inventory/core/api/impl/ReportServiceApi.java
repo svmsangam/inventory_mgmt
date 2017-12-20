@@ -178,7 +178,7 @@ class ReportServiceApi implements IReportServiceApi{
         cell03.setPaddingLeft(10);
         table.addCell(cell03);
 
-        PdfPCell cell04 = new PdfPCell(new Phrase("Discount"));
+        PdfPCell cell04 = new PdfPCell(new Phrase("Discount(%)"));
         cell04.setBackgroundColor(BaseColor.GRAY);
         cell04.setMinimumHeight(30);
         cell04.setPaddingLeft(10);
