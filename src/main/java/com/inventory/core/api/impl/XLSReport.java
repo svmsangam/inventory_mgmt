@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -151,17 +152,17 @@ public class XLSReport extends AbstractXlsxView {
             cellQuantity.setCellValue(orderItemDTO.getQuantity());
 
             Cell cellRate = rownew.createCell(3);
-            cellRate.setCellValue(orderItemDTO.getRate());
+            cellRate.setCellValue(formatter(orderItemDTO.getRate()));
 
             Cell cellDiscount = rownew.createCell(4);
-            cellDiscount.setCellValue(orderItemDTO.getDiscount());
+            cellDiscount.setCellValue(formatter(orderItemDTO.getDiscount()));
 
             double amount = orderItemDTO.getRate() * orderItemDTO.getQuantity();
 
             amount = amount - (amount * (orderItemDTO.getDiscount() / 100));
 
             Cell cellTotal = rownew.createCell(5);
-            cellTotal.setCellValue(amount);
+            cellTotal.setCellValue(formatter(amount));
 
             count ++;
 
@@ -179,7 +180,7 @@ public class XLSReport extends AbstractXlsxView {
         Cell cellSubTotalHeader = rowTotal.createCell(4);
         cellSubTotalHeader.setCellValue("SubTotal");
         Cell cellSubTotal = rowTotal.createCell(5);
-        cellSubTotal.setCellValue(invoice.getOrderInfo().getTotalAmount());
+        cellSubTotal.setCellValue(formatter(invoice.getOrderInfo().getTotalAmount()));
 
         count = count +1;
 
@@ -188,7 +189,7 @@ public class XLSReport extends AbstractXlsxView {
         Cell cellTaxHeader = rowTax.createCell(4);
         cellTaxHeader.setCellValue("Tax(%)");
         Cell cellTax = rowTax.createCell(5);
-        cellTax.setCellValue(invoice.getOrderInfo().getTax());
+        cellTax.setCellValue(formatter(invoice.getOrderInfo().getTax()));
 
         count = count +1;
 
@@ -197,7 +198,7 @@ public class XLSReport extends AbstractXlsxView {
         Cell cellGrandTotalHeader = rowGrandTotal.createCell(4);
         cellGrandTotalHeader.setCellValue("Grand Total");
         Cell cellGrandTotal = rowGrandTotal.createCell(5);
-        cellGrandTotal.setCellValue(invoice.getTotalAmount());
+        cellGrandTotal.setCellValue(formatter(invoice.getTotalAmount()));
 
         count = count +1;
 
@@ -222,5 +223,14 @@ public class XLSReport extends AbstractXlsxView {
         SimpleDateFormat dateFormatYear = new SimpleDateFormat("MMM dd, yyyy");
 
         return dateFormatYear.format(new Date());
+    }
+
+
+    private double formatter(double value){
+
+        DecimalFormat df = new DecimalFormat("###.###");
+
+        return Double.parseDouble(df.format(value));
+
     }
 }

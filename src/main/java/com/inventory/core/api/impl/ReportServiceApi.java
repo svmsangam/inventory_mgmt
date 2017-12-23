@@ -31,6 +31,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +136,7 @@ class ReportServiceApi implements IReportServiceApi {
         storecontact.setAlignment(Element.ALIGN_CENTER);
         document.add(storecontact);
 
-        Paragraph invoiceDate = new Paragraph("Invoice Date : " + invoice.getInvoiceDate().toString());
+        Paragraph invoiceDate = new Paragraph("Invoice Date : " + getDate(invoice.getInvoiceDate()));
         invoiceDate.setAlignment(Element.ALIGN_RIGHT);
         document.add(invoiceDate);
 
@@ -214,12 +217,12 @@ class ReportServiceApi implements IReportServiceApi {
             cell2.setPaddingLeft(5);
             table.addCell(cell2);
 
-            PdfPCell cell3 = new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getRate())));
+            PdfPCell cell3 = new PdfPCell(new Phrase(String.valueOf(formatter(orderItemDTO.getRate()))));
             cell3.setMinimumHeight(20);
             cell3.setPaddingLeft(5);
             table.addCell(cell3);
 
-            PdfPCell cell4 = new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getDiscount())));
+            PdfPCell cell4 = new PdfPCell(new Phrase(String.valueOf(formatter(orderItemDTO.getDiscount()))));
             cell4.setMinimumHeight(20);
             cell4.setPaddingLeft(5);
             table.addCell(cell4);
@@ -228,7 +231,7 @@ class ReportServiceApi implements IReportServiceApi {
 
             amount = amount - (amount * (orderItemDTO.getDiscount() / 100));
 
-            PdfPCell cell5 = new PdfPCell(new Phrase(String.valueOf(amount)));
+            PdfPCell cell5 = new PdfPCell(new Phrase(String.valueOf(formatter(amount))));
             cell5.setMinimumHeight(20);
             cell5.setPaddingLeft(5);
             table.addCell(cell5);
@@ -242,7 +245,7 @@ class ReportServiceApi implements IReportServiceApi {
         cell4.setMinimumHeight(20);
         table.addCell(cell4);
 
-        PdfPCell cell5 = new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTotalAmount()));
+        PdfPCell cell5 = new PdfPCell(new Phrase("" + formatter(invoice.getOrderInfo().getTotalAmount())));
         cell5.setMinimumHeight(20);
         cell5.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell5);
@@ -255,7 +258,7 @@ class ReportServiceApi implements IReportServiceApi {
         cell9.setMinimumHeight(20);
         table.addCell(cell9);
 
-        PdfPCell cell10 = new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTax()));
+        PdfPCell cell10 = new PdfPCell(new Phrase("" + formatter(invoice.getOrderInfo().getTax())));
         cell10.setMinimumHeight(20);
         cell10.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell10);
@@ -268,7 +271,7 @@ class ReportServiceApi implements IReportServiceApi {
         cell14.setMinimumHeight(20);
         table.addCell(cell14);
 
-        PdfPCell cell15 = new PdfPCell(new Phrase("" + invoice.getTotalAmount()));
+        PdfPCell cell15 = new PdfPCell(new Phrase("" + formatter(invoice.getTotalAmount())));
         cell15.setMinimumHeight(20);
         cell15.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell15);
@@ -301,6 +304,20 @@ class ReportServiceApi implements IReportServiceApi {
         map.put("invoice", invoiceInfoApi.show(invoiceId, storeId, Status.ACTIVE));
 
         xlsReport.buildExcelDocument(map, new XSSFWorkbook(), request, response);
+    }
+
+    private double formatter(double value){
+
+        DecimalFormat df = new DecimalFormat("###.###");
+
+        return Double.parseDouble(df.format(value));
+
+    }
+
+    private String getDate(Date date){
+        SimpleDateFormat dateFormatYear = new SimpleDateFormat("MMM dd, yyyy");
+
+        return dateFormatYear.format(new Date());
     }
 
 }
