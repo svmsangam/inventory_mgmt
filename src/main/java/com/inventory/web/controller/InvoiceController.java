@@ -526,6 +526,8 @@ public class InvoiceController {
 
                                         synchronized (this.getClass()) {
                                             reportServiceApi.writeXlsReport(invoiceId, currentUser.getStoreId(), response, request);
+
+                                            loggerApi.save(invoiceId, LogType.Invoice_Print, currentUser.getStoreId(), currentUser.getUserId(), "excel generated of invoice");
                                         }
                                     }
                                 }
