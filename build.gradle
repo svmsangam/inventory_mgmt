@@ -70,6 +70,9 @@ dependencies {
         exclude group: 'commons-collections'
     }
 
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+
    // compile 'commons-collections:commons-collections:3.2.1'
 
     compile ('ar.com.fdvs:DynamicJasper:5+'){

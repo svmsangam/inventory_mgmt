@@ -5,6 +5,7 @@ import com.itextpdf.text.DocumentException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,4 +20,6 @@ public interface IReportServiceApi {
     void writeXlsReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException;
 
     String pdfWriterForInvoice(InvoiceInfoDTO invoice) throws FileNotFoundException, DocumentException;
+
+    void writeXlsReport(long invoiceId, long storeId, HttpServletResponse response, HttpServletRequest request) throws Exception;
 }

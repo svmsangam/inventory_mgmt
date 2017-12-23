@@ -485,6 +485,60 @@ public class InvoiceController {
             e.printStackTrace();
         }
     }
+
+    @GetMapping(value = "/xls")
+    public void xls(@RequestParam("invoiceId") Long invoiceId, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+                      /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser != null) {
+
+                if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) | (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) | (currentUser.getUserauthority().contains(Authorities.USER) & currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+
+                    boolean valid = true;
+
+                    if (currentUser.getUserauthority().contains(Authorities.USER)) {
+
+                        if (!AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+
+                            valid = false;
+
+                        }
+                    }
+
+                    if (valid) {
+
+
+                        if (currentUser.getStoreId() != null) {
+
+        /*current user checking end*/
+
+                            if (invoiceId != null) {
+
+
+                                if (invoiceId > 0) {
+
+                                    InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
+
+                                    if (invoiceInfoDTO != null) {
+
+                                        synchronized (this.getClass()) {
+                                            reportServiceApi.writeXlsReport(invoiceId, currentUser.getStoreId(), response, request);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

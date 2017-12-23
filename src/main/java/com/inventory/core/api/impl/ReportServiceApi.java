@@ -4,6 +4,7 @@ package com.inventory.core.api.impl;
  * Created by dhiraj on 10/9/17.
  */
 
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.api.iapi.IReportServiceApi;
 import com.inventory.core.model.dto.ClientInfoDTO;
@@ -23,20 +24,30 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
-class ReportServiceApi implements IReportServiceApi{
+class ReportServiceApi implements IReportServiceApi {
 
     @Autowired
     private IOrderItemInfoApi orderItemInfoApi;
 
-    public void writePdfReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException{
+    @Autowired
+    private XLSReport xlsReport;
+
+    @Autowired
+    private IInvoiceInfoApi invoiceInfoApi;
+
+    public void writePdfReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException {
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "inline; filename=" + (reportName == null ? jp.getName() : reportName).replace('"', '_') + ".pdf");
 
@@ -55,7 +66,7 @@ class ReportServiceApi implements IReportServiceApi{
         IOUtils.closeQuietly(outStream);
     }
 
-    public void writeXlsReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException{
+    public void writeXlsReport(JasperPrint jp, HttpServletResponse response, final String reportName) throws IOException, JRException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-disposition", "inline; filename=" + (reportName == null ? jp.getName() : reportName).replace('"', '_') + ".xlsx");
 
@@ -85,11 +96,11 @@ class ReportServiceApi implements IReportServiceApi{
     }
 
 
-
     @Override
     public String pdfWriterForInvoice(InvoiceInfoDTO invoice) throws FileNotFoundException, DocumentException {
 
-        String file = Long.toString(System.currentTimeMillis());;//request.getServletPath()+"/PDFfile.pdf";
+        String file = Long.toString(System.currentTimeMillis());
+        ;//request.getServletPath()+"/PDFfile.pdf";
 
         String path = FilePath.getOSPath();
 
@@ -109,7 +120,7 @@ class ReportServiceApi implements IReportServiceApi{
 
         Font font = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.BLACK);
 
-        Paragraph storename = new Paragraph("" + invoice.getStoreInfoDTO().getName() , font);
+        Paragraph storename = new Paragraph("" + invoice.getStoreInfoDTO().getName(), font);
         storename.setAlignment(Element.ALIGN_CENTER);
 
         document.add(storename);
@@ -131,15 +142,15 @@ class ReportServiceApi implements IReportServiceApi{
         document.add(invoiceNo);
 
         Font font1 = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
-        Paragraph buyerDetails = new Paragraph("Buyer Details" , font1);
+        Paragraph buyerDetails = new Paragraph("Buyer Details", font1);
         buyerDetails.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerDetails);
 
-        Paragraph buyerName = new Paragraph("Name: "+ buyerInfo.getName());
+        Paragraph buyerName = new Paragraph("Name: " + buyerInfo.getName());
         buyerName.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerName);
 
-        Paragraph buyerAddress = new Paragraph("City: "+ buyerInfo.getCityInfoDTO().getCityName());
+        Paragraph buyerAddress = new Paragraph("City: " + buyerInfo.getCityInfoDTO().getCityName());
         buyerAddress.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerAddress);
 
@@ -147,11 +158,11 @@ class ReportServiceApi implements IReportServiceApi{
         buyerPan.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerPan);
 
-        Paragraph buyerPhone = new Paragraph("Contact: "+ buyerInfo.getContact());
+        Paragraph buyerPhone = new Paragraph("Contact: " + buyerInfo.getContact());
         buyerPhone.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerPhone);
 
-        Paragraph buyerEmail = new Paragraph("Email: "+ buyerInfo.getEmail());
+        Paragraph buyerEmail = new Paragraph("Email: " + buyerInfo.getEmail());
         buyerEmail.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerEmail);
 
@@ -172,7 +183,7 @@ class ReportServiceApi implements IReportServiceApi{
         cell02.setPaddingLeft(10);
         table.addCell(cell02);
 
-        PdfPCell cell03 =  new PdfPCell(new Phrase("Rate"));
+        PdfPCell cell03 = new PdfPCell(new Phrase("Rate"));
         cell03.setBackgroundColor(BaseColor.GRAY);
         cell03.setMinimumHeight(30);
         cell03.setPaddingLeft(10);
@@ -208,68 +219,68 @@ class ReportServiceApi implements IReportServiceApi{
             cell3.setPaddingLeft(5);
             table.addCell(cell3);
 
-            PdfPCell cell4=  new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getDiscount())));
+            PdfPCell cell4 = new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getDiscount())));
             cell4.setMinimumHeight(20);
             cell4.setPaddingLeft(5);
             table.addCell(cell4);
 
             double amount = orderItemDTO.getRate() * orderItemDTO.getQuantity();
 
-            amount = amount - (amount * (orderItemDTO.getDiscount() /100));
+            amount = amount - (amount * (orderItemDTO.getDiscount() / 100));
 
-            PdfPCell cell5=  new PdfPCell(new Phrase(String.valueOf(amount)));
+            PdfPCell cell5 = new PdfPCell(new Phrase(String.valueOf(amount)));
             cell5.setMinimumHeight(20);
             cell5.setPaddingLeft(5);
             table.addCell(cell5);
         }
 
 
-        PdfPCell cell4=  new PdfPCell(new Phrase("Total : "));
+        PdfPCell cell4 = new PdfPCell(new Phrase("Total : "));
         cell4.setColspan(4);
         cell4.setPaddingLeft(320);
         cell4.setBackgroundColor(BaseColor.LIGHT_GRAY);
         cell4.setMinimumHeight(20);
         table.addCell(cell4);
 
-        PdfPCell cell5=  new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTotalAmount()));
+        PdfPCell cell5 = new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTotalAmount()));
         cell5.setMinimumHeight(20);
         cell5.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell5);
 
 
-        PdfPCell cell9 =  new PdfPCell(new Phrase("Tax(%) : "));
+        PdfPCell cell9 = new PdfPCell(new Phrase("Tax(%) : "));
         cell9.setColspan(4);
         cell9.setPaddingLeft(320);
         cell9.setBackgroundColor(BaseColor.LIGHT_GRAY);
         cell9.setMinimumHeight(20);
         table.addCell(cell9);
 
-        PdfPCell cell10=  new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTax()));
+        PdfPCell cell10 = new PdfPCell(new Phrase("" + invoice.getOrderInfo().getTax()));
         cell10.setMinimumHeight(20);
         cell10.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell10);
 
 
-        PdfPCell cell14=  new PdfPCell(new Phrase("Grand Total : "));
+        PdfPCell cell14 = new PdfPCell(new Phrase("Grand Total : "));
         cell14.setColspan(4);
         cell14.setPaddingLeft(320);
         cell14.setBackgroundColor(BaseColor.LIGHT_GRAY);
         cell14.setMinimumHeight(20);
         table.addCell(cell14);
 
-        PdfPCell cell15=  new PdfPCell(new Phrase("" + invoice.getTotalAmount()));
+        PdfPCell cell15 = new PdfPCell(new Phrase("" + invoice.getTotalAmount()));
         cell15.setMinimumHeight(20);
         cell15.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell15);
 
-        PdfPCell cell19=  new PdfPCell(new Phrase("Entered By : "));
+        PdfPCell cell19 = new PdfPCell(new Phrase("Entered By : "));
         cell19.setColspan(4);
         cell19.setPaddingLeft(320);
         cell19.setBackgroundColor(BaseColor.LIGHT_GRAY);
         cell19.setMinimumHeight(20);
         table.addCell(cell19);
 
-        PdfPCell cell20=  new PdfPCell(new Phrase(invoice.getCreatedByName()));
+        PdfPCell cell20 = new PdfPCell(new Phrase(invoice.getCreatedByName()));
         cell20.setMinimumHeight(20);
         cell20.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell20);
@@ -280,6 +291,16 @@ class ReportServiceApi implements IReportServiceApi{
 
         return file;
 
+    }
+
+    @Override
+    public void writeXlsReport(long invoiceId, long storeId, HttpServletResponse response, HttpServletRequest request) throws Exception {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("invoice", invoiceInfoApi.show(invoiceId, storeId, Status.ACTIVE));
+
+        xlsReport.buildExcelDocument(map, new XSSFWorkbook(), request, response);
     }
 
 }

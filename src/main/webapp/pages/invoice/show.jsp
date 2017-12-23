@@ -166,8 +166,12 @@
 
                     <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment </a>
 
-                <a href="${pageContext.request.contextPath}/invoice/pdf?invoiceId=${invoice.invoiceId}" class="btn btn-primary pull-right" target="_blank" style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> Generate PDF
+                <a href="${pageContext.request.contextPath}/invoice/pdf?invoiceId=${invoice.invoiceId}" class="btn btn-primary pull-left" target="_blank" style="margin-right: 5px;">
+                    <i class="fa fa-file-pdf-o"></i> Generate PDF
+                </a>
+
+                <a href="${pageContext.request.contextPath}/invoice/xls?invoiceId=${invoice.invoiceId}" class="btn btn-primary pull-left" target="_blank" style="margin-right: 5px;">
+                    <i class="fa fa-file-excel-o"></i> Generate Excel
                 </a>
             </div>
         </div>
