@@ -88,6 +88,7 @@
                                         <thead>
                                         <tr>
                                             <th>Invoice No</th>
+                                            <th>Fiscal Year</th>
                                             <th>Customer Name</th>
                                             <th>Total Amount</th>
                                             <th>Amount Recievable</th>
@@ -100,6 +101,7 @@
 
                                             <tr>
                                                 <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
+                                                <td><c:if test="${invoice.fiscalYearInfo ne null}">${invoice.fiscalYearInfo.title}</c:if></td>
                                                 <td>${invoice.orderInfo.clientInfo.name}</td>
                                                 <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
                                                 <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
