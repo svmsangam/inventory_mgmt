@@ -138,4 +138,7 @@ public class StringConstants {
     public static String CART_SALE_DATA = "cartSaleDate";
 
     public static String EMPLOYEE_PROFILE = "profile";
+
+    public static String FISCAL_YEAR = "fiscalYear";
+    public static String FISCAL_YEAR_LIST = "fiscalYearList";
 }

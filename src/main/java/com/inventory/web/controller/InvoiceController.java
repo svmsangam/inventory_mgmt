@@ -260,7 +260,7 @@ public class InvoiceController {
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
-            return "redirect:/";
+            return "redirect:/500";
         }
         return "invoice/list";
     }
@@ -331,7 +331,7 @@ public class InvoiceController {
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
-            return "redirect:/";
+            return "redirect:/500";
         }
 
         return "invoice/show";

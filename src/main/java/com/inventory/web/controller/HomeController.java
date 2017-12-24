@@ -115,9 +115,6 @@ public class HomeController {
 
             modelMap.put(StringConstants.STORE_LIST , storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
-
-
-
         }
 
 
