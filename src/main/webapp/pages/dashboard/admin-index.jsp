@@ -22,366 +22,358 @@
     <!-- Main content -->
     <section class="content">
 
-        <div class="row">
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h3>150</h3>
-
-                        <p>Total Stock</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-cube"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3>530000</h3>
+        </c:if>
 
-                        <p>Total Sales</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3>440000</h3>
+        </c:if>
 
-                        <p>Total Purchase</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>65</h3>
+        <c:if test="${empty error}">
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>${totalStock}</h3>
 
-                        <p>Total Users</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Monthly Sale And Purchase Report</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                            <%--<div class="btn-group">
-                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-wrench"></i></button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>--%>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <p>Total Stock (units)</p>
                         </div>
+                        <div class="icon">
+                            <i class="ion ion-cube"></i>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/product/list" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="text-center">
-                                    <strong>1 Jan, 2017 - 30 Dec, 2017</strong>
-                                </p>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3><fmt:formatNumber type="number" maxFractionDigits="2" groupingUsed="true" value="${totalSale}"/></h3>
 
-                                <div class="chart">
-                                    <!-- Sales Chart Canvas -->
-                                    <canvas id="salesChart" style="height: 250px;"></canvas>
-                                </div>
-                                <!-- /.chart-responsive -->
+                            <p>Total Sales (Rs)</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>${fn:length(storeList)}</h3>
+
+                            <p>Total Store</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/store/list" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>${totalUser}</h3>
+
+                            <p>Total Users</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/user/list" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">This year's Monthly Sale Report of &nbsp; ${store}</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                    <%--<div class="btn-group">
+                                        <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Action</a></li>
+                                            <li><a href="#">Another action</a></li>
+                                            <li><a href="#">Something else here</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#">Separated link</a></li>
+                                        </ul>
+                                    </div>--%>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                             </div>
-                            <!-- /.col -->
-                            <div class="col-md-4">
-                                <p class="text-center">
-                                    <strong>Sales Order Status</strong>
-                                </p>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-center">
+                                            <%--  <strong>1 Jan, 2017 - 30 Dec, 2017</strong>--%>
+                                    </p>
 
-                                <div class="progress-group">
-                                    <span class="progress-text">Order Pending</span>
-                                    <span class="progress-number"><b>160</b></span>
-
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-primary" style="width: 80%"></div>
+                                    <div class="chart">
+                                        <!-- Sales Chart Canvas -->
+                                        <canvas id="salesChart" style="height: 250px;"></canvas>
                                     </div>
+                                    <!-- /.chart-responsive -->
                                 </div>
+                                <!-- /.col -->
+                                <div class="col-md-4">
+                                    <p class="text-center">
+                                        <strong>Sales Order Status</strong>
+                                    </p>
 
-                                <div class="progress-group">
-                                    <span class="progress-text">Order Accepted</span>
-                                    <span class="progress-number"><b>160</b></span>
+                                    <div class="progress-group">
+                                        <span class="progress-text">Order Pending</span>
+                                        <span class="progress-number"><b>${totalPendingSale}</b></span>
 
-                                    <div class="progress sm">
-                                        <div class="progress-bar label-default" style="width: 80%"></div>
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-primary" style="width: 80%"></div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- /.progress-group -->
-                                <div class="progress-group">
-                                    <span class="progress-text">Order Packed</span>
-                                    <span class="progress-number"><b>310</b></span>
+                                    <div class="progress-group">
+                                        <span class="progress-text">Order Accepted</span>
+                                        <span class="progress-number"><b>${totalAcceptedSale}</b></span>
 
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                                        <div class="progress sm">
+                                            <div class="progress-bar label-default" style="width: 80%"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- /.progress-group -->
-                                <div class="progress-group">
-                                    <span class="progress-text">Order Shipped</span>
-                                    <span class="progress-number"><b>480</b></span>
 
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
-                                    </div>
-                                </div>
-                                <!-- /.progress-group -->
-                                <div class="progress-group">
-                                    <span class="progress-text">Order Cancelled</span>
-                                    <span class="progress-number"><b>250</b></span>
+                                    <!-- /.progress-group -->
+                                    <div class="progress-group">
+                                        <span class="progress-text">Order Packed</span>
+                                        <span class="progress-number"><b>${totalPackedSale}</b></span>
 
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                                        </div>
                                     </div>
+                                    <!-- /.progress-group -->
+                                    <div class="progress-group">
+                                        <span class="progress-text">Order Shipped</span>
+                                        <span class="progress-number"><b>${totalShipedSale}</b></span>
+
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                    <!-- /.progress-group -->
+                                    <div class="progress-group">
+                                        <span class="progress-text">Order Cancelled</span>
+                                        <span class="progress-number"><b>${totalCanceledSale}</b></span>
+
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                    <!-- /.progress-group -->
                                 </div>
-                                <!-- /.progress-group -->
+                                <!-- /.col -->
                             </div>
-                            <!-- /.col -->
+                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- ./box-body -->
-                    <div class="box-footer">
-                        <div class="row">
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="description-block border-right">
-                                    <%-- <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--%>
-                                    <h5 class="description-header">$35,210.43</h5>
-                                    <span class="description-text">TOTAL COLLECTION</span>
+                        <!-- ./box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="description-block border-right">
+                                            <%-- <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--%>
+                                        <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalPayment}"/></h5>
+                                        <span class="description-text">TOTAL COLLECTION</span>
+                                    </div>
+                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="description-block border-right">
-                                    <%-- <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--%>
-                                    <h5 class="description-header">$10,390.90</h5>
-                                    <span class="description-text">TOTAL RECIEVABLE</span>
+                                <!-- /.col -->
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="description-block border-right">
+                                            <%-- <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--%>
+                                        <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalReceivable}"/></h5>
+                                        <span class="description-text">TOTAL RECIEVABLE</span>
+                                    </div>
+                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="description-block border-right">
-                                    <%--<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--%>
-                                    <h5 class="description-header">$24,813.53</h5>
-                                    <span class="description-text">TODAYS SALE</span>
+                                <!-- /.col -->
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="description-block border-right">
+                                            <%--<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--%>
+                                        <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${toDayTotalSale}"/></h5>
+                                        <span class="description-text">TODAYS SALE</span>
+                                    </div>
+                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="description-block">
-                                    <%--<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--%>
-                                    <h5 class="description-header">1200</h5>
-                                    <span class="description-text">TODAYS COLLECTION</span>
+                                <!-- /.col -->
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="description-block">
+                                            <%--<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--%>
+                                        <h5 class="description-header">$<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${toDayTotalPayment}"/></h5>
+                                        <span class="description-text">TODAYS COLLECTION</span>
+                                    </div>
+                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.description-block -->
                             </div>
+                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
+                        <!-- /.box-footer -->
                     </div>
-                    <!-- /.box-footer -->
+                    <!-- /.box -->
                 </div>
-                <!-- /.box -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
+            <!-- /.row -->
 
-        <div class="row">
-            <div class="col-md-8">
-                <!-- TABLE: LATEST ORDERS -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Latest Orders</h3>
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- TABLE: LATEST ORDERS -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top Sales Orders</h3>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Order Date</th>
-                                    <th>Delivery Date</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR9842</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-success">Shipped</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-danger">Delivered</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-info">Processing</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR1848</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="${pageContext.request.contextPath}/order/sale/12">OR7429</a></td>
-                                    <td>12 sept,2017</td>
-                                    <td>15 sept,2017</td>
-                                    <td><span class="label label-danger">Delivered</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Order Date</th>
+                                        <th>Delivery Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <c:if test="${fn:length(orderList) gt 0}">
+                                        <c:forEach items="${orderList}" var="order">
+
+                                            <tr>
+                                                <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
+                                                <td>
+
+                                                    <c:if test="${order.saleTrack eq 'PENDDING'}">
+                                                        <span class="label label-primary">Pending</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                                                        <span class="label label-default">Accepted</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'PACKED'}">
+                                                        <span class="label label-warning">Packed</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                                                        <span class="label label-info">Shipped</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                                                        <span class="label label-success">Delivered</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'CANCEL'}">
+                                                        <span class="label label-danger">Canceled</span>
+                                                    </c:if>
+
+                                                </td>
+
+                                            </tr>
+                                        </c:forEach>
+
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.table-responsive -->
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a>
+                            <a href="${pageContext.request.contextPath}/order/sale/list" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                        </div>
+                        <!-- /.box-footer -->
                     </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a>
-                        <a href="${pageContext.request.contextPath}/order/sale/list" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- PRODUCT LIST -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top Receivable Invoice</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>Invoice No</th>
+                                        <th>Amount Recievable</th>
+                                        <th>Invoice Date</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <c:forEach items="${invoiceList}" var="invoice">
+
+                                        <tr>
+                                            <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
+                                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
+                                            <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
+                                        </tr>
+
+                                    </c:forEach>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer text-center">
+                            <a href="${pageContext.request.contextPath}/invoice/list" class="uppercase">View All Invoices</a>
+                        </div>
+                        <!-- /.box-footer -->
                     </div>
-                    <!-- /.box-footer -->
+                    <!-- /.box -->
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <!-- PRODUCT LIST -->
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Recently Added Products</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <ul class="products-list product-list-in-box">
-                            <li class="item">
-                                <div class="product-img">
-                                    <img src="/resources/img/default-50x50.gif" alt="Product Image">
-                                </div>
-                                <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title">Samsung TV
-                                        <span class="label label-warning pull-right">$1800</span></a>
-                                    <span class="product-description">
-                          Samsung 32" 1080p 60Hz LED Smart HDTV.
-                        </span>
-                                </div>
-                            </li>
-                            <!-- /.item -->
-                            <li class="item">
-                                <div class="product-img">
-                                    <img src="/resources/img/default-50x50.gif" alt="Product Image">
-                                </div>
-                                <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title">Bicycle
-                                        <span class="label label-info pull-right">$700</span></a>
-                                    <span class="product-description">
-                          26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                        </span>
-                                </div>
-                            </li>
-                            <!-- /.item -->
-                            <li class="item">
-                                <div class="product-img">
-                                    <img src="/resources/img/default-50x50.gif" alt="Product Image">
-                                </div>
-                                <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title">Xbox One <span
-                                            class="label label-danger pull-right">$350</span></a>
-                                    <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
-                        </span>
-                                </div>
-                            </li>
-                            <!-- /.item -->
-                            <li class="item">
-                                <div class="product-img">
-                                    <img src="/resources/img/default-50x50.gif" alt="Product Image">
-                                </div>
-                                <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title">PlayStation 4
-                                        <span class="label label-success pull-right">$399</span></a>
-                                    <span class="product-description">
-                          PlayStation 4 500GB Console (PS4)
-                        </span>
-                                </div>
-                            </li>
-                            <!-- /.item -->
-                        </ul>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer text-center">
-                        <a href="${pageContext.request.contextPath}product/list" class="uppercase">View All Products</a>
-                    </div>
-                    <!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
-            </div>
-        </div>
+        </c:if>
     </section>
     <!-- /.content -->
 </div>
@@ -410,16 +402,16 @@
         var salesChartData = {
             labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July' , 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [
-                {
-                    label               : 'Electronics',
-                    fillColor           : 'rgb(210, 214, 222)',
-                    strokeColor         : 'rgb(210, 214, 222)',
-                    pointColor          : 'rgb(210, 214, 222)',
-                    pointStrokeColor    : '#c1c7d1',
-                    pointHighlightFill  : '#fff',
-                    pointHighlightStroke: 'rgb(220,220,220)',
-                    data                : [65, 59, 80, 81, 56, 55, 40 , 50 , 30 , 20, 10, 60]
-                },
+                /* {
+                 label               : 'Electronics',
+                 fillColor           : 'rgb(210, 214, 222)',
+                 strokeColor         : 'rgb(210, 214, 222)',
+                 pointColor          : 'rgb(210, 214, 222)',
+                 pointStrokeColor    : '#c1c7d1',
+                 pointHighlightFill  : '#fff',
+                 pointHighlightStroke: 'rgb(220,220,220)',
+                 data                : [65, 59, 80, 81, 56, 55, 40 , 50 , 30 , 20, 10, 60]
+                 },*/
                 {
                     label               : 'Digital Goods',
                     fillColor           : 'rgba(60,141,188,0.9)',
@@ -428,7 +420,7 @@
                     pointStrokeColor    : 'rgba(60,141,188,1)',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data                : [28, 48, 40, 19, 86, 27, 90 , 20 , 30 , 10 , 5 , 30]
+                    data                : ${cartSaleDate}
                 }
             ]
         };
