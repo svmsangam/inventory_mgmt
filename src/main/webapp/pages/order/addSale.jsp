@@ -99,7 +99,7 @@
                                     <span class="glyphicon glyphicon-plus"></span> Add Item
                                 </button>
                             </div>
-                            <div class="table-responsive">
+                            <div>
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <tr>
