@@ -63,7 +63,7 @@
                                         <td><fmt:formatDate pattern="MMM dd, yyyy" value="${fiscalYear.closingDate}"/></td>
                                         <td>
                                          <c:choose>
-                                             <c:when test="${fiscalYear.selected}"><i class="fa fa-check-square-o" aria-hidden="true"></i></c:when>
+                                             <c:when test="${fiscalYear.selected}"><label class="label label-success">current</label>&nbsp;<i class="fa fa-check-square-o" aria-hidden="true"></i></c:when>
                                              <c:otherwise><i class="fa fa-times" aria-hidden="true"></i></c:otherwise>
                                          </c:choose>
                                         </td>

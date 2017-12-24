@@ -24,23 +24,40 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Tag</h3>
+                        <h3 class="box-title">Add Fiscal Year</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/tag/save" method="post" modelAttribute="tag" >
+                    <form action="${pageContext.request.contextPath}/fiscalyear/save" method="post" modelAttribute="fiscalYearInfo" >
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" value="${tag.name}" name="name" placeholder="Name">
-                                <p class="form-error">${tagError.name}</p>
+                                <label class="control-label">Title</label>
+                                <input type="text" class="form-control" minlength="5" maxlength="15" value="${fiscalyear.title}" name="title" placeholder="display name" required>
+                                <p class="form-error">${fiscalYearError.title}</p>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" value="${tag.code}" name="code" placeholder="code">
-                                <p class="form-error">${tagError.code}</p>
+                                <label class="control-label">Openning Date</label>
+                                <div class='input-group date datepicker'>
+                                    <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${fiscalYear.opennigDate}"/>" name="opennigDate" placeholder="Opennig Date" required>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <p class="form-error">${fiscalYearError.opennigDate}</p>
                             </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Clossing Date</label>
+                                <div class='input-group date datepicker'>
+                                    <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${fiscalYear.closingDate}"/>" name="closingDate" placeholder="Closing Date" required>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <p class="form-error">${fiscalYearError.expireDate}</p>
+                            </div>
+
 
                         </div>
                         <!-- /.box-body -->
