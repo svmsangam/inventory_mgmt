@@ -107,6 +107,8 @@
 
                     <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
 
+                    <li><a href="${pageContext.request.contextPath}/fiscalyear/list"><i class="fa fa-calendar" aria-hidden="true"></i><span>Fiscal Year</span></a></li>
+
                     <%--<li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Product Accesories</span>
                                 <span class="pull-right-container">
@@ -140,6 +142,8 @@
                     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/fiscalyear/list"><i class="fa fa-calendar" aria-hidden="true"></i><span>Fiscal Year</span></a></li>
 
                 </sec:authorize>
 

@@ -47,67 +47,83 @@ public class FiscalYearInfoController {
     }
 
     @GetMapping(value = "/list")
-    public String list(ModelMap modelMap , RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
+    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
+        try {
                   /*current user checking start*/
-        InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        if (currentUser == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
 
-            RequestCacheUtil.save(request, response);
+                RequestCacheUtil.save(request, response);
 
-            return "redirect:/login";
-        }
+                return "redirect:/login";
+            }
 
-        if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-            return "redirect:/logout";
-        }
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-        if (currentUser.getStoreId() == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-            return "redirect:/";//store not assigned page
-        }
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
 
         /*current user checking end*/
 
-        modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST, fiscalYearInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), 0, 100));
+
+        } catch (Exception e) {
+
+            logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/500";
+        }
 
         return "fiscalyear/list";
     }
 
     @GetMapping(value = "/add")
-    public String add(ModelMap modelMap , RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
+    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
+        try {
                   /*current user checking start*/
-        InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        if (currentUser == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
 
-            RequestCacheUtil.save(request, response);
+                RequestCacheUtil.save(request, response);
 
-            return "redirect:/login";
-        }
+                return "redirect:/login";
+            }
 
-        if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-            return "redirect:/logout";
-        }
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
 
-        if (currentUser.getStoreId() == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-            return "redirect:/";//store not assigned page
-        }
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
 
         /*current user checking end*/
+
+        } catch (Exception e) {
+
+            logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/500";
+        }
 
         return "fiscalyear/add";
     }
 
     @PostMapping(value = "/save")
-    public String save(@RequestAttribute("fiscalYearInfo")FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap , RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
+    public String save(@RequestAttribute("fiscalYearInfo") FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -147,7 +163,7 @@ public class FiscalYearInfoController {
 
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "fiscal year successfully saved");
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
 
