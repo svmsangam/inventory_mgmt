@@ -31,6 +31,9 @@ public class InvoiceInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private FiscalYearInfo fiscalYearInfo;
+
     public StoreInfo getStoreInfo() {
         return storeInfo;
     }
@@ -101,5 +104,13 @@ public class InvoiceInfo extends AbstractEntity<Long> {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }

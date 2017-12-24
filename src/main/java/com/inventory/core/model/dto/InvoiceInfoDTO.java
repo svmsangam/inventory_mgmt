@@ -37,6 +37,8 @@ public class InvoiceInfoDTO {
 
     private StoreInfoDTO storeInfoDTO;
 
+    private FiscalYearInfoDTO fiscalYearInfo;
+
     public StoreInfoDTO getStoreInfoDTO() {
         return storeInfoDTO;
     }
@@ -147,5 +149,13 @@ public class InvoiceInfoDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public FiscalYearInfoDTO getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfoDTO fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }

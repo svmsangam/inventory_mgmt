@@ -4,6 +4,7 @@ import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.FiscalYearInfoRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
@@ -38,6 +39,12 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
     @Autowired
     private StoreInfoConverter storeInfoConverter;
 
+    @Autowired
+    private FiscalYearInfoConverter fiscalYearInfoConverter;
+
+    @Autowired
+    private FiscalYearInfoRepository fiscalYearInfoRepository;
+
     @Override
     public InvoiceInfo convertToEntity(InvoiceInfoDTO dto) {
         return copyConvertToEntity(dto , new InvoiceInfo());
@@ -66,6 +73,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setVersion(entity.getVersion());
         dto.setStoreInfoDTO(storeInfoConverter.convertToDto(entity.getStoreInfo()));
+        dto.setFiscalYearInfo(fiscalYearInfoConverter.convertToDto(entity.getFiscalYearInfo()));
 
         return dto;
     }
@@ -85,6 +93,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         entity.setReceivableAmount(entity.getOrderInfo().getGrandTotal());
         entity.setTotalAmount(entity.getOrderInfo().getGrandTotal());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , dto.getStoreInfoId() , true));
 
         return entity;
     }
@@ -103,6 +112,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         entity.setStatus(Status.ACTIVE);
         entity.setTotalAmount(orderInfo.getGrandTotal());
         entity.setStoreInfo(orderInfo.getStoreInfo());
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , orderInfo.getStoreInfo().getId() , true));
 
         return entity;
     }
