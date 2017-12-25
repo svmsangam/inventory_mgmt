@@ -112,7 +112,7 @@ public class UserController {
                 return "user/listUser";
             } else {
 
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access denied");
                 return "redirect:/";
             }
 

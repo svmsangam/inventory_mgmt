@@ -20,4 +20,6 @@ public interface EmployeeProfileRepository extends JpaRepository<EmployeeProfile
     EmployeeProfile findByStatusAndId(Status status , long employeeProfileId);
 
     List<EmployeeProfile> findAllByStatus(Status status);
+
+
 }

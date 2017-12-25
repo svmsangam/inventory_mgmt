@@ -49,6 +49,7 @@
                                     <th>username</th>
                                     <th>mobile</th>
                                     <th>email</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -60,6 +61,7 @@
                                         <td>${profile.username}</td>
                                         <td>${profile.mobileNumber}</td>
                                         <td>${profile.email}</td>
+                                        <td><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}"><span class="glyphicon glyphicon-plus-sign"></span> Show</a>
                                     </tr>
                                 </c:forEach>
 
