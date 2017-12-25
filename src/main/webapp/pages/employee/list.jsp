@@ -57,7 +57,7 @@
                                 <c:forEach items="${profileList}" var="profile" varStatus="i">
                                     <tr>
                                         <td>${i.index + 1}</td>
-                                        <td>${profile.firstName} &nbsp;${profile.middleName} &nbsp; ${profile.lastName}</td>
+                                        <td><a href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}">${profile.firstName} &nbsp;${profile.middleName} &nbsp; ${profile.lastName}</a></td>
                                         <td>${profile.username}</td>
                                         <td>${profile.mobileNumber}</td>
                                         <td>${profile.email}</td>
