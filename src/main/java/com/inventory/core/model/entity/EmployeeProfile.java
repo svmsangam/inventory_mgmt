@@ -21,12 +21,15 @@ public class EmployeeProfile extends AbstractEntity<Long> {
 
     private String temporaryAddress;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private CityInfo permanentCity;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private CityInfo temporaryCity;
 
     private String citizenShipNo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private CityInfo citizenShipCity;
 
     private String mobileNumber;
@@ -35,6 +38,7 @@ public class EmployeeProfile extends AbstractEntity<Long> {
 
     private String email;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
 
     @OneToOne(fetch = FetchType.EAGER)

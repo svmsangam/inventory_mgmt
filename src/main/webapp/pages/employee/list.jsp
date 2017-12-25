@@ -49,11 +49,19 @@
                                     <th>username</th>
                                     <th>mobile</th>
                                     <th>email</th>
-                                    <th>status</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+
+                                <c:forEach items="${profileList}" var="profile" varStatus="i">
+                                    <tr>
+                                        <td>${i.index + 1}</td>
+                                        <td>${profile.firstName} &nbsp;${profile.middleName} &nbsp; ${profile.lastName}</td>
+                                        <td>${profile.username}</td>
+                                        <td>${profile.mobileNumber}</td>
+                                        <td>${profile.email}</td>
+                                    </tr>
+                                </c:forEach>
 
                                 </tbody>
                             </table>

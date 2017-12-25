@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by dhiraj on 12/19/17.
  */
@@ -16,4 +18,6 @@ public interface EmployeeProfileRepository extends JpaRepository<EmployeeProfile
     EmployeeProfile findByStatusAndUser(Status status , long userId);
 
     EmployeeProfile findByStatusAndId(Status status , long employeeProfileId);
+
+    List<EmployeeProfile> findAllByStatus(Status status);
 }

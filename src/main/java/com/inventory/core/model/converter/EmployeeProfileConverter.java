@@ -61,8 +61,12 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
         dto.setStatus(entity.getStatus());
         dto.setTemporaryAddress(entity.getTemporaryAddress());
         dto.setTemporaryCity(cityInfoConverter.convertToDto(entity.getTemporaryCity()));
-        dto.setUserId(entity.getUser().getId());
-        dto.setUsername(entity.getUser().getUsername());
+
+        if (entity.getUser() != null) {
+            dto.setUserId(entity.getUser().getId());
+            dto.setUsername(entity.getUser().getUsername());
+        }
+
         dto.setVersion(entity.getVersion());
         dto.setTemporaryCityId(entity.getTemporaryCity().getId());
 

@@ -49,7 +49,7 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
 
     @Override
     public List<EmployeeProfileDTO> list(Status status) {
-        return employeeProfileConverter.convertToDtoList(employeeProfileRepository.findAll());
+        return employeeProfileConverter.convertToDtoList(employeeProfileRepository.findAllByStatus(status));
     }
 
     @Override
