@@ -49,7 +49,6 @@
                                     <th>username</th>
                                     <th>mobile</th>
                                     <th>email</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -57,11 +56,10 @@
                                 <c:forEach items="${profileList}" var="profile" varStatus="i">
                                     <tr>
                                         <td>${i.index + 1}</td>
-                                        <td><a href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}">${profile.firstName} &nbsp;${profile.middleName} &nbsp; ${profile.lastName}</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}">${profile.firstName} ${profile.middleName} ${profile.lastName}</a></td>
                                         <td>${profile.username}</td>
                                         <td>${profile.mobileNumber}</td>
                                         <td>${profile.email}</td>
-                                        <td><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}"><span class="glyphicon glyphicon-plus-sign"></span> Show</a>
                                     </tr>
                                 </c:forEach>
 
