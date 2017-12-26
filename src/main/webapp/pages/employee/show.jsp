@@ -30,63 +30,36 @@
         </c:if>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-offset-3 col-md-6">
                 <!-- Profile Image -->
                 <div class="box box-primary">
-                    <div class="box-body box-profile">
+                    <div class="box-body box-profile text-center">
                         <img class="profile-user-img img-responsive img-circle" src="${pageContext.request.contextPath}/resources/img/user8-128x128.jpg" alt="User profile picture">
-
-                        <h3 class="profile-username text-center">${profile.firstName} &nbsp;${profile.middleName} &nbsp; ${profile.lastName}</h3>
-
-                        <p class="text-muted text-center">${profile.username}</p>
-
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-
-                <!-- About Me Box -->
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">About Me</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-
-                        <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                        </p>
-
+                        <h3 class="profile-username text-center">${profile.username}</h3>
+                        <p class="text-muted text-center">${profile.firstName} ${profile.middleName} ${profile.lastName}</p>
                         <hr>
-
-                        <strong><i class="fa fa-map-marker margin-r-5"></i> Current Address</strong>
-
-                        <p class="text-muted">${profile.temporaryAddress}, ${profile.temporaryCity}</p>
-
+                            <strong><i class="fa fa-book margin-r-5"></i> Contact Details</strong>
+                            <p class="text-muted">${profile.mobileNumber}</p>
+                            <p class="text-muted">${profile.email}</p>
                         <hr>
-
-                        <strong><i class="fa fa-map-marker margin-r-5"></i> Permanent Address</strong>
-
-                        <p class="text-muted">${profile.permanentAddress}, ${profile.permanentCity}</p>
-
+                            <strong><i class="fa fa-book margin-r-5"></i> Emergency Contact</strong>
+                            <p class="text-muted">${profile.emergencyCantact}</p>
                         <hr>
-
-                        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-                        <p>
-                            <span class="label label-danger">UI Design</span>
-                            <span class="label label-success">Coding</span>
-                            <span class="label label-info">Javascript</span>
-                            <span class="label label-warning">PHP</span>
-                            <span class="label label-primary">Node.js</span>
-                        </p>
-
+                            <strong><i class="fa fa-map-marker margin-r-5"></i> Current Address</strong>
+                            <p class="text-muted">${profile.temporaryAddress}, ${profile.temporaryCity.cityName}
+                                <br>${profile.temporaryCity.stateName}, ${profile.temporaryCity.countryName}
+                            </p>
                         <hr>
-
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                            <strong><i class="fa fa-map-marker margin-r-5"></i> Permanent Address</strong>
+                            <p class="text-muted">${profile.permanentAddress}, ${profile.permanentCity.cityName}
+                                <br>${profile.permanentCity.stateName}, ${profile.permanentCity.countryName}
+                            </p>
+                        <hr>
+                            <strong><i class="fa fa-pencil margin-r-5"></i> Citizenship Details</strong>
+                            <p class="text-muted">${profile.citizenShipNo}, ${profile.citizenShipCity.cityName}</p>
+                        <hr>
+                            <strong><i class="fa fa-file-text-o margin-r-5"></i> Created By</strong>
+                            <p>${profile.createdByName}</p>
                     </div>
                     <!-- /.box-body -->
                 </div>
