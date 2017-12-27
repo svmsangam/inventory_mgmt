@@ -34,78 +34,97 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form action="${pageContext.request.contextPath}/ledger/filter" method="GET" modelAttribute="terms">
+                        <form action="${pageContext.request.contextPath}/ledger/filter" method="GET"
+                              modelAttribute="terms">
 
                             <div class="well well-sm">
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Client Name</label>
-                                        <select class="choose1 form-control" name="clientId"></select>
+                                        <label>Fiscal Year</label>
+                                        <select class="choose2 form-control" name="fiscalYearId">
+
+                                            <option value="" selected>select fiscal year</option>
+
+                                            <c:forEach items="${fiscalYearList}" var="fiscalYear">
+                                                <option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option>
+                                            </c:forEach>
+                                        </select>
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <label>Client Name</label>
+                                        <select class="choose1 form-control" name="accountId"></select>
+                                        <p class="form-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
                                         <label>From Date:</label>
+                                        <div class='input-group date'>
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+
+                                            <input type="text" class="form-control datepicker"
+                                                   onkeypress="return false;" onkeyup="return false;"
+                                                   name="from" placeholder="From Date"/>
+                                            <%--<input type="text" class="form-control datepicker"
+                                                   onkeypress="return false;" onkeyup="return false;"
+                                                   value="<fmt:formatDate pattern="MM/dd/yyyy" value=""/>"
+                                                   name="from" placeholder="From Date"/>--%>
+                                        </div>
+                                        <p class="form-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>To Date:</label>
                                         <div class='input-group date'>
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <input type="text" class="form-control datepicker"
                                                    onkeypress="return false;" onkeyup="return false;"
-                                                   value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                                   name="from" placeholder="From Date"/>
+                                                   name="to" placeholder="To Date"/>
                                         </div>
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>To Date:</label>
-                                            <div class='input-group date'>
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <input type="text" class="form-control datepicker"
-                                                       onkeypress="return false;" onkeyup="return false;"
-                                                       value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.deliveryDate}"/>"
-                                                       name="to" placeholder="To Date"/>
-                                            </div>
-                                            <p class="form-error"></p>
-                                        </div>
-                                    </div>
                                 <div class="margin" style="margin-top: 25px;">
-                                      <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+                                    <button type="submit" class="btn btn-info btn-flat">Filter!</button>
                                 </div>
-                                </div>
+                            </div>
                         </form>
                         <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped table-condensed">
-                            <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>AccountNo</th>
-                                <th>Amount</th>
-                                <th>DR/CR</th>
-                                <th>Ledger Entry</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="ledger" items="${ledgerList}" varStatus="counter">
+                            <table class="table table-bordered table-hover table-striped table-condensed">
+                                <thead>
                                 <tr>
-
-                                    <td><fmt:formatDate pattern="MMM dd, yyyy" value="${ledger.date}"/></td>
-                                    <td>${ledger.accountInfo.acountNumber}</td>
-                                    <td>${ledger.amount}</td>
-                                    <td>${ledger.accountEntryType}</td>
-                                    <td>${ledger.ledgerEntryType}</td>
+                                    <th>Date</th>
+                                    <th>AccountNo</th>
+                                    <th>Amount</th>
+                                    <th>DR/CR</th>
+                                    <th>Ledger Entry</th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="ledger" items="${ledgerList}" varStatus="counter">
+                                    <tr>
+
+                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${ledger.date}"/></td>
+                                        <td>${ledger.accountInfo.acountNumber}</td>
+                                        <td>${ledger.amount}</td>
+                                        <td>${ledger.accountEntryType}</td>
+                                        <td>${ledger.ledgerEntryType}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -191,12 +210,12 @@
                         if (value.companyName === null) {
 
                             arr.push({
-                                id: value.clientId,
+                                id: value.accountId,
                                 text: value.name + ' - ' + value.mobileNumber
                             })
                         } else {
                             arr.push({
-                                id: value.clientId,
+                                id: value.accountId,
                                 text: value.companyName + ' - ' + value.mobileNumber
                             })
                         }

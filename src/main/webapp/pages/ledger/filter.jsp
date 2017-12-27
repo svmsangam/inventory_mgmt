@@ -44,17 +44,33 @@
 
                             <div class="well well-sm">
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Client Name</label>
-                                        <select class="choose1 form-control" name="clientId">
+                                        <label>Fiscal Year</label>
+                                        <select class="choose2 form-control" name="fiscalYearId">
 
+                                            <option value="">select fiscal year</option>
+
+                                            <c:forEach items="${fiscalYearList}" var="fiscalYear">
+                                                <c:choose>
+                                                    <c:when test="${fiscalYear.fiscalYearInfoId eq term.fiscalYearId }"><option value="${fiscalYear.fiscalYearInfoId}" selected>${fiscalYear.title}</option></c:when>
+                                                    <c:otherwise><option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option></c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
                                         </select>
                                         <p class="form-error"></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Client Name</label>
+                                        <select class="choose1 form-control" name="accountId"></select>
+                                        <p class="form-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>From Date:</label>
                                         <div class='input-group date'>
@@ -70,7 +86,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>To Date:</label>
                                         <div class='input-group date'>
@@ -95,13 +111,13 @@
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                                 <li class="divider"></li>
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
                             </ul>
                         </div>
 
-                        <div class="table-responsive">
+                        <div class="">
                         <table class="table table-bordered table-hover table-striped table-condensed">
                             <thead>
                             <tr>
@@ -124,7 +140,7 @@
                                 </tr>
                             </c:forEach>
                             </tbody>
-                            <tfoot>
+                            <%--<tfoot>
                             <tr>
                                 <td colspan="3"></td>
                                 <th>Debit Amount <br> (<fmt:formatDate pattern="MMM dd, yyyy" value="${term.from}"/> to <fmt:formatDate pattern="MMM dd, yyyy" value="${term.to}"/>)</th>
@@ -145,7 +161,7 @@
                                 <th>Total Balance</th>
                                 <td><b>Rs <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${totalCr - totalDr}"/></b></td>
                             </tr>
-                            </tfoot>
+                            </tfoot>--%>
                         </table>
                         </div>
                     </div>
@@ -160,7 +176,7 @@
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/ledger/filter?pageNo=${currentpage-1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"
+                                            <a href="${pageContext.request.contextPath}/ledger/filter?page=${currentpage-1}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"
                                                class="page-link">Prev</a>
                                         </li>
                                     </c:if>
@@ -180,7 +196,7 @@
                                             <c:otherwise>
 
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/ledger/filter?pageNo=${pagelist}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">${pagelist}</a>
+                                                                         href="${pageContext.request.contextPath}/ledger/filter?page=${pagelist}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">${pagelist}</a>
                                                 </li>
 
                                             </c:otherwise>
@@ -190,8 +206,7 @@
 
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageContext.request.contextPath}/ledger/filter?pageNo=${currentpage+1}&clientId=${term.clientId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">Next</a>
+                                            <a class="page-link" href="${pageContext.request.contextPath}/ledger/filter?page=${currentpage+1}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>
@@ -208,12 +223,13 @@
 <%@include file="/pages/parts/footer.jsp" %>
 
 
+
 <script>
     $(document).ready(function () {
 
         $(".choose1").select2({
             ajax: {
-                url: '${pageContext.request.contextPath}/client/search',
+                url: '${pageContext.request.contextPath}/client/customer/search',
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
@@ -232,12 +248,12 @@
                         if (value.companyName === null) {
 
                             arr.push({
-                                id: value.clientId,
+                                id: value.accountId,
                                 text: value.name + ' - ' + value.mobileNumber
                             })
                         } else {
                             arr.push({
-                                id: value.clientId,
+                                id: value.accountId,
                                 text: value.companyName + ' - ' + value.mobileNumber
                             })
                         }
@@ -257,7 +273,7 @@
                 return markup;
             },
             minimumInputLength: 1,
-            placeholder: "Search Customer by Name & Mobile No"
+            placeholder: "Search Customer by Name or Mobile No"
         });
     });
 </script>

@@ -34,12 +34,6 @@ public class LedgerController {
     private ILedgerInfoApi ledgerInfoApi;
 
     @Autowired
-    private IAccountInfoApi accountInfoApi;
-
-    @Autowired
-    private IClientInfoApi clientInfoApi;
-
-    @Autowired
     private IFiscalYearInfoApi fiscalYearInfoApi;
 
     @GetMapping(value = "/")
@@ -106,6 +100,7 @@ public class LedgerController {
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
             modelMap.put(StringConstants.LEDGERLIST, ledgerInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
@@ -163,6 +158,12 @@ public class LedgerController {
 
             }
 
+            if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null & (filterTerms.getFrom() == null | filterTerms.getTo() == null)){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid filter terms");
+                return "redirect:/ledger/list";
+
+            }
+
             Integer page = filterTerms.getPage();
 
             if (page == null) {
@@ -191,6 +192,7 @@ public class LedgerController {
             filterTerms.setStoreId(currentUser.getStoreId());
 
             modelMap.put(StringConstants.LEDGERLIST, ledgerInfoApi.filter(filterTerms ));
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
 
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
