@@ -2,9 +2,9 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
-import com.inventory.core.model.dto.*;
-import com.inventory.core.model.enumconstant.AccountAssociateType;
-import com.inventory.core.model.enumconstant.AccountEntryType;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.LedgerFilterDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -14,6 +14,7 @@ import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,7 +120,7 @@ public class LedgerController {
 
 
     @GetMapping(value = "/filter")
-    public String filter(@RequestParam(value = "pageNo", required = false) Integer page, @ModelAttribute("terms") LedgerFilter filterTerms, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String filter(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -162,34 +163,7 @@ public class LedgerController {
 
             }
 
-            if (filterTerms.getClientId() <= 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client required");
-                return "redirect:/ledger/list";
-            }
-
-            if (filterTerms.getFrom() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "from date required");
-                return "redirect:/ledger/list";
-            }
-
-            if (filterTerms.getTo() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "to date required");
-                return "redirect:/ledger/list";
-            }
-
-            ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE , filterTerms.getClientId());
-
-            if (clientInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client not found");
-                return "redirect:/ledger/list";
-            }
-
-            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(filterTerms.getClientId(), AccountAssociateType.CUSTOMER);
-
-            if (accountInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "account not found");
-                return "redirect:/ledger/list";
-            }
+            Integer page = filterTerms.getPage();
 
             if (page == null) {
                 page = 1;
@@ -201,7 +175,7 @@ public class LedgerController {
 
             int currentpage = page - 1;
 
-            long totalList = ledgerInfoApi.filterCount(Status.ACTIVE, currentUser.getStoreId(), accountInfoDTO.getAccountId(), filterTerms.getFrom(), filterTerms.getTo());
+            long totalList = ledgerInfoApi.countFilter(filterTerms);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -211,25 +185,17 @@ public class LedgerController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.LEDGERLIST, ledgerInfoApi.filter(Status.ACTIVE, currentUser.getStoreId(), accountInfoDTO.getAccountId(), filterTerms.getFrom(), filterTerms.getTo(), currentpage, (int) PageInfo.pageList));
+            filterTerms.setPage(currentpage);
+            filterTerms.setSize((int) PageInfo.pageList);
+            filterTerms.setStatus(Status.ACTIVE);
+            filterTerms.setStoreId(currentUser.getStoreId());
+
+            modelMap.put(StringConstants.LEDGERLIST, ledgerInfoApi.filter(filterTerms ));
 
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
             modelMap.put("term" , filterTerms);
-
-            modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
-            modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
-
-            modelMap.put("totalDr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT));
-            modelMap.put("totalCr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT));
-
-            modelMap.put("accountNo" , accountInfoDTO.getAcountNumber());
-            if (clientInfoDTO.getCompanyName() != null) {
-                modelMap.put("clientName", clientInfoDTO.getCompanyName());
-            } else {
-                modelMap.put("clientName", clientInfoDTO.getName());
-            }
 
         } catch (Exception e) {
             e.printStackTrace();

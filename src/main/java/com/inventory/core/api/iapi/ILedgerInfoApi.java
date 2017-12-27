@@ -1,5 +1,6 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.LedgerFilterDTO;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Status;
@@ -20,7 +21,9 @@ public interface ILedgerInfoApi {
 
     long countAllByStatusAndStore(Status status , long storeId);
 
-    List<LedgerInfoDTO> filter(Status status , long storeId , long accountId , Date from , Date to, int page , int size);
+    List<LedgerInfoDTO> filter(LedgerFilterDTO filterDTO);
+
+    long countFilter(LedgerFilterDTO filterDTO);
 
     List<LedgerInfoDTO> filterReport(Status status , long storeId , long accountId , Date from , Date to);
 

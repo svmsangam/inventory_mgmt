@@ -21,7 +21,17 @@ public class LedgerFilterDTO {
 
     private Integer page;
 
+    private int size;
+
     private Status status;
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public Long getFiscalYearId() {
         return fiscalYearId;

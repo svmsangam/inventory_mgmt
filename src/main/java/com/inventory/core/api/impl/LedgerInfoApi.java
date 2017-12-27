@@ -3,11 +3,14 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IFiscalYearInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.LedgerInfoConverter;
+import com.inventory.core.model.dto.LedgerFilter;
+import com.inventory.core.model.dto.LedgerFilterDTO;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.LedgerInfo;
 import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.LedgerInfoRepository;
+import com.inventory.core.model.specification.LedgerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -78,11 +81,25 @@ public class LedgerInfoApi implements ILedgerInfoApi{
     }
 
     @Override
-    public List<LedgerInfoDTO> filter(Status status, long storeId, long accountId, Date from, Date to, int page, int size) {
+    public List<LedgerInfoDTO> filter(LedgerFilterDTO filterDTO) {
 
-        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);
 
-        return ledgerInfoConverter.convertToDtoList(ledgerInfoRepository.filter(status , storeId , accountId , from , to , pageable));
+        LedgerSpecification specification = new LedgerSpecification(filter);
+
+        Pageable pageable = createPageRequest(filterDTO.getPage(),filterDTO.getSize() ,"id" , Sort.Direction.DESC);
+
+        return ledgerInfoConverter.convertPageToDtoList(ledgerInfoRepository.findAll(specification , pageable));
+    }
+
+    @Override
+    public long countFilter(LedgerFilterDTO filterDTO) {
+
+        LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);
+
+        LedgerSpecification specification = new LedgerSpecification(filter);
+
+        return ledgerInfoRepository.count(specification);
     }
 
     @Override

@@ -1,29 +1,23 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
-import com.inventory.core.model.dto.*;
-import com.inventory.core.model.enumconstant.AccountAssociateType;
-import com.inventory.core.model.enumconstant.AccountEntryType;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.util.ReportGeneratorUtil;
 import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.StringConstants;
-import net.sf.jasperreports.engine.JasperPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by dhiraj on 10/9/17.
@@ -130,12 +124,12 @@ public class ReportInfoController {
         return ;
     }
 
-    @GetMapping(value = "/ledger/filter/xls")
+    /*@GetMapping(value = "/ledger/filter/xls")
     public void filterXls(@ModelAttribute("terms") LedgerFilter filterTerms, final HttpServletResponse response , RedirectAttributes redirectAttributes) {
 
         try {
 
-             /*current user checking start*/
+             *//*current user checking start*//*
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -158,7 +152,7 @@ public class ReportInfoController {
                 return;//store not assigned page
             }
 
-        /*current user checking end*/
+        *//*current user checking end*//*
 
             if (filterTerms == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
@@ -207,13 +201,13 @@ public class ReportInfoController {
                 clientName = clientInfoDTO.getName();
             }
 
-   /*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
+   *//*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
             modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
 
             modelMap.put("totalDr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT));
             modelMap.put("totalCr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT));
 
-        */
+        *//*
 
             double totalFilterDr =  ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT);
             double totalFilterCr = ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT);
@@ -232,15 +226,15 @@ public class ReportInfoController {
             return;
         }
 
-    }
+    }*/
 
 
-    @GetMapping(value = "/ledger/filter/pdf")
+    /*@GetMapping(value = "/ledger/filter/pdf")
     public void filterPdf(@ModelAttribute("terms") LedgerFilter filterTerms, final HttpServletResponse response , RedirectAttributes redirectAttributes) {
 
         try {
 
-             /*current user checking start*/
+             *//*current user checking start*//*
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -263,7 +257,7 @@ public class ReportInfoController {
                 return;//store not assigned page
             }
 
-        /*current user checking end*/
+        *//*current user checking end*//*
 
             if (filterTerms == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
@@ -319,13 +313,13 @@ public class ReportInfoController {
             double filterBalance = totalFilterCr - totalFilterDr;
 
 
-   /*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
+   *//*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
             modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
 
             modelMap.put("totalDr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT));
             modelMap.put("totalCr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT));
 
-        */
+        *//*
 
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
@@ -339,5 +333,5 @@ public class ReportInfoController {
             return;
         }
 
-    }
+    }*/
 }
