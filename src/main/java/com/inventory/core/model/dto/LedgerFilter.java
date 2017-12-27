@@ -1,5 +1,10 @@
 package com.inventory.core.model.dto;
 
+import com.inventory.core.model.entity.AccountInfo;
+import com.inventory.core.model.entity.FiscalYearInfo;
+import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.enumconstant.Status;
+
 import java.util.Date;
 
 /**
@@ -7,18 +12,40 @@ import java.util.Date;
  */
 public class LedgerFilter {
 
-    private long clientId ;
+    private FiscalYearInfo fiscalYearInfo;
+
+    private AccountInfo accountInfo;
+
+    private StoreInfo storeInfo;
 
     private Date from;
 
     private Date to;
 
-    public long getClientId() {
-        return clientId;
+    private Status status;
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
     }
 
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
+    }
+
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(AccountInfo accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
     }
 
     public Date getFrom() {
@@ -35,5 +62,13 @@ public class LedgerFilter {
 
     public void setTo(Date to) {
         this.to = to;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

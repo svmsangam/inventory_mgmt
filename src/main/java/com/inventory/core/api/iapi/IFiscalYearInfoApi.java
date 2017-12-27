@@ -20,6 +20,7 @@ public interface IFiscalYearInfoApi {
 
     FiscalYearInfoDTO getByIdAndStatusAndStoreInfoAndSelected(long fiscalYearInfoId , Status status , long storeInfoId , boolean selected);
 
-    FiscalYearInfoDTO getSelectedByStatusAndStoreInfo(Status status , long storeInfoId);
+    FiscalYearInfoDTO getCurrentFiscalYearByStoreInfo(long storeInfoId);
 
+    long getCurrentFiscalYearIdByStoreInfo(long storeInfoId);
 }

@@ -5,10 +5,7 @@ import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.LedgerInfo;
 import com.inventory.core.model.entity.PaymentInfo;
 import com.inventory.core.model.enumconstant.*;
-import com.inventory.core.model.repository.AccountInfoRepository;
-import com.inventory.core.model.repository.InvoiceInfoRepository;
-import com.inventory.core.model.repository.PaymentInfoRepository;
-import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.*;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,9 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
     @Autowired
     private PaymentInfoRepository paymentInfoRepository;
 
+    @Autowired
+    private FiscalYearInfoRepository fiscalYearInfoRepository;
+
     @Override
     public LedgerInfo convertToEntity(LedgerInfoDTO dto) {
         return copyConvertToEntity(dto , new LedgerInfo());
@@ -64,6 +64,9 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
         dto.setStoreInfoId(entity.getStoreInfo().getId());
         dto.setDate(entity.getCreated());
         dto.setAccountNo(entity.getAccountInfo().getAcountNumber());
+        dto.setFiscalYear(entity.getFiscalYearInfo().getTitle());
+        dto.setFiscalYearId(entity.getFiscalYearInfo().getId());
+
 
         return dto;
     }
@@ -81,6 +84,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
         entity.setLedgerEntryType(dto.getLedgerEntryType());
         entity.setRemarks(dto.getRemarks());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , dto.getStoreInfoId() , true));
 
         return entity;
     }
@@ -114,6 +118,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         entity.setStoreInfo(invoiceInfo.getStoreInfo());
         entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , invoiceInfo.getStoreInfo().getId() , true));
 
         return entity;
     }
@@ -137,6 +142,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         entity.setStoreInfo(invoiceInfo.getStoreInfo());
         entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , invoiceInfo.getStoreInfo().getId() , true));
 
         return entity;
     }
@@ -170,6 +176,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         entity.setStoreInfo(paymentInfo.getStoreInfo());
         entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , paymentInfo.getStoreInfo().getId() , true));
 
         return entity;
     }
@@ -194,6 +201,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo , Ledger
 
         entity.setStoreInfo(paymentInfo.getStoreInfo());
         entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , paymentInfo.getStoreInfo().getId() , true));
 
         return entity;
     }

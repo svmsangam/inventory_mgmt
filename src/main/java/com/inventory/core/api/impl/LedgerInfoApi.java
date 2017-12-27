@@ -1,5 +1,6 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.core.api.iapi.IFiscalYearInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.model.converter.LedgerInfoConverter;
 import com.inventory.core.model.dto.LedgerInfoDTO;
@@ -29,6 +30,9 @@ public class LedgerInfoApi implements ILedgerInfoApi{
 
     @Autowired
     private LedgerInfoRepository ledgerInfoRepository;
+
+    @Autowired
+    private IFiscalYearInfoApi fiscalYearInfoApi;
 
     @Override
     public void save(long invoiceId) {
@@ -65,12 +69,12 @@ public class LedgerInfoApi implements ILedgerInfoApi{
 
         Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
 
-        return ledgerInfoConverter.convertToDtoList(ledgerInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+        return ledgerInfoConverter.convertToDtoList(ledgerInfoRepository.findAllByStatusAndStoreInfoAndFiscalYearInfo(status , storeId , fiscalYearInfoApi.getCurrentFiscalYearIdByStoreInfo(storeId) , pageable));
     }
 
     @Override
     public long countAllByStatusAndStore(Status status, long storeId) {
-        return ledgerInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+        return ledgerInfoRepository.countAllByStatusAndStoreInfoAndFiscalYearInfo(status , storeId , fiscalYearInfoApi.getCurrentFiscalYearIdByStoreInfo(storeId));
     }
 
     @Override

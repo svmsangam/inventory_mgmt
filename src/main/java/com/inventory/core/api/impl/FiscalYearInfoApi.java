@@ -91,7 +91,18 @@ public class FiscalYearInfoApi implements IFiscalYearInfoApi {
     }
 
     @Override
-    public FiscalYearInfoDTO getSelectedByStatusAndStoreInfo(Status status, long storeInfoId) {
+    public FiscalYearInfoDTO getCurrentFiscalYearByStoreInfo(long storeInfoId){
         return fiscalYearInfoConverter.convertToDto(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeInfoId , true));
+    }
+
+    @Override
+    public long getCurrentFiscalYearIdByStoreInfo(long storeInfoId) {
+
+        FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeInfoId , true);
+
+        if (fiscalYearInfo == null){
+            return 0;
+        }
+        return fiscalYearInfo.getId();
     }
 }

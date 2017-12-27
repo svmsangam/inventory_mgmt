@@ -1,6 +1,7 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.LogType;
@@ -53,6 +54,9 @@ public class InvoiceController {
     @Autowired
     private IReportServiceApi reportServiceApi;
 
+    @Autowired
+    private IFiscalYearInfoApi fiscalYearInfoApi;
+
 
     @GetMapping(value = "/")
     public String index() {
@@ -91,6 +95,14 @@ public class InvoiceController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 
@@ -167,6 +179,14 @@ public class InvoiceController {
                 return "redirect:/";//store not assigned page
             }
 
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
+
         /*current user checking end*/
 
             if (invoiceId < 0) {
@@ -229,6 +249,14 @@ public class InvoiceController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 
@@ -295,6 +323,14 @@ public class InvoiceController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 

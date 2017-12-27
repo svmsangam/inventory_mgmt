@@ -1,6 +1,7 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
@@ -47,6 +48,9 @@ public class OrderInfoController {
     @Autowired
     private OrderValidation orderValidation;
 
+    @Autowired
+    private IFiscalYearInfoApi fiscalYearInfoApi;
+
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -74,6 +78,14 @@ public class OrderInfoController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 
@@ -139,6 +151,14 @@ public class OrderInfoController {
                 return "redirect:/";//store not assigned page
             }
 
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
+
         /*current user checking end*/
 
             modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
@@ -179,6 +199,14 @@ public class OrderInfoController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 

@@ -30,7 +30,18 @@ public class LedgerInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private FiscalYearInfo fiscalYearInfo;
+
     private Status status;
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
+    }
 
     public AccountInfo getAccountInfo() {
         return accountInfo;

@@ -21,8 +21,14 @@ public interface LedgerInfoRepository extends JpaRepository<LedgerInfo , Long> ,
     @Query("select count (l) from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2")
     long countAllByStatusAndStoreInfo(Status status , long storeId);
 
+    @Query("select count (l) from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.fiscalYearInfo.id = ?3")
+    long countAllByStatusAndStoreInfoAndFiscalYearInfo(Status status , long storeId , long fiscalYearId);
+
     @Query("select l from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2")
     List<LedgerInfo> findAllByStatusAndStoreInfo(Status status , long storeId , Pageable pageable);
+
+    @Query("select l from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.fiscalYearInfo.id = ?3")
+    List<LedgerInfo> findAllByStatusAndStoreInfoAndFiscalYearInfo(Status status , long storeId , long fiscalYearId , Pageable pageable);
 
     @Query("select l from LedgerInfo l where l.status = ?1 and l.storeInfo.id = ?2 and l.accountInfo.id = ?3 and l.created between ?4 and ?5")
     List<LedgerInfo> filter(Status status , long storeId , long accountId , Date from , Date to, Pageable pageable);

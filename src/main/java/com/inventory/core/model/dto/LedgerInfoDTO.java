@@ -33,6 +33,10 @@ public class LedgerInfoDTO {
 
     private Status status;
 
+    private long fiscalYearId;
+
+    private String fiscalYear;
+
     public Date getDate() {
         return date;
     }
@@ -119,5 +123,21 @@ public class LedgerInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getFiscalYearId() {
+        return fiscalYearId;
+    }
+
+    public void setFiscalYearId(long fiscalYearId) {
+        this.fiscalYearId = fiscalYearId;
+    }
+
+    public String getFiscalYear() {
+        return fiscalYear;
+    }
+
+    public void setFiscalYear(String fiscalYear) {
+        this.fiscalYear = fiscalYear;
     }
 }

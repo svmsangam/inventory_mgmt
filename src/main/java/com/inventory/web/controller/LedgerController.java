@@ -1,14 +1,8 @@
 
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.IAccountInfoApi;
-import com.inventory.core.api.iapi.IClientInfoApi;
-import com.inventory.core.api.iapi.ILedgerInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
-import com.inventory.core.model.dto.AccountInfoDTO;
-import com.inventory.core.model.dto.ClientInfoDTO;
-import com.inventory.core.model.dto.InvUserDTO;
-import com.inventory.core.model.dto.LedgerFilter;
+import com.inventory.core.api.iapi.*;
+import com.inventory.core.model.dto.*;
 import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.Permission;
@@ -44,6 +38,9 @@ public class LedgerController {
     @Autowired
     private IClientInfoApi clientInfoApi;
 
+    @Autowired
+    private IFiscalYearInfoApi fiscalYearInfoApi;
+
     @GetMapping(value = "/")
     public String index() {
 
@@ -75,6 +72,13 @@ public class LedgerController {
 
             if (currentUser.getStoreId() == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
                 return "redirect:/";//store not assigned page
             }
 
@@ -141,6 +145,14 @@ public class LedgerController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
             }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/";//store not assigned page
+            }
+
 
         /*current user checking end*/
 
