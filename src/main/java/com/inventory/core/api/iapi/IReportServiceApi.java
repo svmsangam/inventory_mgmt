@@ -22,4 +22,6 @@ public interface IReportServiceApi {
     String pdfWriterForInvoice(InvoiceInfoDTO invoice) throws FileNotFoundException, DocumentException;
 
     void writeXlsReport(long invoiceId, long storeId, HttpServletResponse response, HttpServletRequest request) throws Exception;
+
+    String qrCodeGenerator(String code);
 }
