@@ -2,9 +2,11 @@ package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
+import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
+import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.web.error.PaymentInfoError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,9 @@ public class PaymentInfoValidation extends GlobalValidation{
 
     @Autowired
     private InvoiceInfoRepository invoiceInfoRepository;
+
+    @Autowired
+    private OrderInfoRepository orderInfoRepository;
 
     PaymentInfoError error;
 
@@ -91,6 +96,7 @@ public class PaymentInfoValidation extends GlobalValidation{
             }
         }
 
+        valid = valid && checkInvoice(invoiceId , storeId , paymentInfoDTO.getInvoiceVersion());
 
         valid = valid && checkAmount(paymentInfoDTO.getReceivedPayment().getAmount(), invoiceId);
 
@@ -119,26 +125,128 @@ public class PaymentInfoValidation extends GlobalValidation{
             valid = false;
         }
 
-        valid = valid && checkInvoice(invoiceId , storeId , paymentInfoDTO.getInvoiceVersion());
 
         error.setValid(valid);
 
         return error;
     }
 
-    private boolean checkAmount(Double value , long invoiceId ){
+    public synchronized PaymentInfoError onQuickSave(PaymentInfoDTO paymentInfoDTO , BindingResult result) {
+
+        error = new PaymentInfoError();
+
+        boolean valid = true;
+
+        if (result.hasErrors()) {
+
+            valid = true;
+
+            List<FieldError> errors = result.getFieldErrors();
+
+            for (FieldError errorResult : errors) {
+
+                if (errorResult.getField().equals("receivedPayment.amount")) {
+                    error.setAmount("invalid amount");
+                    valid = false;
+                } else if (errorResult.getField().equals("paymentMethod")) {
+                    error.setPaymentMethod("receivedPayment.invalid paymentMethod");
+                    valid = false;
+                } else if (errorResult.getField().equals("remark")) {
+                    error.setRemark("invalid remark");
+                    valid = false;
+                } else if (errorResult.getField().equals("receivedPayment.chequeDate")) {
+                    if (paymentInfoDTO.getReceivedPayment() != null){
+                        if (PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+                            error.setChequeDate("invalid chequeDate");
+                            valid = false;
+                        }
+                    }
+
+                } else if (errorResult.getField().equals("receivedPayment.commitedDateOfCheque")) {
+
+                    if (paymentInfoDTO.getReceivedPayment() != null){
+                        if (PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+                            error.setCommitedDateOfCheque("invalid commitedDateOfCheque");
+                            valid = false;
+                        }
+                    }
+
+                } else if (errorResult.getField().equals("receivedPayment.bankOfCheque")) {
+                    error.setBankOfCheque("invalid bank");
+                    valid = false;
+                } else if (errorResult.getField().equals("receivedPayment.bankAccountNumber")) {
+                    error.setBankAccountNumber("invalid bankAccountNumber");
+                    valid = false;
+                } else if (errorResult.getField().equals("orderInfoId")) {
+                    error.setInvoice("invalid orderInfo");
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                error.setValid(valid);
+
+                return error;
+            }
+        }
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(paymentInfoDTO.getOrderInfoId());
+
+        valid = valid && checkAmount(paymentInfoDTO.getReceivedPayment().getAmount(), orderInfo.getGrandTotal());
+
+        valid = valid && checkRemark(paymentInfoDTO.getRemark());
+
+        if (paymentInfoDTO.getReceivedPayment() != null && PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+
+            valid = valid && checkChequeDate(paymentInfoDTO.getReceivedPayment().getChequeDate());
+
+            valid = valid && checkCommitedDateOfCheque(paymentInfoDTO.getReceivedPayment().getCommitedDateOfCheque());
+
+            valid = valid && checkBankOfCheque(paymentInfoDTO.getReceivedPayment().getBankOfCheque());
+
+            valid = valid && checkBankAccountNo(paymentInfoDTO.getReceivedPayment().getBankAccountNumber());
+
+        } else if(paymentInfoDTO.getReceivedPayment() == null && PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())){
+
+            error.setBankAccountNumber("enter bankAccountNumber");
+
+            error.setCommitedDateOfCheque("enter commitedDateOfCheque");
+
+            error.setBankOfCheque("enter bank");
+
+            error.setChequeDate("enter chequeDate");
+
+            valid = false;
+        }
+
+        error.setValid(valid);
+
+        return error;
+    }
+
+    private boolean checkAmount(Double value , long invoiceId ) {
+
+        error.setAmount(checkDouble(value, 0, 3, "amount", true));
+
+        if (!"".equals(error.getAmount())) {
+            return false;
+        }
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        return invoiceInfo == null || checkAmount(value, invoiceInfo.getReceivableAmount());
+
+    }
+
+    private boolean checkAmount(Double value , double checker){
 
         error.setAmount(checkDouble(value , 0, 3 , "amount" , true));
 
         if (!"".equals(error.getAmount())){
             return false;
-        }else {
-            InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
-
-            if (invoiceInfo != null & value > invoiceInfo.getReceivableAmount()){
-                error.setAmount("amount must be less than or equals with " + invoiceInfo.getReceivableAmount());
+        }else if (value > checker){
+                error.setAmount("amount must be less than or equals with " + checker);
                 return false;
-            }
         }
 
         return true;

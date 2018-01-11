@@ -186,12 +186,18 @@
             <div class="col-lg-4">
                     <table class="table">
                         <tr>
-                            <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.tax}"/>%)</th>
-                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal - order.grandTotal * order.tax / 100}"/></td>
+                            <th>Net Total</th>
+                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount}"/></td>
                         </tr>
+
                         <tr>
-                            <th>Total:</th>
-                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="tru" value="${order.grandTotal}"/></td>
+                            <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.tax}"/>%)</th>
+                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount * order.tax / 100}"/></td>
+                        </tr>
+
+                        <tr>
+                            <th>Grand Total:</th>
+                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
                         </tr>
                     </table>
             </div>

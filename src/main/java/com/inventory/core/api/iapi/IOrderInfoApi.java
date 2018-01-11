@@ -13,6 +13,8 @@ public interface IOrderInfoApi {
 
     OrderInfoDTO save(OrderInfoDTO orderInfoDTO);
 
+    OrderInfoDTO saveQuickSale(OrderInfoDTO orderInfoDTO);
+
     OrderInfoDTO show(Status status , long orderId , long storeId);
 
     List<OrderInfoDTO> listSale(Status status , long storeId , int page , int size);

@@ -17,6 +17,8 @@ public class PaymentInfoDTO {
 
     private long invoiceInfoId;
 
+    private long orderInfoId;
+
     private long storeInfoId;
 
     private long createdById;
@@ -26,6 +28,14 @@ public class PaymentInfoDTO {
     private Date paymentDate;
 
     private long invoiceVersion;
+
+    public long getOrderInfoId() {
+        return orderInfoId;
+    }
+
+    public void setOrderInfoId(long orderInfoId) {
+        this.orderInfoId = orderInfoId;
+    }
 
     public long getInvoiceVersion() {
         return invoiceVersion;

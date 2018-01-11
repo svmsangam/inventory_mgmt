@@ -2,18 +2,14 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
+import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
-import com.inventory.core.model.entity.CodeGenerator;
-import com.inventory.core.model.entity.InvoiceInfo;
-import com.inventory.core.model.entity.PaymentInfo;
-import com.inventory.core.model.entity.StoreInfo;
+import com.inventory.core.model.dto.PaymentInfoDTO;
+import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.model.repository.CodeGeneratorRepository;
-import com.inventory.core.model.repository.InvoiceInfoRepository;
-import com.inventory.core.model.repository.PaymentInfoRepository;
-import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +45,12 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Autowired
     private PaymentInfoRepository paymentInfoRepository;
+
+    @Autowired
+    private IPaymentInfoApi paymentInfoApi;
+
+    @Autowired
+    private OrderInfoRepository orderInfoRepository;
 
     @Override
     public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
@@ -129,6 +131,24 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         ledgerInfoApi.save(invoiceInfo.getId());
 
         return invoiceInfoConverter.convertToDto(invoiceInfo);
+    }
+
+    @Override
+    public InvoiceInfoDTO saveQuickSale(PaymentInfoDTO paymentInfoDTO) {
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(paymentInfoDTO.getOrderInfoId());
+
+        orderInfo.setStatus(Status.ACTIVE);
+
+        orderInfoRepository.save(orderInfo);
+
+        InvoiceInfoDTO invoiceInfo = save(paymentInfoDTO.getOrderInfoId() , paymentInfoDTO.getCreatedById());
+
+        paymentInfoDTO.setInvoiceInfoId(invoiceInfo.getInvoiceId());
+
+        paymentInfoApi.save(paymentInfoDTO);
+
+        return invoiceInfo;
     }
 
     @Override
