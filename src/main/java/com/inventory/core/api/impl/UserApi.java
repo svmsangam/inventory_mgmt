@@ -141,7 +141,7 @@ public class UserApi implements IUserApi {
 
     @Override
     public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList) {
-        return null;
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status , userTypeList));
     }
 
     @Override
