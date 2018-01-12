@@ -1,43 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:security="http://www.springframework.org/schema/security"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:oauth2="http://www.springframework.org/schema/security/oauth2"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:security="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/security/oauth2
+	       http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <security:http pattern="/oauth/token" create-session="never"
+                   authentication-manager-ref="clientAuthenticationManager"
+                   xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+        <http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
+        <!-- Using this to authenticate client using request parameter -->
+        <custom-filter ref="clientCredentialsTokenEndPointFilter" after="BASIC_AUTH_FILTER"/>
+        <access-denied-handler ref="oauthAccessDeniedHandler"/>
+    </security:http>
+
+    <http pattern="/api/**" create-session="stateless" entry-point-ref="oauthAuthenticationEntryPoint"
+
+          xmlns="http://www.springframework.org/schema/security">
+
+        <!-- access-decision-manager-ref="accessDecisionManager" -->
+
+        <anonymous enabled="true"/>
+        <!--<intercept-url pattern="/api/admin/**" access="ROLE_ADMINISTRATOR,ROLE_CUSTOMER,ROLE_AUTHENTICATED"/>-->
+        <intercept-url pattern="/api/**" access="ROLE_CUSTOMER,ROLE_AUTHENTICATED"/>
+
+
+
+        <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+        <access-denied-handler ref="oauthAccessDeniedHandler"/>
+        <!--<csrf/>-->
+    </http>
+
+    <beans:bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <beans:property name="realmName" value="test/client" />
+        <beans:property name="typeName" value="Basic" />
+    </beans:bean>
+
+
+    <!-- OAuth2 Security  -->
+    <!-- Load User By User name -->
+    <beans:bean id="clientDetailsUserDetailsService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <beans:constructor-arg ref="jdbcClientDetailsService"/>
+    </beans:bean>
+
+    <!-- It Determine whether a given client authentication request has been approved by user or not -->
+    <!-- ToeknStoreUserApprovalHandler : A user approval handler that remembers approval decisions by consulting existing tokens -->
+    <!--<beans:bean id="userApprovalHandler" class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
+        <beans:property name="tokenStore" ref="jdbcTokenStore"/>
+        <beans:property name="requestFactory" ref="oauth2RequestFactory"/>
+    </beans:bean>-->
+
+
+    <!-- Server issuing access token to the client after successfully authenticating the resource owner and obtaining authorization -->
+    <oauth2:authorization-server client-details-service-ref="jdbcClientDetailsService" token-services-ref="defaultTokenService"
+                                 user-approval-handler-ref="userApprovalHandler">
+        <!-- <oauth2:authorization-code/> -->
+        <!-- <oauth2:client-credentials/> -->
+        <!-- <oauth2:implicit/> -->
+        <oauth2:password/>
+        <!--<oauth2:refresh-token/>-->
+    </oauth2:authorization-server>
+
+    <!-- Include this if you need to authenticate client via request parameter -->
+    <beans:bean id="clientCredentialsTokenEndPointFilter"
+                class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <beans:property name="authenticationManager" ref="clientAuthenticationManager" />
+    </beans:bean>
+
+    <security:authentication-manager id="clientAuthenticationManager">
+        <security:authentication-provider user-service-ref="clientDetailsUserDetailsService"/>
+    </security:authentication-manager>
+
+    <!-- Server hosting the protected resource ,capable of accepting and responding to protected resource request using access tokens -->
+    <oauth2:resource-server id="resourceServerFilter" resource-id="test" token-services-ref="defaultTokenService"/>
+
+    <!-- Authentication Entry Point -->
+    <beans:bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <beans:property name="realmName" value="test" />
+    </beans:bean>
+
+    <!--<beans:bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <beans:property name="realmName" value="test/client" />
+        <beans:property name="typeName" value="Basic" />
+    </beans:bean>-->
+
+    <!-- Access Denied Handler -->
+    <!--<beans:bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>-->
+
+    <!-- This beans prepares oauth2Request using incoming request parameter -->
+    <!--<beans:bean id="oauth2RequestFactory" class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
+        <beans:constructor-arg ref="jdbcClientDetailsService"/>
+    </beans:bean>-->
+
+    <!-- Access Decision Manager -->
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased" xmlns="http://www.springframework.org/schema/beans">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter" />
+                <bean class="org.springframework.security.access.vote.RoleVoter" />
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- Data Source For oauth2 -->
+    <!-- <beans:bean id="oauthDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+       <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+       <beans:property name="url" value="jdbc:mysql://localhost:3306/oauth_db"/>
+       <beans:property name="username" value="root"/>
+       <beans:property name="password" value=""/>
+    </beans:bean> -->
+
+    <!-- JDBC Token Store -->
+    <!--<beans:bean id="jdbcTokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+        <beans:constructor-arg ref="dataSource"/>
+    </beans:bean>-->
+
+    <!-- Default token Service using JDBC token store-->
+    <beans:bean id="defaultTokenService" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <beans:property name="tokenStore" ref="jdbcTokenStore"/>
+        <beans:property name="refreshTokenValiditySeconds" value="0"/>
+        <beans:property name="accessTokenValiditySeconds" value="960"/>
+        <beans:property name="supportRefreshToken" value="true"/>
+        <!-- <beans:property name="clientDetailsService" ref="clientDetails"/> -->
+        <beans:property name="clientDetailsService" ref="jdbcClientDetailsService"/>
+    </beans:bean>
+
+    <!-- JDBC Client Details Service -->
+    <beans:bean id="jdbcClientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
+        <beans:constructor-arg ref="dataSource"/>
+    </beans:bean>
+
+
+
 
     <security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/test"	access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" requires-channel="any" />
+        <security:intercept-url pattern="/admin/**"	access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" requires-channel="any" />
+        <security:form-login login-page="/signin"	authentication-failure-url="/signin?error=wrong username or password" authentication-success-handler-ref="successHandler" />
+        <security:logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID" invalidate-session="true" />
 
-        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')"
-                                requires-channel="any"/>
-        <security:form-login login-page="/main" authentication-failure-url="/login?error=true"
-                             authentication-success-handler-ref="successHandler"/>
-        <!--<security:logout logout-url="/logout" logout-success-url="/"/>-->
-
-        <security:logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID"
-                         invalidate-session="true"/>
-
-        <security:anonymous/>
-        <security:session-management invalid-session-url="/logout" session-authentication-error-url="/logout"
-                                     session-fixation-protection="migrateSession">
-            <security:concurrency-control max-sessions="2" expired-url="/logout" error-if-maximum-exceeded="true"
-                                          session-registry-ref="sessionRegistry"
-                                          session-registry-alias="sessionInfoImp"/>
-        </security:session-management>
-        <security:port-mappings>
-            <security:port-mapping http="8080" https="8443"/>
-        </security:port-mappings>
+        <!--<security:csrf/>-->
 
     </security:http>
 
-    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
-
-    <bean id="successHandler"
-          class="com.inventory.web.session.CustomSavedRequestAwareAuthenticationSuccessHandler">
-    </bean>
-    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-
+    <beans:bean id="successHandler"
+                class="com.inventory.web.session.CustomSavedRequestAwareAuthenticationSuccessHandler">
+    </beans:bean>
+    <!--<beans:bean id="passwordEncoder"	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />-->
 
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider
@@ -47,9 +164,123 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <security:jdbc-user-service id="userService"
-                                data-source-ref="dataSource"
-                                users-by-username-query="select username,password,enabled from invuser where username=? and status=0 and enabled=1 "
-                                authorities-by-username-query="select username, authority from invuser where username=?"/>
-</beans>
-           
+    <beans:bean id="userService"
+                class="com.inventory.web.session.UserDetailsServiceImpl">
+
+        <beans:constructor-arg ref="userRepository"/>
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+    <!-- OAuth2 Security  -->
+    <!-- Load User By User name -->
+    <!--<beans:bean id="clientDetailsUserDetailsService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <beans:constructor-arg ref="jdbcClientDetailsService"/>
+    </beans:bean>-->
+
+    <!-- This beans prepares oauth2Request using incoming request parameter -->
+    <beans:bean id="oauth2RequestFactory" class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
+        <beans:constructor-arg ref="jdbcClientDetailsService"/>
+    </beans:bean>
+
+    <!-- It Determine whether a given client authentication request has been approved by user or not -->
+    <!-- ToeknStoreUserApprovalHandler : A user approval handler that remembers approval decisions by consulting existing tokens -->
+    <beans:bean id="userApprovalHandler" class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
+        <beans:property name="tokenStore" ref="jdbcTokenStore"/>
+        <beans:property name="requestFactory" ref="oauth2RequestFactory"/>
+    </beans:bean>
+
+    <!-- JDBC Client Details Service -->
+    <!--<beans:bean id="jdbcClientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
+        <beans:constructor-arg ref="dataSource"/>
+    </beans:bean>-->
+
+    <!-- JDBC Token Store -->
+    <beans:bean id="jdbcTokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+        <beans:constructor-arg ref="dataSource"/>
+    </beans:bean>
+
+    <!-- Default token Service using JDBC token store-->
+    <!--<beans:bean id="defaultTokenService" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <beans:property name="tokenStore" ref="jdbcTokenStore"/>
+        <beans:property name="refreshTokenValiditySeconds" value="0"/>
+        <beans:property name="accessTokenValiditySeconds" value="960"/>
+        <beans:property name="supportRefreshToken" value="true"/>
+        &lt;!&ndash; <beans:property name="clientDetailsService" ref="clientDetails"/> &ndash;&gt;
+        <beans:property name="clientDetailsService" ref="jdbcClientDetailsService"/>
+    </beans:bean>-->
+
+    <!-- Include this if you need to authenticate client via request parameter -->
+    <!--<beans:bean id="clientCredentialsTokenEndPointFilter"
+                class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <beans:property name="authenticationManager" ref="clientAuthenticationManager" />
+    </beans:bean>-->
+
+    <!-- Access Denied Handler -->
+    <beans:bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
+
+    <!-- Authentication Entry Point -->
+    <!--<beans:bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <beans:property name="realmName" value="test" />
+    </beans:bean>-->
+
+</beans:beans>
+
+
+        <!--
+        <?xml version="1.0" encoding="UTF-8"?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:security="http://www.springframework.org/schema/security"
+               xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">
+
+            <security:http auto-config="true" use-expressions="true">
+
+                <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')"
+                                        requires-channel="any"/>
+                <security:form-login login-page="/main" authentication-failure-url="/login?error=true"
+                                     authentication-success-handler-ref="successHandler"/>
+                &lt;!&ndash;<security:logout logout-url="/logout" logout-success-url="/"/>&ndash;&gt;
+
+                <security:logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID"
+                                 invalidate-session="true"/>
+
+                <security:anonymous/>
+                <security:session-management invalid-session-url="/logout" session-authentication-error-url="/logout"
+                                             session-fixation-protection="migrateSession">
+                    <security:concurrency-control max-sessions="2" expired-url="/logout" error-if-maximum-exceeded="true"
+                                                  session-registry-ref="sessionRegistry"
+                                                  session-registry-alias="sessionInfoImp"/>
+                </security:session-management>
+                <security:port-mappings>
+                    <security:port-mapping http="8080" https="8443"/>
+                </security:port-mappings>
+
+            </security:http>
+
+            <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
+            <bean id="successHandler"
+                  class="com.inventory.web.session.CustomSavedRequestAwareAuthenticationSuccessHandler">
+            </bean>
+            <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+
+            <security:authentication-manager alias="authenticationManager">
+                <security:authentication-provider
+                        user-service-ref="userService">
+                    <security:password-encoder ref="passwordEncoder">
+                    </security:password-encoder>
+                </security:authentication-provider>
+            </security:authentication-manager>
+
+            <security:jdbc-user-service id="userService"
+                                        data-source-ref="dataSource"
+                                        users-by-username-query="select username,password,enabled from invuser where username=? and status=0 and enabled=1 "
+                                        authorities-by-username-query="select username, authority from invuser where username=?"/>
+        </beans>
+        -->
