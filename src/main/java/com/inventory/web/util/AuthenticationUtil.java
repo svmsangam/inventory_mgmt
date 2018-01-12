@@ -5,9 +5,9 @@ import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
+import com.inventory.web.session.UserDetailsWrapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 public class AuthenticationUtil {
 
@@ -25,9 +25,9 @@ public class AuthenticationUtil {
 
         Object principal = authentication.getPrincipal();
 
-        if (principal instanceof User) {
+        if (principal instanceof UserDetailsWrapper) {
 
-            User user = (User) principal;
+            UserDetailsWrapper user = (UserDetailsWrapper) principal;
 
             InvUserDTO userDTO = userApi.getUserByUserName(user.getUsername());
 
