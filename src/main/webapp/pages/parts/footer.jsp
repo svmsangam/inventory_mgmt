@@ -89,7 +89,7 @@
             <ul class="sidebar-menu tree" data-widget="tree">
                 <li class="header">Extra Settings</li>
                 <!-- Optionally, you can add icons to the links -->
-                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
 
                     <li><a href="${pageContext.request.contextPath}/profile/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
@@ -125,7 +125,7 @@
                         </li>--%>
                 </sec:authorize>
 
-                <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')">
+                <sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
 
                     <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
@@ -148,7 +148,7 @@
                 </sec:authorize>
 
 
-                <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')">
+                <sec:authorize access="hasRole('ROLE_USER')">
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
 
