@@ -1,6 +1,7 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.Date;
@@ -18,6 +19,8 @@ public interface IInvoiceInfoApi {
     String generatInvoiceNumber(long storeId);
 
     InvoiceInfoDTO save(long orderInfoId , long createdById);
+
+    InvoiceInfoDTO saveQuickSale(PaymentInfoDTO paymentInfoDTO);
 
     void updateOnPayment(long paymentInfoId);
 

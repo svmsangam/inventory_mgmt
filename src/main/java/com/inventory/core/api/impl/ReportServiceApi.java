@@ -14,6 +14,9 @@ import com.inventory.core.model.dto.OrderItemInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.FilePath;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -28,8 +31,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -37,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 @Service
 class ReportServiceApi implements IReportServiceApi {
@@ -103,7 +110,7 @@ class ReportServiceApi implements IReportServiceApi {
     public String pdfWriterForInvoice(InvoiceInfoDTO invoice) throws FileNotFoundException, DocumentException {
 
         String file = Long.toString(System.currentTimeMillis());
-        ;//request.getServletPath()+"/PDFfile.pdf";
+        //request.getServletPath()+"/PDFfile.pdf";
 
         String path = FilePath.getOSPath();
 
@@ -125,6 +132,7 @@ class ReportServiceApi implements IReportServiceApi {
 
         Paragraph storename = new Paragraph("" + invoice.getStoreInfoDTO().getName(), font);
         storename.setAlignment(Element.ALIGN_CENTER);
+
 
         document.add(storename);
 
@@ -237,7 +245,6 @@ class ReportServiceApi implements IReportServiceApi {
             table.addCell(cell5);
         }
 
-
         PdfPCell cell4 = new PdfPCell(new Phrase("Total : "));
         cell4.setColspan(4);
         cell4.setPaddingLeft(320);
@@ -290,6 +297,19 @@ class ReportServiceApi implements IReportServiceApi {
 
         document.add(table);
 
+        String qrCode = storename + " " + invoice.getInvoiceNo() + " " + invoice.getTotalAmount();
+
+        BarcodeQRCode barcodeQRCode = new BarcodeQRCode(qrCode, 1000, 1000, null);
+        Image codeQrImage = barcodeQRCode.getImage();
+        codeQrImage.scaleAbsolute(100, 100);
+
+        Paragraph qrcode = new Paragraph();
+        qrcode.setAlignment(Element.ALIGN_RIGHT);
+        qrcode.setIndentationLeft(430);
+        qrcode.setIndentationRight(500);
+        qrcode.add(codeQrImage);
+        document.add(qrcode);
+
         document.close();
 
         return file;
@@ -304,6 +324,43 @@ class ReportServiceApi implements IReportServiceApi {
         map.put("invoice", invoiceInfoApi.show(invoiceId, storeId, Status.ACTIVE));
 
         xlsReport.buildExcelDocument(map, new XSSFWorkbook(), request, response);
+    }
+
+    @Override
+    public String qrCodeGenerator(String code){
+
+
+        try {
+
+            BarcodeQRCode barcodeQRCode = new BarcodeQRCode(code, 250, 250, null);
+            Image codeQrImage = barcodeQRCode.getImage();
+            java.awt.Image imageAwt = barcodeQRCode.createAwtImage(Color.BLACK, Color.WHITE);
+
+            BufferedImage bImage= new BufferedImage(imageAwt.getWidth(null), (int) codeQrImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = bImage.createGraphics();
+            g.drawImage(imageAwt, 0, 0, null);
+            g.dispose();
+
+            String path = System.currentTimeMillis() + ".jpg";
+
+            File outputfile = new File(FilePath.getOSPath());
+
+            if (!outputfile.exists())
+                outputfile.mkdirs();
+
+            ImageIO.write(bImage, "jpg", new File(FilePath.getOSPath()+ "/" + path));
+            System.out.println("image uploading..............."  + outputfile.getAbsolutePath());
+
+            return path;
+
+        } catch (BadElementException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private double formatter(double value){

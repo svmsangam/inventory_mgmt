@@ -2,10 +2,7 @@ package com.inventory.web.session;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -22,19 +19,21 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
     protected final Log logger = LogFactory.getLog(this.getClass());
 
     private RequestCache requestCache = RequestCacheUtil.get();
-
+/*
     @Autowired
-    private SessionRegistry sessionRegistry;
+    private SessionRegistry sessionRegistry;*/
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
 
-        User user = (User) authentication.getPrincipal();
 
+/*
+User user = (User) authentication.getPrincipal();
         System.out.println("total principle :::: " + sessionRegistry.getAllPrincipals().size());
         System.out.println("session size of " + user.getUsername() + " :: " + sessionRegistry.getAllSessions(authentication.getPrincipal(), false).size());
+*/
 
 
         logger.debug("in onAuthenticationSuccess==>");

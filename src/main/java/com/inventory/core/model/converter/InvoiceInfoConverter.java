@@ -105,7 +105,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         InvoiceInfo entity = new InvoiceInfo();
 
         entity.setCreatedBy(userRepository.findOne(createdById));
-        entity.setDescription("");
+        entity.setDescription(orderInfo.getDescription());
         entity.setInvoiceDate(new Date());
         entity.setOrderInfo(orderInfo);
         entity.setReceivableAmount(orderInfo.getGrandTotal());

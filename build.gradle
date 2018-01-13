@@ -75,6 +75,9 @@ dependencies {
 
    // compile 'commons-collections:commons-collections:3.2.1'
 
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.2.1.RELEASE'
+
     compile ('ar.com.fdvs:DynamicJasper:5+'){
         exclude group: 'org.springframework'
         exclude group: 'commons-beanutils'

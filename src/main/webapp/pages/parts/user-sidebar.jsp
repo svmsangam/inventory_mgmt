@@ -41,6 +41,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
             <!-- Optionally, you can add icons to the links -->
+            <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Sale</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
 

@@ -1,3 +1,4 @@
+/*
 package com.inventory.web.session;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * Created by dhiraj on 8/17/17.
- */
+ *//*
+
 @Service
 public class SessionInfo {
 
@@ -48,3 +51,4 @@ public class SessionInfo {
         }
     }
 }
+*/

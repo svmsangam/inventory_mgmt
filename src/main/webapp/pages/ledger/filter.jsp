@@ -206,7 +206,7 @@
 
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
-                                            <a class="page-link" href="${pageContext.request.contextPath}/ledger/filter?page=${currentpage+1}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">Next</a>
+                                            <a class="page-link" href="${pageContext.request.contextPath}/ledger/filter?page\\\\\\\\\\\\=${currentpage+1}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>

@@ -6,7 +6,6 @@ import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
 import com.inventory.core.model.dto.OrderInfoDTO;
-import com.inventory.core.model.dto.OrderItemInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.StoreInfo;
@@ -25,9 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dhiraj on 8/27/17.
@@ -63,14 +60,12 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
 
-        OrderInfo orderInfo = orderInfoConverter.convertToEntity(orderInfoDTO);
+        orderInfoDTO.setStatus(Status.ACTIVE);
+        orderInfoDTO.setPurchaseTrack(PurchaseOrderStatus.PENDING);
+        orderInfoDTO.setSaleTrack(SalesOrderStatus.PENDDING);
+        orderInfoDTO.setOrderType(OrderType.Sale);
 
-        orderInfo.setStatus(Status.ACTIVE);
-        orderInfo.setPurchaseTrack(PurchaseOrderStatus.PENDING);
-        orderInfo.setSaleTrack(SalesOrderStatus.PENDDING);
-        orderInfo.setOrderType(OrderType.Sale);
-
-        orderInfo = orderInfoRepository.save(orderInfo);
+        OrderInfo orderInfo = saveOrder(orderInfoDTO);
 
         orderInfoDTO.setOrderId(orderInfo.getId());
 
@@ -81,6 +76,37 @@ public class OrderInfoApi implements IOrderInfoApi {
         itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.PENDDING , orderInfo.getId());
 
         return orderInfoConverter.convertToDto(orderInfoRepository.save(orderInfo));
+    }
+
+    @Override
+    public OrderInfoDTO saveQuickSale(OrderInfoDTO orderInfoDTO){
+
+        orderInfoDTO.setStatus(Status.INACTIVE);
+        orderInfoDTO.setPurchaseTrack(PurchaseOrderStatus.RECEIVED);
+        orderInfoDTO.setSaleTrack(SalesOrderStatus.DELIVERED);
+        orderInfoDTO.setOrderType(OrderType.Sale);
+
+        OrderInfo orderInfo = saveOrder(orderInfoDTO);
+
+        orderInfoDTO.setOrderId(orderInfo.getId());
+        orderInfo.setTotalAmount(orderItemInfoApi.save(orderInfoDTO));
+        orderInfo.setGrandTotal(orderInfo.getTotalAmount() + orderInfo.getTotalAmount() * orderInfo.getTax() / 100);
+
+        itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.PENDDING , orderInfo.getId());
+
+        return orderInfoConverter.convertToDto(orderInfoRepository.save(orderInfo));
+    }
+
+    private OrderInfo saveOrder(OrderInfoDTO orderInfoDTO) {
+
+        OrderInfo orderInfo = orderInfoConverter.convertToEntity(orderInfoDTO);
+
+        orderInfo.setStatus(orderInfoDTO.getStatus());
+        orderInfo.setPurchaseTrack(orderInfoDTO.getPurchaseTrack());
+        orderInfo.setSaleTrack(orderInfoDTO.getSaleTrack());
+        orderInfo.setOrderType(orderInfoDTO.getOrderType());
+
+        return orderInfoRepository.save(orderInfo);
     }
 
     @Override

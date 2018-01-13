@@ -124,12 +124,10 @@ public class OrderValidation extends GlobalValidation {
                     return false;
                 }
 
-                longList.add(orderItemInfoDTO.getItemInfoId());
-
                 if (flag) {
                     for (Long itemId : longList) {
 
-                        if (Objects.equals(itemId, itemInfo.getId())) {
+                        if (itemId == itemInfo.getId()) {
                             error.setError(itemInfo.getProductInfo().getName() + " selected multiple times");
                             return false;
                         }
@@ -137,6 +135,8 @@ public class OrderValidation extends GlobalValidation {
                 } else {
                     flag = true;
                 }
+
+                longList.add(orderItemInfoDTO.getItemInfoId());
             }
         } catch (Exception e){
 
