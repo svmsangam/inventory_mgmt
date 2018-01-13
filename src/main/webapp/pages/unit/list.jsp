@@ -51,10 +51,9 @@
                                     <td>${unit.name}</td>
                                     <td>${unit.code}</td>
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
+                                        <a href="${pageContext.request.contextPath}/unit/edit?unitId=${unit.unitId}"
+                                           class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
+                                            Edit </a>
                                         <button type="button" class="btn btn-danger btn-sm btn-flat"><span
                                                 class="glyphicon glyphicon-minus-sign"></span> Delete
                                         </button>

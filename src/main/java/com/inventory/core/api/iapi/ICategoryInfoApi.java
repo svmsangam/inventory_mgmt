@@ -17,6 +17,8 @@ public interface ICategoryInfoApi {
 
     List<CategoryInfoDTO> list(Status status, long storeId);
 
+    CategoryInfoDTO get(long categoryId);
+
     CategoryInfoDTO getCategoryByNameAndStoreAndStatus(String categoryName, long storeId, Status status);
 
     long categoryCount(Status status, long storeId);

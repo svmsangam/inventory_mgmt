@@ -72,4 +72,5 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryName, status, storeId));
     }
 
+
 }

@@ -41,6 +41,7 @@ public class CategoryInfoConverter implements IConvertable<CategoryInfo, Categor
         dto.setCategoryId(entity.getId());
         dto.setCode(entity.getCode());
         dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
         dto.setStatus(entity.getStatus());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
@@ -58,6 +59,7 @@ public class CategoryInfoConverter implements IConvertable<CategoryInfo, Categor
 
         entity.setCode(dto.getCode().trim());
         entity.setName(dto.getName().trim());
+        entity.setDescription(dto.getDescription().trim());
         entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
         entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
 

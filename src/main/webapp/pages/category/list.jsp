@@ -53,10 +53,9 @@
                                     <td>${category.code}</td>
                                     <%--<td>${category.decription}</td>--%>
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
+                                        <a href="${pageContext.request.contextPath}/category/edit?categoryId=${category.categoryId}"
+                                           class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
+                                            Edit </a>
                                         <button type="button" class="btn btn-danger btn-sm btn-flat"><span
                                                 class="glyphicon glyphicon-minus-sign"></span> Delete
                                         </button>
@@ -118,7 +117,7 @@
     </div>
     <!-- /.modal -->
 
-    <div class="modal fade" id="modal-edit">
+   <%-- <div class="modal fade" id="modal-edit">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -127,14 +126,14 @@
                     <h4 class="modal-title">Edit Category</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/category/edit"
-                          modelAttribute="categoryInfoDto">
-                        <input type="hidden" name="categoryId" value="${categoryInfo.categoryId}"/>
+                    <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/category/edit"
+                          modelAttribute="category">
+                        <input type="hidden" name="categoryId" value="${category.categoryId}"/>
                         <div class="box-body">
 
                             <div class="form-group">
                                 <label class="control-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" value="" required>
+                                <input type="text" class="form-control" placeholder="Name" name = "name" value = "${category.name}" required>
                                 <p class="error">${error.name}</p>
                             </div>
 
@@ -149,14 +148,14 @@
                                 <input type="text" class="form-control" name="decription" value="" placeholder="decription">
                                 <p class="error">${error.decription}</p>
                             </div>
-
+                            <button type="submit" class="btn btn-primary savecategory">Edit</button>
                         </div>
                     </form>
-                </div>
+                </div>--%>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <button type="submit" url="${pageContext.request.contextPath}/category/update" class="btn btn-primary savecategory">Save changes</button>
+                   <%-- <button type="submit" url="${pageContext.request.contextPath}/category/update" class="btn btn-primary savecategory">Save changes</button>--%>
                 </div>
             </div>
             <!-- /.modal-content -->

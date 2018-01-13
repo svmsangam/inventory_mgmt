@@ -42,6 +42,8 @@ public class CategoryInfoApi implements ICategoryInfoApi {
         return categoryInfoConverter.convertToDto(categoryInfoRepository.save(categoryInfo));
     }
 
+
+
     @Override
     public void delete(long categoryId) {
 
@@ -60,6 +62,11 @@ public class CategoryInfoApi implements ICategoryInfoApi {
     @Override
     public List<CategoryInfoDTO> list(Status status, long storeId) {
         return categoryInfoConverter.convertToDtoList(categoryInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
+    }
+
+    @Override
+    public CategoryInfoDTO get(long categoryId) {
+        return categoryInfoConverter.convertToDto(categoryInfoRepository.findById(categoryId));
     }
 
     @Override
