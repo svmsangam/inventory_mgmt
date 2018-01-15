@@ -22,6 +22,8 @@ public interface ITagInfoApi {
 
     TagInfoDTO getTagByNameAndStoreAndStatus(String tagName, long storeId, Status status);
 
+    TagInfoDTO getTagByIdAndStatusAndStore(long id, Status status, long storeId);
+
     long tagCount(Status status, long storeId);
 
 }

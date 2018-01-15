@@ -73,6 +73,11 @@ public class TagInfoApi implements ITagInfoApi {
     }
 
     @Override
+    public TagInfoDTO getTagByIdAndStatusAndStore(long id, Status status, long storeId){
+        return tagInfoConverter.convertToDto(tagInfoRepository.findByIdAndStatusAndStoreInfo(id, status, storeId));
+    }
+
+    @Override
     public long tagCount(Status status, long storeId) {
 
         Long count = tagInfoRepository.countAllByStatusAndStoreInfo(status, storeId);

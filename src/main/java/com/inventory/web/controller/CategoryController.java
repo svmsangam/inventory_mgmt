@@ -193,28 +193,117 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/edit")
-    public String edit(@RequestParam("category") long categoryId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String edit(@RequestParam("categoryId") long categoryId, ModelMap modelMap, RedirectAttributes redirectAttributes,HttpServletRequest request , HttpServletResponse response) {
 
+        try {
+
+                /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            CategoryInfoDTO categoryInfoDTO = categoryInfoApi.get(categoryId);
+            modelMap.put("category", categoryInfoDTO);
+        /*current user checking end*/
+        } catch (Exception e) {
+
+            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
 
         return "/category/edit";
     }
 
     @PostMapping(value = "/update")
-    public String update(RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("category")CategoryInfoDTO categoryInfoDTO,ModelMap modelMap,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        return "redirect:/category/listSale";
+        try {
+
+                /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            if (categoryInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/category/add";
+            }
+
+            synchronized (this.getClass()) {
+
+                categoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
+                categoryInfoDTO.setCreatedById(currentUser.getUserId());
+
+                CategoryInfoError error = categoryInfoValidation.onSave(categoryInfoDTO, bindingResult);
+
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.CATEGORY_ERROR, error);
+                    modelMap.put(StringConstants.CATEGORY, categoryInfoDTO);
+                    return "category/add";
+                }
+
+                categoryInfoApi.update(categoryInfoDTO);
+            }
+
+        } catch (Exception e) {
+
+            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/{categoryId}")
     public String show() {
 
-        return "redirect:/category/listSale";
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/delete")
     public String delete(@RequestParam("category") long categoryId, RedirectAttributes redirectAttributes) {
 
-        return "redirect:/category/listSale";
+        return "redirect:/category/list";
     }
 }
 

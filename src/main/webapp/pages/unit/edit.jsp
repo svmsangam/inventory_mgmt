@@ -1,4 +1,10 @@
-
+<%--
+  Created by IntelliJ IDEA.
+  User: Shashwat
+  Date: 1/11/2018
+  Time: 9:59 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -18,23 +24,23 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Edit Tag</h3>
+                        <h3 class="box-title">Edit Unit</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/tag/update" method="post" modelAttribute="tag" >
+                    <form action="${pageContext.request.contextPath}/unit/update" method="post" modelAttribute="unit" >
                         <div class="box-body">
                             <%--<div class="form-group">
                                 <input type="hidden" name="categoryId" value="${category.categoryId}" />
                             </div>--%>
                             <div class="form-group">
-                                <label>Tag Name</label><input type="hidden" name="tagId" value="${tag.tagId}" /> <input type="text" name="name"
-                                                                                                                                class="form-control input-sm" value="${tag.name}">
+                                <label>Unit Name</label><input type="hidden" name="unitId" value="${unit.unitId}" /> <input type="text" name="name"
+                                                                                                                                            class="form-control input-sm" value="${unit.name}">
                                 <p class="error">${error.name}</p>
                             </div>
                             <div class="form-group">
                                 <label>Code</label> <input type="text" name="code"
                                                            class="form-control input-sm" required="required"
-                                                           value="${tag.code}">
+                                                           value="${unit.code}">
                                 <p class="error">${error.code}</p>
                             </div>
                         </div>
