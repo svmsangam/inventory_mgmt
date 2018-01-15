@@ -92,6 +92,15 @@ public class UserValidation extends GlobalValidation {
             error.setUserType("user type required");
         }
 
+        if (UserType.ADMIN.equals(userDto.getUserType())) {
+            List<User> userList = userRepository.findAllByUserTypeAndStoreInfo_Id(UserType.ADMIN, userDto.getStoreId());
+
+            if (userList != null | !userList.isEmpty()) {
+                valid = false;
+                error.setUserType("user admin already exist for this store");
+            }
+        }
+
         error.setStoreId(checkLong(userDto.getStoreId(), 1, "store", false));
 
         if (!("".equals(error.getStoreId()))) {

@@ -217,8 +217,8 @@ public class ItemInfoValidation extends GlobalValidation{
     private boolean checkExpirydate(Date expiryDate){
 
         if (expiryDate == null){
-            error.setExpireDate("expiry date required");
-            return false;
+           // error.setExpireDate("expiry date required");
+            return true;
         }else if (expiryDate.before(new Date())){
             error.setExpireDate("expiry date must be before current date");
             return false;

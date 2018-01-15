@@ -53,7 +53,7 @@ public class CategoryInfoValidation extends GlobalValidation {
             return error;
         }
 
-        error.setName(checkString(categoryInfoDTO.getName(), 2, 10, "categoryName", true));
+        error.setName(checkString(categoryInfoDTO.getName(), 2, 30, "categoryName", true));
 
         if (!("".equals(error.getName()))) {
             valid = false;
@@ -64,7 +64,7 @@ public class CategoryInfoValidation extends GlobalValidation {
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(categoryInfoDTO.getCode(), 2, 10, "categoryCode", true));
+        error.setCode(checkString(categoryInfoDTO.getCode(), 2, 20, "categoryCode", true));
 
         if (!("".equals(error.getCode()))) {
             valid = false;

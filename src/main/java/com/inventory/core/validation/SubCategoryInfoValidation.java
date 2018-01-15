@@ -59,7 +59,7 @@ public class SubCategoryInfoValidation extends GlobalValidation {
             return error;
         }
 
-        error.setName(checkString(subCategoryInfoDTO.getName(), 2, 10, "subcategoryName", true));
+        error.setName(checkString(subCategoryInfoDTO.getName(), 2, 50, "subcategoryName", true));
 
         if (!("".equals(error.getName()))) {
             valid = false;
@@ -70,7 +70,7 @@ public class SubCategoryInfoValidation extends GlobalValidation {
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(subCategoryInfoDTO.getCode(), 2, 10, "subcategoryCode", true));
+        error.setCode(checkString(subCategoryInfoDTO.getCode(), 2, 20, "subcategoryCode", true));
 
         if (!("".equals(error.getCode()))) {
             valid = false;

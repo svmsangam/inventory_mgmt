@@ -1,6 +1,7 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IOAuthClientApi;
+import com.inventory.core.model.dto.OauthRegisterResponseDTO;
 import com.inventory.core.model.entity.OAuthClient;
 import com.inventory.core.model.repository.OAuthClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,28 @@ public class OAuthClientApi implements IOAuthClientApi {
 	private OAuthClientRepository oauthClientRepository;
 
 	@Override
-	public OAuthClient registerClient(String web_server_redirect_uri) {
+	public OauthRegisterResponseDTO registerClient(String web_server_redirect_uri) {
 
 		OAuthClient oauthClient = this.getClientDetails();
 		oauthClient.setWeb_server_redirect_uri(web_server_redirect_uri);
-		return oauthClientRepository.save(oauthClient);
+
+		oauthClient = oauthClientRepository.save(oauthClient);
+
+
+		return convertClientToDto(oauthClient);
+	}
+
+	private OauthRegisterResponseDTO convertClientToDto(OAuthClient oAuthClient){
+		OauthRegisterResponseDTO dto = new OauthRegisterResponseDTO();
+
+		if (oAuthClient == null){
+			return null;
+		}
+
+		dto.setClient_id(oAuthClient.getClient_id());
+		dto.setClient_secret(oAuthClient.getClient_secret());
+
+		return dto;
 	}
 
 	public OAuthClient getClientDetails() {

@@ -51,7 +51,7 @@ public class TagInfoValidation extends GlobalValidation {
             return error;
         }
 
-        error.setName(checkString(tagInfoDTO.getName(), 2, 10, "tagName", true));
+        error.setName(checkString(tagInfoDTO.getName(), 2, 50, "tagName", true));
 
         if (!("".equals(error.getName()))) {
             valid = false;
@@ -62,7 +62,7 @@ public class TagInfoValidation extends GlobalValidation {
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(tagInfoDTO.getCode(), 2, 10, "tagCode", true));
+        error.setCode(checkString(tagInfoDTO.getCode(), 2, 20, "tagCode", true));
 
         if (!("".equals(error.getCode()))) {
             valid = false;

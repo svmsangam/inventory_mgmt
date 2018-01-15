@@ -51,7 +51,7 @@ public class UnitInfoValidation extends GlobalValidation {
             return error;
         }
 
-        error.setName(checkString(unitInfoDTO.getName(), 2, 10, "tagName", true));
+        error.setName(checkString(unitInfoDTO.getName(), 2, 50, "tagName", true));
 
         if (!("".equals(error.getName()))) {
             valid = false;
@@ -62,7 +62,7 @@ public class UnitInfoValidation extends GlobalValidation {
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(unitInfoDTO.getCode(), 2, 10, "tagCode", true));
+        error.setCode(checkString(unitInfoDTO.getCode(), 2, 30, "tagCode", true));
 
         if (!("".equals(error.getCode()))) {
             valid = false;
