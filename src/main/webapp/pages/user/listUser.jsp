@@ -141,7 +141,7 @@
                             <p class="form-error userType"></p>
                         </div>
 
-                        <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
+                        <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
 
                             <div class="form-group">
                                 <label class="control-label">Store *</label>

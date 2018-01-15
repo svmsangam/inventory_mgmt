@@ -189,15 +189,15 @@
                                 <p>
                                     <sec:authentication property="principal.username"/> -
 
-                                    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
+                                    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
                                         Super Administrator
                                     </sec:authorize>
 
-                                    <sec:authorize access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')">
+                                    <sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
                                         Administrator
                                     </sec:authorize>
 
-                                    <sec:authorize access="hasRole('ROLE_USER,ROLE_AUTHENTICATED')">
+                                    <sec:authorize access="hasRole('ROLE_USER')">
                                         User
                                     </sec:authorize>
 
