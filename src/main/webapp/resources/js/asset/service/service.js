@@ -795,6 +795,7 @@ function ClientInfoService() {
             $(".companyName").text(error.companyName);
             $(".mobileNumber").text(error.mobileNumber);
             $(".street").text(error.street);
+            $(".cityId").text(error.cityId);
         },
 
         clearError: function () {
@@ -804,6 +805,7 @@ function ClientInfoService() {
             $(".companyName").text("");
             $(".mobileNumber").text("");
             $(".street").text("");
+            $(".cityId").text("");
             $(".errorModel").text("");
             $(".addError").removeClass("hide").removeClass("show").addClass("hide");
         },
@@ -814,6 +816,7 @@ function ClientInfoService() {
             $("#email").val("");
             $("#mobileNumber").val("");
             $("#street").val("");
+            $("#companyName").val("");
             /*$("#cityId").select2("val", "");*/
         },
 

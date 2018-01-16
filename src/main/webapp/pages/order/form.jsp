@@ -186,7 +186,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="savecustomer" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/client/save" class="btn btn-primary pull-left" >save changes</button>
+                <button type="button" id="savecustomer" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/client/customer/save" class="btn btn-primary pull-left" >save changes</button>
                 <button type="button" class="btn btn-danger pull-right closeAdd" data-dismiss="modal">Close</button>
             </div>
         </div>
