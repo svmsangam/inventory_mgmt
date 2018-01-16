@@ -79,6 +79,8 @@ public class GlobalValidation {
         if (notNull && value == null) {
 
             return "Cannot Be Null";
+        } else if (notNull && value.isEmpty()){
+            return "Cannot Be Null";
         }
 
         if (value != null && !value.isEmpty()) {
