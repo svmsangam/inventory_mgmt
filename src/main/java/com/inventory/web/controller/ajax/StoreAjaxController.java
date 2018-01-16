@@ -95,6 +95,7 @@ public class StoreAjaxController {
 
         } catch (Exception e) {
             logger.error("Stack trace: " + e.getStackTrace());
+            e.getStackTrace();
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

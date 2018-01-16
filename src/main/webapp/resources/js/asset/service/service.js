@@ -483,8 +483,8 @@ function StoreService() {
             row += "<td>" + data.cityName + "</td>";
             row += "<td>" + data.street + "</td>";
             row += "<td><span class='label label-success'>Active</span></td>";
-            row += "<td><button type='button' class='btn btn-info btn-sm  btn-flat viewStoreInfo' url='" + pagecontext + "/store/show/" + data.storeId + "' data-toggle='modal' data-target='#modal-view'><span class='glyphicon glyphicon-eye-open'></span>View</button>";
-            row += "<button type='button' class='btn btn-warning btn-sm  btn-flat' data-toggle='modal' data-target='#modal-edit'><span class='glyphicon glyphicon-edit'></span>Edit</button></td>";
+            row += "<td><button type='button' class='btn btn-info btn-sm  btn-flat viewStoreInfo' url='" + pagecontext + "/store/show/" + data.storeId + "' data-toggle='modal' data-target='#modal-view'><span class='glyphicon glyphicon-eye-open'></span>View</button></td>";
+            row += "<td>new</td>";
             row += "</tr>";
 
             $("#myData").prepend(row);
