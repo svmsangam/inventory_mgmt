@@ -56,9 +56,9 @@
                                         <a href="${pageContext.request.contextPath}/category/edit?categoryId=${category.categoryId}"
                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
                                             Edit </a>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                       <%-- <button type="button" class="btn btn-danger btn-sm btn-flat"><span
                                                 class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
+                                        </button>--%>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -115,54 +115,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
-
-   <%-- <div class="modal fade" id="modal-edit">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit Category</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/category/edit"
-                          modelAttribute="category">
-                        <input type="hidden" name="categoryId" value="${category.categoryId}"/>
-                        <div class="box-body">
-
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" name = "name" value = "${category.name}" required>
-                                <p class="error">${error.name}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" name="code" value="" placeholder="Code">
-                                <p class="error">${error.code}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Decription</label>
-                                <input type="text" class="form-control" name="decription" value="" placeholder="decription">
-                                <p class="error">${error.decription}</p>
-                            </div>
-                            <button type="submit" class="btn btn-primary savecategory">Edit</button>
-                        </div>
-                    </form>
-                </div>--%>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                   <%-- <button type="submit" url="${pageContext.request.contextPath}/category/update" class="btn btn-primary savecategory">Save changes</button>--%>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 </div>
 
 <%@include file="/pages/parts/footer.jsp" %>

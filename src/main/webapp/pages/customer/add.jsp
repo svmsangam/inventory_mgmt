@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label class="control-label">Name</label>
                                 <input type="text" class="form-control" value="${customer.name}" name="name"
-                                       placeholder="Name">
+                                       placeholder="Name" required>
                                 <p class="form-error">${customerError.name}</p>
                             </div>
 

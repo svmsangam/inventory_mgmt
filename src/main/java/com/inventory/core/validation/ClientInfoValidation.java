@@ -32,7 +32,7 @@ public class ClientInfoValidation extends GlobalValidation{
 
         boolean valid = true;
 
-        error.setName(checkString(clientInfoDTO.getName().trim() , 4 , 20 , "name" , true));
+        error.setName(checkString(clientInfoDTO.getName().trim() , 3 , 50 , "name" , true));
 
         if (!"".equals(error.getName())){
             valid = false;
@@ -44,35 +44,41 @@ public class ClientInfoValidation extends GlobalValidation{
             valid = false;
         }
 
-        error.setCityId(checkLong(clientInfoDTO.getCityId() , 1 , "city" , true));
+        error.setCityId(checkLong(clientInfoDTO.getCityId() , 1 , "city" , false));
 
-        if (!"".equals(error.getCityId())){
-            valid = false;
-        }else if (cityInfoRepository.findByIdAndStatus(clientInfoDTO.getCityId() , Status.ACTIVE) == null){
-            error.setCityId("invalid city");
-            valid = false;
-        }
-
-        error.setContact(checkString(clientInfoDTO.getContact() , 7 , 10, "contact" , false));
-
-        if (!"".equals(error.getContact())){
-            valid = false;
-        }else if (clientInfoDTO.getContact() != null){
-            if (clientInfoRepository.findByContact(clientInfoDTO.getContact()) != null){
-                error.setContact("this contact already registered");
-
+        if (clientInfoDTO.getCityId() != null) {
+            if (!"".equals(error.getCityId())) {
+                valid = false;
+            } else if (cityInfoRepository.findByIdAndStatus(clientInfoDTO.getCityId(), Status.ACTIVE) == null) {
+                error.setCityId("invalid city");
                 valid = false;
             }
         }
 
-        error.setMobileNumber(checkString(clientInfoDTO.getMobileNumber() , 10 , 10  , "mobile number" , true));
+        error.setContact(checkString(clientInfoDTO.getContact() , 7 , 10, "contact" , false));
 
-        if (!"".equals(error.getMobileNumber())){
-            valid = false;
-        }else if (clientInfoRepository.findByMobileNumber(clientInfoDTO.getMobileNumber()) != null){
-            error.setMobileNumber("this mobile already registered");
+        if (clientInfoDTO.getContact() != null) {
+            if (!"".equals(error.getContact())) {
+                valid = false;
+            } else if (clientInfoDTO.getContact() != null) {
+                if (clientInfoRepository.findByContact(clientInfoDTO.getContact()) != null) {
+                    error.setContact("this contact already registered");
 
-            valid = false;
+                    valid = false;
+                }
+            }
+        }
+
+        error.setMobileNumber(checkString(clientInfoDTO.getMobileNumber() , 10 , 10  , "mobile number" , false));
+
+        if (clientInfoDTO.getMobileNumber() != null) {
+            if (!"".equals(error.getMobileNumber())) {
+                valid = false;
+            } else if (clientInfoRepository.findByMobileNumber(clientInfoDTO.getMobileNumber()) != null) {
+                error.setMobileNumber("this mobile already registered");
+
+                valid = false;
+            }
         }
 
         error.setEmail(checkString(clientInfoDTO.getEmail() , 5 , 50 , "email" , false));
@@ -81,7 +87,7 @@ public class ClientInfoValidation extends GlobalValidation{
             valid = false;
         }
 
-        error.setStreet(checkString(clientInfoDTO.getStreet() , 5, 20 , "Stret" , true));
+        error.setStreet(checkString(clientInfoDTO.getStreet() , 3, 50 , "Stret" , false));
 
         if (!"".equals(error.getStreet())){
             valid = false;

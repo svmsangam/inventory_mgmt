@@ -20,16 +20,13 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
 
     private RequestCache requestCache = null;
 
-    private HttpServletRequest request = null;
-
-    private final  String defaultURL = (request != null ? request.getContextPath() : "") + "/";
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
         requestCache = RequestCacheUtil.get();
 
-        this.request = request;
+        String defaultURL = request.getContextPath()  + "/";
+
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 

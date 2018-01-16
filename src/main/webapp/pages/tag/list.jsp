@@ -54,9 +54,9 @@
                                         <a href="${pageContext.request.contextPath}/tag/edit?tagId=${tag.tagId}"
                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
                                             Edit </a>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                       <%-- <button type="button" class="btn btn-danger btn-sm btn-flat"><span
                                                 class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
+                                        </button>--%>
                                     </td>
                                 </tr>
                             </c:forEach>
