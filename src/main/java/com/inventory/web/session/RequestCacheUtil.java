@@ -11,16 +11,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RequestCacheUtil {
 
-    private static RequestCache requestCache = new HttpSessionRequestCache();
+    private static RequestCache requestCache = null;
 
     public static void save(HttpServletRequest request , HttpServletResponse response){
+
+        if (requestCache == null){
+
+            requestCache = new HttpSessionRequestCache();
+        }
 
         requestCache.saveRequest(request , response);
     }
 
     public static RequestCache get(){
 
+        if (requestCache == null){
+            return new HttpSessionRequestCache();
+        }
         return requestCache;
+    }
+
+    public static void removeRequest(HttpServletRequest request , HttpServletResponse response){
+        requestCache.removeRequest(request, response);
     }
 
 }

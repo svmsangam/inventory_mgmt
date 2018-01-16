@@ -18,46 +18,49 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
 
     protected final Log logger = LogFactory.getLog(this.getClass());
 
-    private RequestCache requestCache = RequestCacheUtil.get();
-/*
-    @Autowired
-    private SessionRegistry sessionRegistry;*/
+    private RequestCache requestCache = null;
+
+    private HttpServletRequest request = null;
+
+    private final  String defaultURL = (request != null ? request.getContextPath() : "") + "/";
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response, Authentication authentication)
-            throws ServletException, IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
+        requestCache = RequestCacheUtil.get();
 
-/*
-User user = (User) authentication.getPrincipal();
-        System.out.println("total principle :::: " + sessionRegistry.getAllPrincipals().size());
-        System.out.println("session size of " + user.getUsername() + " :: " + sessionRegistry.getAllSessions(authentication.getPrincipal(), false).size());
-*/
+        this.request = request;
 
-
-        logger.debug("in onAuthenticationSuccess==>");
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-        logger.debug("savedRequest==>" + savedRequest);
+
         if (savedRequest == null) {
-            super.onAuthenticationSuccess(request, response, authentication);
+
+            clearAuthenticationAttributes(request);
+
+            getRedirectStrategy().sendRedirect(request, response, defaultURL);
+
             return;
         }
+
         String targetUrlParameter = getTargetUrlParameter();
-        logger.debug("targetUrlParameter==>" + targetUrlParameter);
-        logger.debug("isAlwaysUseDefaultTargetUrl()==>"
-                + isAlwaysUseDefaultTargetUrl());
+
         if (isAlwaysUseDefaultTargetUrl()
                 || (targetUrlParameter != null && StringUtils.hasText(request
                 .getParameter(targetUrlParameter)))) {
-            requestCache.removeRequest(request, response);
-            super.onAuthenticationSuccess(request, response, authentication);
+
+            RequestCacheUtil.removeRequest(request, response);
+
+            clearAuthenticationAttributes(request);
+
+            getRedirectStrategy().sendRedirect(request, response, defaultURL);
+
             return;
         }
-        clearAuthenticationAttributes(request);
 
         String targetUrl = savedRequest.getRedirectUrl();
-        logger.debug("targetUrl==>" + targetUrl);
+
+        RequestCacheUtil.removeRequest(request, response);
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
