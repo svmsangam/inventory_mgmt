@@ -53,7 +53,7 @@ public class OrderInfoController {
     private IFiscalYearInfoApi fiscalYearInfoApi;
 
     @Autowired
-    private IPaymentInfoApi paymentInfoApi;
+    private ICityInfoApi cityInfoApi;
 
     @Autowired
     private PaymentInfoValidation paymentInfoValidation;
@@ -170,6 +170,7 @@ public class OrderInfoController {
 
             modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
             modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
             return "order/addSale";
         } catch (Exception e) {
@@ -227,7 +228,7 @@ public class OrderInfoController {
 
                     modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-
+                    modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
                     modelMap.put(StringConstants.ORDER_ERROR, error);
                     modelMap.put(StringConstants.ORDER, orderInfoDTO);
 
@@ -286,6 +287,7 @@ public class OrderInfoController {
 
             modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
             modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
             return "order/quick/add";
         } catch (Exception e) {
@@ -343,7 +345,7 @@ public class OrderInfoController {
 
                     modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-
+                    modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
                     modelMap.put(StringConstants.ORDER_ERROR, error);
                     modelMap.put(StringConstants.ORDER, orderInfoDTO);
 

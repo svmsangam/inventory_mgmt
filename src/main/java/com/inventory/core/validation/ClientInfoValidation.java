@@ -57,7 +57,7 @@ public class ClientInfoValidation extends GlobalValidation{
 
         error.setContact(checkString(clientInfoDTO.getContact() , 7 , 10, "contact" , false));
 
-        if (clientInfoDTO.getContact() != null) {
+        if (clientInfoDTO.getContact() != null && !clientInfoDTO.getContact().isEmpty()) {
             if (!"".equals(error.getContact())) {
                 valid = false;
             } else if (clientInfoDTO.getContact() != null) {
@@ -71,7 +71,7 @@ public class ClientInfoValidation extends GlobalValidation{
 
         error.setMobileNumber(checkString(clientInfoDTO.getMobileNumber() , 10 , 10  , "mobile number" , false));
 
-        if (clientInfoDTO.getMobileNumber() != null) {
+        if (clientInfoDTO.getMobileNumber() != null && !clientInfoDTO.getMobileNumber().isEmpty()) {
             if (!"".equals(error.getMobileNumber())) {
                 valid = false;
             } else if (clientInfoRepository.findByMobileNumber(clientInfoDTO.getMobileNumber()) != null) {

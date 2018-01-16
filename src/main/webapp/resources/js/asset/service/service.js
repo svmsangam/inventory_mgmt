@@ -807,7 +807,7 @@ function ClientInfoService() {
             $(".street").text("");
             $(".cityId").text("");
             $(".errorModel").text("");
-            $(".addError").removeClass("hide").removeClass("show").addClass("hide");
+            $(".addError").removeClass("hidden").removeClass("show").addClass("hidden");
         },
 
         clearForm: function () {
@@ -838,7 +838,7 @@ function ClientInfoService() {
         },
 
         errorOnForm: function (error) {
-            $(".addError").removeClass("hide").removeClass("show").addClass("show");
+            $(".addError").removeClass("hidden").removeClass("show").addClass("show");
             $(".errorModel").text(error);
         },
 

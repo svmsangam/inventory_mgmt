@@ -121,7 +121,7 @@ public class ClientInfoAjaxController {
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "customer/save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "customer/save", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RestResponseDTO> saveCustomer(@RequestAttribute("client") ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
