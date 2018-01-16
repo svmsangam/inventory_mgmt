@@ -667,3 +667,181 @@ function OrderInfoService() {
 
 }
 // orderInfo service end
+
+//clientInfo service start
+
+function ClientInfoService() {
+
+    var clientInfoRequest;
+
+    return {
+
+        list: [],
+
+        save: function (client, url, pagecontext, isSave) {
+
+            var that = new ClientInfoService();
+
+            if (clientInfoRequest !== undefined) {
+                clientInfoRequest.abort();
+            }
+
+            clientInfoRequest = $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: client,
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        if (isSave === true) {
+                            that.setDataToDOM(result, pagecontext);
+                            that.successMsg(msg);
+                            $(".closeAdd").click();
+                        } else {
+                            that.successMsg(msg);
+                            window.location.reload();
+                        }
+                    }
+
+                    if (data.status === 'Failure') {
+                        that.errorMsg(msg);
+                        $(".closeAdd").click();
+                    }
+
+                    if (data.status === 'Validation Failed') {
+
+                        that.errorOnForm(msg);
+                        that.setError(result);
+                    }
+                }
+            });
+
+        },
+
+        getById: function (url) {
+
+            var that = new ClientInfoService();
+
+            that.clearLoadData();
+
+            if (clientInfoRequest !== undefined) {
+                clientInfoRequest.abort();
+            }
+
+            clientInfoRequest = $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                dataType: 'json',
+                timeout: 100000,
+                success: function (data) {
+
+                    var result = data.detail;
+
+                    var msg = data.message;
+
+                    if (data.status === 'Success') {
+
+                        that.loadData(result);
+                    }
+
+                    if (data.status === 'Failure') {
+                        that.errorMsg(msg);
+                        $(".closeShow").click();
+                    }
+                }
+            });
+        },
+
+        loadData: function (data) {
+
+            $(".name").text("").text(data.name);
+            $(".companyName").text("").text(data.companyName);
+            $(".contact").text("").text(data.contact);
+            $(".mobileNumber").text("").text(data.mobileNumber);
+            $(".email").text("").text(data.email);
+            $(".street").text("").text(data.street);
+
+        },
+
+        clearLoadData: function () {
+            $(".name").text("");
+            $(".companyName").text("");
+            $(".contact").text("");
+            $(".mobileNumber").text("");
+            $(".email").text("");
+            $(".street").text("");
+
+            $("#nameEdit").val("");
+            $("#companyNameEdit").val("");
+            $("#contactEdit").val("");
+            $("#mobileNumberEdit").val("");
+            $("#emailEdit").val("");
+            $("#streetEdit").val("");
+        },
+
+        setError: function (error) {
+            $(".name").text(error.name);
+            $(".contact").text(error.contact);
+            $(".email").text(error.email);
+            $(".companyName").text(error.companyName);
+            $(".mobileNumber").text(error.mobileNumber);
+            $(".street").text(error.street);
+        },
+
+        clearError: function () {
+            $(".name").text("");
+            $(".contact").text("");
+            $(".email").text("");
+            $(".companyName").text("");
+            $(".mobileNumber").text("");
+            $(".street").text("");
+            $(".errorModel").text("");
+            $(".addError").removeClass("hide").removeClass("show").addClass("hide");
+        },
+
+        clearForm: function () {
+            $("#name").val("");
+            $("#contact").val("");
+            $("#email").val("");
+            $("#mobileNumber").val("");
+            $("#street").val("");
+            /*$("#cityId").select2("val", "");*/
+        },
+
+        successMsg: function (msg) {
+            $.notify({
+                icon: 'glyphicon glyphicon-ok',
+                title: '<strong>Success!</strong>',
+                message: msg
+            });
+        },
+
+        errorMsg: function (msg) {
+            $.notify({
+                title: '<strong>warnning!</strong>',
+                message: msg
+            }, {
+                type: 'danger'
+            });
+        },
+
+        errorOnForm: function (error) {
+            $(".addError").removeClass("hide").removeClass("show").addClass("show");
+            $(".errorModel").text(error);
+        },
+
+        setDataToDOM: function (data, pagecontext) {
+
+        }
+    };
+}
+//clientInfo service end

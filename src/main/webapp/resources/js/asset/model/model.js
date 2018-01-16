@@ -59,3 +59,31 @@ function Store() {
 }
 
 // model for store end
+
+//model for client start
+
+function Client() {
+
+    return {
+
+        clientId: 0,
+
+        name: "",
+
+        companyName: "",
+
+        contact: "",
+
+        mobileNumber: "",
+
+        email: "",
+
+        street: "",
+
+        cityId: 0
+
+    };
+
+}
+
+//model for client end

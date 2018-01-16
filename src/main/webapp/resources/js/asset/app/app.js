@@ -448,3 +448,83 @@ $(document).ready(function () {
 });
 
 //payment add end
+
+
+//client app start
+
+var clientService = new ClientInfoService();
+
+$(document).ready(function () {
+
+    $(document).on("click", "#savecustomer", function () {
+
+        var client = setClientData();
+
+        var url = $(this).attr("url");
+
+        var pagecontext = $(this).attr("pagecontext");
+
+        clientService.save(client, url, pagecontext);
+    });
+
+
+    $(document).on("click", ".addClient", function () {
+
+        clientService.clearError();
+        clientService.clearForm();
+    });
+
+});
+
+function setClientData() {
+
+    var name = $("#name").val();
+    var companyName = $("#companyName").val();
+    var contact = $("#contact").val();
+    var mobileNumber = $("#mobileNumber").val();
+    var email = $("#email").val();
+    var street = $("#street").val();
+    var cityId = $("#cityId").val();
+
+
+    if (name === undefined) {
+        name = "";
+    }
+
+    if (companyName === undefined) {
+        companyName = "";
+    }
+
+    if (contact === undefined) {
+        contact = ""
+    }
+
+    if (mobileNumber === undefined) {
+        mobileNumber = "";
+    }
+
+    if (email === undefined) {
+        email = "";
+    }
+
+    if (street === undefined) {
+        street = "";
+    }
+
+    if (cityId === undefined) {
+        cityId = 0;
+    }
+
+    var client = new Client();
+
+    client.name = name;
+    client.companyName = companyName;
+    client.contact = contact;
+    client.mobileNumber = mobileNumber;
+    client.email = email;
+    client.street = street;
+    client.cityId = cityId;
+
+    return client;
+}
+//client app end

@@ -11,7 +11,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <input type="hidden" name="orderNo" value="${orderNo}"/>
-                    <label>Customer Name</label><a href="" class="pull-right" data-toggle="modal" data-target="#addCustomerModal"> Create a New Customer</a>
+                    <label>Customer Name</label><a href="#" class="pull-right addClient" data-toggle="modal" data-target="#addCustomerModal"> Create a New Customer</a>
                     <select class="choose1 form-control" name="clientId"></select>
                     <p class="form-error">${orderError.clientInfo}</p>
                 </div>
@@ -121,43 +121,48 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Add New Customer</h4>
-                <small style="color: red">sorry, we are working on it</small>
             </div>
             <div class="modal-body">
 
+                <div class="alert hidden alert-danger alert-dismissible addError">
+                    <button type="button" class="close closeError" data-dismiss="alert" aria-hidden="true">&times;
+                    </button>
+                    <p class="errorModel"></p>
+                </div>
+
                     <div class="form-group">
                         <label class="control-label">Name</label>
-                        <input type="text" class="form-control" value="${customer.name}" name="name"
+                        <input type="text" id="name" class="form-control" name="name"
                                placeholder="Name">
-                        <p class="form-error">${customerError.name}</p>
+                        <p class="form-error name"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Company Name</label>
-                        <input type="text" class="form-control" value="${customer.companyName}" name="companyName"
+                        <input type="text" id="companyName" class="form-control" name="companyName"
                                placeholder="Company Name">
-                        <p class="form-error">${customerError.companyName}</p>
+                        <p class="form-error companyName"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Contact</label>
-                        <input type="text" class="form-control" value="${customer.contact}" name="contact"
+                        <input type="text" id="contact" class="form-control" name="contact"
                                placeholder="contact">
-                        <p class="form-error">${customerError.contact}</p>
+                        <p class="form-error contact"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Mobile Number</label>
-                        <input type="text" class="form-control" value="${customer.mobileNumber}"
-                               name="mobileNumber" placeholder="Mobile Number">
-                        <p class="form-error">${customerError.mobileNumber}</p>
+                        <input type="text" class="form-control"
+                               id="mobileNumber" name="mobileNumber" placeholder="Mobile Number">
+                        <p class="form-error mobileNumber"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Email Address</label>
-                        <input type="email" class="form-control" value="${customer.email}" name="email"
+                        <input type="email" class="form-control" id="email" name="email"
                                placeholder="email address">
-                        <p class="form-error">${customerError.email}</p>
+                        <p class="form-error email"></p>
                     </div>
 
                     <div class="form-group">
@@ -165,29 +170,24 @@
                         <select name="cityId" class="form-control select2" id="cityId">
                             <option value="">select city</option>
                             <c:forEach items="${cityList}" var="city">
-                                <c:choose>
-                                    <c:when test="${city.cityId eq customer.cityId}">
-                                        <option value="${city.cityId}" selected>${city.cityName}</option>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <option value="${city.cityId}">${city.cityName}</option>
-                                    </c:otherwise>
-                                </c:choose>
+
+                                <option value="${city.cityId}">${city.cityName}</option>
+
                             </c:forEach>
                         </select>
-                        <p class="form-error">${customerError.name}</p>
+                        <p class="form-error cityId"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Street</label>
-                        <input type="text" class="form-control" value="${customer.street}" name="street"
+                        <input type="text" class="form-control" id="street" name="street"
                                placeholder="street">
-                        <p class="form-error">${customerError.street}</p>
+                        <p class="form-error street"></p>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary savecustomer pull-left" >save changes</button>
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                <button type="button" id="savecustomer" pagecontext="${pageContext.request.contextPath}" url="${pageContext.request.contextPath}/client/save" class="btn btn-primary pull-left" >save changes</button>
+                <button type="button" class="btn btn-danger pull-right closeAdd" data-dismiss="modal">Close</button>
             </div>
         </div>
 
