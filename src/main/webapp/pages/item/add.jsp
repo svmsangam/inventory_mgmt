@@ -104,6 +104,14 @@
                                 <p class="form-error">${itemError.expireDate}</p>
                             </div>
 
+                            <div class="form-group">
+                                <label class="control-label">Supplier</label>
+                                <select name="vendorId" class="form-control choose1">
+
+                                </select>
+                                <p class="form-error"><%--${itemError.vendorId}--%></p>
+                            </div>
+
                         </div>
                         <!-- /.box-body -->
                         <div class="modal-footer">
@@ -128,6 +136,59 @@
         $(".datepicker").datepicker({
         });
     })
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $(".choose1").select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/client/vendor/search',
+                dataType: 'json',
+                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data , params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+
+                        if(value.companyName === null || "" === value.companyName) {
+
+                            arr.push({
+                                id: value.clientId,
+                                text: value.name + ' - ' + value.mobileNumber
+                            })
+                        }else {
+                            arr.push({
+                                id: value.clientId,
+                                text: value.companyName + ' - ' + value.mobileNumber
+                            })
+                        }
+                    })
+
+
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            placeholder: "Search Vendor by Name & Mobile No"
+        });
+    });
 </script>
 
 
