@@ -81,7 +81,7 @@ public class GlobalValidation {
             return "Cannot Be Null";
         }
 
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
 
             if ("".equals(value.trim())) {
 
