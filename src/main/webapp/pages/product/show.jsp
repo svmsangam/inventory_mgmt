@@ -85,6 +85,7 @@
                                 <th>Quantity</th>
                                 <th>Total Costing</th>
                                 <th>Total Selling</th>
+                                <th>Supplier</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -100,6 +101,7 @@
                                     <td>${item.quantity}</td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.totalCost}"/></td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.totalSale}"/></td>
+                                    <td>${item.vendorName}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>

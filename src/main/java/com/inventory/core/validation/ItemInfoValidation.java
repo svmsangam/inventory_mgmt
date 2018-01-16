@@ -48,33 +48,45 @@ public class ItemInfoValidation extends GlobalValidation{
 
         if (result.hasErrors()) {
 
+
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError errorResult : errors) {
 
                 if (errorResult.getField().equals("productId")) {
                     error.setProductId("invalid product");
+                    valid = false;
                 } else if (errorResult.getField().equals("costPrice")) {
                     error.setCostPrice("invalid costPrice");
+                    valid = false;
                 } else if (errorResult.getField().equals("sellingPrice")) {
                     error.setSellingPrice("invalid sellingPrice");
+                    valid = false;
                 } else if (errorResult.getField().equals("tagId")) {
                     error.setTagId("invalid tag");
+                    valid = false;
                 } else if (errorResult.getField().equals("lotId")) {
                     error.setLotId("invalid lot");
+                    valid = false;
                 } else if (errorResult.getField().equals("expireDate")) {
-                    error.setExpireDate("invalid expiryDate");
+                    //error.setExpireDate("invalid expiryDate");
+                    valid = true;
                 }else if (errorResult.getField().equals("quantity")) {
                     error.setQuantity("invalid quantity");
+                    valid = false;
                 } else if (errorResult.getField().equals("inStock")) {
                     error.setInStock("invalid inStock");
+                    valid = false;
                 }else if (errorResult.getField().equals("threshold")) {
                     error.setThreshold("invalid threshold");
+                    valid = false;
                 }
             }
 
-            error.setValid(false);
+            if (!valid) {
+                error.setValid(false);
 
-            return error;
+                return error;
+            }
         }
 
         valid = valid && checkProduct(itemInfoDTO.getProductId() , storeId);

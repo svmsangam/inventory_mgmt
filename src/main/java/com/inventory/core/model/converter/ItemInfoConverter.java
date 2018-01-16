@@ -111,9 +111,13 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setVersion(entity.getVersion());
         dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
         dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfItem(entity.getId()));
-        if (entity.getVendorInfo() != null){
+        if (entity.getVendorInfo() != null) {
             dto.setVendorId(entity.getVendorInfo().getId());
-            dto.setVendorName(entity.getVendorInfo().getCompanyName());
+            if (entity.getVendorInfo().getCompanyName() != null && !entity.getVendorInfo().getCompanyName().isEmpty()){
+                dto.setVendorName(entity.getVendorInfo().getCompanyName());
+            }else {
+                dto.setVendorName(entity.getVendorInfo().getName());
+            }
         }
 
         return dto;
