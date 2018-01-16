@@ -43,6 +43,10 @@ public class ItemInfoDTO {
 
     private double totalSale;
 
+    private Long vendorId;
+
+    private String vendorName;
+
     public double getTotalSale() {
         return totalSale;
     }
@@ -177,5 +181,21 @@ public class ItemInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Long vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 }

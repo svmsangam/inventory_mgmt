@@ -12,6 +12,9 @@ public class ItemInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private ProductInfo productInfo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ClientInfo vendorInfo;
+
     private double costPrice;
 
     private double sellingPrice;
@@ -111,5 +114,13 @@ public class ItemInfo extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public ClientInfo getVendorInfo() {
+        return vendorInfo;
+    }
+
+    public void setVendorInfo(ClientInfo vendorInfo) {
+        this.vendorInfo = vendorInfo;
     }
 }

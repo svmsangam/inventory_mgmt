@@ -3,6 +3,7 @@ package com.inventory.core.model.converter;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.entity.ItemInfo;
+import com.inventory.core.model.repository.ClientInfoRepository;
 import com.inventory.core.model.repository.LotInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.TagInfoRepository;
@@ -42,6 +43,9 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
     @Autowired
     private IOrderItemInfoApi orderItemInfoApi;
 
+    @Autowired
+    private ClientInfoRepository clientInfoRepository;
+
     @Override
     public ItemInfo convertToEntity(ItemInfoDTO dto) {
         return copyConvertToEntity(dto, new ItemInfo());
@@ -71,6 +75,11 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setTagId(entity.getTagInfo().getId());
         dto.setThreshold(entity.getThreshold());
         dto.setVersion(entity.getVersion());
+
+        if (entity.getVendorInfo() != null){
+            dto.setVendorId(entity.getVendorInfo().getId());
+            dto.setVendorName(entity.getVendorInfo().getCompanyName());
+        }
         //dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
 
         return dto;
@@ -102,6 +111,10 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setVersion(entity.getVersion());
         dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
         dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfItem(entity.getId()));
+        if (entity.getVendorInfo() != null){
+            dto.setVendorId(entity.getVendorInfo().getId());
+            dto.setVendorName(entity.getVendorInfo().getCompanyName());
+        }
 
         return dto;
     }
@@ -122,6 +135,10 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         entity.setSellingPrice(dto.getSellingPrice());
         entity.setTagInfo(tagInfoRepository.findById(dto.getTagId()));
         entity.setThreshold(dto.getThreshold());
+
+        if (dto.getVendorId() != null){
+            entity.setVendorInfo(clientInfoRepository.findById(dto.getVendorId()));
+        }
 
         return entity;
     }
