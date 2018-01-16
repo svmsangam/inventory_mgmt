@@ -678,7 +678,7 @@ function ClientInfoService() {
 
         list: [],
 
-        save: function (client, url, pagecontext, isSave) {
+        save: function (client, url, pagecontext) {
 
             var that = new ClientInfoService();
 
@@ -701,14 +701,10 @@ function ClientInfoService() {
 
                     if (data.status === 'Success') {
 
-                        if (isSave === true) {
-                            that.setDataToDOM(result, pagecontext);
-                            that.successMsg(msg);
-                            $(".closeAdd").click();
-                        } else {
-                            that.successMsg(msg);
-                            window.location.reload();
-                        }
+                        //that.setDataToDOM(result, pagecontext);
+                        that.successMsg(msg);
+                        $(".closeAdd").click();
+
                     }
 
                     if (data.status === 'Failure') {

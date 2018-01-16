@@ -464,7 +464,7 @@ $(document).ready(function () {
 
         var pagecontext = $(this).attr("pagecontext");
 
-        clientService.save(client, url, pagecontext);
+        clientService.save(client, url, pagecontext );
     });
 
 
