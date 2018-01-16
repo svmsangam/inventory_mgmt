@@ -64,13 +64,13 @@ public class ClientInfoApi implements IClientInfoApi {
     }
 
     @Override
-    public ClientInfoDTO show(Status status, long clientId) {
-        return clientInfoConverter.convertToDto(clientInfoRepository.findByIdAndStatus(clientId , status));
+    public ClientInfoDTO show(Status status, long clientId , long storeId) {
+        return clientInfoConverter.convertToDto(clientInfoRepository.findByIdAndStatusAndStoreInfo_Id(clientId , status , storeId));
     }
 
     @Override
-    public long countByStatusAndClientType(Status status, ClientType clientType) {
-        return clientInfoRepository.countAllByStatusAndAndClientType(status , clientType);
+    public long countByStatusAndClientType(Status status, ClientType clientType , long storeId) {
+        return clientInfoRepository.countAllByStatusAndAndClientTypeAndStoreInfo_Id(status , clientType , storeId);
     }
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
@@ -79,26 +79,26 @@ public class ClientInfoApi implements IClientInfoApi {
     }
 
     @Override
-    public List<ClientInfoDTO> list(Status status, ClientType clientType, int page, int size) {
+    public List<ClientInfoDTO> list(Status status, ClientType clientType, int page, int size , long storeId) {
 
         Pageable pageable = createPageRequest(page,size ,"name" , Sort.Direction.ASC);
 
-        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndClientType(status , clientType , pageable));
+        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndClientTypeAndStoreInfo_Id(status , clientType , storeId, pageable));
     }
 
     @Override
-    public List<ClientInfoDTO> search(Status status, ClientType clientType, String q, int page, int size) {
+    public List<ClientInfoDTO> search(Status status, ClientType clientType, String q, int page, int size , long storeId) {
 
         Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
 
-        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , clientType , q , pageable));
+        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(status , clientType , q ,storeId, pageable));
 
     }
 
     @Override
-    public long searchCount(Status status, ClientType clientType, String q) {
+    public long searchCount(Status status, ClientType clientType, String q , long storeId) {
 
-        Long count = clientInfoRepository.countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , clientType , q);
+        Long count = clientInfoRepository.countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(status , clientType , q ,storeId);
 
         if (count == null){
             return 0;
@@ -108,11 +108,11 @@ public class ClientInfoApi implements IClientInfoApi {
     }
 
     @Override
-    public List<ClientInfoDTO> search(Status status, String q, int page, int size) {
+    public List<ClientInfoDTO> search(Status status, String q, int page, int size , long storeId) {
 
         Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
 
-        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(status , q , pageable));
+        return clientInfoConverter.convertToDtoList(clientInfoRepository.findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(status , q , storeId , pageable));
 
     }
 }

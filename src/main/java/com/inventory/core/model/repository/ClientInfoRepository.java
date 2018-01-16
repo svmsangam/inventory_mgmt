@@ -18,26 +18,26 @@ public interface ClientInfoRepository extends JpaRepository<ClientInfo , Long> ,
 
     ClientInfo findById(long clientId);
 
-    ClientInfo findByIdAndStatus(long clientId , Status status);
+    ClientInfo findByIdAndStatusAndStoreInfo_Id(long clientId , Status status , long storeInfoId);
 
-    ClientInfo findByIdAndStatusAndClientType(long clientId , Status status , ClientType clientType);
+    ClientInfo findByIdAndStatusAndClientTypeAndStoreInfo_Id(long clientId , Status status , ClientType clientType , long storeInfoId);
 
-    long countAllByStatusAndAndClientType(Status status , ClientType clientType);
+    long countAllByStatusAndAndClientTypeAndStoreInfo_Id(Status status , ClientType clientType , long storeInfoId);
 
-    List<ClientInfo> findAllByStatusAndClientType(Status status , ClientType clientType , Pageable pageable);
+    List<ClientInfo> findAllByStatusAndClientTypeAndStoreInfo_Id(Status status , ClientType clientType , long storeInfoId  , Pageable pageable);
 
-    ClientInfo findByContact(String contact);
+    ClientInfo findByContactAndStoreInfo_Id(String contact , long storeInfoId );
 
-    ClientInfo findByMobileNumber(String mobile);
+    ClientInfo findByMobileNumberAndStoreInfo_Id(String mobile , long storeInfoId );
 
-    ClientInfo findByEmail(String email);
+    ClientInfo findByEmailAndStoreInfo_Id(String email , long storeInfoId );
 
-    @Query("select c from ClientInfo c where (c.status = ?1 and c.clientType = ?2 ) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
-    List<ClientInfo> findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , ClientType clientType , String q , Pageable pageable);
+    @Query("select c from ClientInfo c where (c.status = ?1 and c.clientType = ?2 and c.storeInfo.id = ?4) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
+    List<ClientInfo> findAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(Status status , ClientType clientType , String q , long storeInfoId  , Pageable pageable);
 
-    @Query("select count (c) from ClientInfo c where (c.status = ?1 and c.clientType = ?2 ) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
-    Long countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , ClientType clientType , String q);
+    @Query("select count (c) from ClientInfo c where (c.status = ?1 and c.clientType = ?2 and c.storeInfo.id = ?4) and (c.name like concat('%' , ?3 , '%') or c.companyName like concat('%' , ?3 , '%') or c.contact like concat('%' , ?3 , '%') or c.mobileNumber like concat('%' , ?3 , '%'))")
+    Long countAllByStatusAndClientTypeAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(Status status , ClientType clientType , String q , long storeInfoId );
 
-    @Query("select c from ClientInfo c where (c.status = ?1) and (c.name like concat('%' , ?2 , '%') or c.companyName like concat('%' , ?2 , '%') or c.contact like concat('%' , ?2 , '%') or c.mobileNumber like concat('%' , ?2 , '%'))")
-    List<ClientInfo> findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContains(Status status , String q , Pageable pageable);
+    @Query("select c from ClientInfo c where (c.status = ?1 and c.storeInfo.id = ?3) and (c.name like concat('%' , ?2 , '%') or c.companyName like concat('%' , ?2 , '%') or c.contact like concat('%' , ?2 , '%') or c.mobileNumber like concat('%' , ?2 , '%'))")
+    List<ClientInfo> findAllByStatusAndNameContainsOrCompanyNameContainsOrContactOrMobileNumberContainsAndStoreInfo(Status status , String q , long storeInfoId , Pageable pageable);
 }

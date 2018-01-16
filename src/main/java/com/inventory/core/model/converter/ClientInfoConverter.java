@@ -7,6 +7,7 @@ import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.AccountInfoRepository;
 import com.inventory.core.model.repository.CityInfoRepository;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -31,6 +32,9 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
 
     @Autowired
     private AccountInfoRepository accountInfoRepository;
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
     
     @Override
     public ClientInfo convertToEntity(ClientInfoDTO dto) {
@@ -50,6 +54,10 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
 
         if (entity.getCityInfo() != null) {
             dto.setCityId(entity.getCityInfo().getId());
+        }
+
+        if (entity.getStoreInfo() != null){
+            dto.setStoreInfoId(entity.getStoreInfo().getId());
         }
 
         dto.setCityInfoDTO(cityInfoConverter.convertToDto(entity.getCityInfo()));
@@ -86,6 +94,7 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
         if (dto.getCityId() != null) {
             entity.setCityInfo(cityInfoRepository.findByIdAndStatus(dto.getCityId(), Status.ACTIVE));
         }
+
         entity.setClientType(dto.getClientType());
         entity.setCompanyName(dto.getCompanyName());
         entity.setContact(dto.getContact());
@@ -94,6 +103,7 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
         entity.setMobileNumber(dto.getMobileNumber());
         entity.setName(dto.getName());
         entity.setStreet(dto.getStreet());
+        entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
         
         return entity;
     }

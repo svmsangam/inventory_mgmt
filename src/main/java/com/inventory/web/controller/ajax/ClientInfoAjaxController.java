@@ -70,7 +70,7 @@ public class ClientInfoAjaxController {
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
-            result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.CUSTOMER , term , 0 , 50));
+            result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.CUSTOMER , term , 0 , 50 , currentUser.getStoreId()));
 
 
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class ClientInfoAjaxController {
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
-            result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.VENDOR , term , 0 , 50));
+            result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.VENDOR , term , 0 , 50 , currentUser.getStoreId()));
 
 
         } catch (Exception e) {
@@ -146,7 +146,7 @@ public class ClientInfoAjaxController {
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
-            result.setDetail(clientInfoApi.search(Status.ACTIVE , term , 0 , 50));
+            result.setDetail(clientInfoApi.search(Status.ACTIVE , term , 0 , 50 , currentUser.getStoreId()));
 
 
         } catch (Exception e) {
@@ -193,6 +193,11 @@ public class ClientInfoAjaxController {
         /*current user checking end*/
 
             synchronized (this.getClass()) {
+
+                clientInfoDTO.setClientType(ClientType.CUSTOMER);
+                clientInfoDTO.setCreatedById(currentUser.getUserId());
+                clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
                 ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
                 if (!error.isValid()) {
@@ -201,9 +206,6 @@ public class ClientInfoAjaxController {
                     result.setDetail(error);
                     return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
                 }
-
-                clientInfoDTO.setClientType(ClientType.CUSTOMER);
-                clientInfoDTO.setCreatedById(currentUser.getUserId());
 
                 ClientInfoDTO saved = clientInfoApi.save(clientInfoDTO);
 

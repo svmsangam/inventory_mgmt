@@ -61,7 +61,7 @@ public class ClientInfoValidation extends GlobalValidation{
             if (!"".equals(error.getContact())) {
                 valid = false;
             } else if (clientInfoDTO.getContact() != null) {
-                if (clientInfoRepository.findByContact(clientInfoDTO.getContact()) != null) {
+                if (clientInfoRepository.findByContactAndStoreInfo_Id(clientInfoDTO.getContact() , clientInfoDTO.getStoreInfoId()) != null) {
                     error.setContact("this contact already registered");
 
                     valid = false;
@@ -74,7 +74,7 @@ public class ClientInfoValidation extends GlobalValidation{
         if (clientInfoDTO.getMobileNumber() != null && !clientInfoDTO.getMobileNumber().isEmpty()) {
             if (!"".equals(error.getMobileNumber())) {
                 valid = false;
-            } else if (clientInfoRepository.findByMobileNumber(clientInfoDTO.getMobileNumber()) != null) {
+            } else if (clientInfoRepository.findByMobileNumberAndStoreInfo_Id(clientInfoDTO.getMobileNumber() , clientInfoDTO.getStoreInfoId()) != null) {
                 error.setMobileNumber("this mobile already registered");
 
                 valid = false;

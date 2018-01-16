@@ -40,6 +40,8 @@ public class ClientInfoDTO {
 
     private long accountId;
 
+    private long storeInfoId;
+
     public Integer getVersion() {
         return version;
     }
@@ -166,5 +168,13 @@ public class ClientInfoDTO {
 
     public void setAccountId(long accountId) {
         this.accountId = accountId;
+    }
+
+    public long getStoreInfoId() {
+        return storeInfoId;
+    }
+
+    public void setStoreInfoId(long storeInfoId) {
+        this.storeInfoId = storeInfoId;
     }
 }

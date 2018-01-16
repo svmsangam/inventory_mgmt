@@ -98,7 +98,7 @@ public class CustomerController {
 
             int currentpage = page - 1;
 
-            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER);
+            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER , currentUser.getStoreId());
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -108,7 +108,7 @@ public class CustomerController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER, currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER, currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
@@ -164,7 +164,7 @@ public class CustomerController {
 
             int currentpage = page - 1;
 
-            long totalList = clientInfoApi.searchCount(Status.ACTIVE, ClientType.CUSTOMER , q);
+            long totalList = clientInfoApi.searchCount(Status.ACTIVE, ClientType.CUSTOMER , q , currentUser.getStoreId());
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -174,7 +174,7 @@ public class CustomerController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.search(Status.ACTIVE, ClientType.CUSTOMER, q , currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.search(Status.ACTIVE, ClientType.CUSTOMER, q , currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
 
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
@@ -260,6 +260,10 @@ public class CustomerController {
         /*current user checking end*/
 
         synchronized (this.getClass()) {
+            clientInfoDTO.setClientType(ClientType.CUSTOMER);
+            clientInfoDTO.setCreatedById(currentUser.getUserId());
+            clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
             ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
             if (!error.isValid()) {
@@ -268,9 +272,6 @@ public class CustomerController {
                 modelMap.put(StringConstants.CUSTOMER_ERROR, error);
                 return "customer/add";
             }
-
-            clientInfoDTO.setClientType(ClientType.CUSTOMER);
-            clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
         }
@@ -326,7 +327,7 @@ public class CustomerController {
 
             int currentpage = page - 1;
 
-            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.VENDOR);
+            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.VENDOR , currentUser.getStoreId());
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -336,7 +337,7 @@ public class CustomerController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.VENDOR_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.VENDOR, currentpage, (int) PageInfo.pageList));
+            modelMap.put(StringConstants.VENDOR_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.VENDOR, currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
@@ -420,6 +421,10 @@ public class CustomerController {
 
         synchronized (this.getClass()) {
 
+            clientInfoDTO.setClientType(ClientType.VENDOR);
+            clientInfoDTO.setCreatedById(currentUser.getUserId());
+            clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
             ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
             if (!error.isValid()) {
@@ -428,9 +433,6 @@ public class CustomerController {
                 modelMap.put(StringConstants.VENDOR_ERROR, error);
                 return "vendor/add";
             }
-
-            clientInfoDTO.setClientType(ClientType.VENDOR);
-            clientInfoDTO.setCreatedById(currentUser.getUserId());
 
             clientInfoApi.save(clientInfoDTO);
         }

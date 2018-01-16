@@ -167,7 +167,7 @@ public class OrderValidation extends GlobalValidation {
            return false;
        }
 
-       if (clientInfoRepository.findByIdAndStatusAndClientType(value , Status.ACTIVE , ClientType.CUSTOMER) == null){
+       if (clientInfoRepository.findByIdAndStatusAndClientTypeAndStoreInfo_Id(value , Status.ACTIVE , ClientType.CUSTOMER , storeId) == null){
            error.setClientInfo("client not found");
            return false;
        }

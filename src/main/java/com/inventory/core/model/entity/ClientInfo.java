@@ -32,6 +32,9 @@ public class ClientInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StoreInfo storeInfo;
+
     private Status status;
 
     public String getName() {
@@ -112,6 +115,14 @@ public class ClientInfo extends AbstractEntity<Long> {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
     }
 }
 
