@@ -71,6 +71,17 @@
         <div class="row invoice-info">
             <div class="col-sm-3 invoice-col">
                 <b>Order Date: </b><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/>
+
+                <div class="form-group">
+                    <label>Return Date:</label>
+                    <div class='input-group date' style="position: relative;">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control datepicker" onkeypress="return false;" onkeyup="return false;" name="returnDate" placeholder="Return Date"/>
+                    </div>
+                    <p class="form-error">${itemError.returnDate}</p>
+                </div>
             </div>
             <div class="col-sm-6 invoice-col">&nbsp;</div>
             <div class="col-sm-3 invoice-col">
