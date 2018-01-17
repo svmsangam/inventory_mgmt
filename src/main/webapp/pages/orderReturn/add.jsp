@@ -131,10 +131,12 @@
         <div class="row">
             <!-- accepted payments column -->
             <div class="col-xs-4">
-                <p class="lead">Description</p>
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    ${order.description}
-                </p>
+                <div class="form-group">
+                    <label for="description">Description:</label><br/>
+                    <textarea class="form-control" placeholder="write something.." name="note"
+                              id="description" rows="3" cols="30" required></textarea>
+                    <p class="form-error"></p>
+                </div>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">&nbsp;</div>
