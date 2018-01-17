@@ -15,12 +15,18 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
     @Temporal(TemporalType.DATE)
     private Date returnDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private OrderInfo orderInfo;
 
     private String note;
 
     private double totalAmount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StoreInfo storeInfo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User createdBy;
 
     private Status status;
 
@@ -62,5 +68,21 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }
