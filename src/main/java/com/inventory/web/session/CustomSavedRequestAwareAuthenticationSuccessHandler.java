@@ -27,7 +27,6 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
 
         String defaultURL = request.getContextPath()  + "/";
 
-
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest == null) {
