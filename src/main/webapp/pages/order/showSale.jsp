@@ -22,10 +22,15 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
+
                     <c:if test="${invoice ne null}"><span>Order No. <b>#${order.orderNo}</b></span>
                     <span class="pull-right">Invoice No. <b><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></b></span></c:if>
                     <c:if test="${invoice eq null}">Order No. <b>#${order.orderNo}</b></c:if>
                 </h2>
+                <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                    <a href="${pageContext.request.contextPath}/orderreturn/add?orderInfoId=${order.orderId}" class="btn-primary btn pull-right">return order</a>
+
+                </c:if>
             </div>
             <!-- /.col -->
         </div>
@@ -110,6 +115,7 @@
                         <label class="btn btn-success active">
                             <input type="radio" autocomplete="off" checked> Delivered
                         </label>
+
                     </c:if>
 
                     <c:if test="${order.saleTrack eq 'CANCEL'}">
