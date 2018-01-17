@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    <c:if test="${invoice ne null}"><span>Order No. <b>#${order.orderNo}</b></span>
+                    <c:if test="${invoice ne null}"><span>Order No. <b>#<a href="${pageContext.request.contextPath}/order/sale/${order.orderId}"> ${order.orderNo}</a></b></span>
                         <span class="pull-right">Invoice No. <b><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></b></span></c:if>
                     <c:if test="${invoice eq null}">Order No. <b>#${order.orderNo}</b></c:if>
                 </h2>
@@ -85,9 +85,11 @@
                 <thead>
                 <tr>
                     <th>SN</th>
+                    <th>Return</th>
                     <th>Item</th>
                     <th>Item Lot</th>
                     <th>Quantity</th>
+                    <th>Return Quantity</th>
                     <th>Rate</th>
                     <th>Discount(%)</th>
                     <th>Subtotal</th>
@@ -98,9 +100,11 @@
                 <c:forEach items="${orderItemList}" var="orderItem" varStatus="i">
                     <tr>
                         <td>${i.index + 1}</td>
+                        <td><input type="checkbox" name="orderItem" value="${orderItem.orderItemInfoId}" class="returnOrder" /></td>
                         <td>${orderItem.itemInfoDTO.productInfo.name}-${orderItem.itemInfoDTO.tagInfo.name}</td>
                         <td>${orderItem.itemInfoDTO.lotInfo.lot}</td>
                         <td>${orderItem.quantity} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
+                        <td><input type="number" name="returnQuantity" class="form-control returnQuantity" placeholder="Return Quantity" min="1" max="${orderItem.quantity}" disabled></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.rate}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.discount}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.amount}"/></td>
@@ -151,4 +155,20 @@
 </div>
 <!-- /.content-wrapper -->
 <%@include file="/pages/parts/footer.jsp" %>
+
+<script>
+    $(document).ready( function () {
+
+        $(document).on("change" , ".returnOrder" , function () {
+
+            if($(this).is(":checked")) {
+               console.log("you checked : " + $(this).val() + " max: " +  $(this).closest("tr").find("td:eq(5)").find("input").attr("max"));
+                $(this).closest("tr").find("td:eq(5)").find("input").prop("disabled" , false);
+            } else {
+                console.log("you unchecked : " + $(this).val());
+                $(this).closest("tr").find("td:eq(5)").find("input").prop("disabled" , true);
+            }
+        });
+    });
+</script>
 

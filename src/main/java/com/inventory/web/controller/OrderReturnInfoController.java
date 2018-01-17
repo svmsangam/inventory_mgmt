@@ -119,6 +119,7 @@ public class OrderReturnInfoController {
         } catch (Exception e) {
             logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
 
+            e.printStackTrace();
             return "redirect:/";
         }
 
