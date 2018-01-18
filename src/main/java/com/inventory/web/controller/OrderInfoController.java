@@ -58,6 +58,9 @@ public class OrderInfoController {
     @Autowired
     private PaymentInfoValidation paymentInfoValidation;
 
+    @Autowired
+    private ISendMailSSL sendMailSSL;
+
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -235,7 +238,14 @@ public class OrderInfoController {
                     return "order/addSale";
                 }
 
-                orderInfoApi.save(orderInfoDTO);
+                orderInfoDTO = orderInfoApi.save(orderInfoDTO);
+
+                if (orderInfoDTO.getClientInfo() != null) {
+                    if (orderInfoDTO.getClientInfo().getEmail() != null && !orderInfoDTO.getClientInfo().getEmail().isEmpty()) {
+
+                        sendMailSSL.sendMail("dhirajbadu50@gmail.com", orderInfoDTO.getClientInfo().getEmail(), getSendmsg(orderInfoDTO), "sale order created");
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -245,6 +255,15 @@ public class OrderInfoController {
             return "redirect:/";
         }
         return "redirect:/order/sale/" + orderInfoDTO.getOrderId();
+    }
+
+    private String getSendmsg(OrderInfoDTO orderInfoDTO){
+
+        String msg = "Dear sir/madam, + \n\n";
+
+        msg = msg + orderInfoDTO.getClientInfo().getName() + " your order is created of total amount : " + orderInfoDTO.getGrandTotal() + " \n\n thank you \n\n ";
+
+        return msg;
     }
 
     @GetMapping(value = "/sale/quick")
