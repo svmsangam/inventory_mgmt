@@ -243,7 +243,7 @@ public class OrderInfoController {
                 if (orderInfoDTO.getClientInfo() != null) {
                     if (orderInfoDTO.getClientInfo().getEmail() != null && !orderInfoDTO.getClientInfo().getEmail().isEmpty()) {
 
-                        sendMailSSL.sendMail("dhirajbadu50@gmail.com", orderInfoDTO.getClientInfo().getEmail(), getSendmsg(orderInfoDTO), "sale order created");
+                        sendMailSSL.sendHtmlMail("dhirajbadu50@gmail.com", orderInfoDTO.getClientInfo().getEmail(), getSendmsg(orderInfoDTO), "sale order created");
                     }
                 }
             }
@@ -259,10 +259,13 @@ public class OrderInfoController {
 
     private String getSendmsg(OrderInfoDTO orderInfoDTO){
 
-        String msg = "Dear sir/madam, + \n\n";
+        String msg ="<html><head><style>div { background-color: lightblue;}</style></head><body><div>";
 
-        msg = msg + orderInfoDTO.getClientInfo().getName() + " your order is created of total amount : " + orderInfoDTO.getGrandTotal() + " \n\n thank you \n\n ";
+        msg = msg + "Dear sir/madam, \n\n";
 
+        msg = msg + "<h1>" +orderInfoDTO.getClientInfo().getName() + "</h1>" + " your order is created of total amount : " + orderInfoDTO.getGrandTotal() + " \n\n thank you \n\n ";
+
+        msg = msg + "</div></body></html>";
         return msg;
     }
 

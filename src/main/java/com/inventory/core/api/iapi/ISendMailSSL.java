@@ -7,4 +7,5 @@ public interface ISendMailSSL {
 
     void sendMail(String from , String to , String msg , String sub);
 
+    void sendHtmlMail(String from, String to, String msg, String sub);
 }
