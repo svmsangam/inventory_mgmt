@@ -15,7 +15,11 @@
 </head>
 <body>
 <h1>fire base test</h1>
-<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+<%--<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>--%>
+<script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-app.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-messaging4.6.2.js"></script>
+
+<%--
 <script>
     // Initialize Firebase
     var config = {
@@ -27,7 +31,12 @@
         messagingSenderId: "118536954776"
     };
     firebase.initializeApp(config);
+</script>
 
+
+
+
+<script>
     // Retrieve Firebase Messaging object.
     const messaging = firebase.messaging();
 
@@ -73,9 +82,38 @@
 
     messaging.onMessage(function(payload) {
         console.log("Message received. ", payload);
-        angular.element('#tmkmobilebankingController').scope().getNotification();
+        //angular.element('#tmkmobilebankingController').scope().getNotification();
     });
 
 </script>
+--%>
+
+<script>
+
+    // Initialize the Firebase app in the service worker by passing in the
+    // messagingSenderId.
+    firebase.initializeApp({
+        messagingSenderId: "118536954776"
+    });
+
+    // Retrieve an instance of Firebase Messaging so that it can handle background
+    // messages.
+    const messaging = firebase.messaging();
+
+    messaging.setBackgroundMessageHandler(function(payload) {
+        console.log('[firebase-messaging-sw.js] Received background message ', payload);
+        // Customize notification here
+        const notificationTitle = 'Background Message Title';
+        const notificationOptions = {
+            body: 'Background Message body.',
+            icon: '/firebase-logo.png'
+        };
+
+        return self.registration.showNotification(notificationTitle,
+            notificationOptions);
+    });
+</script>
+
+<div id="tmkmobilebankingController"></div>
 </body>
 </html>

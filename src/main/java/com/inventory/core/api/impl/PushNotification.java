@@ -1,6 +1,6 @@
 package com.inventory.core.api.impl;
 
-import com.inventory.core.api.fb.AndroidPushNotificationsService;
+import com.inventory.core.api.fb.PushNotificationsService;
 import com.inventory.core.api.fb.FirebaseResponse;
 import com.inventory.core.api.iapi.IPushNotification;
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 public class PushNotification implements IPushNotification {
 
     @Autowired
-    AndroidPushNotificationsService androidPushNotificationsService;
+    PushNotificationsService pushNotificationsService;
 
     private static String End_Point = "https://fcm.googleapis.com/fcm/send";
     private static String Server_Key = "AAAAG5laY5g:APA91bHKBO_j7wH-vbfYUWeSc7OpNFNCKC0xiTvL9zb046boTXCvrcpfLaYSbLrR3LfrJNtlDxICpJ99tM8Q1Yyuhsn7sx8Yur3u_6OITCJ3mpH5hxTfMcQb1nWfRbn5Wf6v73Dhz3tK";
@@ -108,7 +108,7 @@ public class PushNotification implements IPushNotification {
 
             HttpEntity<String> request = new HttpEntity<>(body.toString());
 
-            CompletableFuture<FirebaseResponse> pushNotification = new AndroidPushNotificationsService().send(request);
+            CompletableFuture<FirebaseResponse> pushNotification = new PushNotificationsService().send(request);
             CompletableFuture.allOf(pushNotification).join();
 
             try {

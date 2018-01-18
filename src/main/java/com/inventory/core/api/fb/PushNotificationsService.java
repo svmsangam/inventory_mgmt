@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class AndroidPushNotificationsService {
+public class PushNotificationsService {
 
     private static final String FIREBASE_SERVER_KEY = "AAAAG5laY5g:APA91bHKBO_j7wH-vbfYUWeSc7OpNFNCKC0xiTvL9zb046boTXCvrcpfLaYSbLrR3LfrJNtlDxICpJ99tM8Q1Yyuhsn7sx8Yur3u_6OITCJ3mpH5hxTfMcQb1nWfRbn5Wf6v73Dhz3tK";
 
