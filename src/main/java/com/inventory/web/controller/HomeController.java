@@ -45,11 +45,21 @@ public class HomeController {
     @Autowired
     private IStoreUserInfoApi storeUserInfoApi;
 
+    @Autowired
+    private ISendMailSSL sendMailSSL;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String toTestJspPage() {
 
-        return "invoice/show";
+    @RequestMapping(value = "/send", method = RequestMethod.GET)
+    public String toTestJspPage(@RequestParam("from")String from , @RequestParam("to")String to , @RequestParam("msg")String msg) {
+
+        try {
+
+            sendMailSSL.sendMail(from , to , msg, "test mail");
+
+        }catch (Exception e){
+
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
