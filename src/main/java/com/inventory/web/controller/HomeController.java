@@ -50,16 +50,16 @@ public class HomeController {
 
 
     @RequestMapping(value = "/send", method = RequestMethod.GET)
-    public String toTestJspPage(@RequestParam("from")String from , @RequestParam("to")String to , @RequestParam("msg")String msg) {
+    public String toTestJspPage() {
 
-        try {
+        /*try {
 
             sendMailSSL.sendMail(from , to , msg, "test mail");
 
         }catch (Exception e){
 
-        }
-        return "redirect:/";
+        }*/
+        return "test";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
