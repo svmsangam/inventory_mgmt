@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,7 +31,7 @@ public class NotificationAjaxController {
     @Autowired
     private IUserApi userApi;
 
-    @GetMapping(value = "/updateToken", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/updateToken", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("token") String token, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 

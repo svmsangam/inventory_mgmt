@@ -48,6 +48,7 @@ public class NotificationConverter implements IListConvertable<Notification , No
         dto.setTitle(entity.getTitle());
         dto.setToUserId(entity.getTo().getId());
         dto.setToUserName(entity.getTo().getUsername());
+        dto.setReceiverKey(entity.getTo().getFcmKey());
 
         return dto;
     }
