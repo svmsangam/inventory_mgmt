@@ -5,8 +5,7 @@
   Time: 8:05 PM
   To change this template use File | Settings | File Templates.
 --%>
-<!-- jQuery 3 -->
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-app.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-messaging4.6.2.js"></script>
 
@@ -30,13 +29,15 @@
 <script>
 
 
+$(document).ready( function () {
+    count();// get total notification count
 
     // Retrieve Firebase Messaging object.
     const messaging = firebase.messaging();
 
     console.log(messaging);
 
-    navigator.serviceWorker.register('/resources/firebase-messaging-sw.js')
+    navigator.serviceWorker.register('${pageContext.request.contextPath}/resources/firebase-messaging-sw.js')
         .then(function (registration){
             messaging.useServiceWorker(registration);
 
@@ -48,7 +49,7 @@
                     messaging.getToken()
                         .then(function(currentToken) {
                             if (currentToken) {
-                                $.post("/notification/updateToken",{token: currentToken}, function(data, status){
+                                $.post("${pageContext.request.contextPath}/notification/updateToken",{token: currentToken}, function(data, status){
                                     console.log("Token updated successfully.");
                                 });
                                 console.log('Token:' + currentToken);
@@ -73,7 +74,7 @@
         messaging.getToken()
             .then(function(refreshedToken) {
                 console.log('Refreshed Token :' + refreshedToken);
-                $.post("/notification/updateToken",{token: currentToken}, function(data, status){
+                $.post("${pageContext.request.contextPath}/notification/updateToken",{token: currentToken}, function(data, status){
                     console.log("Token updated successfully.");
                 });
             })
@@ -89,20 +90,90 @@
     });
 
 
+});
+
+
     function setNotification(payload) {
+
+        console.log(payload);
 
         var body = payload.notification.body;
 
+        var url = payload.data.url;
+
         var row = "<li>";
 
-        row += "<a href='#'>";
+        if(url !== undefined){
+            if(url !== null){
+                row += "<a href='${pageContext.request.contextPath}" +url+ "'>";
+            }else {
+                row += "<a href='#'>";
+            }
+        }else {
+            row += "<a href='#'>";
+        }
+
 
         row += "" + body;
 
         row += " </a></li>";
 
         $(".notification").prepend(row);
+
+        updateCount(1);
     }
+
+    function count() {
+        $.get("${pageContext.request.contextPath}/notification/count",function(data, status){
+            console.log("counted successfully." + status);
+
+            if(status === "success"){
+                setCount(data);
+            }
+
+        });
+    }
+
+    function setCount(data) {
+        $(".countNotificationHeader").text(data.message);
+
+        $(".countNotification").text("You have " + data.message + " notifications");
+
+        $.each(data.detail , function (i, v) {
+            var row = "<li>";
+
+            if(v.url !== undefined){
+                if(v.url !== null){
+                    row += "<a href='${pageContext.request.contextPath}" +v.url+ "'>";
+                }else{
+                    row += "<a href='#'>";
+                }
+
+            } else {
+                row += "<a href='#'>";
+            }
+
+
+            row += "" + v.body;
+
+            row += " </a></li>";
+
+            $(".notification").prepend(row);
+        })
+    }
+
+    function updateCount(count){
+
+        var oldCount = $(".countNotificationHeader").text();
+
+        var newCount = parseInt(count) + parseInt(oldCount);
+
+        $(".countNotificationHeader").text(newCount);
+
+
+        $(".countNotification").text("You have " + newCount + " notifications");
+}
+
 
 </script>
 

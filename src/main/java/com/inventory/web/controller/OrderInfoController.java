@@ -379,7 +379,7 @@ public class OrderInfoController {
 
                 orderInfoDTO = orderInfoApi.saveQuickSale(orderInfoDTO);
 
-                notificationApi.saveAndSendForSuperAdmin("order created" , "new order created " + orderInfoDTO.getOrderNo() , currentUser.getStoreId());
+                notificationApi.saveAndSendForSuperAdmin("order created" , "new order created " + orderInfoDTO.getOrderNo() , "/order/sale/" + orderInfoDTO.getOrderId() , currentUser.getStoreId());
             }
 
         } catch (Exception e) {
@@ -561,19 +561,19 @@ public class OrderInfoController {
 
             if (orderId == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/listSale";
+                return "redirect:/order/sale/list";
             }
 
             if (orderId < 0) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/listSale";
+                return "redirect:/order/sale/list";
             }
 
             OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE, orderId, currentUser.getStoreId());
 
             if (orderInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/listSale";
+                return "redirect:/order/sale/list";
             }
 
             modelMap.put(StringConstants.ORDER, orderInfoDTO);

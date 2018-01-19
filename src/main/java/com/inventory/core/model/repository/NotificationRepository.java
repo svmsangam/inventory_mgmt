@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification , Long>{
 
-    long countAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId);
+    long countAllByStatusAndTo_Id(Status status ,long toUserId);
 
-    long countAllByStatusAndStoreInfo_IdAndTo_IdAndSeenAndSent(Status status , long storeInfoId , long toUserId , boolean seen , boolean sent);
+    long countAllByStatusAndTo_IdAndSeenAndSent(Status status , long toUserId , boolean seen , boolean sent);
 
-    List<Notification> findAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId , Pageable pageable);
+    List<Notification> findAllByStatusAndTo_Id(Status status , long toUserId , Pageable pageable);
 }

@@ -38,13 +38,13 @@ public class NotificationApi implements INotificationApi{
     private StoreUserInfoRepository storeUserInfoRepository;
 
     @Override
-    public NotificationDTO saveAndSendForSuperAdmin(String title, String body, long storeInfoId) {
+    public NotificationDTO saveAndSendForSuperAdmin(String title, String body, String url , long storeInfoId) {
 
         try {
 
             User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(storeInfoId);
 
-            return saveAndSend(title, body, superAdmin.getId(), storeInfoId);
+            return saveAndSend(title, body, superAdmin.getId(), storeInfoId , url);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -53,9 +53,9 @@ public class NotificationApi implements INotificationApi{
     }
 
     @Override
-    public NotificationDTO saveAndSend(String title, String body, long to, long storeInfoId) {
+    public NotificationDTO saveAndSend(String title, String body, long to, long storeInfoId , String url) {
 
-        Notification notification = notificationConverter.convertToEntity(title , body , to , storeInfoId , true);
+        Notification notification = notificationConverter.convertToEntity(title , body , url , to , storeInfoId , true);
 
         notification.setStatus(Status.ACTIVE);
 
@@ -71,23 +71,23 @@ public class NotificationApi implements INotificationApi{
     }
 
     @Override
-    public long countAllByStatusAndStoreInfo_IdAndTo_Id(Status status, long storeInfoId, long toUserId) {
+    public long countAllByStatusAndTo_Id(Status status, long toUserId) {
 
-        return notificationRepository.countAllByStatusAndStoreInfo_IdAndTo_Id(status, storeInfoId, toUserId) ;
+        return notificationRepository.countAllByStatusAndTo_Id(status, toUserId) ;
     }
 
     @Override
-    public long countAllByStatusAndStoreInfo_IdAndTo_IdAndSeenAndSent(Status status, long storeInfoId, long toUserId, boolean seen, boolean sent) {
+    public long countAllByStatusAndTo_IdAndSeenAndSent(Status status, long toUserId, boolean seen, boolean sent) {
 
-        return countAllByStatusAndStoreInfo_IdAndTo_IdAndSeenAndSent(status, storeInfoId, toUserId, seen, sent);
+        return notificationRepository.countAllByStatusAndTo_IdAndSeenAndSent(status, toUserId, seen, sent);
     }
 
     @Override
-    public List<NotificationDTO> findAllByStatusAndStoreInfo_IdAndTo_Id(Status status, long storeInfoId, long toUserId, int page, int size) {
+    public List<NotificationDTO> findAllByStatusAndTo_Id(Status status, long toUserId, int page, int size) {
 
         Pageable pageable = createPageRequest(page , size , "id" , Sort.Direction.DESC);
 
-        return notificationConverter.convertToDtoList(notificationRepository.findAllByStatusAndStoreInfo_IdAndTo_Id(status, storeInfoId, toUserId, pageable));
+        return notificationConverter.convertToDtoList(notificationRepository.findAllByStatusAndTo_Id(status, toUserId, pageable));
     }
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {

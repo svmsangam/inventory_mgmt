@@ -10,14 +10,14 @@ import java.util.List;
  */
 public interface INotificationApi {
 
-    NotificationDTO saveAndSendForSuperAdmin(String title, String body, long storeInfoId);
+    NotificationDTO saveAndSendForSuperAdmin(String title, String body, String url, long storeInfoId);
 
-    NotificationDTO saveAndSend(String title , String body , long to , long storeInfoId);
+    NotificationDTO saveAndSend(String title , String body , long to , long storeInfoId , String url);
 
-    long countAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId);
+    long countAllByStatusAndTo_Id(Status status , long toUserId);
 
-    long countAllByStatusAndStoreInfo_IdAndTo_IdAndSeenAndSent(Status status , long storeInfoId , long toUserId , boolean seen , boolean sent);
+    long countAllByStatusAndTo_IdAndSeenAndSent(Status status , long toUserId , boolean seen , boolean sent);
 
-    List<NotificationDTO> findAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId , int page , int size);
+    List<NotificationDTO> findAllByStatusAndTo_Id(Status status , long toUserId , int page , int size);
 
 }

@@ -37,7 +37,7 @@ public class PushNotification implements IPushNotification {
         // notification.put("icon", "myicon");
 
         JSONObject data = new JSONObject();
-        data.put("key1", "value1");
+        data.put("url", notificationDTO.getUrl());
         data.put("key2", "value2");
 
         body.put("notification", notification);
