@@ -23,7 +23,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
     const notificationTitle = payload.data.title;
     const notificationOptions = {
         body: payload.data.body,
-        icon: '/images/logo.png'
+        icon: 'http://139.59.30.219:8080/resources/img/inventory-logo.png'
     };
 
     return self.registration.showNotification(notificationTitle,

@@ -65,6 +65,7 @@ public class UserApi implements IUserApi {
     }
 
     public void changePassword(long userId, String newPassword) throws IOException, JSONException {
+
         User user = userRepository.findOne(userId);
 
         user.setPassword(passwordEncoder.encode(newPassword));
