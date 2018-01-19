@@ -90,12 +90,12 @@ public class PushNotification implements IPushNotification {
             JSONObject body = new JSONObject();
             // JsonArray registration_ids = new JsonArray();
             // body.put("registration_ids", registration_ids);
-            body.put("to", "inventory-43117.firebaseapp.com");
-            body.put("priority", "high");
+            body.put("to", "c7Ks_EYEXNQ:APA91bEcJfocpqdnkI-Co78OrVuoqz-6oBOQak3Knk8u1xLtD7p7OeiBo0USOFCZf9WzbfVkmognuCOAJanqn-t-MtDl2Rv0VMDIfrr7McyhIBBscP3WEe633DNFOoKVVPUvCNPUiZBJ");
+            //body.put("priority", "high");
             // body.put("dry_run", true);
 
             JSONObject notification = new JSONObject();
-            notification.put("body", "body string here");
+            notification.put("body", "dhiraj badu");
             notification.put("title", "title string here");
             // notification.put("icon", "myicon");
 

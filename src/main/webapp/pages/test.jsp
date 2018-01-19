@@ -19,7 +19,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-app.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-messaging4.6.2.js"></script>
 
-<%--
+
 <script>
     // Initialize Firebase
     var config = {
@@ -37,33 +37,45 @@
 
 
 <script>
+
+
+
     // Retrieve Firebase Messaging object.
     const messaging = firebase.messaging();
 
-    // Request For Notification Permission
-    messaging.requestPermission()
-        .then(function() {
-            console.log('Notification permission granted.');
+    console.log(messaging);
 
-            // Request For Instance ID token.
-            messaging.getToken()
-                .then(function(currentToken) {
-                    if (currentToken) {
-                        $.post("/setwebtoken",{token: currentToken}, function(data, status){
-                            console.log("Token updated successfully.");
+     navigator.serviceWorker.register('/resources/firebase-messaging-sw.js')
+        .then(function (registration){
+        messaging.useServiceWorker(registration);
+
+            messaging.requestPermission()
+                .then(function() {
+                    console.log('Notification permission granted.');
+
+                    // Request For Instance ID token.
+                    messaging.getToken()
+                        .then(function(currentToken) {
+                            if (currentToken) {
+                                /* $.post("/setwebtoken",{token: currentToken}, function(data, status){
+                                 console.log("Token updated successfully.");
+                                 });*/
+                                console.log('Token:' + currentToken);
+                            } else {
+                                console.log('No Instance ID token available. Request permission to generate one.');
+                            }
+                        })
+                        .catch(function(err) {
+                            console.log('An error occurred while retrieving token. ', err);
                         });
-                        console.log('Token:' + currentToken);
-                    } else {
-                        console.log('No Instance ID token available. Request permission to generate one.');
-                    }
                 })
                 .catch(function(err) {
-                    console.log('An error occurred while retrieving token. ', err);
+                    console.log('Unable to get permission to notify.', err);
                 });
-        })
-        .catch(function(err) {
-            console.log('Unable to get permission to notify.', err);
-        });
+    });
+
+    // Request For Notification Permission
+
 
     // Callback fired if Instance ID token is updated.
     messaging.onTokenRefresh(function() {
@@ -81,38 +93,12 @@
     });
 
     messaging.onMessage(function(payload) {
-        console.log("Message received. ", payload);
-        //angular.element('#tmkmobilebankingController').scope().getNotification();
+        console.log("Message received. ", payload + " hdj : " + payload.notification.body);
+        $("#tmkmobilebankingController").append(payload.notification.body)
     });
 
 </script>
---%>
 
-<script>
-
-    // Initialize the Firebase app in the service worker by passing in the
-    // messagingSenderId.
-    firebase.initializeApp({
-        messagingSenderId: "118536954776"
-    });
-
-    // Retrieve an instance of Firebase Messaging so that it can handle background
-    // messages.
-    const messaging = firebase.messaging();
-
-    messaging.setBackgroundMessageHandler(function(payload) {
-        console.log('[firebase-messaging-sw.js] Received background message ', payload);
-        // Customize notification here
-        const notificationTitle = 'Background Message Title';
-        const notificationOptions = {
-            body: 'Background Message body.',
-            icon: '/firebase-logo.png'
-        };
-
-        return self.registration.showNotification(notificationTitle,
-            notificationOptions);
-    });
-</script>
 
 <div id="tmkmobilebankingController"></div>
 </body>
