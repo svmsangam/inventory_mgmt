@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface INotificationApi {
 
+    NotificationDTO saveAndSendForSuperAdmin(String title, String body, long storeInfoId);
+
     NotificationDTO saveAndSend(String title , String body , long to , long storeInfoId);
 
     long countAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId);

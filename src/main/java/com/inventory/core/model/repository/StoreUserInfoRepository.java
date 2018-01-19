@@ -23,6 +23,9 @@ public interface StoreUserInfoRepository extends JpaRepository<StoreUserInfo, Lo
 
     StoreUserInfo findByIdAndStatus(long storeUserInfoId, Status status);
 
+    @Query("select su.user from StoreUserInfo su where su.storeInfo.id = ?1 group by su.user.id")
+    User findSuperAdminByStoreInfo(long storeInfoId);
+
     @Query("select s from StoreUserInfo s where s.storeInfo.id = ?1 and s.user.id = ?2 and s.status = ?3")
     StoreUserInfo findByStoreInfoAndUserAndStatus(long storeId, long userId, Status status);
 

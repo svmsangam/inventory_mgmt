@@ -271,5 +271,10 @@ immediately after the control sidebar -->
     }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active').end().addClass('active');
 
 </script>
+
+<sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
+    <%@include file="/pages/notification/script/script.jsp" %>
+</sec:authorize>
+
 </body>
 </html>

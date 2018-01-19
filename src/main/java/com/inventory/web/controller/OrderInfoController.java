@@ -61,6 +61,9 @@ public class OrderInfoController {
     @Autowired
     private ISendMailSSL sendMailSSL;
 
+    @Autowired
+    private INotificationApi notificationApi;
+
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -374,7 +377,9 @@ public class OrderInfoController {
                     return "order/quick/add";
                 }
 
-                orderInfoApi.saveQuickSale(orderInfoDTO);
+                orderInfoDTO = orderInfoApi.saveQuickSale(orderInfoDTO);
+
+                notificationApi.saveAndSendForSuperAdmin("order created" , "new order created " + orderInfoDTO.getOrderNo() , currentUser.getStoreId());
             }
 
         } catch (Exception e) {

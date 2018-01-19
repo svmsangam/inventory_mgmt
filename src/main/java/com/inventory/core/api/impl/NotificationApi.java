@@ -5,8 +5,10 @@ import com.inventory.core.api.iapi.IPushNotification;
 import com.inventory.core.model.converter.NotificationConverter;
 import com.inventory.core.model.dto.NotificationDTO;
 import com.inventory.core.model.entity.Notification;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.NotificationRepository;
+import com.inventory.core.model.repository.StoreUserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,24 @@ public class NotificationApi implements INotificationApi{
     @Autowired
     private IPushNotification pushNotification;
 
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
+
+    @Override
+    public NotificationDTO saveAndSendForSuperAdmin(String title, String body, long storeInfoId) {
+
+        try {
+
+            User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(storeInfoId);
+
+            return saveAndSend(title, body, superAdmin.getId(), storeInfoId);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public NotificationDTO saveAndSend(String title, String body, long to, long storeInfoId) {
 
@@ -43,7 +63,9 @@ public class NotificationApi implements INotificationApi{
 
         NotificationDTO notificationDTO = notificationConverter.convertToDto(notification);
 
-        pushNotification.sent(notificationDTO);
+        if (notification.getTo().getFcmKey() != null) {
+            pushNotification.sent(notificationDTO);
+        }
 
         return notificationDTO;
     }
