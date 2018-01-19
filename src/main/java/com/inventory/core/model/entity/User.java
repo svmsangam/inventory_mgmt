@@ -33,6 +33,16 @@ public class User extends AbstractEntity<Long> {
 
     private long associateProfileId;
 
+    private String fcmKey;
+
+    public String getFcmKey() {
+        return fcmKey;
+    }
+
+    public void setFcmKey(String fcmKey) {
+        this.fcmKey = fcmKey;
+    }
+
     private ProfileAssociateType profileAssociateType;
 
     public String getUsername() {
