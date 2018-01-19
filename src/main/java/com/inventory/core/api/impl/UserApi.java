@@ -130,6 +130,19 @@ public class UserApi implements IUserApi {
     }
 
     @Override
+    public void updateFCMToken(String token, long userId) {
+
+        User user = userRepository.findById(userId);
+
+        if (!token.equals(user.getFcmKey())) {
+
+            user.setFcmKey(token);
+
+            userRepository.save(user);
+        }
+    }
+
+    @Override
     public InvUserDTO changeStore(long userId, long storeId) {
 
         User user = userRepository.findById(userId);

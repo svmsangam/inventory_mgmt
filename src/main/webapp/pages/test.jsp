@@ -57,9 +57,9 @@
                     messaging.getToken()
                         .then(function(currentToken) {
                             if (currentToken) {
-                                /* $.post("/setwebtoken",{token: currentToken}, function(data, status){
+                                $.post("/notification/updateToken",{token: currentToken}, function(data, status){
                                  console.log("Token updated successfully.");
-                                 });*/
+                                 });
                                 console.log('Token:' + currentToken);
                             } else {
                                 console.log('No Instance ID token available. Request permission to generate one.');
@@ -82,7 +82,7 @@
         messaging.getToken()
             .then(function(refreshedToken) {
                 console.log('Refreshed Token :' + refreshedToken);
-                $.post("/setwebtoken",{token: currentToken}, function(data, status){
+                $.post("/notification/updateToken",{token: currentToken}, function(data, status){
                     console.log("Token updated successfully.");
                 });
             })

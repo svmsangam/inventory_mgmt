@@ -30,6 +30,8 @@ public interface IUserApi {
 
     boolean nameExists(String userName);
 
+    void updateFCMToken(String token, long userId);
+
     InvUserDTO changeStore(long userId, long storeId);
 
     List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList);
