@@ -16,5 +16,7 @@ public interface NotificationRepository extends JpaRepository<Notification , Lon
 
     long countAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId);
 
+    long countAllByStatusAndStoreInfo_IdAndTo_IdAndSeenAndSent(Status status , long storeInfoId , long toUserId , boolean seen , boolean sent);
+
     List<Notification> findAllByStatusAndStoreInfo_IdAndTo_Id(Status status , long storeInfoId , long toUserId , Pageable pageable);
 }

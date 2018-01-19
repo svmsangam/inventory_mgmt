@@ -52,6 +52,20 @@ public class NotificationConverter implements IListConvertable<Notification , No
         return dto;
     }
 
+    public Notification convertToEntity(String title, String body, long to, long storeInfoId , boolean sent){
+
+        Notification entity = new Notification();
+
+        entity.setBody(body);
+        entity.setSeen(false);
+        entity.setSent(sent);
+        entity.setStoreInfo(storeInfoRepository.findById(storeInfoId));
+        entity.setTitle(title);
+        entity.setTo(userRepository.findById(to));
+
+        return entity;
+    }
+
     @Override
     public Notification copyConvertToEntity(NotificationDTO dto, Notification entity) {
 
@@ -60,11 +74,11 @@ public class NotificationConverter implements IListConvertable<Notification , No
         }
 
 
-        entity.setBody(entity.getBody());
-        entity.setSeen(entity.isSeen());
-        entity.setSent(entity.isSent());
+        entity.setBody(dto.getBody());
+        entity.setSeen(dto.isSeen());
+        entity.setSent(dto.isSent());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
-        entity.setTitle(entity.getTitle());
+        entity.setTitle(dto.getTitle());
         entity.setTo(userRepository.findById(dto.getToUserId()));
 
         return entity;

@@ -25,6 +25,8 @@ public class NotificationDTO {
 
     private boolean seen;
 
+    private String receiverKey;
+
     public long getNotificationId() {
         return notificationId;
     }
@@ -95,5 +97,13 @@ public class NotificationDTO {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public String getReceiverKey() {
+        return receiverKey;
+    }
+
+    public void setReceiverKey(String receiverKey) {
+        this.receiverKey = receiverKey;
     }
 }
