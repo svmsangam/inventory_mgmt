@@ -132,13 +132,16 @@ public class UserApi implements IUserApi {
     @Override
     public void updateFCMToken(String token, long userId) {
 
-        User user = userRepository.findById(userId);
+        synchronized (this) {
 
-        if (!token.equals(user.getFcmKey())) {
+            User user = userRepository.findById(userId);
 
-            user.setFcmKey(token);
+            if (!token.equals(user.getFcmKey())) {
 
-            userRepository.save(user);
+                user.setFcmKey(token);
+
+                userRepository.save(user);
+            }
         }
     }
 
