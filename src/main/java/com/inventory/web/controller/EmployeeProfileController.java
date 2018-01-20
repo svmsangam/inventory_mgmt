@@ -44,6 +44,62 @@ public class EmployeeProfileController {
         return "redirect:/profile/list";
     }
 
+    @GetMapping(value = "/image/upload/{profileId}")
+    public String imageUpload(@PathVariable("profileId")Long profileId , RedirectAttributes redirectAttributes , ModelMap modelMap) {
+
+        try {
+
+         /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+           if (profileId == null){
+               redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
+
+               return "redirect:/profile/list";
+           }
+
+            if (profileId < 0){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
+
+                return "redirect:/profile/list";
+            }
+
+            EmployeeProfileDTO employeeProfileDTO = profileApi.show(profileId , Status.ACTIVE);
+
+            if (employeeProfileDTO == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "employee record not found");
+                return "redirect:/profile/list";
+            }
+
+        }catch (Exception e){
+            logger.error("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        modelMap.put(StringConstants.EMPLOYEE_PROFILE, profileId);
+
+        return "employee/upload";
+
+
+    }
+
     @GetMapping(value = "/list")
     public String list(RedirectAttributes redirectAttributes , ModelMap modelMap) {
 

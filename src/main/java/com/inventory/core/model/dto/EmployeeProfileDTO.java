@@ -1,6 +1,7 @@
 package com.inventory.core.model.dto;
 
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by dhiraj on 8/6/17.
@@ -50,6 +51,26 @@ public class EmployeeProfileDTO {
     private Status status;
 
     private Integer version;
+
+    private String photo;
+
+    private MultipartFile file;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public Integer getVersion() {
         return version;

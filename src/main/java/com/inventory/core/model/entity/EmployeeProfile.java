@@ -44,7 +44,17 @@ public class EmployeeProfile extends AbstractEntity<Long> {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
 
+    private String photo;
+
     private Status status;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public String getFirstName() {
         return firstName;
