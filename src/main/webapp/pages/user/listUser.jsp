@@ -6,6 +6,10 @@
 <%@include file="/pages/parts/header.jsp" %>
 <%@include file="/pages/parts/sidebar.jsp" %>
 
+<c:set var="system" value="${false}"></c:set>
+<sec:authorize access="hasRole('ROLE_SYSTEM')">
+<c:set var="system" value="${true}"></c:set>
+</sec:authorize>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
@@ -55,7 +59,14 @@
                             <c:forEach var="user" items="${userList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
-                                    <td>${user.inventoryuser}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${system}">
+                                                <a href="${pageContext.request.contextPath}/user/store?userId=${user.userId}">${user.inventoryuser}</a>
+                                            </c:when>
+                                            <c:otherwise>  ${user.inventoryuser}</c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td>${user.storeName}</td>
                                     <td>${user.userType}</td>
                                     <td><c:if test="${user.enable eq true}"><span

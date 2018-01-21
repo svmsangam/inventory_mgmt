@@ -173,6 +173,7 @@
                     <!-- /.box -->
                 </div>
             </div>
+        </div>
     </section>
 
     <div class="modal fade" id="modal-view">
