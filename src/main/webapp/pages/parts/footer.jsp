@@ -279,10 +279,13 @@ immediately after the control sidebar -->
     <%--js socket--%>
     <script src="${pageContext.request.contextPath}/resources/js/socket/sockjs.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/socket/stomp.min.js"></script>
-
+<input type="hidden" id="key" value="${pageContext.request.userPrincipal.name}">
     <script>
         $(document).ready(function () {
-            connect("dhirajbadu");
+
+            var key = $("#key").val();
+
+            connect(key);
         })
     </script>
 </sec:authorize>

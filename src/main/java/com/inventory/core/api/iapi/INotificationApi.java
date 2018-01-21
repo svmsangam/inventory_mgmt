@@ -22,5 +22,5 @@ public interface INotificationApi {
 
     void send(NotificationDTO notificationDTO, String receiverKey);
 
-    void send(String notification, String receiverKey);
+    void send(String notification, long storeInfoId);
 }

@@ -103,7 +103,9 @@ public class NotificationApi implements INotificationApi{
     }
 
     @Override
-    public void send(String notification, String receiverKey) {
-        messagingTemplate.convertAndSend("/topic/notification/" + receiverKey, notification);
+    public void send(String notification, long storeInfoId) {
+        User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(storeInfoId);
+
+        messagingTemplate.convertAndSend("/topic/notification/" + superAdmin.getUsername(), notification);
     }
 }
