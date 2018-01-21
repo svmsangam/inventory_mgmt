@@ -223,7 +223,7 @@ immediately after the control sidebar -->
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue'
-        })
+        });
 
         $('.datepicker').datepicker({
             autoclose: true,

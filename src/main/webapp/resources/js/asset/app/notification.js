@@ -13,7 +13,8 @@ function connect(secretKey) {
         stompClient.subscribe('/topic/notification/'+secretKey, function(messageOutput) {
 
             console.log(messageOutput.body);
-            notifyMe(messageOutput.body)
+            setNotification(messageOutput.body);
+            notifyMe(messageOutput.body);
         });
 
     });
@@ -50,3 +51,34 @@ function notifyMe(msg) {
      }
 
 }
+
+function setNotification(msg) {
+
+    console.log(msg);
+
+    var body = msg;
+
+    var url = "http://localhost:8081/";
+
+    var row = "<li>";
+
+    if(url !== undefined){
+        if(url !== null){
+            row += "<a href='" +url+ "'>";
+        }else {
+            row += "<a href='#'>";
+        }
+    }else {
+        row += "<a href='#'>";
+    }
+
+
+    row += "" + body;
+
+    row += " </a></li>";
+
+    $(".notification").prepend(row);
+
+    updateCount(1);
+}
+
