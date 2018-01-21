@@ -1,11 +1,65 @@
+
+<script>
+
+
+function countNotification() {
+    $.get("${pageContext.request.contextPath}/notification/count",function(data, status){
+        console.log("counted successfully." + status);
+
+        if(status === "success"){
+            setCount(data);
+        }
+
+    });
+}
+
+function setCount(data) {
+    $(".countNotificationHeader").text(data.message);
+
+    $(".countNotification").text("You have " + data.message + " notifications");
+
+    $.each(data.detail , function (i, v) {
+        var row = "<li>";
+
+        if(v.url !== undefined){
+            if(v.url !== null){
+                row += "<a href='${pageContext.request.contextPath}" +v.url+ "'>";
+            }else{
+                row += "<a href='#'>";
+            }
+
+        } else {
+            row += "<a href='#'>";
+        }
+
+
+        row += "" + v.body;
+
+        row += " </a></li>";
+
+        $(".notification").prepend(row);
+    })
+}
+
+function updateCount(count){
+
+    var oldCount = $(".countNotificationHeader").text();
+
+    var newCount = parseInt(count) + parseInt(oldCount);
+
+    $(".countNotificationHeader").text(newCount);
+
+
+    $(".countNotification").text("You have " + newCount + " notifications");
+}
+
+$(document).ready( function () {
+    countNotification();// get total notification count
+});
+
+</script>
+
 <%--
-&lt;%&ndash;
-  Created by IntelliJ IDEA.
-  User: dhiraj
-  Date: 1/19/18
-  Time: 8:05 PM
-  To change this template use File | Settings | File Templates.
-&ndash;%&gt;
 
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-app.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-messaging4.6.2.js"></script>
