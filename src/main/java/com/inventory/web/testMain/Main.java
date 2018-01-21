@@ -5,7 +5,13 @@ package com.inventory.web.testMain;
  */
 public class Main {
     public static void main(String ars[]) {
-        Test test = new Test();
-        test.transactional();
+
+       /* String uid = "some-uid";
+
+        String customToken = FirebaseAuth.getInstance().createCustomToken(uid);
+
+        System.out.println(customToken);*/
+
+        // [START custom_token]
     }
 }

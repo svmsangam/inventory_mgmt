@@ -1,5 +1,6 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.INotificationApi;
 import com.inventory.core.api.iapi.IUnitInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -12,11 +13,9 @@ import com.inventory.web.error.UnitInfoError;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
-import com.sun.deploy.net.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -46,6 +45,9 @@ public class UnitController {
 
     @Autowired
     private UnitInfoValidation unitInfoValidation;
+
+    @Autowired
+    private INotificationApi notificationApi;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -174,6 +176,8 @@ public class UnitController {
                 }
 
                 unitInfoApi.save(unitInfoDTO);
+
+                notificationApi.send(unitInfoDTO.getName() + " created" , currentUser.getInventoryuser());
             }
 
         } catch (Exception e) {

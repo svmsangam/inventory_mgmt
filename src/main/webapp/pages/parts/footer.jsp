@@ -274,6 +274,17 @@ immediately after the control sidebar -->
 
 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
     <%@include file="/pages/notification/script/script.jsp" %>
+    <%--js notification--%>
+    <script src="${pageContext.request.contextPath}/resources/js/asset/app/notification.js"></script>
+    <%--js socket--%>
+    <script src="${pageContext.request.contextPath}/resources/js/socket/sockjs.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/socket/stomp.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            connect("dhirajbadu");
+        })
+    </script>
 </sec:authorize>
 
 </body>

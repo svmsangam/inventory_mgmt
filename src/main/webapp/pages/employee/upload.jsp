@@ -33,7 +33,6 @@
                             <div class="form-group">
                                 <label class="control-label">Image &nbsp;<small>( max size 1 mb )</small></label>
                                 <input type="file" class="form-control" name="file" placeholder="image" required>
-
                             </div>
 
                         </div>

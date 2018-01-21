@@ -1,7 +1,6 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.INotificationApi;
-import com.inventory.core.api.iapi.IPushNotification;
 import com.inventory.core.model.converter.NotificationConverter;
 import com.inventory.core.model.dto.NotificationDTO;
 import com.inventory.core.model.entity.Notification;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +32,10 @@ public class NotificationApi implements INotificationApi{
     private NotificationConverter notificationConverter;
 
     @Autowired
-    private IPushNotification pushNotification;
+    private StoreUserInfoRepository storeUserInfoRepository;
 
     @Autowired
-    private StoreUserInfoRepository storeUserInfoRepository;
+    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     public NotificationDTO saveAndSendForSuperAdmin(String title, String body, String url , long storeInfoId) {
@@ -63,9 +63,9 @@ public class NotificationApi implements INotificationApi{
 
         NotificationDTO notificationDTO = notificationConverter.convertToDto(notification);
 
-        if (notification.getTo().getFcmKey() != null) {
+       /* if (notification.getTo().getFcmKey() != null) {
             pushNotification.sent(notificationDTO);
-        }
+        }*/
 
         return notificationDTO;
     }
@@ -93,5 +93,17 @@ public class NotificationApi implements INotificationApi{
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));
+    }
+
+
+
+    @Override
+    public void send(NotificationDTO notificationDTO, String receiverKey) {
+        messagingTemplate.convertAndSend("/topic/notification/" + receiverKey, notificationDTO);
+    }
+
+    @Override
+    public void send(String notification, String receiverKey) {
+        messagingTemplate.convertAndSend("/topic/notification/" + receiverKey, notification);
     }
 }

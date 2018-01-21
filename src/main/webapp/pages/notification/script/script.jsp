@@ -1,10 +1,11 @@
 <%--
+&lt;%&ndash;
   Created by IntelliJ IDEA.
   User: dhiraj
   Date: 1/19/18
   Time: 8:05 PM
   To change this template use File | Settings | File Templates.
---%>
+&ndash;%&gt;
 
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-app.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/firebase/firebase-messaging4.6.2.js"></script>
@@ -216,3 +217,4 @@ $(document).ready( function () {
 
 </script>
 
+--%>
