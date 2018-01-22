@@ -5,20 +5,57 @@ var socket = null;
 var stompClient = null;
 
 function connect(secretKey) {
-    socket = new SockJS("/webSocket");
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame) {
 
-        console.log('Connected: ' + frame + " : " + secretKey);
-        stompClient.subscribe('/topic/notification/'+secretKey, function(messageOutput) {
+    if (checkConnection() === false) {
 
-            console.log(messageOutput.body);
-            setNotification(messageOutput.body);
-            notifyMe(messageOutput.body);
+        console.log("new connection");
+
+        socket = new SockJS("/webSocket");
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+
+            console.log('Connected: ' + frame + " : " + secretKey);
+            stompClient.subscribe('/topic/notification/' + secretKey, function (messageOutput) {
+                stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
+                    'checker' : messageOutput.body
+                }));
+                console.log(messageOutput.body);
+                setNotification(messageOutput.body);
+                notifyMe(messageOutput.body);
+            });
+
         });
 
-    });
+    } else {
+        console.log("already connected");
+    }
 
+}
+
+function checkConnection() {
+
+    if (stompClient === undefined){
+        return false;
+    } else {
+
+        if (stompClient === null){
+            return false;
+        }
+        else if (stompClient.connected === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+function sendMessage(secretKey) {
+    var text = "ping";
+    console.log("sending");
+    stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
+        'checker' : JSON.parse(greeting.body).content
+    }));
 }
 
 

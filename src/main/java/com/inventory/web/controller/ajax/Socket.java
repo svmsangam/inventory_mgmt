@@ -18,7 +18,7 @@ public class Socket {
     @MessageMapping("/websocket")
     //@SendTo("/topic/messages/")
     public void sendMessage(){
-//	System.out.println("reciever "+message.getTo());
+//	System.out.println("reciever "+message.getTo());/app/isContactOnline/
         messagingTemplate.convertAndSend("/topic/notification/"+"dhirajbadu", "hello");
 
     }
@@ -28,6 +28,12 @@ public class Socket {
 //	System.out.println("reciever "+message.getTo());
         messagingTemplate.convertAndSend("/topic/notification/"+"dhirajbadu", "hello");
 
+    }
+
+    @MessageMapping("/app/isContactOnline/")
+    public void check(String chatMessageDto){
+
+        System.out.println("hello " + chatMessageDto);
     }
 
 }
