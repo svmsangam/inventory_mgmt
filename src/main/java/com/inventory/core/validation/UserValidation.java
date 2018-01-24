@@ -95,9 +95,11 @@ public class UserValidation extends GlobalValidation {
         if (UserType.ADMIN.equals(userDto.getUserType())) {
             List<User> userList = userRepository.findAllByUserTypeAndStoreInfo_Id(UserType.ADMIN, userDto.getStoreId());
 
-            if (userList != null | !userList.isEmpty()) {
-                valid = false;
-                error.setUserType("user admin already exist for this store");
+            if (userList != null ) {
+                if(!userList.isEmpty()) {
+                    valid = false;
+                    error.setUserType("user admin already exist for this store");
+                }
             }
         }
 
