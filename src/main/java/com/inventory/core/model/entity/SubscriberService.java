@@ -15,7 +15,7 @@ public class SubscriberService extends AbstractEntity<Long>{
     @ManyToOne(fetch = FetchType.LAZY)
     private Subscriber subscriber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ServiceInfo serviceInfo;
 
     private boolean selected;
@@ -24,4 +24,44 @@ public class SubscriberService extends AbstractEntity<Long>{
     private Date expireOn;
 
     private Status status;
+
+    public Subscriber getSubscriber() {
+        return subscriber;
+    }
+
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
+    }
+
+    public ServiceInfo getServiceInfo() {
+        return serviceInfo;
+    }
+
+    public void setServiceInfo(ServiceInfo serviceInfo) {
+        this.serviceInfo = serviceInfo;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public Date getExpireOn() {
+        return expireOn;
+    }
+
+    public void setExpireOn(Date expireOn) {
+        this.expireOn = expireOn;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
