@@ -2,6 +2,7 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.ServiceDTO;
 import com.inventory.core.model.entity.ServiceInfo;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class ServiceConverter implements IListConvertable<ServiceInfo , ServiceD
 
         entity.setExpireDays(dto.getExpireDays());
         entity.setRate(dto.getRate());
-        entity.setStatus(dto.getStatus());
+        entity.setStatus(Status.ACTIVE);
         entity.setTotalStore(dto.getTotalStore());
         entity.setTitle(dto.getTitle());
 
