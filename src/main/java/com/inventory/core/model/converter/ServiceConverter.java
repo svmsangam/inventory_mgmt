@@ -35,6 +35,7 @@ public class ServiceConverter implements IListConvertable<ServiceInfo , ServiceD
         dto.setServiceId(entity.getId());
         dto.setStatus(entity.getStatus());
         dto.setTotalStore(entity.getTotalStore());
+        dto.setTitle(entity.getTitle());
 
         return dto;
     }
@@ -50,6 +51,7 @@ public class ServiceConverter implements IListConvertable<ServiceInfo , ServiceD
         entity.setRate(dto.getRate());
         entity.setStatus(dto.getStatus());
         entity.setTotalStore(dto.getTotalStore());
+        entity.setTitle(dto.getTitle());
 
         return entity;
     }

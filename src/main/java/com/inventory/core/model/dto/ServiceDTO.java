@@ -9,6 +9,8 @@ public class ServiceDTO {
 
     private long serviceId;
 
+    private String title;
+
     private int totalStore;
 
     private int expireDays;
@@ -16,6 +18,14 @@ public class ServiceDTO {
     private double rate;
 
     private Status status;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public long getServiceId() {
         return serviceId;

@@ -12,6 +12,8 @@ import javax.persistence.Table;
 @Table(name = "sevice_table")
 public class ServiceInfo extends AbstractEntity<Long>{
 
+    private String title;
+
     private int totalStore;
 
     private int expireDays;
@@ -19,6 +21,14 @@ public class ServiceInfo extends AbstractEntity<Long>{
     private double rate;
 
     private Status status;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public int getTotalStore() {
         return totalStore;

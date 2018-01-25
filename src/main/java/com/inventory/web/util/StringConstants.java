@@ -78,6 +78,10 @@ public class StringConstants {
     public static String PRODUCT = "product";
     public static String PRODUCT_ERROR = "productError";
 
+    public static String SERVICE_LIST = "serviceList";
+    public static String SERVICE = "service";
+    public static String SERVICE_ERROR = "serviceError";
+
     public static String ITEM_LIST = "itemList";
     public static String ITEM = "item";
     public static String ITEM_ERROR = "itemError";
