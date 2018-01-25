@@ -69,7 +69,9 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${system}">
-                                                    <a href="${pageContext.request.contextPath}/user/store?userId=${user.userId}">${user.inventoryuser}</a>
+                                                    <%--<a href="${pageContext.request.contextPath}/user/store?userId=${user.userId}">${user.inventoryuser}</a>--%>
+                                                    <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${user.userId}">${user.inventoryuser}</a>
+
                                                 </c:when>
                                                 <c:otherwise>  ${user.inventoryuser}</c:otherwise>
                                             </c:choose>
