@@ -37,8 +37,9 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">SYSTEM HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-link"></i> <span>User</span></a>
-            </li>
+            <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-user-circle-o"></i> <span>Subscriber</span></a></li>
+
+            <li><a href="${pageContext.request.contextPath}/service/list"><i class="fa fa-server"></i> <span>Service</span></a></li>
             <%--<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
