@@ -16,7 +16,7 @@ import java.util.List;
  * Created by dhiraj on 8/17/17.
  *//*
 
-@Service
+@ServiceInfo
 public class SessionInfo {
 
     @Autowired

@@ -82,7 +82,7 @@ public class UserController {
 
                 modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeIn(Status.ACTIVE, userTypeList));
 
-                return "user/listUser";
+                return "user/list";
 
             } else if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 

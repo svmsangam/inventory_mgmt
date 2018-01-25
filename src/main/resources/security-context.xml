@@ -123,7 +123,7 @@
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>-->
 
-    <!-- Default token Service using JDBC token store-->
+    <!-- Default toServiceInfovice using JDBC token store-->
     <beans:bean id="defaultTokenService" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <beans:property name="tokenStore" ref="jdbcTokenStore"/>
         <beans:property name="refreshTokenValiditySeconds" value="0"/>
@@ -133,7 +133,7 @@
         <beans:property name="clientDetailsService" ref="jdbcClientDetailsService"/>
     </beans:bean>
 
-    <!-- JDBC Client Details Service -->
+    <!-- JDBC Client DetaServiceInfovice -->
     <beans:bean id="jdbcClientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
@@ -191,7 +191,7 @@
         <beans:property name="requestFactory" ref="oauth2RequestFactory"/>
     </beans:bean>
 
-    <!-- JDBC Client Details Service -->
+    <!-- JDBC Client DetaServiceInfovice -->
     <!--<beans:bean id="jdbcClientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>-->
@@ -201,7 +201,7 @@
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
 
-    <!-- Default token Service using JDBC token store-->
+    <!-- Default toServiceInfovice using JDBC token store-->
     <!--<beans:bean id="defaultTokenService" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <beans:property name="tokenStore" ref="jdbcTokenStore"/>
         <beans:property name="refreshTokenValiditySeconds" value="0"/>
