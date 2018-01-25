@@ -30,6 +30,10 @@ public class SubscriberDTO {
 
     private String street;
 
+    private long serviceId;
+
+    private String password;
+
     private long userId;
 
     private String username;
@@ -152,5 +156,21 @@ public class SubscriberDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

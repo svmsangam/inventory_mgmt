@@ -12,6 +12,7 @@ import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.StoreUserInfoRepository;
 import com.inventory.core.model.repository.UserPermissionRepository;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.core.util.Authorities;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,14 +47,30 @@ public class UserApi implements IUserApi {
     private StoreUserInfoRepository storeUserInfoRepository;
 
     @Override
+    public long save(String username , String password){
+
+        User entity = new User();
+
+        entity.setUsername(username.trim().toLowerCase());
+        entity.setStatus(Status.ACTIVE);
+        entity.setUserType(UserType.SUPERADMIN);
+        entity.setEnabled(true);
+        entity.setAuthority(Authorities.SUPERADMIN + "," + Authorities.AUTHENTICATED);
+        entity.setPassword(passwordEncoder.encode(password.trim()));
+
+        entity = userRepository.save(entity);
+
+        return entity.getId();
+
+    }
+
+    @Override
     public long getTotalUserByStoreInfoAndStatus(long storeInfoId, Status status) {
         return userRepository.countAllByStoreInfoAndStatus(storeInfoId , status);
     }
 
     @Override
     public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
-
-        userDTO.setEnable(false);
 
         User user = userConverter.convertToEntity(userDTO);
 

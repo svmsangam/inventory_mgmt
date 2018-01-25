@@ -82,6 +82,10 @@ public class StringConstants {
     public static String SERVICE = "service";
     public static String SERVICE_ERROR = "serviceError";
 
+    public static String SUBSCRIBER_LIST = "subscriberList";
+    public static String SUBSCRIBER = "subscriber";
+    public static String SUBSCRIBER_ERROR = "subscriberError";
+
     public static String ITEM_LIST = "itemList";
     public static String ITEM = "item";
     public static String ITEM_ERROR = "itemError";

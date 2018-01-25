@@ -64,7 +64,6 @@ public class UserConverter implements IConvertable<User, InvUserDTO>, IListConve
 
         entity.setUsername(dto.getInventoryuser().trim());
         entity.setStatus(Status.ACTIVE);
-        entity.setEnabled(dto.getEnable());
         if (dto.getStoreId() != null) {
             entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreId()));
         }

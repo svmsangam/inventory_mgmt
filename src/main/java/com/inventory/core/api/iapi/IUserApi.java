@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface IUserApi {
 
+    long save(String username, String password);
+
     long getTotalUserByStoreInfoAndStatus(long storeInfoId , Status status);
 
     InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException;
