@@ -19,6 +19,7 @@ public class Subscriber extends AbstractEntity<Long>{
 
     private String email;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private CityInfo cityInfo;
 
     private String street;

@@ -34,8 +34,7 @@
 
                                <div class="col-md-4 form-group">
                                    <label class="control-label">User Name *</label>
-                                   <input type="text" class="form-control" name="inventoryuser" id="inventoryuser"
-                                          placeholder="Name" required="required"/>
+                                   <input type="text" class="form-control" name="username" placeholder="Name" required="required"/>
                                    <p class="form-error inventoryuser"></p>
                                </div>
 

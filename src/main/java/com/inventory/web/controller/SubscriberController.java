@@ -131,11 +131,12 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
-        return "redirect:subscriber/show?subscriber=" + subscriberDTO.getSubscriberId();
+        return "redirect:/show?subscriberId=" + subscriberDTO.getSubscriberId();
     }
 
     @GetMapping(value = "/show")

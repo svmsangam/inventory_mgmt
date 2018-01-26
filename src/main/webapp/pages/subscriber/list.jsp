@@ -53,52 +53,23 @@
                                 <thead>
                                 <tr>
                                     <th>SN</th>
+                                    <th>Full Name</th>
                                     <th>Username</th>
-                                    <th>Store</th>
-                                    <th>UserType</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                    <th>Manage</th>
+                                    <th>Mobile</th>
+                                    <th>City</th>
                                 </tr>
                                 </thead>
                                 <tbody id="myData">
-                                <c:forEach var="user" items="${userList}" varStatus="i">
+                                <c:forEach var="subscriber" items="${subscriberList}" varStatus="i">
                                     <tr>
                                         <td>${i.index + 1}</td>
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${system}">
-                                                    <%--<a href="${pageContext.request.contextPath}/user/store?userId=${user.userId}">${user.inventoryuser}</a>--%>
-                                                    <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${user.userId}">${user.inventoryuser}</a>
+                                            <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${subscriber.subscriberId}">${subscriber.fullName}</a>
 
-                                                </c:when>
-                                                <c:otherwise>  ${user.inventoryuser}</c:otherwise>
-                                            </c:choose>
                                         </td>
-                                        <td>${user.storeName}</td>
-                                        <td>${user.userType}</td>
-                                        <td><c:if test="${user.enable eq true}"><span
-                                                class="label label-success">Activated</span></c:if><c:if
-                                                test="${user.enable eq false}"><span
-                                                class="label label-danger">Deactivated</span></c:if></td>
-                                        <td>
-                                            <c:if test="${user.enable eq true}"><a
-                                                    href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}"
-                                                    onclick="return confirm('Are you sure you want to Deactivate?')"><span
-                                                    class="label label-danger">Deactivate ?</span></a></c:if>
-
-                                            <c:if test="${user.enable eq false}"><a
-                                                    href="${pageContext.request.contextPath}/user/updateenable?userId=${user.userId}"
-                                                    onclick="return confirm('Are you sure you want to Activate?')"><span
-                                                    class="label label-success">Activate ?</span></a></c:if>
-                                        </td>
-                                        <td>
-                                            <c:if test="${user.userType eq 'USER' and user.enable eq true}">
-                                                <a class="btn btn-xs bg-purple" href="${pageContext.request.contextPath}/user/manage?userId=${user.userId}">
-                                                    <i class="fa fa-cogs"></i> Manage
-                                                </a>
-                                            </c:if>
-                                        </td>
+                                        <td>${subscriber.username}</td>
+                                        <td>${subscriber.mobile}</td>
+                                        <td>${subscriber.cityName}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
