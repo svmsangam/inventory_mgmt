@@ -144,7 +144,7 @@
     <security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/test"	access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" requires-channel="any" />
         <security:intercept-url pattern="/admin/**"	access="hasRole('ROLE_ADMINISTRATOR,ROLE_AUTHENTICATED')" requires-channel="any" />
-        <security:form-login login-page="/login"	authentication-failure-url="/login?error=true" authentication-success-handler-ref="successHandler" />
+        <security:form-login login-page="/login" authentication-failure-url="/login?error=true"  authentication-success-handler-ref="successHandler" />
         <security:logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID" invalidate-session="true" />
 
         <!--<security:csrf/>-->
