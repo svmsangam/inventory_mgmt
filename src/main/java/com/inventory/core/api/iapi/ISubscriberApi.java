@@ -3,6 +3,7 @@ package com.inventory.core.api.iapi;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.enumconstant.Status;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface ISubscriberApi {
 
-    SubscriberDTO save(SubscriberDTO subscriberDTO);
+    SubscriberDTO save(SubscriberDTO subscriberDTO) throws ParseException;
 
     SubscriberDTO show(Status status , long subscribId);
 
