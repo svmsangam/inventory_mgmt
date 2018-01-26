@@ -27,7 +27,7 @@
                         <h3 class="box-title">Add Subscriber</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/subscriber/save" method="post" modelAttribute="unit" >
+                    <form action="${pageContext.request.contextPath}/subscriber/save" method="post" modelAttribute="subscriber" >
                         <div class="box-body">
 
                            <div class="row">
@@ -50,6 +50,9 @@
                                    <label class="control-label">Service *</label>
                                    <select class="form-control" name="serviceId" required>
                                        <option value="0">select service</option>
+                                       <c:forEach items="${serviceList}" var="serviceInfo">
+                                           <option value="${serviceInfo.serviceId}">${serviceInfo.title}</option>
+                                       </c:forEach>
                                    </select>
                                    <p class="form-error"></p>
                                </div>
@@ -90,6 +93,9 @@
                                     <label class="control-label">City *</label>
                                     <select class="form-control" name="cityInfoId" required>
                                         <option value="0">select city</option>
+                                        <c:forEach items="${cityList}" var="city">
+                                            <option value="${city.cityId}">${city.cityName}</option>
+                                        </c:forEach>
                                     </select>
                                     <p class="form-error userpassword"></p>
                                 </div>

@@ -1,5 +1,7 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.ICityInfoApi;
+import com.inventory.core.api.iapi.IServiceInfoApi;
 import com.inventory.core.api.iapi.ISubscriberApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -14,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -36,6 +35,12 @@ public class SubscriberController {
 
     @Autowired
     private ISubscriberApi subscriberApi;
+
+    @Autowired
+    private IServiceInfoApi serviceInfoApi;
+
+    @Autowired
+    private ICityInfoApi cityInfoApi;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -88,6 +93,9 @@ public class SubscriberController {
 
             /*current user checking end*/
 
+            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+
         } catch (Exception e) {
 
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
@@ -97,7 +105,7 @@ public class SubscriberController {
         return "subscriber/add";
     }
 
-    @GetMapping(value = "/save")
+    @PostMapping(value = "/save")
     public String save(@ModelAttribute("subscriber")SubscriberDTO subscriberDTO , ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
