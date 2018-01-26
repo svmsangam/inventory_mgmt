@@ -17,5 +17,7 @@ public interface SubscriberRepository extends JpaRepository<Subscriber , Long> {
 
     Subscriber findById(long subscriberId);
 
+    Subscriber findByUser_Id(long userId);
+
     List<Subscriber> findAllByStatus(Status status);
 }

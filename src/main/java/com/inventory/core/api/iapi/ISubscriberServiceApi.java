@@ -15,5 +15,7 @@ public interface ISubscriberServiceApi {
 
     SubscriberServiceDTO getSelected(long subscriberId);
 
+    SubscriberServiceDTO getSelectedByUserId(long userId);
+
     List<SubscriberServiceDTO> list(Status status, long subscriberId);
 }

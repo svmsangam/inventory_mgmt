@@ -4,11 +4,13 @@ import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.model.converter.ServiceConverter;
 import com.inventory.core.model.converter.SubscriberServiceConverter;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
+import com.inventory.core.model.entity.StoreUserInfo;
+import com.inventory.core.model.entity.Subscriber;
 import com.inventory.core.model.entity.SubscriberService;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.model.repository.ServiceRepository;
-import com.inventory.core.model.repository.SubscriberRepository;
-import com.inventory.core.model.repository.SubscriberServiceRepository;
+import com.inventory.core.model.enumconstant.UserType;
+import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,15 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
 
     @Autowired
     private SubscriberServiceConverter subscriberServiceConverter;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SubscriberRepository subscriberRepository;
+
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
 
     @Override
     public void save(long serviceId , long subscriberId) throws ParseException {
@@ -70,6 +81,46 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
         return dto;
     }
 
+    @Override
+    public SubscriberServiceDTO getSelectedByUserId(long userId) {
+
+        User user = userRepository.findById(userId);
+
+        if (user.getUserType().equals(UserType.SYSTEM)){
+            return null;
+        }
+
+        if (user.getUserType().equals(UserType.SUPERADMIN)){
+
+            Subscriber subscriber = subscriberRepository.findByUser_Id(userId);
+
+            if (subscriber == null){
+                return null;
+            }
+            return getSelected(subscriber.getId());
+        }
+
+        if (user.getUserType().equals(UserType.ADMIN)){
+
+            User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(user.getStoreInfo().getId());
+
+            Subscriber subscriber = subscriberRepository.findByUser_Id(superAdmin.getId());
+
+            return getSelected(subscriber.getId());
+        }
+
+        if (user.getUserType().equals(UserType.USER)){
+
+            User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(user.getStoreInfo().getId());
+
+            Subscriber subscriber = subscriberRepository.findByUser_Id(superAdmin.getId());
+
+            return getSelected(subscriber.getId());
+        }
+
+        return null;
+    }
+
     private SubscriberService getSelectedEntity(long subscriberId){
 
         List<SubscriberService>  entities = subscriberServiceRepository.findAllByStatusAndSubscriber_IdAndSelected(Status.ACTIVE , subscriberId , true);
@@ -101,7 +152,7 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
         c.setTime(new Date()); // Now use today date.
-        c.add(Calendar.DATE, 5); // Adding 5 days
+        c.add(Calendar.DATE, days); // Adding 5 days
         String output = sdf.format(c.getTime());
 
         Date expireDate = sdf.parse(output);

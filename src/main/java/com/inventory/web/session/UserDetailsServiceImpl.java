@@ -1,7 +1,9 @@
 package com.inventory.web.session;
 
+import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserRepository userRepository;
+
+	@Autowired
+	private ISubscriberServiceApi subscriberServiceApi;
 
 	public UserDetailsServiceImpl(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -37,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (u == null) {
 			throw new UsernameNotFoundException("user doesnt exists");
 		}
-		return new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString());
+		return new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString() , userRepository , subscriberServiceApi);
 	}
 
 }
