@@ -65,7 +65,6 @@
                                         <td>${i.index + 1}</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${subscriber.subscriberId}">${subscriber.fullName}</a>
-
                                         </td>
                                         <td>${subscriber.username}</td>
                                         <td>${subscriber.mobile}</td>

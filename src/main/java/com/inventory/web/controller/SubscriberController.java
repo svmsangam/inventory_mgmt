@@ -1,9 +1,6 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.ICityInfoApi;
-import com.inventory.core.api.iapi.IServiceInfoApi;
-import com.inventory.core.api.iapi.ISubscriberApi;
-import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.enumconstant.Permission;
@@ -41,6 +38,9 @@ public class SubscriberController {
 
     @Autowired
     private ICityInfoApi cityInfoApi;
+
+    @Autowired
+    private IStoreUserInfoApi storeUserInfoApi;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -160,10 +160,19 @@ public class SubscriberController {
 
         /*current user checking end*/
 
-        modelMap.put(StringConstants.SUBSCRIBER , subscriberApi.show(Status.ACTIVE , subscriberId));
+        SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE , subscriberId);
+
+        if (subscriberDTO == null){
+            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+
+            return "redirect:/subscriber/list";
+        }
+        modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
+        modelMap.put(StringConstants.STORE_LIST , storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }

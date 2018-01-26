@@ -52,8 +52,8 @@ public class SubscriberConverter implements IListConvertable<Subscriber , Subscr
         dto.setMobile(entity.getMobile());
         dto.setStatus(entity.getStatus());
         dto.setStreet(entity.getStreet());
-        dto.setSubscriberId(entity.getUser().getId());
-        dto.setUserId(entity.getId());
+        dto.setSubscriberId(entity.getId());
+        dto.setUserId(entity.getUser().getId());
         dto.setUsername(entity.getUser().getUsername());
 
         return dto;
