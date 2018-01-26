@@ -96,7 +96,7 @@ public class OrderInfoController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -168,7 +168,7 @@ public class OrderInfoController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -218,7 +218,7 @@ public class OrderInfoController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -304,7 +304,7 @@ public class OrderInfoController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -354,7 +354,7 @@ public class OrderInfoController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -420,6 +420,13 @@ public class OrderInfoController {
                 return "redirect:/";//store not assigned page
             }
 
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
         /*current user checking end*/
 
             if (orderId == null) {
@@ -477,6 +484,13 @@ public class OrderInfoController {
             if (currentUser.getStoreId() == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
                 return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
         /*current user checking end*/
@@ -587,65 +601,6 @@ public class OrderInfoController {
             return "redirect:/";
         }
         return "order/showSale";
-    }
-
-    @GetMapping(value = "/purchaseorder/list")
-    public String listPurchase(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
-        return "orderRequest/listSale";
-    }
-
-    @GetMapping(value = "/addpurchase")
-    public String addOnPurchase(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-            return "orderRequest/addPurchase";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-    }
-
-
-    @PostMapping(value = "/savepurchase")
-    public String saveOnPurchase(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-        return "redirect:/order/";
-    }
-
-    @GetMapping(value = "/edit")
-    public String edit() {
-
-        return "redirect:/orderRequest/listSale";
-    }
-
-    @PostMapping(value = "/update")
-    public String update() {
-
-        return "redirect:/orderRequest/listSale";
-    }
-
-    @GetMapping(value = "/delete")
-    public String delete() {
-
-        return "redirect:/orderRequest/listSale";
     }
 }
 

@@ -100,7 +100,7 @@ public class InvoiceController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -183,7 +183,7 @@ public class InvoiceController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -254,7 +254,7 @@ public class InvoiceController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -328,7 +328,7 @@ public class InvoiceController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
@@ -373,66 +373,6 @@ public class InvoiceController {
         return "invoice/show";
     }
 
-    /*@GetMapping(value = "/add")
-    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-
-        return "invoice/add";
-    }
-
-    @PostMapping(value = "/save")
-    public String save(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
-        return "redirect:/invoice/";
-    }
-
-    @PostMapping(value = "/generate")
-    public String generate(ModelMap modelMap, @RequestParam("orderId") Long orderId, RedirectAttributes redirectAttributes) {
-
-
-        return "invoice/generate";
-    }
-
-    @PostMapping(value = "/custom")
-    public String saveCustom(ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
-        return "redirect:/invoice/";
-    }
-
-    @GetMapping(value = "/edit")
-    public String edit() {
-
-        return "redirect:/invoice/listSale";
-    }
-
-*/
-    @PostMapping(value = "/payment")
-    public String updatePayment(RedirectAttributes redirectAttributes) {
-
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
-        return "redirect:/invoice/";
-    }
 
     @GetMapping(value = "/pdf")
     public void pdf(@RequestParam("invoiceId") Long invoiceId, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {

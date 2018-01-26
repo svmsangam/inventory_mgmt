@@ -74,7 +74,7 @@ public class LedgerController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
         /*current user checking end*/
@@ -146,7 +146,7 @@ public class LedgerController {
 
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
-                return "redirect:/";//store not assigned page
+                return "redirect:/fiscalyear/add";//store not assigned page
             }
 
 
