@@ -1,9 +1,12 @@
 package com.inventory.core.validation;
 
+import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.model.dto.StoreInfoDTO;
+import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.StoreUserInfoRepository;
 import com.inventory.web.error.StoreInfoError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +32,17 @@ public class StoreInfoValidation extends GlobalValidation {
     @Autowired
     private CityInfoRepository cityInfoRepository;
 
+    @Autowired
+    private ISubscriberServiceApi subscriberServiceApi;
+
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
+
     StoreInfoError error = new StoreInfoError();
 
     boolean valid;
 
-    public StoreInfoError onSave(StoreInfoDTO storeInfoDTO, BindingResult result) {
+    public StoreInfoError onSave(StoreInfoDTO storeInfoDTO, BindingResult result , long currentUser) {
 
         valid = true;
 
@@ -78,7 +87,7 @@ public class StoreInfoValidation extends GlobalValidation {
         if (!("".equals(error.getName()))) {
             valid = false;
         } else {
-            checkStoreName(storeInfoDTO.getName().trim());
+            checkStoreName(storeInfoDTO.getName().trim() , currentUser);
         }
 
         error.setCityName(checkLong(storeInfoDTO.getCityId(), 1, "city", true));
@@ -246,8 +255,23 @@ public class StoreInfoValidation extends GlobalValidation {
         return error;
     }
 
-    private void checkStoreName(String name) {
+    private void checkStoreName(String name , long superAdminId) {
 
+       SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.getSelectedByUserId(superAdminId);
+
+       if (subscriberServiceDTO == null ){
+           valid = false;
+
+           error.setName("please subscribe any service");
+       }
+
+       long count = storeUserInfoRepository.countAllByUserAndStatus(superAdminId , Status.ACTIVE);
+
+       if (subscriberServiceDTO.getServiceInfo().getTotalStore() <= count){
+           valid = false;
+
+           error.setName("you reached maximum store capacity");
+       }
         if (storeInfoRepository.findByNameAndStatus(name, Status.ACTIVE) != null) {
             valid = false;
 

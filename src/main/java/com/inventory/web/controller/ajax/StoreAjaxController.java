@@ -67,7 +67,7 @@ public class StoreAjaxController {
                 synchronized (this.getClass()) {
                     StoreInfoError error = new StoreInfoError();
 
-                    error = storeInfoValidation.onSave(storeInfoDTO, bindingResult);
+                    error = storeInfoValidation.onSave(storeInfoDTO, bindingResult , currentUser.getUserId());
 
                     if (error.isValid()) {
 
