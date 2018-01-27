@@ -78,7 +78,7 @@ public class SubCategoryInfoValidation extends GlobalValidation {
 
             valid = false;
 
-            error.setName("this code already in use");
+            error.setCode("this code already in use");
         }
 
         error.setDescription(checkString(subCategoryInfoDTO.getDescription(), 5, 100, "description", false));

@@ -32,19 +32,19 @@
 
                             <div class="form-group">
                                 <label class="control-label">Name</label>
-                                <input type="text" class="form-control" value="${category.name}" name="name" placeholder="Name">
+                                <input type="text" class="form-control" value="${category.name}" name="name" placeholder="Name" required>
                                 <p class="form-error">${categoryError.name}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Code</label>
-                                <input type="text" class="form-control" value="${category.code}" name="code" placeholder="code">
+                                <input type="text" class="form-control" value="${category.code}" name="code" placeholder="code" required>
                                 <p class="form-error">${categoryError.code}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Description</label>
-                                <input type="text" class="form-control" value="${category.description}" name="description" placeholder="code">
+                                <input type="text" class="form-control" value="${category.description}" name="description" placeholder="description">
                                 <p class="form-error">${categoryError.description}</p>
                             </div>
 

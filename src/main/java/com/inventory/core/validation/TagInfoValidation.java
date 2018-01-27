@@ -70,7 +70,7 @@ public class TagInfoValidation extends GlobalValidation {
 
             valid = false;
 
-            error.setName("this code already in use");
+            error.setCode("this code already in use");
         }
 
         error.setValid(valid);

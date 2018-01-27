@@ -172,7 +172,7 @@ public class UnitController {
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.UNIT_ERROR, error);
                     modelMap.put(StringConstants.UNIT, unitInfoDTO);
-                    return "tag/add";
+                    return "unit/add";
                 }
 
                 unitInfoApi.save(unitInfoDTO);

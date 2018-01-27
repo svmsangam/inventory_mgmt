@@ -53,7 +53,7 @@ public class CategoryInfoValidation extends GlobalValidation {
             return error;
         }
 
-        error.setName(checkString(categoryInfoDTO.getName(), 2, 30, "categoryName", true));
+        error.setName(checkString(categoryInfoDTO.getName(), 2, 50, "categoryName", true));
 
         if (!("".equals(error.getName()))) {
             valid = false;
@@ -64,7 +64,7 @@ public class CategoryInfoValidation extends GlobalValidation {
             error.setName("this name already in use");
         }
 
-        error.setCode(checkString(categoryInfoDTO.getCode(), 2, 20, "categoryCode", true));
+        error.setCode(checkString(categoryInfoDTO.getCode(), 2, 50, "categoryCode", true));
 
         if (!("".equals(error.getCode()))) {
             valid = false;
@@ -72,7 +72,7 @@ public class CategoryInfoValidation extends GlobalValidation {
 
             valid = false;
 
-            error.setName("this code already in use");
+            error.setCode("this code already in use");
         }
 
         error.setDescription(checkString(categoryInfoDTO.getDescription(), 5, 100, "description", false));

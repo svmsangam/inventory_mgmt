@@ -91,7 +91,7 @@ public class ProductInfoValidation extends GlobalValidation {
 
         try {
 
-            error.setName(checkString(value, 3, 20, "name", true));
+            error.setName(checkString(value, 3, 50, "name", true));
 
             if (!("".equals(error.getName()))) {
 
@@ -116,7 +116,7 @@ public class ProductInfoValidation extends GlobalValidation {
 
         try {
 
-            error.setCode(checkString(value, 1, 10, "code", true));
+            error.setCode(checkString(value, 1, 50, "code", true));
 
             if (!("".equals(error.getCode()))) {
 
