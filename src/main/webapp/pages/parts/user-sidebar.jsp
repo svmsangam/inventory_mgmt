@@ -26,7 +26,7 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
+     <%--   <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
@@ -34,7 +34,7 @@
               </button>
             </span>
             </div>
-        </form>
+        </form>--%>
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
@@ -48,6 +48,8 @@
             <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
+
+            <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
 
             <li class="treeview">
                 <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>

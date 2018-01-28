@@ -91,7 +91,6 @@
                 <!-- Optionally, you can add icons to the links -->
                 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
 
-                    <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/profile/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
@@ -129,8 +128,6 @@
 
                 <sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
 
-                    <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
-
                     <li><a href="${pageContext.request.contextPath}/state/list"><i class="fa fa-book"></i> <span>Employee</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
@@ -153,8 +150,6 @@
 
 
                 <sec:authorize access="hasRole('ROLE_USER')">
-
-                    <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
 
                     <li><a href="${pageContext.request.contextPath}/country/list"><i class="fa fa-globe"></i> <span>Country</span></a></li>
 
