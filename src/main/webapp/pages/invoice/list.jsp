@@ -61,7 +61,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Client Name</label>
-                                                    <select class="choose1 form-control" name="accountId"></select>
+                                                    <select class="choose1 form-control" name="clientId"></select>
                                                     <p class="form-error"></p>
                                                 </div>
                                             </div>
@@ -106,35 +106,35 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Amount Greater Than</label>
-                                                    <input type="number" class="form-control" placeholder="amount greater than">
+                                                    <input type="number" class="form-control" name="amountGt" placeholder="amount greater than">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Amount Less Than</label>
-                                                    <input type="number" class="form-control" placeholder="amount less than">
+                                                    <input type="number" class="form-control" name="amountLt" placeholder="amount less than">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Receivable Greater Than</label>
-                                                    <input type="number" class="form-control" placeholder="receivable greater than">
+                                                    <input type="number" class="form-control" name="receivableGt" placeholder="receivable greater than">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Receivable Less Than</label>
-                                                    <input type="number" class="form-control" placeholder="receivable less than">
+                                                    <input type="number" name="receivableLt" class="form-control" placeholder="receivable less than">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-3 pull-right" >
-                                                <button type="submit" class="btn btn-info btn-flat pull-right">Filter!</button>
+                                            <div class="col-md-4 pull-right" >
+                                                <button type="submit" class="btn btn-success btn-flat btn-block">Filter!</button>
                                             </div>
                                         </div>
 
