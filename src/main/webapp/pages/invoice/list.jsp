@@ -31,14 +31,13 @@
                     <div class="box-header">
                         <h3 class="box-title">Invoice List</h3>
                         <div class="box-tools">
-                            <a href="#" class="btn btn-success btn-sm btn-flat pull-right filter"><span class="glyphicon glyphicon-filter"></span> filter
-                            </a>
+                            <button class="btn btn-success btn-sm btn-flat pull-right filter" data-toggle="collapse" data-target="#filter"><span class="glyphicon glyphicon-filter"></span> filter</button>
                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <div class="row" id="filter">
+                        <div class="row collapse" id="filter" >
                             <div class="col-md-12">
                                 <form action="${pageContext.request.contextPath}/invoice/filter" method="GET">
                                     <div class="well well-sm">
@@ -294,8 +293,8 @@
 
 <script>
     $(document).ready(function () {
-        $(document).on("click" , ".filter" , function () {
+       /* $(document).on("click" , ".filter" , function () {
             $("#filter").collapse();
-        })
+        })*/
     })
 </script>
