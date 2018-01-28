@@ -4,7 +4,7 @@
 var socket = null;
 var stompClient = null;
 
-function connect(secretKey) {
+function connectToSocket(secretKey) {
 
     if (checkConnection() === false) {
 

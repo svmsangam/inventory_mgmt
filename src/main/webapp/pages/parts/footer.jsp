@@ -286,7 +286,11 @@ immediately after the control sidebar -->
 
             var key = $("#key").val();
 
-            connect(key);
+            try {
+                connectToSocket(key);
+            }catch (e){
+                console.log(e);
+            }
         })
     </script>
 </sec:authorize>

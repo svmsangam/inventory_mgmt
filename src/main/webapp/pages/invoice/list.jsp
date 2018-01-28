@@ -30,79 +30,115 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Invoice List</h3>
-                       <%-- <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> New Order
+                        <div class="box-tools">
+                            <a href="#" class="btn btn-success btn-sm btn-flat pull-right filter"><span class="glyphicon glyphicon-filter"></span> filter
                             </a>
-                        </div>--%>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <div class="row">
+                        <div class="row" id="filter">
                             <div class="col-md-12">
                                 <form action="${pageContext.request.contextPath}/invoice/filter" method="GET">
                                     <div class="well well-sm">
 
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label>Fiscal Year</label>
-                                                <select class="choose2 form-control" name="fiscalYearId">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Fiscal Year</label>
+                                                    <select class="choose2 form-control" name="fiscalYearId">
 
-                                                    <option value="" selected>select fiscal year</option>
+                                                        <option value="" selected>select fiscal year</option>
 
-                                                    <c:forEach items="${fiscalYearList}" var="fiscalYear">
-                                                        <option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option>
-                                                    </c:forEach>
-                                                </select>
-                                                <p class="form-error"></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Client Name</label>
-                                                <select class="choose1 form-control" name="accountId"></select>
-                                                <p class="form-error"></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label>From Date:</label>
-                                                <div class='input-group date'>
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </div>
-
-                                                    <input type="text" class="form-control datepicker"
-                                                           onkeypress="return false;" onkeyup="return false;"
-                                                           name="from" placeholder="From Date"/>
-                                                    <%--<input type="text" class="form-control datepicker"
-                                                           onkeypress="return false;" onkeyup="return false;"
-                                                           value="<fmt:formatDate pattern="MM/dd/yyyy" value=""/>"
-                                                           name="from" placeholder="From Date"/>--%>
+                                                        <c:forEach items="${fiscalYearList}" var="fiscalYear">
+                                                            <option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                    <p class="form-error"></p>
                                                 </div>
-                                                <p class="form-error"></p>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Client Name</label>
+                                                    <select class="choose1 form-control" name="accountId"></select>
+                                                    <p class="form-error"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date:</label>
+                                                    <div class='input-group date'>
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+
+                                                        <input type="text" class="form-control datepicker"
+                                                               onkeypress="return false;" onkeyup="return false;"
+                                                               name="from" placeholder="From Date"/>
+                                                        <%--<input type="text" class="form-control datepicker"
+                                                               onkeypress="return false;" onkeyup="return false;"
+                                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value=""/>"
+                                                               name="from" placeholder="From Date"/>--%>
+                                                    </div>
+                                                    <p class="form-error"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date:</label>
+                                                    <div class='input-group date'>
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control datepicker"
+                                                               onkeypress="return false;" onkeyup="return false;"
+                                                               name="to" placeholder="To Date"/>
+                                                    </div>
+                                                    <p class="form-error"></p>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label>To Date:</label>
-                                                <div class='input-group date'>
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control datepicker"
-                                                           onkeypress="return false;" onkeyup="return false;"
-                                                           name="to" placeholder="To Date"/>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Amount Greater Than</label>
+                                                    <input type="number" class="form-control" placeholder="amount greater than">
                                                 </div>
-                                                <p class="form-error"></p>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Amount Less Than</label>
+                                                    <input type="number" class="form-control" placeholder="amount less than">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Receivable Greater Than</label>
+                                                    <input type="number" class="form-control" placeholder="receivable greater than">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Receivable Less Than</label>
+                                                    <input type="number" class="form-control" placeholder="receivable less than">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="margin" style="margin-top: 25px;">
-                                            <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+
+                                        <div class="row">
+                                            <div class="col-md-3 pull-right" >
+                                                <button type="submit" class="btn btn-info btn-flat pull-right">Filter!</button>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -254,4 +290,12 @@
             placeholder: "Search Customer by Name or Mobile No"
         });
     });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on("click" , ".filter" , function () {
+            $("#filter").collapse();
+        })
+    })
 </script>
