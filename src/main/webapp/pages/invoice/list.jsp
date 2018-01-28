@@ -43,22 +43,50 @@
                                 <form action="${pageContext.request.contextPath}/invoice/filter" method="GET">
                                     <div class="well well-sm">
 
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Fiscal Year</label>
+                                                <select class="choose2 form-control" name="fiscalYearId">
+
+                                                    <option value="" selected>select fiscal year</option>
+
+                                                    <c:forEach items="${fiscalYearList}" var="fiscalYear">
+                                                        <option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option>
+                                                    </c:forEach>
+                                                </select>
+                                                <p class="form-error"></p>
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Client Name</label>
+                                                <select class="choose1 form-control" name="accountId"></select>
+                                                <p class="form-error"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label>From Date:</label>
                                                 <div class='input-group date'>
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
+
                                                     <input type="text" class="form-control datepicker"
                                                            onkeypress="return false;" onkeyup="return false;"
                                                            name="from" placeholder="From Date"/>
+                                                    <%--<input type="text" class="form-control datepicker"
+                                                           onkeypress="return false;" onkeyup="return false;"
+                                                           value="<fmt:formatDate pattern="MM/dd/yyyy" value=""/>"
+                                                           name="from" placeholder="From Date"/>--%>
                                                 </div>
                                                 <p class="form-error"></p>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label>To Date:</label>
                                                 <div class='input-group date'>
@@ -75,7 +103,6 @@
                                         <div class="margin" style="margin-top: 25px;">
                                             <button type="submit" class="btn btn-info btn-flat">Filter!</button>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
@@ -173,3 +200,58 @@
     </section>
 </div>
 <%@include file="/pages/parts/footer.jsp" %>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".choose1").select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/client/customer/search',
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+
+                        if (value.companyName === null || "" === value.companyName) {
+
+                            arr.push({
+                                id: value.clientId,
+                                text: value.name + ' - ' + value.mobileNumber
+                            })
+                        } else {
+                            arr.push({
+                                id: value.clientId,
+                                text: value.companyName + ' - ' + value.mobileNumber
+                            })
+                        }
+                    })
+
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1,
+            placeholder: "Search Customer by Name or Mobile No"
+        });
+    });
+</script>

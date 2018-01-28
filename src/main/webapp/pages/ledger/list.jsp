@@ -207,7 +207,7 @@
                     var arr = []
                     $.each(data.detail, function (index, value) {
 
-                        if (value.companyName === null) {
+                        if (value.companyName === null || "" === value.companyName) {
 
                             arr.push({
                                 id: value.accountId,
