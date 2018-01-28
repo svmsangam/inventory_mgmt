@@ -186,7 +186,7 @@ class ReportServiceApi implements IReportServiceApi {
             document.add(buyerPhone);
         }
 
-        if (buyerInfo.getContact() != null && !"".equals(buyerInfo.getContact())) {
+        if (buyerInfo.getEmail() != null && !"".equals(buyerInfo.getEmail())) {
             Paragraph buyerEmail = new Paragraph("Email: " + buyerInfo.getEmail());
             buyerEmail.setAlignment(Element.ALIGN_LEFT);
             document.add(buyerEmail);

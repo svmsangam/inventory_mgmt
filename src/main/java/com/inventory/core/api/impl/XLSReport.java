@@ -90,32 +90,54 @@ public class XLSReport extends AbstractXlsxView {
         Cell buyernameheadercell = invoicedaterow.createCell(1);
         buyernameheadercell.setCellValue("Name");
 
-        Cell buyernamecell = invoicedaterow.createCell(2);
-        buyernamecell.setCellValue(buyerInfo.getName());
+        if (buyerInfo.getCompanyName() == null || "".equals(buyerInfo.getCompanyName())) {
+
+            Cell buyernamecell = invoicedaterow.createCell(2);
+            buyernamecell.setCellValue(buyerInfo.getName());
+        } else {
+            Cell buyernamecell = invoicedaterow.createCell(2);
+            buyernamecell.setCellValue(buyerInfo.getCompanyName());
+        }
+
 
         Row cityrow = sheet.createRow(8);
         Cell cityheadercell = cityrow.createCell(1);
         cityheadercell.setCellValue("City");
-        Cell citycell = cityrow.createCell(2);
-        citycell.setCellValue(buyerInfo.getCityInfoDTO().getCityName());
+
+        if (buyerInfo.getCityInfoDTO() != null) {
+            Cell citycell = cityrow.createCell(2);
+            citycell.setCellValue(buyerInfo.getCityInfoDTO().getCityName());
+        }
 
         Row streetrow = sheet.createRow(9);
         Cell streetheadercell = streetrow.createCell(1);
         streetheadercell.setCellValue("Street");
-        Cell streetcell = streetrow.createCell(2);
-        streetcell.setCellValue(buyerInfo.getStreet());
+
+        if (buyerInfo.getStreet() != null && !"".equals(buyerInfo.getStreet())) {
+
+            Cell streetcell = streetrow.createCell(2);
+            streetcell.setCellValue(buyerInfo.getStreet());
+        }
 
         Row contactrow = sheet.createRow(10);
         Cell contactheadercell = contactrow.createCell(1);
         contactheadercell.setCellValue("Contact");
-        Cell contactcell = contactrow.createCell(2);
-        contactcell.setCellValue(buyerInfo.getContact());
+
+        if (buyerInfo.getContact() != null && !"".equals(buyerInfo.getContact())) {
+
+            Cell contactcell = contactrow.createCell(2);
+            contactcell.setCellValue(buyerInfo.getContact());
+        }
 
         Row emailrow = sheet.createRow(11);
         Cell emailheadercell = emailrow.createCell(1);
         emailheadercell.setCellValue("Email");
-        Cell emailcell = emailrow.createCell(2);
-        emailcell.setCellValue(buyerInfo.getEmail());
+
+        if (buyerInfo.getEmail() != null && !"".equals(buyerInfo.getEmail())) {
+
+            Cell emailcell = emailrow.createCell(2);
+            emailcell.setCellValue(buyerInfo.getEmail());
+        }
 
         //buyer info end
 
