@@ -27,7 +27,7 @@
                         <h3 class="box-title">Add Item</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/item/save" method="post" modelAttribute="item" >
+                    <form action="${pageContext.request.contextPath}/item/saveitem" method="post" modelAttribute="item" >
                         <div class="box-body">
 
                             <div class="form-group">

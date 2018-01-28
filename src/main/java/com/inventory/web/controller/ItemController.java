@@ -189,6 +189,69 @@ public class ItemController {
         return "redirect:/product/" + itemInfoDTO.getProductId();
     }
 
+    @PostMapping(value = "/saveitem")
+    public String saveItem(@RequestAttribute("item") ItemInfoDTO itemInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+       /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.ITEM_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+            if (itemInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Bad request");
+                return "redirect:/product/list";//store not assigned page
+            }
+
+            if (itemInfoDTO.getProductId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Bad request");
+                return "redirect:/product/list";//store not assigned page
+            }
+
+            synchronized (this.getClass()) {
+                ItemInfoError error = itemInfoValidation.onSave(itemInfoDTO, currentUser.getStoreId(), bindingResult);
+
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+                    modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
+                    modelMap.put(StringConstants.ITEM_ERROR, error);
+                    modelMap.put(StringConstants.ITEM, itemInfoDTO);
+                    return "item/addItem";
+                }
+
+                itemInfoDTO = itemInfoApi.save(itemInfoDTO);
+            }
+
+        } catch (Exception e) {
+            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "item successfully saved");
+        return "redirect:/product/" + itemInfoDTO.getProductId();
+    }
+
     @GetMapping(value = "/edit")
     public String edit(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
 
