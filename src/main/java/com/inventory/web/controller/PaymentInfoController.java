@@ -184,6 +184,7 @@ public class PaymentInfoController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on payment controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
@@ -261,6 +262,7 @@ public class PaymentInfoController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }

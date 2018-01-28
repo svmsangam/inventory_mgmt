@@ -7,6 +7,7 @@ import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
+import com.inventory.core.util.ConvertUtil;
 import com.inventory.web.error.PaymentInfoError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -245,7 +247,7 @@ public class PaymentInfoValidation extends GlobalValidation{
         if (!"".equals(error.getAmount())){
             return false;
         }else if (value > checker){
-                error.setAmount("amount must be less than or equals with " + checker);
+                error.setAmount("amount must be less than or equals with " + ConvertUtil.roundUpDoubleToString(checker , 0 ));
                 return false;
         }
 
