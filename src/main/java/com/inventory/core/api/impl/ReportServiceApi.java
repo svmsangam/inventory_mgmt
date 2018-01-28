@@ -157,25 +157,40 @@ class ReportServiceApi implements IReportServiceApi {
         buyerDetails.setAlignment(Element.ALIGN_LEFT);
         document.add(buyerDetails);
 
-        Paragraph buyerName = new Paragraph("Name: " + buyerInfo.getName());
-        buyerName.setAlignment(Element.ALIGN_LEFT);
-        document.add(buyerName);
+        if (buyerInfo.getCompanyName() == null || "".equals(buyerInfo.getCompanyName())) {
+            Paragraph buyerName = new Paragraph("Name: " + buyerInfo.getName());
+            buyerName.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerName);
+        } else {
+            Paragraph buyerName = new Paragraph("Name: " + buyerInfo.getCompanyName());
+            buyerName.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerName);
+        }
 
-        Paragraph buyerAddress = new Paragraph("City: " + buyerInfo.getCityInfoDTO().getCityName());
-        buyerAddress.setAlignment(Element.ALIGN_LEFT);
-        document.add(buyerAddress);
 
-        Paragraph buyerPan = new Paragraph("Street: " + buyerInfo.getStreet());
-        buyerPan.setAlignment(Element.ALIGN_LEFT);
-        document.add(buyerPan);
+        if (buyerInfo.getCityInfoDTO() != null) {
+            Paragraph buyerAddress = new Paragraph("City: " + buyerInfo.getCityInfoDTO().getCityName());
+            buyerAddress.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerAddress);
+        }
 
-        Paragraph buyerPhone = new Paragraph("Contact: " + buyerInfo.getContact());
-        buyerPhone.setAlignment(Element.ALIGN_LEFT);
-        document.add(buyerPhone);
+        if (buyerInfo.getStreet() != null && !"".equals(buyerInfo.getStreet())) {
+            Paragraph buyerPan = new Paragraph("Street: " + buyerInfo.getStreet());
+            buyerPan.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerPan);
+        }
 
-        Paragraph buyerEmail = new Paragraph("Email: " + buyerInfo.getEmail());
-        buyerEmail.setAlignment(Element.ALIGN_LEFT);
-        document.add(buyerEmail);
+        if (buyerInfo.getContact() != null && !"".equals(buyerInfo.getContact())) {
+            Paragraph buyerPhone = new Paragraph("Contact: " + buyerInfo.getContact());
+            buyerPhone.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerPhone);
+        }
+
+        if (buyerInfo.getContact() != null && !"".equals(buyerInfo.getContact())) {
+            Paragraph buyerEmail = new Paragraph("Email: " + buyerInfo.getEmail());
+            buyerEmail.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerEmail);
+        }
 
         PdfPTable table = new PdfPTable(5);
         table.setSpacingBefore(15);
