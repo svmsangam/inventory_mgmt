@@ -3,6 +3,7 @@ package com.inventory.web.controller;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.FiscalYearInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.InvoiceFilterDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.LogType;
 import com.inventory.core.model.enumconstant.PaymentMethod;
@@ -66,7 +67,7 @@ public class InvoiceController {
     }
 
     @GetMapping(value = "/filter")
-    public String filter(@RequestParam("from") Date from, @RequestParam("to") Date to, @RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+    public String filter(@RequestParam("filter")InvoiceFilterDTO filterDTO , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -106,10 +107,12 @@ public class InvoiceController {
 
         /*current user checking end*/
 
-            if (from == null | to == null) {
+            if (filterDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
                 return "redirect:/invoice/list";
             }
+
+            Integer page = filterDTO.getPageNo();
 
             if (page == null) {
                 page = 1;
@@ -121,7 +124,7 @@ public class InvoiceController {
 
             int currentpage = page - 1;
 
-            long totalList = invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+            long totalList = 0;//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -131,12 +134,10 @@ public class InvoiceController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to, currentpage, (int) PageInfo.pageList));
+            //modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to, currentpage, (int) PageInfo.pageList));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
-            modelMap.put("from", from);
-            modelMap.put("to", to);
 
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
@@ -284,6 +285,7 @@ public class InvoiceController {
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
 
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));

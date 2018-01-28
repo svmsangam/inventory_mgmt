@@ -1,5 +1,7 @@
 package com.inventory.core.model.dto;
 
+import com.inventory.core.model.enumconstant.Status;
+
 import java.util.Date;
 
 /**
@@ -15,13 +17,19 @@ public class InvoiceFilterDTO {
 
     private Date to;
 
-    private double amountGt;
+    private Double amountGt;
 
-    private double amountLt;
+    private Double amountLt;
 
-    private double receivableGt;
+    private Double receivableGt;
 
-    private double receivableLt;
+    private Double receivableLt;
+
+    private Integer pageNo;
+
+    private Status status;
+
+    private Long storeInfoId;
 
     public Long getFiscalYearId() {
         return fiscalYearId;
@@ -55,35 +63,59 @@ public class InvoiceFilterDTO {
         this.to = to;
     }
 
-    public double getAmountGt() {
+    public Double getAmountGt() {
         return amountGt;
     }
 
-    public void setAmountGt(double amountGt) {
+    public void setAmountGt(Double amountGt) {
         this.amountGt = amountGt;
     }
 
-    public double getAmountLt() {
+    public Double getAmountLt() {
         return amountLt;
     }
 
-    public void setAmountLt(double amountLt) {
+    public void setAmountLt(Double amountLt) {
         this.amountLt = amountLt;
     }
 
-    public double getReceivableGt() {
+    public Double getReceivableGt() {
         return receivableGt;
     }
 
-    public void setReceivableGt(double receivableGt) {
+    public void setReceivableGt(Double receivableGt) {
         this.receivableGt = receivableGt;
     }
 
-    public double getReceivableLt() {
+    public Double getReceivableLt() {
         return receivableLt;
     }
 
-    public void setReceivableLt(double receivableLt) {
+    public void setReceivableLt(Double receivableLt) {
         this.receivableLt = receivableLt;
+    }
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Long getStoreInfoId() {
+        return storeInfoId;
+    }
+
+    public void setStoreInfoId(Long storeInfoId) {
+        this.storeInfoId = storeInfoId;
     }
 }
