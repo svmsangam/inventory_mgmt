@@ -33,9 +33,8 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
 
     @Override
     public Predicate toPredicate(Root<InvoiceInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        final List<Predicate> predicates = new ArrayList<Predicate>();
 
-        //EntityType<InvoiceInfo> Invoice_ = query.entity(InvoiceInfo.class);
+        final List<Predicate> predicates = new ArrayList<Predicate>();
 
         if(filterDTO.getStatus()!=null){
             predicates.add(cb.equal(root.get("status"),filterDTO.getStatus()));
@@ -46,7 +45,7 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
         }
 
         if(filterDTO.getClientId()!=null){
-            predicates.add(cb.equal(root.get("orderInfo_clientInfo_id"),filterDTO.getClientId()));
+            predicates.add(cb.equal(root.get("orderInfo").get("clientInfo").get("id"),filterDTO.getClientId()));
         }
 
         if(filterDTO.getFrom()!=null){
