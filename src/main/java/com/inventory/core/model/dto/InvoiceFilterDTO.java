@@ -27,9 +27,19 @@ public class InvoiceFilterDTO {
 
     private Integer pageNo;
 
+    private int size;
+
     private Status status;
 
     private Long storeInfoId;
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public Long getFiscalYearId() {
         return fiscalYearId;

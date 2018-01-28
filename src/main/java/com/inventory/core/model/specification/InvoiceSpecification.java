@@ -47,11 +47,11 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
         }
 
         if(filterDTO.getFrom()!=null){
-            predicates.add(cb.greaterThan(root.get("created"),filterDTO.getFrom()));
+            predicates.add(cb.greaterThan(root.get("invoiceDate"),filterDTO.getFrom()));
         }
 
         if(filterDTO.getTo()!=null){
-            predicates.add(cb.lessThan(root.get("created"),filterDTO.getTo()));
+            predicates.add(cb.lessThan(root.get("invoiceDate"),filterDTO.getTo()));
         }
 
         if(filterDTO.getStoreInfoId()!=null){

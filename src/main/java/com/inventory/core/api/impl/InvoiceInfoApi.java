@@ -4,12 +4,13 @@ import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.ILedgerInfoApi;
 import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
-import com.inventory.core.model.dto.InvoiceInfoDTO;
-import com.inventory.core.model.dto.PaymentInfoDTO;
+import com.inventory.core.model.dto.*;
 import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.*;
+import com.inventory.core.model.specification.InvoiceSpecification;
+import com.inventory.core.model.specification.LedgerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -183,6 +184,16 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         invoiceInfo.setVersion(invoiceInfo.getVersion() + 1);
 
         invoiceInfoRepository.save(invoiceInfo);
+    }
+
+    @Override
+    public List<InvoiceInfoDTO> filter(InvoiceFilterDTO filterDTO) {
+
+        InvoiceSpecification specification = new InvoiceSpecification(filterDTO);
+
+        Pageable pageable = createPageRequest(filterDTO.getPageNo(),filterDTO.getSize() ,"id" , Sort.Direction.DESC);
+
+        return invoiceInfoConverter.convertPageToDtoList(invoiceInfoRepository.findAll(specification , pageable));
     }
 
     @Override

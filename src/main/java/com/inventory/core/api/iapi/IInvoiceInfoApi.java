@@ -1,5 +1,6 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.InvoiceFilterDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
@@ -25,6 +26,8 @@ public interface IInvoiceInfoApi {
     void updateOnPayment(long paymentInfoId);
 
     void updateVersion(long invoiceId);
+
+    List<InvoiceInfoDTO> filter(InvoiceFilterDTO filterDTO);
 
     InvoiceInfoDTO show(long invoiceId , long storeId , Status status);
 

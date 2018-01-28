@@ -124,7 +124,7 @@ public class InvoiceController {
 
             int currentpage = page - 1;
 
-            long totalList = 0;//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+            long totalList = 10;//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -134,7 +134,12 @@ public class InvoiceController {
 
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            //modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to, currentpage, (int) PageInfo.pageList));
+            filterDTO.setPageNo(currentpage);
+            filterDTO.setSize((int) PageInfo.pageList);
+            filterDTO.setStatus(Status.ACTIVE);
+            filterDTO.setStoreInfoId(currentUser.getStoreId());
+
+            modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.filter(filterDTO));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
