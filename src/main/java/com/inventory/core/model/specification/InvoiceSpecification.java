@@ -60,6 +60,22 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
             predicates.add(cb.equal(root.get("storeInfo").get("id"),filterDTO.getStoreInfoId()));
         }
 
+        if(filterDTO.getAmountGt()!=null){
+            predicates.add(cb.greaterThanOrEqualTo(root.get("totalAmount"),filterDTO.getAmountGt()));
+        }
+
+        if(filterDTO.getAmountLt()!=null){
+            predicates.add(cb.lessThanOrEqualTo(root.get("totalAmount"),filterDTO.getAmountLt()));
+        }
+
+        if(filterDTO.getReceivableGt()!=null){
+            predicates.add(cb.greaterThanOrEqualTo(root.get("receivableAmount"),filterDTO.getReceivableGt()));
+        }
+
+        if(filterDTO.getReceivableLt()!=null){
+            predicates.add(cb.lessThanOrEqualTo(root.get("receivableAmount"),filterDTO.getReceivableLt()));
+        }
+
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
 }
