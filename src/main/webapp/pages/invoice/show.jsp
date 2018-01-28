@@ -56,18 +56,34 @@
             <div class="col-sm-4 invoice-col">
                 To
                 <address>
-                    <c:if test="${invoice.orderInfo.clientInfo.companyName eq null}">
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName eq null or empty invoice.orderInfo.clientInfo.companyName}">
                         <strong>${invoice.orderInfo.clientInfo.name}</strong><br>
                     </c:if>
 
-                    <c:if test="${invoice.orderInfo.clientInfo.companyName ne null}">
+                    <c:if test="${invoice.orderInfo.clientInfo.companyName ne null and not empty invoice.orderInfo.clientInfo.companyName}">
                         <strong>${invoice.orderInfo.clientInfo.companyName}</strong><br>
                     </c:if>
 
-                    ${invoice.orderInfo.clientInfo.cityInfoDTO.cityName},${invoice.orderInfo.clientInfo.cityInfoDTO.stateName}, ${invoice.orderInfo.clientInfo.cityInfoDTO.countryName}<br>
-                    ${invoice.orderInfo.clientInfo.street}<br>
-                    Phone: ${invoice.orderInfo.clientInfo.contact}<c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
-                    Email: ${invoice.orderInfo.clientInfo.email}
+                    <c:if test="${invoice.orderInfo.clientInfo.cityInfoDTO.cityName ne null and not empty invoice.orderInfo.clientInfo.cityInfoDTO.cityName}">
+                        ${invoice.orderInfo.clientInfo.cityInfoDTO.cityName},
+                    </c:if>
+
+                    <c:if test="${invoice.orderInfo.clientInfo.cityInfoDTO.stateName ne null and not empty invoice.orderInfo.clientInfo.cityInfoDTO.stateName}">
+                         ${invoice.orderInfo.clientInfo.cityInfoDTO.stateName},
+                    </c:if>
+
+                    <c:if test="${invoice.orderInfo.clientInfo.cityInfoDTO.countryName ne null and not empty invoice.orderInfo.clientInfo.cityInfoDTO.countryName}">
+                        ${invoice.orderInfo.clientInfo.cityInfoDTO.countryName}<br>
+                    </c:if>
+
+                    <c:if test="${invoice.orderInfo.clientInfo.street ne null and not empty invoice.orderInfo.clientInfo.street}">
+                        ${invoice.orderInfo.clientInfo.street}<br>
+                    </c:if>
+
+
+                    Phone:<c:if test="${invoice.orderInfo.clientInfo.contact ne null and not empty invoice.orderInfo.clientInfo.contact}">${invoice.orderInfo.clientInfo.contact}</c:if>
+                    <c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null and not empty invoice.orderInfo.clientInfo.mobileNumber}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
+                    Email: <c:if test="${invoice.orderInfo.clientInfo.email ne null and not empty invoice.orderInfo.clientInfo.email}">${invoice.orderInfo.clientInfo.email}</c:if>
                 </address>
             </div>
             <!-- /.col -->
