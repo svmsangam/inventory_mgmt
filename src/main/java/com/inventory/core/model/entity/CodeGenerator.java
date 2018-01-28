@@ -18,8 +18,11 @@ public class CodeGenerator extends AbstractEntity<Long> {
 
     private String prefix;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private StoreInfo storeInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private FiscalYearInfo fiscalYearInfo;
 
     private NumberStatus numberStatus;
 
@@ -45,6 +48,14 @@ public class CodeGenerator extends AbstractEntity<Long> {
 
     public void setStoreInfo(StoreInfo storeInfo) {
         this.storeInfo = storeInfo;
+    }
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 
     public NumberStatus getNumberStatus() {

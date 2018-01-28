@@ -41,6 +41,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     private InvoiceInfoConverter invoiceInfoConverter;
 
     @Autowired
+    private FiscalYearInfoRepository fiscalYearInfoRepository;
+
+    @Autowired
     private ILedgerInfoApi ledgerInfoApi;
 
     @Autowired
@@ -78,7 +81,10 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public String generatInvoiceNumber(long storeId) {
-        long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Invoice);
+
+        FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeId , true);
+
+        long count = codeGeneratorRepository.findByStoreAndNumberStatusAndFiscalYearInfo(storeId , NumberStatus.Invoice , fiscalYearInfo.getId());
 
         if (0 == count){
             CodeGenerator codeGenerator = new CodeGenerator();
@@ -91,6 +97,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
             codeGenerator.setNumber(100001);
             codeGenerator.setNumberStatus(NumberStatus.Invoice);
             codeGenerator.setPrefix(prefix);
+            codeGenerator.setFiscalYearInfo(fiscalYearInfo);
 
             codeGenerator = codeGeneratorRepository.save(codeGenerator);
 
@@ -100,7 +107,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
 
-            long number = codeGeneratorRepository.findFirstByStoreInfoAndNumberStatusOrderByIdDesc(store, NumberStatus.Invoice).getNumber();
+            long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Invoice , fiscalYearInfo.getId()).getNumber();
 
             CodeGenerator codeGenerator = new CodeGenerator();
 
@@ -111,6 +118,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
             codeGenerator.setNumber(number + 1);
             codeGenerator.setNumberStatus(NumberStatus.Invoice);
             codeGenerator.setPrefix(prefix);
+            codeGenerator.setFiscalYearInfo(fiscalYearInfo);
 
             codeGenerator = codeGeneratorRepository.save(codeGenerator);
 

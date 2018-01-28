@@ -7,13 +7,11 @@ import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
+import com.inventory.core.model.entity.FiscalYearInfo;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.StoreInfo;
 import com.inventory.core.model.enumconstant.*;
-import com.inventory.core.model.repository.CodeGeneratorRepository;
-import com.inventory.core.model.repository.InvoiceInfoRepository;
-import com.inventory.core.model.repository.OrderInfoRepository;
-import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +54,9 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Autowired
     private InvoiceInfoRepository invoiceInfoRepository;
+
+    @Autowired
+    private FiscalYearInfoRepository fiscalYearInfoRepository;
 
     @Override
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
@@ -162,7 +163,9 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Override
     public String generatOrderNumber(long storeId) {
 
-        Long count = codeGeneratorRepository.findByStoreAndNumberStatus(storeId , NumberStatus.Order);
+        FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeId , true);
+
+        Long count = codeGeneratorRepository.findByStoreAndNumberStatusAndFiscalYearInfo(storeId , NumberStatus.Order , fiscalYearInfo.getId());
 
         if (count == null | 0 == count){
             CodeGenerator codeGenerator = new CodeGenerator();
@@ -175,6 +178,7 @@ public class OrderInfoApi implements IOrderInfoApi {
             codeGenerator.setNumber(100001);
             codeGenerator.setNumberStatus(NumberStatus.Order);
             codeGenerator.setPrefix(prefix);
+            codeGenerator.setFiscalYearInfo(fiscalYearInfo);
 
             codeGenerator = codeGeneratorRepository.save(codeGenerator);
 
@@ -184,7 +188,7 @@ public class OrderInfoApi implements IOrderInfoApi {
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
 
-            long number = codeGeneratorRepository.findFirstByStoreInfoAndNumberStatusOrderByIdDesc(store, NumberStatus.Order).getNumber();
+            long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Order , fiscalYearInfo.getId()).getNumber();
 
             CodeGenerator codeGenerator = new CodeGenerator();
 

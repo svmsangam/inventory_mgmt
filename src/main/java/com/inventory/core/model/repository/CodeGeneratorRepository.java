@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CodeGeneratorRepository extends JpaRepository<CodeGenerator , Long> , JpaSpecificationExecutor<CodeGenerator>{
 
-    @Query("select count (n) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2")
-    long findByStoreAndNumberStatus(long storeId , NumberStatus numberStatus);
+    @Query("select count (n) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2 and n.fiscalYearInfo.id = ?3")
+    long findByStoreAndNumberStatusAndFiscalYearInfo(long storeId , NumberStatus numberStatus , long fiscalYearId);
 
-    @Query("select max(n.id) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2")
-    Long findLastRowByStoreAndNumberStatus(long storeId , NumberStatus numberStatus);
+    @Query("select max(n.id) from CodeGenerator n where n.storeInfo.id=?1 and n.numberStatus=?2 and n.fiscalYearInfo.id = ?3")
+    Long findLastRowByStoreAndNumberStatusAndFiscalYearInfo(long storeId , NumberStatus numberStatus , long fiscalYearId);
 
-    CodeGenerator findFirstByStoreInfoAndNumberStatusOrderByIdDesc(StoreInfo storeInfo, NumberStatus numberStatus);
+    CodeGenerator findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(long storeInfoId, NumberStatus numberStatus , long fiscalYearId);
 }
