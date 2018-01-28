@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +35,14 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
     public Predicate toPredicate(Root<InvoiceInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         final List<Predicate> predicates = new ArrayList<Predicate>();
 
+        //EntityType<InvoiceInfo> Invoice_ = query.entity(InvoiceInfo.class);
+
         if(filterDTO.getStatus()!=null){
             predicates.add(cb.equal(root.get("status"),filterDTO.getStatus()));
         }
 
         if(filterDTO.getFiscalYearId()!=null){
-            predicates.add(cb.equal(root.get("fiscalYearInfo_id"),filterDTO.getFiscalYearId()));
+            predicates.add(cb.equal(root.get("fiscalYearInfo").get("id"),filterDTO.getFiscalYearId()));
         }
 
         if(filterDTO.getClientId()!=null){
@@ -55,7 +58,7 @@ public class InvoiceSpecification implements Specification<InvoiceInfo> {
         }
 
         if(filterDTO.getStoreInfoId()!=null){
-            predicates.add(cb.equal(root.get("storeInfo_id"),filterDTO.getStoreInfoId()));
+            predicates.add(cb.equal(root.get("storeInfo").get("id"),filterDTO.getStoreInfoId()));
         }
 
         return cb.and(predicates.toArray(new Predicate[]{}));

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -67,7 +68,7 @@ public class InvoiceController {
     }
 
     @GetMapping(value = "/filter")
-    public String filter(@RequestParam("filter")InvoiceFilterDTO filterDTO , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+    public String filter(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -145,12 +146,14 @@ public class InvoiceController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
+
+            e.printStackTrace();
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
 
-        return "invoice/filter";
+        return "invoice/list";
 
     }
 
