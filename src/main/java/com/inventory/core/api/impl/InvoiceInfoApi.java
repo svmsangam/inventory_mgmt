@@ -197,6 +197,20 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    public long filterCount(InvoiceFilterDTO filterDTO) {
+
+        InvoiceSpecification specification = new InvoiceSpecification(filterDTO);
+
+        Long count = invoiceInfoRepository.count(specification );
+
+        if (count == null){
+            return 0;
+        }
+
+        return count;
+    }
+
+    @Override
     public InvoiceInfoDTO show(long invoiceId, long storeId, Status status) {
         return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId , status , storeId));
     }

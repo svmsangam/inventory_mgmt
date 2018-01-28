@@ -29,6 +29,8 @@ public interface IInvoiceInfoApi {
 
     List<InvoiceInfoDTO> filter(InvoiceFilterDTO filterDTO);
 
+    long filterCount(InvoiceFilterDTO filterDTO);
+
     InvoiceInfoDTO show(long invoiceId , long storeId , Status status);
 
     InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId , Status status  , long storeId);

@@ -115,6 +115,9 @@ public class InvoiceController {
 
             Integer page = filterDTO.getPageNo();
 
+            filterDTO.setStatus(Status.ACTIVE);
+            filterDTO.setStoreInfoId(currentUser.getStoreId());
+
             if (page == null) {
                 page = 1;
             }
@@ -125,7 +128,7 @@ public class InvoiceController {
 
             int currentpage = page - 1;
 
-            long totalList = 10;//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+            long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
@@ -137,8 +140,6 @@ public class InvoiceController {
 
             filterDTO.setPageNo(currentpage);
             filterDTO.setSize((int) PageInfo.pageList);
-            filterDTO.setStatus(Status.ACTIVE);
-            filterDTO.setStoreInfoId(currentUser.getStoreId());
 
             modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.filter(filterDTO));
             modelMap.put("lastpage", totalpage);
