@@ -10,6 +10,8 @@ function connect(secretKey) {
 
         console.log("new connection");
 
+        console.log(Cache-Control);
+
         socket = new SockJS("/webSocket");
         stompClient = Stomp.over(socket);
 
@@ -17,13 +19,15 @@ function connect(secretKey) {
 
             console.log('Connected: ' + frame + " : " + secretKey);
             stompClient.subscribe('/topic/notification/' + secretKey, function (messageOutput) {
-                stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
+                /*stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
                     'checker' : messageOutput.body
-                }));
+                }));*/
                 console.log(messageOutput.body);
                 setNotification(messageOutput.body);
                 notifyMe(messageOutput.body);
             });
+
+            localStorage['socket'] = JSON.stringify(stompClient);
 
         });
 

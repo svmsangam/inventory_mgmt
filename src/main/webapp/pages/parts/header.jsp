@@ -188,6 +188,10 @@
                                 <p>
                                     <sec:authentication property="principal.username"/> -
 
+                                    <sec:authorize access="hasRole('ROLE_SYSTEM')">
+                                        System
+                                    </sec:authorize>
+
                                     <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
                                         Super Administrator
                                     </sec:authorize>

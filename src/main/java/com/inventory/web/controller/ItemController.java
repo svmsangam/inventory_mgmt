@@ -67,7 +67,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/add")
-    public String add(@RequestParam("productId") Long productId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String add(@RequestParam(value = "productId" , required = false) Long productId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -97,8 +97,11 @@ public class ItemController {
         /*current user checking end*/
 
             if (productId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Product required");
-                return "redirect:/product/list";
+                modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+                modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
+
+                return "item/addItem";
             }
 
             if (productId < 1) {

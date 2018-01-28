@@ -55,6 +55,8 @@
 
             <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
 
+            <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
+
             <li class="treeview">
                 <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>
                     <span class="pull-right-container">
