@@ -203,6 +203,7 @@ public class OrderInfoApi implements IOrderInfoApi {
             codeGenerator.setNumber(number + 1);
             codeGenerator.setNumberStatus(NumberStatus.Order);
             codeGenerator.setPrefix(prefix);
+            codeGenerator.setFiscalYearInfo(fiscalYearInfo);
 
             codeGenerator = codeGeneratorRepository.save(codeGenerator);
 
