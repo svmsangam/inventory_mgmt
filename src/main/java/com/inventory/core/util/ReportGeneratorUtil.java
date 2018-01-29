@@ -187,11 +187,11 @@ public class ReportGeneratorUtil {
         DynamicReportBuilder report = new DynamicReportBuilder();
 
         AbstractColumn dateTime = createColumn("invoiceDate", Date.class, "Invoice Date", 48, headerStyle, detailTextStyle);
-        AbstractColumn invoiceNo = createColumn("invoiceNo", String.class, "Invoice Number", 53, headerStyle, detailTextStyle);
-        AbstractColumn amount = createColumn("totalAmount", Double.class, "Amount", 45, headerStyle, detailNumStyle);
-        AbstractColumn receivableamount = createColumn("receivableAmount", Double.class, "Receivable Amount", 45, headerStyle, detailNumStyle);
+        AbstractColumn invoiceNo = createColumn("invoiceNo", String.class, "Invoice Number", 30, headerStyle, detailTextStyle);
+        AbstractColumn amount = createColumn("totalAmount", Double.class, "Amount", 30, headerStyle, detailNumStyle);
+        AbstractColumn receivableamount = createColumn("receivableAmount", Double.class, "Receivable Amount", 30, headerStyle, detailNumStyle);
         AbstractColumn fiscalYear = createColumn("fiscalYearInfo.title", String.class, "Fiscal Fear", 24, headerStyle, detailTextStyle);
-        AbstractColumn client = createColumn("orderInfo.clientInfo.name", String.class, "Client Name", 20, headerStyle, detailTextStyle);
+        AbstractColumn client = createColumn("orderInfo.clientInfo.name", String.class, "Client Name", 50, headerStyle, detailTextStyle);
 
         report.addColumn(dateTime).addColumn(invoiceNo).addColumn(amount).addColumn(receivableamount)
                 .addColumn(fiscalYear).addColumn(client).setPrintBackgroundOnOddRows(true)
