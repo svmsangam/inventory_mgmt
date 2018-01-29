@@ -19,7 +19,9 @@ public class ReturnItemInfo extends AbstractEntity<Long>{
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    private double rate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private OrderReturnInfo orderReturnInfo;
 
     private double totalAmount;
@@ -64,5 +66,13 @@ public class ReturnItemInfo extends AbstractEntity<Long>{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 }

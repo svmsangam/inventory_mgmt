@@ -15,7 +15,7 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
     @Temporal(TemporalType.DATE)
     private Date returnDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private OrderInfo orderInfo;
 
     private String note;
@@ -27,6 +27,9 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private FiscalYearInfo fiscalYearInfo;
 
     private Status status;
 
@@ -84,5 +87,13 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }
