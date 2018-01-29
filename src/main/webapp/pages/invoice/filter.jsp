@@ -92,7 +92,6 @@
                             </table>
                         </div>
                     </div>
-
                     <c:if test="${fn:length(pagelist) gt 1}">
 
                         <div class="col-xs-12">
