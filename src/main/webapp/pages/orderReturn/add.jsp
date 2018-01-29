@@ -68,6 +68,11 @@
                 </address>
             </div>
         </div>
+
+        <form action="${pageContext.request.contextPath}/orderreturn/save" method="post" modelAttribute="orderReturn">
+
+            <input type="hidden" name="orderInfoId" value="${order.orderId}">
+
         <div class="row invoice-info">
             <div class="col-sm-3 invoice-col">
                 <b>Order Date: </b><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/>
@@ -111,11 +116,11 @@
                 <c:forEach items="${orderItemList}" var="orderItem" varStatus="i">
                     <tr>
                         <td>${i.index + 1}</td>
-                        <td><input type="checkbox" name="orderItem" value="${orderItem.orderItemInfoId}" class="returnOrder" /></td>
+                        <td><input type="checkbox" name="orderItemInfoIdList" value="${orderItem.orderItemInfoId}" class="returnOrder" /></td>
                         <td>${orderItem.itemInfoDTO.productInfo.name}-${orderItem.itemInfoDTO.tagInfo.name}</td>
                         <td>${orderItem.itemInfoDTO.lotInfo.lot}</td>
                         <td>${orderItem.quantity} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
-                        <td><input type="number" name="returnQuantity" class="form-control returnQuantity" placeholder="Return Quantity" min="1" max="${orderItem.quantity}" disabled></td>
+                        <td><input type="number" name="returnQuantityList" class="form-control returnQuantity" placeholder="Return Quantity" min="1" max="${orderItem.quantity}" disabled></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.rate}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.discount}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.amount}"/></td>
@@ -161,6 +166,14 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
+        <div class="row">
+            <div class="col-md-6 pull-right">
+                <button type="submit" class="btn btn-primary btn-flat btn-sm pull-right">Save changes</button>
+            </div>
+        </div>
+
+
+        </form>
 
     </section>
     <!-- /.content -->

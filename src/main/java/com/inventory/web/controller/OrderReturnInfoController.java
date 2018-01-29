@@ -171,6 +171,7 @@ public class OrderReturnInfoController {
 
             synchronized (this.getClass()) {
                 orderReturnInfo.setCreatedById(currentUser.getUserId());
+                orderReturnInfo.setStoreId(currentUser.getStoreId());
 
                 /*OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
 
