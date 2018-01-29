@@ -13,6 +13,7 @@ import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.dto.LedgerReportFooterDTO;
 import com.inventory.core.model.enumconstant.AccountEntryType;
@@ -61,6 +62,21 @@ public class ReportGeneratorUtil {
             jp.addPage(jp1.getPages().get(i));
         }
 
+
+        return jp;
+    }
+
+    public JasperPrint InvoiceReport(List<InvoiceInfoDTO> list, String title, String subTitle) throws ColumnBuilderException, JRException, ClassNotFoundException {
+
+        Style headerStyle = createHeaderStyle();
+        Style detailTextStyle = createDetailTextStyle();
+        Style detailNumberStyle = createDetailNumberStyle();
+
+        DynamicReport dynaReport = invoiceReportProcessor(title, subTitle, headerStyle, detailTextStyle, detailNumberStyle);
+
+
+        JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dynaReport, new ClassicLayoutManager(),
+                new JRBeanCollectionDataSource(list));
 
         return jp;
     }
@@ -145,6 +161,40 @@ public class ReportGeneratorUtil {
 
         report.addColumn(dateTime).addColumn(accountNo).addColumn(amount).addColumn(ledgerEntryType)
                 .addColumn(accountEntryType).addColumn(remarks).setPrintBackgroundOnOddRows(true)
+                .setOddRowBackgroundStyle(oddRowStyle()).setColumnsPerPage(1)
+                .setUseFullPageWidth(true).setColumnSpace(5);
+
+        StyleBuilder titleStyle = new StyleBuilder(true);
+        titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
+		/*titleStyle.setFont(new Font(20, Font._FONT_GEORGIA, true));*/
+
+        StyleBuilder subTitleStyle = new StyleBuilder(true);
+        subTitleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
+		/*subTitleStyle.setFont(new Font(Font.MEDIUM, Font._FONT_GEORGIA, true));*/
+
+        report.setTitle(title);
+        report.setTitleStyle(titleStyle.build());
+        report.setSubtitle(subTitle);
+        report.setSubtitleStyle(subTitleStyle.build());
+        report.setUseFullPageWidth(true);
+        return report.build();
+
+    }
+
+    private DynamicReport invoiceReportProcessor(String title, String subTitle, Style headerStyle, Style detailTextStyle, Style detailNumStyle)
+            throws ColumnBuilderException, ClassNotFoundException {
+
+        DynamicReportBuilder report = new DynamicReportBuilder();
+
+        AbstractColumn dateTime = createColumn("invoiceDate", Date.class, "Invoice Date", 48, headerStyle, detailTextStyle);
+        AbstractColumn invoiceNo = createColumn("invoiceNo", String.class, "Invoice Number", 53, headerStyle, detailTextStyle);
+        AbstractColumn amount = createColumn("totalAmount", Double.class, "Amount", 45, headerStyle, detailNumStyle);
+        AbstractColumn receivableamount = createColumn("receivableAmount", Double.class, "Receivable Amount", 45, headerStyle, detailNumStyle);
+        AbstractColumn fiscalYear = createColumn("fiscalYearInfo.title", String.class, "Fiscal Fear", 24, headerStyle, detailTextStyle);
+        AbstractColumn client = createColumn("orderInfo.clientInfo.name", String.class, "Client Name", 20, headerStyle, detailTextStyle);
+
+        report.addColumn(dateTime).addColumn(invoiceNo).addColumn(amount).addColumn(receivableamount)
+                .addColumn(fiscalYear).addColumn(client).setPrintBackgroundOnOddRows(true)
                 .setOddRowBackgroundStyle(oddRowStyle()).setColumnsPerPage(1)
                 .setUseFullPageWidth(true).setColumnSpace(5);
 

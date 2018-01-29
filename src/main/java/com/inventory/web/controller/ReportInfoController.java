@@ -1,23 +1,34 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.InvoiceFilterDTO;
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.util.ReportGeneratorUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.StringConstants;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dhiraj on 10/9/17.
@@ -32,25 +43,13 @@ public class ReportInfoController {
     private IUserApi userApi;
 
     @Autowired
+    private IFiscalYearInfoApi fiscalYearInfoApi;
+
+    @Autowired
     private IReportServiceApi reportServiceApi;
 
     @Autowired
-    private ILedgerInfoApi ledgerInfoApi;
-
-    @Autowired
-    private IAccountInfoApi accountInfoApi;
-
-    @Autowired
-    private IClientInfoApi clientInfoApi;
-
-    @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
-
-    @Autowired
-    private IOrderInfoApi orderInfoApi;
-
-    @Autowired
-    private IOrderItemInfoApi orderItemInfoApi;
 
     @GetMapping(value = "invoice/pdf", produces = "application/pdf")
     public void getpdf(@RequestParam("invoiceId") Long invoiceId, HttpServletRequest request , final HttpServletResponse response) {
@@ -108,6 +107,179 @@ public class ReportInfoController {
 
         return ;
     }
+
+    @GetMapping(value = "invoice/filter/pdf" , produces = "application/pdf")
+    public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+                     /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                return;
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                request.getSession().invalidate();
+                return;
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+                return;//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                return;//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                return;//store not assigned page
+            }
+
+
+        /*current user checking end*/
+
+            if (filterDTO == null) {
+                return;
+            }
+
+            Integer page = filterDTO.getPageNo();
+
+            filterDTO.setStatus(Status.ACTIVE);
+            filterDTO.setStoreInfoId(currentUser.getStoreId());
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            /*long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+*/
+            filterDTO.setPageNo(currentpage);
+            //filterDTO.setSize((int) PageInfo.pageList);
+
+            List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
+
+            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+
+            JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
+            reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+
+            return;
+        }
+
+        return;
+
+    }
+
+    @GetMapping(value = "invoice/filter/xls", produces = "application/xls")
+    public void filterXLS(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+                     /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                return;
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                request.getSession().invalidate();
+                return;
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+                return;//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                return;//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                return;//store not assigned page
+            }
+
+
+        /*current user checking end*/
+
+            if (filterDTO == null) {
+                return;
+            }
+
+            Integer page = filterDTO.getPageNo();
+
+            filterDTO.setStatus(Status.ACTIVE);
+            filterDTO.setStoreInfoId(currentUser.getStoreId());
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            /*long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+*/
+            filterDTO.setPageNo(currentpage);
+            //filterDTO.setSize((int) PageInfo.pageList);
+
+            List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
+
+            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+
+            JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
+            reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+
+            return;
+        }
+
+        return;
+
+    }
+
 
     @GetMapping(value = "invoice/xls", produces = "application/xls")
     public void getXLS(@RequestParam("invoiceId") Long invoiceId, HttpServletRequest request , final HttpServletResponse response) {
