@@ -225,7 +225,7 @@ public class OrderReturnInfoController {
             e.printStackTrace();
             return "redirect:/";
         }
-        return "redirect:/orderreturn/add";
+        return "redirect:/orderreturn/list";
     }
 
 
