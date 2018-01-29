@@ -14,5 +14,7 @@ public interface IStockInfoApi {
 
     void updateOnItemUpdateInStockOnSaleTrack(SalesOrderStatus track , long productId , int quanity);
 
+    void updateOnItemUpdateInStockOnSaleReturn(long productId , int quanity);
+
     void saveOnProductSave(long productId);
 }

@@ -242,6 +242,7 @@ public class OrderInfoController {
                 }
 
                 orderInfoDTO = orderInfoApi.save(orderInfoDTO);
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "order saved successfullly");
 
                 if (orderInfoDTO.getClientInfo() != null) {
                     if (orderInfoDTO.getClientInfo().getEmail() != null && !orderInfoDTO.getClientInfo().getEmail().isEmpty()) {

@@ -26,4 +26,6 @@ public interface IItemInfoApi {
     List<ItemInfoDTO> getAllByProductAndStatusAndStore(long productInfoId, Status status, long storeId);
 
     void updateInStockOnSaleTrack(SalesOrderStatus track , long orderId);
+
+    void updateInStockOnSaleReturn(long orderReturnIdId);
 }

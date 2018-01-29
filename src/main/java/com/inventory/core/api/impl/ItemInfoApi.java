@@ -6,10 +6,12 @@ import com.inventory.core.model.converter.ItemInfoConverter;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.entity.ItemInfo;
 import com.inventory.core.model.entity.OrderItemInfo;
+import com.inventory.core.model.entity.ReturnItemInfo;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.OrderItemInfoRepository;
+import com.inventory.core.model.repository.ReturnItemInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,9 @@ public class ItemInfoApi implements IItemInfoApi{
 
     @Autowired
     private OrderItemInfoRepository orderItemInfoRepository;
+
+    @Autowired
+    private ReturnItemInfoRepository returnItemInfoRepository;
 
     @Override
     public ItemInfoDTO save(ItemInfoDTO itemInfoDTO) {
@@ -108,6 +113,24 @@ public class ItemInfoApi implements IItemInfoApi{
             }
 
             stockInfoApi.updateOnItemUpdateInStockOnSaleTrack(track , itemInfo.getProductInfo().getId() , orderItemInfo.getQuantity());
+
+            itemInfoRepository.save(itemInfo);
+
+        }
+    }
+
+    @Override
+    public void updateInStockOnSaleReturn(long orderReturnIdId) {
+
+        List<ReturnItemInfo> returnItemInfoList = returnItemInfoRepository.findAllByStatusAndOrderReturnInfo_Id(Status.ACTIVE, orderReturnIdId);
+
+        for (ReturnItemInfo returnItemInfo : returnItemInfoList) {
+
+            ItemInfo itemInfo = itemInfoRepository.findById(returnItemInfo.getOrderItemInfo().getItemInfo().getId());
+
+            itemInfo.setInStock(itemInfo.getInStock() + returnItemInfo.getQuantity());
+
+            stockInfoApi.updateOnItemUpdateInStockOnSaleReturn(itemInfo.getProductInfo().getId() , returnItemInfo.getQuantity());
 
             itemInfoRepository.save(itemInfo);
 

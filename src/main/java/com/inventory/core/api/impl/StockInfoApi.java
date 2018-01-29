@@ -64,6 +64,16 @@ public class StockInfoApi implements IStockInfoApi{
     }
 
     @Override
+    public void updateOnItemUpdateInStockOnSaleReturn(long productId, int quanity) {
+
+        StockInfo stockInfo = stockInfoRepository.findByProductInfo(productId);
+
+        stockInfo.setInStock(stockInfo.getInStock() + quanity);
+
+        stockInfoRepository.save(stockInfo);
+    }
+
+    @Override
     public void saveOnProductSave(long productId) {
 
         StockInfo stockInfo = new StockInfo();

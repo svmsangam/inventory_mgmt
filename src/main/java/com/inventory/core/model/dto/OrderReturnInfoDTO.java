@@ -3,6 +3,7 @@ package com.inventory.core.model.dto;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dhiraj on 1/17/18.
@@ -28,6 +29,10 @@ public class OrderReturnInfoDTO {
     private String createdByName;
 
     private Status status;
+
+    private List<Long> orderItemInfoIdList;
+
+    private List<Integer> returnQuantityList;
 
     public long getOrderReturnInfoId() {
         return orderReturnInfoId;
@@ -107,5 +112,21 @@ public class OrderReturnInfoDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public List<Long> getOrderItemInfoIdList() {
+        return orderItemInfoIdList;
+    }
+
+    public void setOrderItemInfoIdList(List<Long> orderItemInfoIdList) {
+        this.orderItemInfoIdList = orderItemInfoIdList;
+    }
+
+    public List<Integer> getReturnQuantityList() {
+        return returnQuantityList;
+    }
+
+    public void setReturnQuantityList(List<Integer> returnQuantityList) {
+        this.returnQuantityList = returnQuantityList;
     }
 }
