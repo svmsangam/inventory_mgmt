@@ -15,6 +15,8 @@ public class ReturnItemInfoDTO {
 
     private int quantity;
 
+    private double rate;
+
     private Long orderReturnInfoId;
 
     private double totalAmount;
@@ -75,5 +77,13 @@ public class ReturnItemInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 }
