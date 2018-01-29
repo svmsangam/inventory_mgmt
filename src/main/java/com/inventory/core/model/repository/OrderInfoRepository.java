@@ -26,6 +26,9 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo , Long>  , 
     @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2")
     OrderInfo findByOrderNoAndStoreInfo(String orderNo , long storeInfoId);
 
+    @Query("select o from OrderInfo o where o.orderNo = ?1 and o.storeInfo.id = ?2 and o.fiscalYearInfo.id = ?3")
+    OrderInfo findByOrderNoAndStoreInfoAndFiscalYearInfo(String orderNo , long storeInfoId , long fiscalYearId);
+
     @Query("select o from OrderInfo o where o.status = ?1 and o.storeInfo.id = ?2 and o.orderType = ?3")
     List<OrderInfo> findAllByStatusAndStoreInfoAndOrderType(Status status , long storeId , OrderType orderType, Pageable pageable);
 

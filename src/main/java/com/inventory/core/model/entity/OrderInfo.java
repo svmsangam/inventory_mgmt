@@ -50,6 +50,9 @@ public class OrderInfo extends AbstractEntity<Long> {
 
     private double grandTotal;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    FiscalYearInfo fiscalYearInfo;
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -168,5 +171,13 @@ public class OrderInfo extends AbstractEntity<Long> {
 
     public void setGrandTotal(double grandTotal) {
         this.grandTotal = grandTotal;
+    }
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }

@@ -107,6 +107,10 @@ public class OrderInfoApi implements IOrderInfoApi {
         orderInfo.setSaleTrack(orderInfoDTO.getSaleTrack());
         orderInfo.setOrderType(orderInfoDTO.getOrderType());
 
+        FiscalYearInfo currentFiscalYear = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , orderInfo.getStoreInfo().getId() , true);
+
+        orderInfo.setFiscalYearInfo(currentFiscalYear);
+
         return orderInfoRepository.save(orderInfo);
     }
 

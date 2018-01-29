@@ -146,6 +146,7 @@ public class InvoiceController {
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
             modelMap.put("filterDTO" , filterDTO);
+            modelMap.put("totalResult" , totalList);
 
         } catch (Exception e) {
 

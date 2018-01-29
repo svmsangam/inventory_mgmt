@@ -2,10 +2,12 @@ package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.dto.OrderItemInfoDTO;
+import com.inventory.core.model.entity.FiscalYearInfo;
 import com.inventory.core.model.entity.ItemInfo;
 import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ClientInfoRepository;
+import com.inventory.core.model.repository.FiscalYearInfoRepository;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.web.error.OrderError;
@@ -39,6 +41,9 @@ public class OrderValidation extends GlobalValidation {
 
     @Autowired
     private ClientInfoRepository clientInfoRepository;
+
+    @Autowired
+    private FiscalYearInfoRepository fiscalYearInfoRepository;
 
     public OrderError onSaleSave(OrderInfoDTO orderInfoDTO , BindingResult result){
 
@@ -83,9 +88,16 @@ public class OrderValidation extends GlobalValidation {
 
         error.setOrderNo(checkString(value , 10 , 10 , "orderNo" , true));
 
+        FiscalYearInfo currentFiscalYear = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeId , true);
+
+        if (currentFiscalYear == null){
+            error.setOrderNo("please add any fiscal year first");
+            return false;
+        }
+
         if (!"".equals(error.getOrderNo())){
             return false;
-        } else if (orderInfoRepository.findByOrderNoAndStoreInfo(value , storeId) != null){
+        } else if (orderInfoRepository.findByOrderNoAndStoreInfoAndFiscalYearInfo(value , storeId , currentFiscalYear.getId()) != null){
             error.setOrderNo("that order number was already in use now try again with this no");
             return false;
         }
