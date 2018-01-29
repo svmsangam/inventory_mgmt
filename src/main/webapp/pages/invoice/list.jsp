@@ -39,107 +39,7 @@
 
                         <div class="row collapse" id="filter" >
                             <div class="col-md-12">
-                                <form action="${pageContext.request.contextPath}/invoice/filter" method="GET">
-                                    <div class="well well-sm">
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Fiscal Year</label>
-                                                    <select class="choose2 form-control" name="fiscalYearId">
-
-                                                        <option value="" selected>select fiscal year</option>
-
-                                                        <c:forEach items="${fiscalYearList}" var="fiscalYear">
-                                                            <option value="${fiscalYear.fiscalYearInfoId}">${fiscalYear.title}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                    <p class="form-error"></p>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Client Name</label>
-                                                    <select class="choose1 form-control" name="clientId"></select>
-                                                    <p class="form-error"></p>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>From Date:</label>
-                                                    <div class='input-group date'>
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-
-                                                        <input type="text" class="form-control datepicker"
-                                                               onkeypress="return false;" onkeyup="return false;"
-                                                               name="from" placeholder="From Date"/>
-                                                        <%--<input type="text" class="form-control datepicker"
-                                                               onkeypress="return false;" onkeyup="return false;"
-                                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value=""/>"
-                                                               name="from" placeholder="From Date"/>--%>
-                                                    </div>
-                                                    <p class="form-error"></p>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>To Date:</label>
-                                                    <div class='input-group date'>
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control datepicker"
-                                                               onkeypress="return false;" onkeyup="return false;"
-                                                               name="to" placeholder="To Date"/>
-                                                    </div>
-                                                    <p class="form-error"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Amount Greater Than</label>
-                                                    <input type="number" class="form-control" name="amountGt" placeholder="amount greater than">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Amount Less Than</label>
-                                                    <input type="number" class="form-control" name="amountLt" placeholder="amount less than">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Receivable Greater Than</label>
-                                                    <input type="number" class="form-control" name="receivableGt" placeholder="receivable greater than">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Receivable Less Than</label>
-                                                    <input type="number" name="receivableLt" class="form-control" placeholder="receivable less than">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-4 pull-right" >
-                                                <button type="submit" class="btn btn-success btn-flat btn-block">Filter!</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
+                                <%@include file="/pages/invoice/filterForm.jsp" %>
                             </div>
                         </div>
 
@@ -291,10 +191,3 @@
     });
 </script>
 
-<script>
-    $(document).ready(function () {
-       /* $(document).on("click" , ".filter" , function () {
-            $("#filter").collapse();
-        })*/
-    })
-</script>

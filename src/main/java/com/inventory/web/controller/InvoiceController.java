@@ -145,6 +145,7 @@ public class InvoiceController {
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
+            modelMap.put("filterDTO" , filterDTO);
 
         } catch (Exception e) {
 
@@ -154,7 +155,7 @@ public class InvoiceController {
             return "redirect:/";
         }
 
-        return "invoice/list";
+        return "invoice/filter";
 
     }
 

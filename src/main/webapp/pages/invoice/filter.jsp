@@ -37,49 +37,26 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Invoice Filter</h3>
-                        <%-- <div class="box-tools">
-                             <a href="${pageContext.request.contextPath}/order/sale/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> New Order
-                             </a>
-                         </div>--%>
+                         <div class="box-tools">
+                             <div class="row">
+                                 <div class="dropdown pull-right">
+                                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
+                                         <span class="caret"></span></button>
+                                     <ul class="dropdown-menu">
+                                         <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                         <li class="divider"></li>
+                                         <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                                     </ul>
+                                 </div>
+                             </div>
+                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <div class="well well-sm">
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>From Date:&nbsp;<fmt:formatDate pattern="MMM dd, yyyy" value="${from}"/></label>
-                                    <div class='input-group date'>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" class="form-control datepicker"
-                                               onkeypress="return false;" onkeyup="return false;"
-                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${from}"/>"
-                                               name="from" placeholder="From Date"/>
-                                    </div>
-                                    <p class="form-error"></p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>To Date:&nbsp;<fmt:formatDate pattern="MMM dd, yyyy" value="${to}"/></label>
-                                    <div class='input-group date'>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" class="form-control datepicker"
-                                               onkeypress="return false;" onkeyup="return false;"
-                                               value="<fmt:formatDate pattern="MM/dd/yyyy" value="${to}"/>"
-                                               name="to" placeholder="To Date"/>
-                                    </div>
-                                    <p class="form-error"></p>
-                                </div>
-                            </div>
-                            <div class="margin" style="margin-top: 25px;">
-                                <button type="submit" class="btn btn-info btn-flat">Filter!</button>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <%@include file="/pages/invoice/filterForm.jsp" %>
                             </div>
                         </div>
 
@@ -170,3 +147,57 @@
     </section>
 </div>
 <%@include file="/pages/parts/footer.jsp" %>
+
+<script>
+    $(document).ready(function () {
+
+        $(".choose1").select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/client/customer/search',
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+
+                        if (value.companyName === null || "" === value.companyName) {
+
+                            arr.push({
+                                id: value.clientId,
+                                text: value.name + ' - ' + value.mobileNumber
+                            })
+                        } else {
+                            arr.push({
+                                id: value.clientId,
+                                text: value.companyName + ' - ' + value.mobileNumber
+                            })
+                        }
+                    })
+
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1,
+            placeholder: "Search Customer by Name or Mobile No"
+        });
+    });
+</script>
