@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by dhiraj on 1/17/18.
  */
@@ -65,6 +67,11 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
         //TODO reverse ledger entry
 
         return orderReturnInfoConverter.convertToDto(orderReturnInfo);
+    }
+
+    @Override
+    public List<OrderReturnInfoDTO> list(Status status, long storeId) {
+        return orderReturnInfoConverter.convertToDtoList(orderReturnInfoRepository.findAllByStatusAndStoreInfo_Id(status , storeId));
     }
 
 }

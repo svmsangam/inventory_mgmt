@@ -110,6 +110,10 @@ public class StringConstants {
     public static String ORDER_LIST = "orderList";
     public static String ORDER_ERROR = "orderError";
 
+    public static String ORDER_RETURN = "orderReturn";
+    public static String ORDER_RETURN_LIST = "orderReturnList";
+    public static String ORDER_RETURN_ERROR = "orderReturnError";
+
     public static String ORDER_ITEM_LIST = "orderItemList";
 
     public static String INVOICE = "invoice";
