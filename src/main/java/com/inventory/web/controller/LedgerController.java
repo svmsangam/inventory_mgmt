@@ -176,6 +176,9 @@ public class LedgerController {
 
             int currentpage = page - 1;
 
+            filterTerms.setStatus(Status.ACTIVE);
+            filterTerms.setStoreId(currentUser.getStoreId());
+
             long totalList = ledgerInfoApi.countFilter(filterTerms);
 
             int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
@@ -188,8 +191,7 @@ public class LedgerController {
 
             filterTerms.setPage(currentpage);
             filterTerms.setSize((int) PageInfo.pageList);
-            filterTerms.setStatus(Status.ACTIVE);
-            filterTerms.setStoreId(currentUser.getStoreId());
+
 
             modelMap.put(StringConstants.LEDGERLIST, ledgerInfoApi.filter(filterTerms ));
             modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));

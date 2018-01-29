@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class ReportGeneratorUtil {
 
-    public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle , double dr , double cr , double balance) throws ColumnBuilderException, JRException, ClassNotFoundException {
+   /* public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle , double dr , double cr , double balance) throws ColumnBuilderException, JRException, ClassNotFoundException {
 
         Style headerStyle = createHeaderStyle();
         Style detailTextStyle = createDetailTextStyle();
@@ -62,6 +62,22 @@ public class ReportGeneratorUtil {
             jp.addPage(jp1.getPages().get(i));
         }
 
+
+        return jp;
+    }
+*/
+
+    public JasperPrint ledgerReport(List<LedgerInfoDTO> list, String title, String subTitle ) throws ColumnBuilderException, JRException, ClassNotFoundException {
+
+        Style headerStyle = createHeaderStyle();
+        Style detailTextStyle = createDetailTextStyle();
+        Style detailNumberStyle = createDetailNumberStyle();
+
+        DynamicReport dynaReport = ledgerReportProcessor(title, subTitle, headerStyle, detailTextStyle, detailNumberStyle);
+
+
+        JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dynaReport, new ClassicLayoutManager(),
+                new JRBeanCollectionDataSource(list));
 
         return jp;
     }

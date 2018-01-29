@@ -1,6 +1,7 @@
 package com.inventory.core.model.specification;
 
 import com.inventory.core.model.dto.LedgerFilter;
+import com.inventory.core.model.dto.LedgerFilterDTO;
 import com.inventory.core.model.entity.LedgerInfo;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -17,13 +18,13 @@ import java.util.List;
 
 public class LedgerSpecification implements Specification<LedgerInfo> {
 
-    private LedgerFilter ledgerFilter;
+    private LedgerFilterDTO ledgerFilter;
 
     public LedgerSpecification(){
 
     }
 
-    public LedgerSpecification(LedgerFilter ledgerFilter){
+    public LedgerSpecification(LedgerFilterDTO ledgerFilter){
         super();
         this.ledgerFilter = ledgerFilter;
     }
@@ -37,12 +38,12 @@ public class LedgerSpecification implements Specification<LedgerInfo> {
             predicates.add(cb.equal(root.get("status"),ledgerFilter.getStatus()));
         }
 
-        if(ledgerFilter.getFiscalYearInfo()!=null){
-            predicates.add(cb.equal(root.get("fiscalYearInfo"),ledgerFilter.getFiscalYearInfo()));
+        if(ledgerFilter.getFiscalYearId()!=null){
+            predicates.add(cb.equal(root.get("fiscalYearInfo").get("id"),ledgerFilter.getFiscalYearId()));
         }
 
-        if(ledgerFilter.getAccountInfo()!=null){
-            predicates.add(cb.equal(root.get("accountInfo"),ledgerFilter.getAccountInfo()));
+        if(ledgerFilter.getAccountId()!=null){
+            predicates.add(cb.equal(root.get("accountInfo").get("id"),ledgerFilter.getAccountId()));
         }
 
         if(ledgerFilter.getFrom()!=null){
@@ -53,9 +54,7 @@ public class LedgerSpecification implements Specification<LedgerInfo> {
             predicates.add(cb.lessThan(root.get("created"),ledgerFilter.getTo()));
         }
 
-        if(ledgerFilter.getStoreInfo()!=null){
-            predicates.add(cb.equal(root.get("storeInfo"),ledgerFilter.getStoreInfo()));
-        }
+        predicates.add(cb.equal(root.get("storeInfo").get("id"),ledgerFilter.getStoreId()));
 
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

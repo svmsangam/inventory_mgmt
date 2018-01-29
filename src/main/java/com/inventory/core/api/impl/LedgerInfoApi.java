@@ -83,9 +83,9 @@ public class LedgerInfoApi implements ILedgerInfoApi{
     @Override
     public List<LedgerInfoDTO> filter(LedgerFilterDTO filterDTO) {
 
-        LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);
+       /* LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);*/
 
-        LedgerSpecification specification = new LedgerSpecification(filter);
+        LedgerSpecification specification = new LedgerSpecification(filterDTO);
 
         Pageable pageable = createPageRequest(filterDTO.getPage(),filterDTO.getSize() ,"id" , Sort.Direction.DESC);
 
@@ -95,9 +95,9 @@ public class LedgerInfoApi implements ILedgerInfoApi{
     @Override
     public long countFilter(LedgerFilterDTO filterDTO) {
 
-        LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);
+       // LedgerFilter filter = ledgerInfoConverter.convertToFilterSpec(filterDTO);
 
-        LedgerSpecification specification = new LedgerSpecification(filter);
+        LedgerSpecification specification = new LedgerSpecification(filterDTO);
 
         return ledgerInfoRepository.count(specification);
     }

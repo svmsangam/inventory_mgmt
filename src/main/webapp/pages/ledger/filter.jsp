@@ -111,9 +111,9 @@
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/pdf?page=${currentpage}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                                 <li class="divider"></li>
-                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                                <li><a href="${pageContext.request.contextPath}/report/ledger/filter/xls?page=${currentpage}&fiscalYearId=${term.fiscalYearId}&accountId=${term.accountId}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${term.to}"/>"><i class="fa fa-file-excel-o"></i> XLS</a></li>
                             </ul>
                         </div>
 

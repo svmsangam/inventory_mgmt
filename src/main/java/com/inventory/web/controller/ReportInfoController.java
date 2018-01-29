@@ -1,10 +1,7 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
-import com.inventory.core.model.dto.FiscalYearInfoDTO;
-import com.inventory.core.model.dto.InvUserDTO;
-import com.inventory.core.model.dto.InvoiceFilterDTO;
-import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.dto.*;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -54,62 +51,8 @@ public class ReportInfoController {
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
 
-    @GetMapping(value = "invoice/pdf", produces = "application/pdf")
-    public void getpdf(@RequestParam("invoiceId") Long invoiceId, HttpServletRequest request , final HttpServletResponse response) {
-
-        try {
-
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            if (currentUser.getStoreId() == null) {
-                request.getSession().invalidate();
-
-                return ;
-            }
-
-            if (invoiceId == null){
-                return;
-            }
-
-            if (invoiceId < 0){
-                return;
-            }
-
-            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId , currentUser.getStoreId() , Status.ACTIVE);
-
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
-
-            //JasperPrint jp = rp.invoiceReport(invoiceInfoDTO, "Invoice", "Invoice " + new Date().toString());
-           // reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
-
-        } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
-
-            e.printStackTrace();
-        }
-
-        return ;
-    }
+    @Autowired
+    private ILedgerInfoApi ledgerInfoApi;
 
     @GetMapping(value = "invoice/filter/pdf" , produces = "application/pdf")
     public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
@@ -281,230 +224,175 @@ public class ReportInfoController {
 
     }
 
-
-    @GetMapping(value = "invoice/xls", produces = "application/xls")
-    public void getXLS(@RequestParam("invoiceId") Long invoiceId, HttpServletRequest request , final HttpServletResponse response) {
+    @GetMapping(value = "/ledger/filter/pdf" , produces = "application/pdf")
+    public void filterLedgerPdf(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
+             /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                request.getSession().invalidate();
+                return;
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                request.getSession().invalidate();
+                return;
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
+                request.getSession().invalidate();
+                return;
+            }
+
+            if (currentUser.getStoreId() == null) {
+                return;
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                return;
+            }
+
+
+        /*current user checking end*/
+
+            if (filterTerms == null) {
+                return;
+
+            }
+
+            if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null & (filterTerms.getFrom() == null | filterTerms.getTo() == null)){
+                return;
+
+            }
+
+            Integer page = filterTerms.getPage();
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+           /* long totalList = ledgerInfoApi.countFilter(filterTerms);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);*/
+
+            filterTerms.setPage(currentpage);
+            filterTerms.setSize((int) PageInfo.pageList);
+            filterTerms.setStatus(Status.ACTIVE);
+            filterTerms.setStoreId(currentUser.getStoreId());
+
+            List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms );
+
+            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+
+            JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
+            reportServiceApi.writePdfReport(jp, response, "Ledger Report " + new Date().toString());
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
-
             e.printStackTrace();
+            throw e;
         }
-
-        return ;
     }
 
-    /*@GetMapping(value = "/ledger/filter/xls")
-    public void filterXls(@ModelAttribute("terms") LedgerFilter filterTerms, final HttpServletResponse response , RedirectAttributes redirectAttributes) {
+    @GetMapping(value = "/ledger/filter/xls", produces = "application/xls")
+    public void filterLedgerXls(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
-             *//*current user checking start*//*
+             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                request.getSession().invalidate();
                 return;
             }
 
             if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                request.getSession().invalidate();
                 return;
             }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return;//access deniled page
+                request.getSession().invalidate();
+                return;
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return;//store not assigned page
+                return;
             }
 
-        *//*current user checking end*//*
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                return;
+            }
+
+
+        /*current user checking end*/
 
             if (filterTerms == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
                 return;
 
             }
 
-            if (filterTerms.getClientId() <= 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client required");
-                return ;
-            }
-
-            if (filterTerms.getFrom() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "from date required");
+            if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null & (filterTerms.getFrom() == null | filterTerms.getTo() == null)){
                 return;
+
             }
 
-            if (filterTerms.getTo() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "to date required");
-                return;
+            Integer page = filterTerms.getPage();
+
+            if (page == null) {
+                page = 1;
             }
 
-            ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE , filterTerms.getClientId());
-
-            if (clientInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client not found");
-                return;
+            if (page < 1) {
+                page = 1;
             }
 
-            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(filterTerms.getClientId(), AccountAssociateType.CUSTOMER);
+            int currentpage = page - 1;
 
-            if (accountInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "account not found");
-                return;
+           /* long totalList = ledgerInfoApi.countFilter(filterTerms);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
             }
 
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);*/
 
+            filterTerms.setPage(currentpage);
+            filterTerms.setSize((int) PageInfo.pageList);
+            filterTerms.setStatus(Status.ACTIVE);
+            filterTerms.setStoreId(currentUser.getStoreId());
 
-            List<LedgerInfoDTO> ledgerInfoDTOList = ledgerInfoApi.filterReport(Status.ACTIVE, currentUser.getStoreId(), accountInfoDTO.getAccountId(), filterTerms.getFrom(), filterTerms.getTo());
-
-            String clientName = "";
-
-            if (clientInfoDTO.getCompanyName() != null) {
-                clientName =  clientInfoDTO.getCompanyName();
-            } else {
-                clientName = clientInfoDTO.getName();
-            }
-
-   *//*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
-            modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
-
-            modelMap.put("totalDr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT));
-            modelMap.put("totalCr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT));
-
-        *//*
-
-            double totalFilterDr =  ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT);
-            double totalFilterCr = ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT);
-            double filterBalance = totalFilterCr - totalFilterDr;
-
-            double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
+            List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms );
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )" , totalFilterDr , totalFilterCr , filterBalance);
-            reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-    }*/
-
-
-    /*@GetMapping(value = "/ledger/filter/pdf")
-    public void filterPdf(@ModelAttribute("terms") LedgerFilter filterTerms, final HttpServletResponse response , RedirectAttributes redirectAttributes) {
-
-        try {
-
-             *//*current user checking start*//*
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return;
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return;//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return;//store not assigned page
-            }
-
-        *//*current user checking end*//*
-
-            if (filterTerms == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
-                return;
-
-            }
-
-            if (filterTerms.getClientId() <= 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client required");
-                return ;
-            }
-
-            if (filterTerms.getFrom() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "from date required");
-                return;
-            }
-
-            if (filterTerms.getTo() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "to date required");
-                return;
-            }
-
-            ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE , filterTerms.getClientId());
-
-            if (clientInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "client not found");
-                return;
-            }
-
-            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(filterTerms.getClientId(), AccountAssociateType.CUSTOMER);
-
-            if (accountInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "account not found");
-                return;
-            }
-
-
-
-            List<LedgerInfoDTO> ledgerInfoDTOList = ledgerInfoApi.filterReport(Status.ACTIVE, currentUser.getStoreId(), accountInfoDTO.getAccountId(), filterTerms.getFrom(), filterTerms.getTo());
-
-            String clientName = "";
-
-            if (clientInfoDTO.getCompanyName() != null) {
-                clientName =  clientInfoDTO.getCompanyName();
-            } else {
-                clientName = clientInfoDTO.getName();
-            }
-
-            double balance = ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT) - ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT);
-
-            double totalFilterDr =  ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT);
-            double totalFilterCr = ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT);
-            double filterBalance = totalFilterCr - totalFilterDr;
-
-
-   *//*         modelMap.put("totalFilterDr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.DEBIT));
-            modelMap.put("totalFilterCr" , ledgerInfoApi.filterTotalAmount(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , filterTerms.getFrom() , filterTerms.getTo() , AccountEntryType.CREDIT));
-
-            modelMap.put("totalDr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.DEBIT));
-            modelMap.put("totalCr" , ledgerInfoApi.getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status.ACTIVE , currentUser.getStoreId() , accountInfoDTO.getAccountId() , AccountEntryType.CREDIT));
-
-        *//*
-
-
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
-
-            JasperPrint jp = rp.ledgerReport(ledgerInfoDTOList, clientName, "total balance ( " + balance + " )" , totalFilterDr ,  totalFilterCr , filterBalance);
-            reportServiceApi.writePdfReport(jp, response, "Ledger Report " + accountInfoDTO.getAcountNumber() + " " + filterTerms.getFrom() + " to " + filterTerms.getTo()  );
-
+            JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
+            reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + new Date().toString());
 
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            throw e;
         }
-
-    }*/
+    }
 }
