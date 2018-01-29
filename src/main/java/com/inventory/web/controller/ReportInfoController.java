@@ -10,7 +10,9 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.util.ReportGeneratorUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -109,7 +112,7 @@ public class ReportInfoController {
     }
 
     @GetMapping(value = "invoice/filter/pdf" , produces = "application/pdf")
-    public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+    public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
@@ -172,7 +175,7 @@ public class ReportInfoController {
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 */
             filterDTO.setPageNo(currentpage);
-            //filterDTO.setSize((int) PageInfo.pageList);
+            filterDTO.setSize((int) PageInfo.pageList);
 
             List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
 
@@ -183,11 +186,9 @@ public class ReportInfoController {
 
 
         } catch (Exception e) {
-
             e.printStackTrace();
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
-
-            return;
+            throw e;
         }
 
         return;
@@ -258,14 +259,14 @@ public class ReportInfoController {
             List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 */
             filterDTO.setPageNo(currentpage);
-            //filterDTO.setSize((int) PageInfo.pageList);
+            filterDTO.setSize((int) PageInfo.pageList);
 
             List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
 
             ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
             JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
-            reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
+            reportServiceApi.writeXlsReport(jp, response, "invoice Report " + new Date().toString());
 
 
         } catch (Exception e) {
