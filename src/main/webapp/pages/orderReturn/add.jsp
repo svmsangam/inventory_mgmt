@@ -94,7 +94,7 @@
             </div>
         </div>
         <!-- /.row -->
-        <div class="col-sm-12">&nbsp;</div>
+            <div class="col-sm-12"><p class="form-error">${orderReturnError.error}</p></div>
         <!-- Table row -->
         <div class="row">
             <table class="table table-striped">
@@ -139,8 +139,8 @@
                 <div class="form-group">
                     <label for="description">Description:</label><br/>
                     <textarea class="form-control" placeholder="write something.." name="note"
-                              id="description" rows="3" cols="30" required></textarea>
-                    <p class="form-error"></p>
+                              id="description" rows="3" cols="30"></textarea>
+                    <p class="form-error">${orderReturnError.note}</p>
                 </div>
             </div>
             <!-- /.col -->

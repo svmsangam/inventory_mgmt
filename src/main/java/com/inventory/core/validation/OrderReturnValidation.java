@@ -157,7 +157,7 @@ public class OrderReturnValidation extends GlobalValidation {
             int remainingQuantity = orderItemInfo.getQuantity() - orderItemInfo.getReturnQuantity();
 
             if (remainingQuantity == 0){
-                error.setError("item : " + orderItemInfo.getItemInfo().getProductInfo().getName() + " fully returned ");
+                error.setError("item : " + orderItemInfo.getItemInfo().getProductInfo().getName() + " fully returned already");
                 return false;
             }
 
