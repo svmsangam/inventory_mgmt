@@ -66,6 +66,7 @@ public class OrderReturnValidation extends GlobalValidation {
         valid = valid && checkReturnDate(dto.getReturnDate());
         valid = valid && checkOrder(dto.getOrderInfoId(), dto.getStoreId());
         valid = valid && checkNote(dto.getNote());
+        valid = valid & checkItem(dto.getOrderItemInfoIdList() , dto.getReturnQuantityList() , dto.getOrderInfoId());
 
         error.setValid(valid);
 
