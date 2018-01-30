@@ -6,11 +6,14 @@ var stompClient = null;
 
 function connectToSocket(secretKey) {
 
-    if (checkConnection() === false) {
+   var checker = checkConnection(secretKey);
+
+    console.log("check connection : " + checker);
+
+
+    if (checker === false) {
 
         console.log("new connection");
-
-        console.log(Cache-Control);
 
         socket = new SockJS("/webSocket");
         stompClient = Stomp.over(socket);
@@ -27,8 +30,6 @@ function connectToSocket(secretKey) {
                 notifyMe(messageOutput.body);
             });
 
-            localStorage['socket'] = JSON.stringify(stompClient);
-
         });
 
     } else {
@@ -37,9 +38,15 @@ function connectToSocket(secretKey) {
 
 }
 
-function checkConnection() {
+function checkConnection(secretKey) {
 
-    if (stompClient === undefined){
+    if (checkStocket(secretKey) === true){
+        return true;
+    }else {
+        return false;
+    }
+
+    /*if (stompClient === undefined){
         return false;
     } else {
 
@@ -51,8 +58,75 @@ function checkConnection() {
         } else {
             return false;
         }
+    }*/
+}
+
+function checkStocket(secretKey) {
+
+    if(typeof(Storage) !== "undefined") {
+
+        var storageChecker = localStorage.getItem(secretKey);
+
+        console.log("local storage : " + storageChecker  );
+
+        if (storageChecker === undefined || storageChecker === null){
+
+            localStorage.setItem(secretKey, true);
+
+            sessionStorage.myKey = secretKey;
+
+            console.log("return : " + false );
+
+            return false;
+
+        } else if (storageChecker === "true"){
+
+            console.log("return 1 : " + true );
+            sessionStorage.myKey = secretKey;
+
+            return true;
+
+        }else {
+            //sessionStorage.clear();
+            sessionStorage.myKey = secretKey;
+            console.log("return 2 : " + false );
+
+            localStorage.setItem(secretKey, true);
+
+            console.log("storage initialized : " + localStorage.getItem(secretKey)  );
+
+            return false;
+        }
+    } else {
+
+        return false;
+        //document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
     }
 }
+
+//remove key for local storage while close browser
+
+window.onbeforeunload = function (event) {
+    var message = 'Important: Please click on \'Save\' button to leave this page.';
+    if (typeof event === 'undefined') {
+        event = window.event;
+    }
+    if (event) {
+        localStorage.removeItem(sessionStorage.myKey);
+        event.returnValue = message;
+    }
+    return message;
+};
+
+$(function () {
+    $("a").click(function () {
+        window.onbeforeunload = null;
+    });
+    $(".btn").click(function () {
+        window.onbeforeunload = null;
+    });
+});
+
 
 function sendMessage(secretKey) {
     var text = "ping";
