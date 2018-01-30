@@ -135,8 +135,15 @@ public class OrderReturnValidation extends GlobalValidation {
 
         for (int i = 0; i < orderItemList.size(); i++) {
 
-            if (orderItemList.get(i) == null | quanitytList.get(i) == null) {
-                error.setError("item or quantity can not be null");
+            error.setError(checkLong(orderItemList.get(i) , 1 , "item" , true));
+
+            if (!"".equals(error.getError())){
+                return false;
+            }
+
+            error.setError(checkInteger(quanitytList.get(i) , 1 , Integer.MAX_VALUE , "quantity" , true));
+
+            if (!"".equals(error.getError())){
                 return false;
             }
 
