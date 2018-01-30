@@ -21,6 +21,8 @@ public interface OrderItemInfoRepository extends JpaRepository<OrderItemInfo , L
 
     OrderItemInfo findByIdAndStatus(long orderItemInfoId , Status status);
 
+    OrderItemInfo findByIdAndStatusAndOrderInfo_Id(long orderItemInfoId , Status status , long orderInfoId);
+
     @Query("select o from OrderItemInfo o where o.id = ?1 and o.status = ?2 and o.orderInfo.id = ?3")
     OrderItemInfo findByIdAndStatusAndOrderInfo(long orderItemInfoId , Status status , long orderInfoId);
 
