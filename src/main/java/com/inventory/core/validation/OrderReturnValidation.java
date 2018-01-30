@@ -97,7 +97,7 @@ public class OrderReturnValidation extends GlobalValidation {
             return false;
         }
 
-        if (orderInfo.getSaleTrack().equals(SalesOrderStatus.DELIVERED)) {
+        if (!orderInfo.getSaleTrack().equals(SalesOrderStatus.DELIVERED)) {
             error.setError("provided order not delivered yet");
             return false;
         }
@@ -113,7 +113,7 @@ public class OrderReturnValidation extends GlobalValidation {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     private boolean checkItem(List<Long> orderItemList, List<Integer> quanitytList, long orderId) {
@@ -155,6 +155,11 @@ public class OrderReturnValidation extends GlobalValidation {
             }
 
             int remainingQuantity = orderItemInfo.getQuantity() - orderItemInfo.getReturnQuantity();
+
+            if (remainingQuantity == 0){
+                error.setError("item : " + orderItemInfo.getItemInfo().getProductInfo().getName() + " fully returned ");
+                return false;
+            }
 
             if (quanitytList.get(i) > remainingQuantity) {
                 error.setError("item : " + orderItemInfo.getItemInfo().getProductInfo().getName() + " only sold " + remainingQuantity);

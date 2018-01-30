@@ -10,7 +10,9 @@ import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.validation.OrderReturnValidation;
 import com.inventory.web.error.OrderError;
+import com.inventory.web.error.OrderReturnError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
@@ -50,6 +52,9 @@ public class OrderReturnInfoController {
 
     @Autowired
     private IOrderReturnInfoApi orderReturnInfoApi;
+
+    @Autowired
+    private OrderReturnValidation orderReturnValidation;
 
     @GetMapping(value = "/add")
     public String add(@RequestParam("orderInfoId") Long orderInfoId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -198,21 +203,21 @@ public class OrderReturnInfoController {
 
 
             synchronized (this.getClass()) {
+
                 orderReturnInfo.setCreatedById(currentUser.getUserId());
                 orderReturnInfo.setStoreId(currentUser.getStoreId());
 
-                /*OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
+                OrderReturnError error = orderReturnValidation.onsave(orderReturnInfo, bindingResult);
 
                 if (!error.isValid()) {
 
-                    modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
-                    modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-                    modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
-                    modelMap.put(StringConstants.ORDER_ERROR, error);
                     modelMap.put(StringConstants.ORDER, orderInfoDTO);
+                    modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderInfoDTO.getOrderId()));
+                    modelMap.put(StringConstants.INVOICE , invoiceInfoApi.getByOrderIdAndStatusAndStoreId(orderInfoDTO.getOrderId() , Status.ACTIVE , currentUser.getStoreId()));
+                    modelMap.put(StringConstants.ORDER_RETURN_ERROR , error);
 
-                    return "order/addSale";
-                }*/
+                    return "orderReturn/add";
+                }
 
                 orderReturnInfo = orderReturnInfoApi.save(orderReturnInfo);
 
