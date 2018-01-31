@@ -9,19 +9,30 @@ import javax.persistence.*;
 @Table(name = "paymentdetail_tables")
 public class PaymentInfo extends AbstractEntity<Long> {
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Payment receivedPayment;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private Payment refundPayment;
 
     private String remark;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private InvoiceInfo invoiceInfo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
+
+    public Payment getRefundPayment() {
+        return refundPayment;
+    }
+
+    public void setRefundPayment(Payment refundPayment) {
+        this.refundPayment = refundPayment;
+    }
 
     public Payment getReceivedPayment() {
         return receivedPayment;

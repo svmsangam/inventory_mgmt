@@ -12,6 +12,8 @@ public interface IPaymentInfoApi {
     
     PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO);
 
+    void refundOnInvoiceCancel(long invoiceId, long createdById);
+
     long collectChuque(long paymentInfoId);
 
     PaymentInfoDTO getById(long paymentInfoId);

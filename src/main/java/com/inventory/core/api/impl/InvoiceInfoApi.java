@@ -327,11 +327,17 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         invoiceInfo.setCanceled(true);
         invoiceInfo.setCancelNote(note);
 
-        invoiceInfoRepository.save(invoiceInfo);
+        invoiceInfo = invoiceInfoRepository.save(invoiceInfo);
 
         loggerApi.save(invoiceId , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , createdById , "invoice canceled");
 
         orderReturnInfoApi.cancelInvoice(invoiceId , createdById);
+
+        invoiceInfo.setReceivableAmount(0.0);
+
+        invoiceInfoRepository.save(invoiceInfo);
+
+        paymentInfoApi.refundOnInvoiceCancel(invoiceId , createdById);
     }
 
     private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {

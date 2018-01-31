@@ -7,12 +7,16 @@ import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.model.converter.PaymentInfoConverter;
 import com.inventory.core.model.dto.PaymentDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
+import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.Payment;
 import com.inventory.core.model.entity.PaymentInfo;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.PaymentInfoRepository;
 import com.inventory.core.model.repository.PaymentRepository;
+import com.inventory.core.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
@@ -48,6 +52,12 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private InvoiceInfoRepository invoiceInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     @Lock(LockModeType.OPTIMISTIC)
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
@@ -68,6 +78,31 @@ public class PaymentInfoApi implements IPaymentInfoApi{
         }
 
         return paymentInfoConverter.convertToDto(paymentInfo);
+    }
+
+    @Override
+    public void refundOnInvoiceCancel(long invoiceId , long createdById){
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        Double amount = paymentInfoRepository.findReceivedAmountByStatusAndInvoiceInfo(Status.ACTIVE , invoiceId);
+
+        if (amount != null) {
+
+            Payment payment = paymentApi.save(amount);
+
+            PaymentInfo paymentInfo = new PaymentInfo();
+
+            paymentInfo.setCreatedBy(userRepository.findById(createdById));
+            paymentInfo.setInvoiceInfo(invoiceInfo);
+            paymentInfo.setRefundPayment(payment);
+            paymentInfo.setStoreInfo(invoiceInfo.getStoreInfo());
+            paymentInfo.setRemark("cash returned due to of cancel invoice");
+
+            paymentInfoRepository.save(paymentInfo);
+        }
+
+
     }
 
     @Override
