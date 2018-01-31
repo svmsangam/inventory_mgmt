@@ -113,9 +113,9 @@ window.onbeforeunload = function (event) {
     }
     if (event) {
         localStorage.removeItem(sessionStorage.myKey);
-        event.returnValue = message;
+        window.onbeforeunload = null;
     }
-    return message;
+    window.onbeforeunload = null;
 };
 
 $(function () {

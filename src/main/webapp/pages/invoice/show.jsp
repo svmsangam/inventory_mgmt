@@ -148,6 +148,7 @@
                     </p>
                 </div>
             </c:if>
+
             <!-- /.col -->
             <div class="col-lg-3 pull-right">
                 <%--<p class="lead">Amount Due 2/22/2014</p>--%>
@@ -176,6 +177,21 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
+
+            <div class="row">
+                <c:choose>
+                    <c:when test="${invoice.canceled eq true}">
+                        <div class="col-xs-6 no-print">
+                            <p class="lead">Cancel Reason:</p>
+
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                    ${invoice.cancelNote}
+                            </p>
+                        </div>
+                    </c:when>
+                    <c:otherwise><div class="col-xs-6 no-print margin"><label class="label label-success">Active</label></div> </c:otherwise>
+                </c:choose>
+            </div>
         </div>
         <!-- this row will not appear when printing -->
         <div class="row no-print" id="editor">
@@ -189,7 +205,7 @@
                 </a>
 
                 <c:choose>
-                    <c:when test="${invoice.canceled eq tre}"><label class="label label-danger">canceled</label> </c:when>
+                    <c:when test="${invoice.canceled eq true}"><label class="label label-danger">canceled</label> </c:when>
                     <c:otherwise><button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel</button></c:otherwise>
                 </c:choose>
 
