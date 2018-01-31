@@ -39,6 +39,26 @@ public class InvoiceInfoDTO {
 
     private FiscalYearInfoDTO fiscalYearInfo;
 
+    private boolean canceled;
+
+    private String cancelNote;
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public String getCancelNote() {
+        return cancelNote;
+    }
+
+    public void setCancelNote(String cancelNote) {
+        this.cancelNote = cancelNote;
+    }
+
     public StoreInfoDTO getStoreInfoDTO() {
         return storeInfoDTO;
     }

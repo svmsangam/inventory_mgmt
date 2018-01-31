@@ -188,6 +188,11 @@
                     <i class="fa fa-file-pdf-o"></i> Generate PDF
                 </a>
 
+                <c:choose>
+                    <c:when test="${invoice.canceled eq tre}"><label class="label label-danger">canceled</label> </c:when>
+                    <c:otherwise><button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel</button></c:otherwise>
+                </c:choose>
+
                 <a href="${pageContext.request.contextPath}/invoice/xls?invoiceId=${invoice.invoiceId}" class="btn btn-primary pull-left" target="_blank" style="margin-right: 5px;">
                     <i class="fa fa-file-excel-o"></i> Generate Excel
                 </a>
@@ -283,6 +288,38 @@
     </section>
     <!-- /.content -->
     <div class="clearfix"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="invoiceCancel" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cancel invoice</h4>
+                </div>
+                <form>
+                    <div class="modal-body">
+
+                        <input type="hidden" name="invoiceId" value="${invoice.invoiceId}">
+                        <div class="form-group">
+                            <label for="description">Reason:</label><br/>
+                            <textarea class="form-control" placeholder="write something.." name="cancelNote"
+                                      id="description" rows="3" cols="30" required></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success pull-right" >Save changes</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+<!-- model end -->
 
 </div>
 <%@include file="/pages/parts/footer.jsp" %>

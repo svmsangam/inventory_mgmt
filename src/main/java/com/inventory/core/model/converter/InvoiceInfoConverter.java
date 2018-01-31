@@ -78,6 +78,8 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         dto.setVersion(entity.getVersion());
         dto.setStoreInfoDTO(storeInfoConverter.convertToDto(entity.getStoreInfo()));
         dto.setFiscalYearInfo(fiscalYearInfoConverter.convertToDto(entity.getFiscalYearInfo()));
+        dto.setCanceled(entity.isCanceled());
+        dto.setCancelNote(entity.getCancelNote());
 
         return dto;
     }
@@ -98,6 +100,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         entity.setTotalAmount(entity.getOrderInfo().getGrandTotal());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
         entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , dto.getStoreInfoId() , true));
+        entity.setCanceled(false);
 
         return entity;
     }
@@ -117,6 +120,7 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
         entity.setTotalAmount(orderInfo.getGrandTotal());
         entity.setStoreInfo(orderInfo.getStoreInfo());
         entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , orderInfo.getStoreInfo().getId() , true));
+        entity.setCanceled(false);
 
         return entity;
     }

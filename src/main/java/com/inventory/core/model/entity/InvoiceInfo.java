@@ -34,6 +34,26 @@ public class InvoiceInfo extends AbstractEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private FiscalYearInfo fiscalYearInfo;
 
+    private boolean canceled;
+
+    private String cancelNote;
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public String getCancelNote() {
+        return cancelNote;
+    }
+
+    public void setCancelNote(String cancelNote) {
+        this.cancelNote = cancelNote;
+    }
+
     public StoreInfo getStoreInfo() {
         return storeInfo;
     }
