@@ -75,6 +75,18 @@ public class LedgerInfoApi implements ILedgerInfoApi{
 
     }
 
+    @Override
+    public void saveOnInvoiceCancel(long invoiceId){
+
+        LedgerInfo drLedgerInfo = ledgerInfoConverter.convertInvoiceCancelToDRLedger(invoiceId);
+
+        LedgerInfo crLedgerInfo = ledgerInfoConverter.convertInvoiceCancelToCRLedger(invoiceId);
+
+        ledgerInfoRepository.save(drLedgerInfo);
+
+        ledgerInfoRepository.save(crLedgerInfo);
+    }
+
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));

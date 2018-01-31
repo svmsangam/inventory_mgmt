@@ -99,6 +99,13 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         itemInfoApi.updateInStockOnSaleReturn(orderReturnInfo.getId());
 
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        if (invoiceInfo.getReceivableAmount() < invoiceInfo.getTotalAmount()){
+
+            ledgerInfoApi.saveOnInvoiceCancel(invoiceId);
+        }
+
     }
 
     @Override

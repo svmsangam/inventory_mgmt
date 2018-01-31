@@ -274,7 +274,7 @@ immediately after the control sidebar -->
 </script>
 
 <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
-    <%@include file="/pages/notification/script/script.jsp" %>
+    <%--<%@include file="/pages/notification/script/script.jsp" %>--%>
     <%--js notification--%>
     <script src="${pageContext.request.contextPath}/resources/js/asset/app/notification.js"></script>
     <%--js socket--%>

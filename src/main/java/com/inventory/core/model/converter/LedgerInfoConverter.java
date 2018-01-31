@@ -225,6 +225,59 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
         return entity;
     }
 
+    public LedgerInfo convertInvoiceCancelToDRLedger(long invoiceId) {
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.DEBIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER));
+        entity.setAmount(invoiceInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+
+        LedgerEntryType ledgerEntryType = LedgerEntryType.CASH;
+
+        entity.setLedgerEntryType(ledgerEntryType);
+
+        if (invoiceInfo.getOrderInfo().getClientInfo().getCompanyName() != null) {
+            entity.setRemarks("Cash return to " + invoiceInfo.getOrderInfo().getClientInfo().getCompanyName());
+        } else {
+            entity.setRemarks("Cash return to " + invoiceInfo.getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(invoiceInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE, invoiceInfo.getStoreInfo().getId(), true));
+
+        return entity;
+    }
+
+    public LedgerInfo convertInvoiceCancelToCRLedger(long invoiceId) {
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.CREDIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(invoiceInfo.getOrderInfo().getStoreInfo().getId(), AccountAssociateType.STORE));
+        entity.setAmount(invoiceInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+
+        entity.setLedgerEntryType(LedgerEntryType.CASH);
+
+        if (invoiceInfo.getOrderInfo().getClientInfo().getCompanyName() != null) {
+            entity.setRemarks("Cash Return to " + invoiceInfo.getOrderInfo().getClientInfo().getCompanyName());
+        } else {
+            entity.setRemarks("Cash Return to " + invoiceInfo.getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(invoiceInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE, invoiceInfo.getStoreInfo().getId(), true));
+
+        return entity;
+    }
+
+
     public LedgerInfo convertOrderReturnToDRLedger(long orderReturnId) {
 
         OrderReturnInfo orderReturnInfo = orderReturnInfoRepository.findById(orderReturnId);
