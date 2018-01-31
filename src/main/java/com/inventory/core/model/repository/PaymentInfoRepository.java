@@ -23,11 +23,14 @@ public interface PaymentInfoRepository extends JpaRepository<PaymentInfo , Long>
     @Query("select p from PaymentInfo p where p.id = ?1 and p.receivedPayment.status = ?2 and p.storeInfo.id = ?3")
     PaymentInfo findByIdAndStatusAndStore(long paymentInfoId , Status status , long storeId);
 
-    @Query("select p from PaymentInfo p where p.id = ?1 and p.receivedPayment.status = ?2 and p.storeInfo.id = ?3 and p.invoiceInfo.id = ?4")
+    @Query("select p from PaymentInfo p where p.id = ?1 and  p.receivedPayment.status = ?2 and p.storeInfo.id = ?3 and p.invoiceInfo.id = ?4")
     PaymentInfo findByIdAndStatusAndStoreAndInvoiceInfo(long paymentInfoId , Status status , long storeId , long invoiceInfoId);
 
     @Query("select p from PaymentInfo p where p.receivedPayment.status in ( ?1 ) and p.storeInfo.id = ?2 and p.invoiceInfo.id = ?3 order by p.id desc ")
     List<PaymentInfo> findByStatusInAndStoreAndInvoiceInfo(List<Status> status , long storeId , long invoiceInfoId);
+
+    @Query("select p from PaymentInfo p where p.refundPayment.status = ?1 and p.storeInfo.id = ?2 and p.invoiceInfo.id = ?3 order by p.id desc ")
+    List<PaymentInfo> findRefundByStatusAndStoreAndInvoiceInfo(Status status , long storeId , long invoiceInfoId );
 
     @Query("select sum (p.receivedPayment.amount) from PaymentInfo p where p.receivedPayment.status = ?1 and p.invoiceInfo.id = ?2")
     Double findReceivedAmountByStatusAndInvoiceInfo(Status status , long invoiceInfoId);

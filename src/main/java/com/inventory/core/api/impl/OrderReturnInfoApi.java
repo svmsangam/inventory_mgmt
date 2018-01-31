@@ -93,6 +93,8 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         orderReturnInfo.setTotalAmount(returnItemInfoApi.save(orderReturnInfo.getOrderInfo().getId() , orderReturnInfo.getId()));
 
+        orderReturnInfo.setTotalAmount(orderReturnInfo.getTotalAmount() + ( orderReturnInfo.getTotalAmount() * orderReturnInfo.getOrderInfo().getTax() /100));
+
         orderReturnInfoRepository.save(orderReturnInfo);
 
         ledgerInfoApi.saveOnOrderReturn(orderReturnInfo.getId());

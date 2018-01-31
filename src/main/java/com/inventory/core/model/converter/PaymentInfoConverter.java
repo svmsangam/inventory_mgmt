@@ -60,6 +60,7 @@ public class PaymentInfoConverter implements IListConvertable<PaymentInfo , Paym
         if (entity.getRefundPayment() != null){
             dto.setRefundPayment(paymentConverter.convertToDto(entity.getRefundPayment()));
         }
+
         dto.setRemark(entity.getRemark());
         dto.setStoreInfoId(entity.getStoreInfo().getId());
 

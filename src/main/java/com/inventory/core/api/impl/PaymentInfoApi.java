@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     }
 
     @Override
-    public void refundOnInvoiceCancel(long invoiceId , long createdById){
+    public void refundOnInvoiceCancel(long invoiceId, long createdById){
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
 
@@ -147,7 +148,20 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
     @Override
     public List<PaymentInfoDTO> getAllByStatusInAndStoreAndInvoiceInfo(List<Status> status, long storeId, long invoiceInfoId) {
-        return paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusInAndStoreAndInvoiceInfo(status , storeId , invoiceInfoId));
+
+        List<PaymentInfoDTO> paymentInfoDTOList = new ArrayList<>();
+
+        paymentInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusInAndStoreAndInvoiceInfo(status , storeId , invoiceInfoId));
+
+        List<PaymentInfoDTO> refundInfoDTOList = new ArrayList<>();
+
+        refundInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findRefundByStatusAndStoreAndInvoiceInfo(Status.ACTIVE , storeId , invoiceInfoId));
+
+        if (refundInfoDTOList != null) {
+            paymentInfoDTOList.addAll(refundInfoDTOList);
+        }
+
+        return paymentInfoDTOList;
     }
 
     @Override

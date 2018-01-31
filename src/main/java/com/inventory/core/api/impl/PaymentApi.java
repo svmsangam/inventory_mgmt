@@ -10,6 +10,8 @@ import com.inventory.core.model.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by dhiraj on 10/10/17.
  */
@@ -38,6 +40,7 @@ public class PaymentApi implements IPaymentApi{
         payment.setAmount(amount);
         payment.setRemark("cash returned due to of cancel invoice");
         payment.setPaymentMethod(PaymentMethod.CASH);
+        payment.setPaymentDate(new Date());
         payment.setStatus(Status.ACTIVE);
 
         return paymentRepository.save(payment);

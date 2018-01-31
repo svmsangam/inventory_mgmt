@@ -268,45 +268,48 @@
                                 <tbody>
                                 <c:forEach items="${paymentList}" var="paymentInfo">
 
-                                    <tr>
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                            value="${paymentInfo.paymentDate}"/></td>
-                                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true"
-                                                              value="${paymentInfo.receivedPayment.amount}"/></td>
-                                        <td>${paymentInfo.receivedPayment.paymentMethod}</td>
-                                        <td>${paymentInfo.remark}</td>
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                            value="${paymentInfo.receivedPayment.chequeDate}"/></td>
+                                    <c:if test="${paymentInfo.receivedPayment ne null}">
+                                        <tr>
+                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                value="${paymentInfo.paymentDate}"/></td>
+                                            <td><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                  groupingUsed="true"
+                                                                  value="${paymentInfo.receivedPayment.amount}"/></td>
+                                            <td>${paymentInfo.receivedPayment.paymentMethod}</td>
+                                            <td>${paymentInfo.remark}</td>
+                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                value="${paymentInfo.receivedPayment.chequeDate}"/></td>
 
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                            value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/></td>
-                                        <td>${paymentInfo.receivedPayment.bankOfCheque}</td>
-                                        <td>${paymentInfo.receivedPayment.bankAccountNumber}</td>
-                                        <th>
-                                            <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
-                                                <c:choose>
-                                                    <c:when test="${paymentInfo.receivedPayment.status eq 'INACTIVE'}"><a
-                                                            class="btn btn-sm btn-danger"
-                                                            href="${pageContext.request.contextPath}/paymentinfo/chuque/collect?paymentId=${paymentInfo.paymentInfoId}">Is
-                                                        Collected ?</a></c:when>
-                                                    <c:otherwise><label
-                                                            class="label label-success">collected</label> </c:otherwise>
-                                                </c:choose>
-                                            </c:if>
-                                        </th>
-                                    </tr>
+                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/></td>
+                                            <td>${paymentInfo.receivedPayment.bankOfCheque}</td>
+                                            <td>${paymentInfo.receivedPayment.bankAccountNumber}</td>
+                                            <th>
+                                                <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
+                                                    <c:choose>
+                                                        <c:when test="${paymentInfo.receivedPayment.status eq 'INACTIVE'}"><a
+                                                                class="btn btn-sm btn-danger"
+                                                                href="${pageContext.request.contextPath}/paymentinfo/chuque/collect?paymentId=${paymentInfo.paymentInfoId}">Is
+                                                            Collected ?</a></c:when>
+                                                        <c:otherwise><label
+                                                                class="label label-success">collected</label> </c:otherwise>
+                                                    </c:choose>
+                                                </c:if>
+                                            </th>
+                                        </tr>
+                                    </c:if>
 
                                     <c:if test="${paymentInfo.refundPayment ne null}">
                                         <tr>
                                             <td><fmt:formatDate pattern="MMM dd, yyyy"
                                                                 value="${paymentInfo.paymentDate}"/></td>
-                                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true"
+                                            <td><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                  groupingUsed="true"
                                                                   value="${paymentInfo.refundPayment.amount}"/></td>
                                             <td>${paymentInfo.refundPayment.paymentMethod}</td>
                                             <td>${paymentInfo.remark}</td>
 
                                         </tr>
-
                                     </c:if>
                                 </c:forEach>
 

@@ -378,6 +378,8 @@ public class InvoiceController {
 
 
         } catch (Exception e) {
+
+            e.printStackTrace();
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
