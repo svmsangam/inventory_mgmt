@@ -1,7 +1,9 @@
 package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.OrderReturnInfoDTO;
+import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.OrderReturnInfo;
+import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.OrderInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
@@ -10,6 +12,7 @@ import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,7 +33,7 @@ public class OrderReturnInfoConverter implements IListConvertable<OrderReturnInf
     private UserRepository userRepository;
 
     @Autowired
-    private OrderInfoConverter orderInfoConverter;
+    private InvoiceInfoRepository invoiceInfoRepository;
 
     @Override
     public List<OrderReturnInfoDTO> convertToDtoList(List<OrderReturnInfo> entities) {
@@ -85,6 +88,22 @@ public class OrderReturnInfoConverter implements IListConvertable<OrderReturnInf
         entity.setReturnDate(dto.getReturnDate());
         entity.setTotalAmount(dto.getTotalAmount());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreId()));
+
+        return entity;
+    }
+
+    public OrderReturnInfo convertToEntity(long invoiceId , long createdBy){
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        OrderReturnInfo entity = new OrderReturnInfo();
+
+        entity.setCreatedBy(userRepository.findById(createdBy));
+        entity.setNote(invoiceInfo.getCancelNote());
+        entity.setOrderInfo(invoiceInfo.getOrderInfo());
+        entity.setReturnDate(new Date());
+        entity.setTotalAmount(invoiceInfo.getTotalAmount());
+        entity.setStoreInfo(invoiceInfo.getStoreInfo());
 
         return entity;
     }

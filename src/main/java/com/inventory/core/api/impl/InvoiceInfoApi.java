@@ -1,11 +1,10 @@
 package com.inventory.core.api.impl;
 
-import com.inventory.core.api.iapi.IInvoiceInfoApi;
-import com.inventory.core.api.iapi.ILedgerInfoApi;
-import com.inventory.core.api.iapi.IPaymentInfoApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.*;
 import com.inventory.core.model.entity.*;
+import com.inventory.core.model.enumconstant.LogType;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.*;
@@ -55,6 +54,12 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Autowired
     private OrderInfoRepository orderInfoRepository;
+
+    @Autowired
+    private IOrderReturnInfoApi orderReturnInfoApi;
+
+    @Autowired
+    private ILoggerApi loggerApi;
 
     @Override
     public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
@@ -312,6 +317,21 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         }
 
         return count;
+    }
+
+    @Override
+    public void cancel(long invoiceId, String note , long createdById){
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        invoiceInfo.setCanceled(true);
+        invoiceInfo.setCancelNote(note);
+
+        invoiceInfoRepository.save(invoiceInfo);
+
+        loggerApi.save(invoiceId , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , createdById , "invoice canceled");
+
+        orderReturnInfoApi.cancelInvoice(invoiceId , createdById);
     }
 
     private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {

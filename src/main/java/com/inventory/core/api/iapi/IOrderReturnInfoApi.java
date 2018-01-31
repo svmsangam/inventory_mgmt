@@ -12,5 +12,7 @@ public interface IOrderReturnInfoApi {
 
     OrderReturnInfoDTO save(OrderReturnInfoDTO orderReturnInfoDTO);
 
+    void cancelInvoice(long invoiceId , long createdById );
+
     List<OrderReturnInfoDTO> list(Status status , long storeId);
 }

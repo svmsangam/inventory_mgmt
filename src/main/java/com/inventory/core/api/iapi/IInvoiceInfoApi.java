@@ -53,4 +53,5 @@ public interface IInvoiceInfoApi {
 
     long countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to);
 
+    void cancel(long invoiceId, String note , long createdById);
 }

@@ -14,5 +14,7 @@ public interface IReturnItemInfoApi {
 
     double save(OrderReturnInfoDTO orderReturnInfoDTO);
 
+    double save(long orderId , long orderReturnId);
+
     List<ReturnItemInfoDTO> list(Status status , long returnOrderInfoId);
 }

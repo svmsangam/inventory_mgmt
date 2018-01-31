@@ -17,6 +17,8 @@ public interface ILedgerInfoApi {
 
     void saveOnPayment(long paymentInfoId);
 
+    void saveOnOrderReturn(long orderReturnId);
+
     List<LedgerInfoDTO> list(Status status , long storeId , int page , int size);
 
     long countAllByStatusAndStore(Status status , long storeId);

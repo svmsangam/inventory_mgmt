@@ -5,6 +5,7 @@ import com.inventory.core.model.dto.LedgerFilterDTO;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.LedgerInfo;
+import com.inventory.core.model.entity.OrderReturnInfo;
 import com.inventory.core.model.entity.PaymentInfo;
 import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.*;
@@ -42,6 +43,9 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
 
     @Autowired
     private FiscalYearInfoRepository fiscalYearInfoRepository;
+
+    @Autowired
+    private OrderReturnInfoRepository orderReturnInfoRepository;
 
     @Override
     public LedgerInfo convertToEntity(LedgerInfoDTO dto) {
@@ -220,6 +224,56 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
 
         return entity;
     }
+
+    public LedgerInfo convertOrderReturnToDRLedger(long orderReturnId) {
+
+        OrderReturnInfo orderReturnInfo = orderReturnInfoRepository.findById(orderReturnId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.DEBIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(orderReturnInfo.getStoreInfo().getId(), AccountAssociateType.STORE));
+        entity.setAmount(orderReturnInfo.getTotalAmount());
+        entity.setLedgerEntryType(LedgerEntryType.GOODS_RETURN);
+
+        if (orderReturnInfo.getOrderInfo().getClientInfo().getCompanyName() != null) {
+            entity.setRemarks("goods return By " + orderReturnInfo.getOrderInfo().getClientInfo().getCompanyName());
+        } else {
+            entity.setRemarks("goods return By " + orderReturnInfo.getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(orderReturnInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE, orderReturnInfo.getStoreInfo().getId(), true));
+
+        return entity;
+    }
+
+    public LedgerInfo convertOrderReturnToCRLedger(long orderReturnId) {
+
+        OrderReturnInfo orderReturnInfo = orderReturnInfoRepository.findById(orderReturnId);
+
+        LedgerInfo entity = new LedgerInfo();
+
+        entity.setAccountEntryType(AccountEntryType.CREDIT);
+        entity.setAccountInfo(accountInfoRepository.findByAssociateIdAndAssociateType(orderReturnInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER));
+        entity.setAmount(orderReturnInfo.getTotalAmount());
+        entity.setLedgerEntryType(LedgerEntryType.GOODS_RETURN);
+
+        if (orderReturnInfo.getOrderInfo().getClientInfo().getCompanyName() != null) {
+            entity.setRemarks("goods return By " + orderReturnInfo.getOrderInfo().getClientInfo().getCompanyName());
+        } else {
+            entity.setRemarks("goods return By " + orderReturnInfo.getOrderInfo().getClientInfo().getName());
+        }
+
+        entity.setStoreInfo(orderReturnInfo.getStoreInfo());
+        entity.setStatus(Status.ACTIVE);
+        entity.setFiscalYearInfo(fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE, orderReturnInfo.getStoreInfo().getId(), true));
+
+        return entity;
+    }
+
+
 
     public LedgerFilter convertToFilterSpec(LedgerFilterDTO filterDTO) {
 

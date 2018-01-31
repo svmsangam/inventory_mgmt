@@ -62,6 +62,19 @@ public class LedgerInfoApi implements ILedgerInfoApi{
 
     }
 
+    @Override
+    public void saveOnOrderReturn(long orderReturnId) {
+
+        LedgerInfo drLedgerInfo = ledgerInfoConverter.convertOrderReturnToDRLedger(orderReturnId);
+
+        LedgerInfo crLedgerInfo = ledgerInfoConverter.convertOrderReturnToCRLedger(orderReturnId);
+
+        ledgerInfoRepository.save(drLedgerInfo);
+
+        ledgerInfoRepository.save(crLedgerInfo);
+
+    }
+
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));
