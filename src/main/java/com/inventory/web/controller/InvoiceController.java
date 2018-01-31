@@ -456,6 +456,16 @@ public class InvoiceController {
                 return "redirect:/invoice/" + invoiceId;
             }
 
+            if (note == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please provide any reason to cancel invoice");
+                return "redirect:/invoice/" + invoiceId;
+            }
+
+            if (note.trim().equals("")){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please provide any reason to cancel invoice");
+                return "redirect:/invoice/" + invoiceId;
+            }
+
             invoiceInfoApi.cancel(invoiceId , note , currentUser.getUserId());
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice canceled successfully");
 
