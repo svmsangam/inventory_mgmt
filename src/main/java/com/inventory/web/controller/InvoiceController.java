@@ -386,6 +386,104 @@ public class InvoiceController {
         return "invoice/show";
     }
 
+    @PostMapping(value = "/cancel")
+    public String cancel(@RequestParam("invoiceId") Long invoiceId, @RequestParam("note")String note , @RequestParam("version")int version , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+                     /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request, response);
+
+                return "redirect:/login";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+
+        /*current user checking end*/
+
+            if (invoiceId == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                return "redirect:/invoice/list";
+            }
+
+            if (invoiceId < 0) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                return "redirect:/invoice/list";
+            }
+
+            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
+
+            boolean valid = true;
+
+            if (invoiceInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                return "redirect:/invoice/list";
+            }
+
+            if (invoiceInfoDTO.isCanceled()){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice already canceled");
+                valid = false;
+            }
+
+            if (invoiceInfoDTO.getVersion() != version){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Another User updated Invoice already");
+                valid = false;
+            }
+
+            if (valid){
+                invoiceInfoApi.cancel(invoiceId , note , currentUser.getUserId());
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice canceled successfully");
+
+            }
+
+            modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
+            modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
+            modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
+            modelMap.put(StringConstants.LOGGER, loggerApi.getAllByStatusAndAssociateIdAndTypeAndStore(Status.ACTIVE, invoiceId, LogType.Invoice_Print, currentUser.getStoreId()));
+
+            List<Status> statusList = new ArrayList<>();
+
+            statusList.add(Status.ACTIVE);
+            statusList.add(Status.INACTIVE);
+
+            modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList, currentUser.getStoreId(), invoiceId));
+
+
+        } catch (Exception e) {
+            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/500";
+        }
+
+        return "invoice/show";
+    }
+
 
     @GetMapping(value = "/pdf")
     public void pdf(@RequestParam("invoiceId") Long invoiceId, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {

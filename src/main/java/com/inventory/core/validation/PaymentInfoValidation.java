@@ -334,8 +334,11 @@ public class PaymentInfoValidation extends GlobalValidation{
         }else if (invoiceInfo.getVersion() != invoiceVersion){
             error.setInvoice("payment of this invoice is already updated");
             return false;
-        } else if (invoiceInfo.getReceivableAmount() == 0){
-            error.setInvoice("receivable cleared");
+        } else if (invoiceInfo.isCanceled()){
+            error.setInvoice("invoice already canceled");
+            return false;
+        }else if (invoiceInfo.getReceivableAmount() == 0){
+            error.setInvoice("no receivable for payment");
             return false;
         }
 
