@@ -80,6 +80,8 @@ function Client() {
 
         street: "",
 
+        pan : "",
+
         cityId: 0
 
     };

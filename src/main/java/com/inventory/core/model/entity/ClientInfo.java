@@ -26,6 +26,8 @@ public class ClientInfo extends AbstractEntity<Long> {
 
     private String street;
 
+    private String pan;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private CityInfo cityInfo;
 
@@ -36,6 +38,14 @@ public class ClientInfo extends AbstractEntity<Long> {
     private StoreInfo storeInfo;
 
     private Status status;
+
+    public String getPan() {
+        return pan;
+    }
+
+    public void setPan(String pan) {
+        this.pan = pan;
+    }
 
     public String getName() {
         return name;

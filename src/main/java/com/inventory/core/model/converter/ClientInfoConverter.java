@@ -60,6 +60,7 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
             dto.setStoreInfoId(entity.getStoreInfo().getId());
         }
 
+        dto.setPan(entity.getPan());
         dto.setCityInfoDTO(cityInfoConverter.convertToDto(entity.getCityInfo()));
         dto.setClientType(entity.getClientType());
         dto.setCompanyName(entity.getCompanyName());
@@ -97,14 +98,18 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
 
         entity.setClientType(dto.getClientType());
 
-        if (dto.getCompanyName() != null & "".equals(dto.getCompanyName().trim())) {
+        if (dto.getCompanyName() != null & !"".equals(dto.getCompanyName().trim())) {
             entity.setCompanyName(dto.getCompanyName().trim());
+        }
+
+        if (dto.getPan() != null & !"".equals(dto.getPan().trim())){
+            entity.setPan(dto.getPan().trim());
         }
 
         entity.setContact(dto.getContact().trim());
         entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
 
-        if (dto.getEmail() != null & "".equals(dto.getEmail().trim())) {
+        if (dto.getEmail() != null & !"".equals(dto.getEmail().trim())) {
             entity.setEmail(dto.getEmail().trim());
         }
 

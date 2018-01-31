@@ -167,6 +167,11 @@ class ReportServiceApi implements IReportServiceApi {
             document.add(buyerName);
         }
 
+        if (buyerInfo.getPan() != null && !"".equals(buyerInfo.getPan())) {
+            Paragraph buyerPhone = new Paragraph("Pan Number: " + buyerInfo.getPan());
+            buyerPhone.setAlignment(Element.ALIGN_LEFT);
+            document.add(buyerPhone);
+        }
 
         if (buyerInfo.getCityInfoDTO() != null) {
             Paragraph buyerAddress = new Paragraph("City: " + buyerInfo.getCityInfoDTO().getCityName());

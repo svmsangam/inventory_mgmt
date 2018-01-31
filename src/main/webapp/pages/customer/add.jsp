@@ -67,6 +67,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="control-label">Pan Number</label>
+                                <input type="text" class="form-control" value="${customer.pan}" name="pan"
+                                       placeholder="pan number">
+                                <p class="form-error">${customerError.pan}</p>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="control-label">City</label>
                                 <select name="cityId" class="form-control select2" id="cityId">
                                     <option value="">select city</option>

@@ -485,6 +485,9 @@ function setClientData() {
     var email = $("#email").val();
     var street = $("#street").val();
     var cityId = $("#cityId").val();
+    var pan = $("#pan").val();
+
+    console.log("pan : " + pan);
 
 
     if (name === undefined) {
@@ -511,6 +514,10 @@ function setClientData() {
         street = "";
     }
 
+    if (pan === undefined) {
+        pan = "";
+    }
+
     if (cityId === undefined) {
         cityId = 0;
     }
@@ -524,6 +531,7 @@ function setClientData() {
     client.email = email;
     client.street = street;
     client.cityId = cityId;
+    client.pan = pan;
 
     return client;
 }

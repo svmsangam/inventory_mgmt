@@ -682,6 +682,8 @@ function ClientInfoService() {
 
             var that = new ClientInfoService();
 
+            console.log(client.pan);
+
             if (clientInfoRequest !== undefined) {
                 clientInfoRequest.abort();
             }
@@ -765,6 +767,7 @@ function ClientInfoService() {
             $(".mobileNumber").text("").text(data.mobileNumber);
             $(".email").text("").text(data.email);
             $(".street").text("").text(data.street);
+            $(".pan").text("").text(data.pan);
 
         },
 
@@ -775,6 +778,7 @@ function ClientInfoService() {
             $(".mobileNumber").text("");
             $(".email").text("");
             $(".street").text("");
+            $(".pan").text("");
 
             $("#nameEdit").val("");
             $("#companyNameEdit").val("");
@@ -782,6 +786,7 @@ function ClientInfoService() {
             $("#mobileNumberEdit").val("");
             $("#emailEdit").val("");
             $("#streetEdit").val("");
+            $("#pan").val("");
         },
 
         setError: function (error) {
@@ -792,6 +797,7 @@ function ClientInfoService() {
             $(".mobileNumber").text(error.mobileNumber);
             $(".street").text(error.street);
             $(".cityId").text(error.cityId);
+
         },
 
         clearError: function () {
@@ -813,6 +819,7 @@ function ClientInfoService() {
             $("#mobileNumber").val("");
             $("#street").val("");
             $("#companyName").val("");
+            $("#pan").val("");
             /*$("#cityId").select2("val", "");*/
         },
 

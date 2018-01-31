@@ -42,6 +42,16 @@ public class ClientInfoDTO {
 
     private long storeInfoId;
 
+    private String pan;
+
+    public String getPan() {
+        return pan;
+    }
+
+    public void setPan(String pan) {
+        this.pan = pan;
+    }
+
     public Integer getVersion() {
         return version;
     }

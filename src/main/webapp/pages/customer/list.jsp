@@ -67,6 +67,7 @@
                             <tr>
                                 <th>SN</th>
                                 <th>AccountNo</th>
+                                <th>Pan Number</th>
                                 <th>Name</th>
                                 <th>Company</th>
                                 <th>Contact</th>
@@ -82,6 +83,7 @@
                                 <tr>
                                     <td>${i.index + 1}</td>
                                     <td>${customer.accountNo}</td>
+                                    <td>${customer.pan}</td>
                                     <td>${customer.name}</td>
                                     <td>${customer.companyName}</td>
                                     <td>${customer.contact}</td>

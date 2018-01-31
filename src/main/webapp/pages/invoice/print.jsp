@@ -78,6 +78,10 @@
                             ${invoice.orderInfo.clientInfo.street}<br>
                         </c:if>
 
+                        <c:if test="${invoice.orderInfo.clientInfo.pan ne null and not empty invoice.orderInfo.clientInfo.pan}">
+                            Pan Number : ${invoice.orderInfo.clientInfo.pan}<br>
+                        </c:if>
+
 
                         Phone:<c:if test="${invoice.orderInfo.clientInfo.contact ne null and not empty invoice.orderInfo.clientInfo.contact}">${invoice.orderInfo.clientInfo.contact}</c:if>
                         <c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null and not empty invoice.orderInfo.clientInfo.mobileNumber}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
