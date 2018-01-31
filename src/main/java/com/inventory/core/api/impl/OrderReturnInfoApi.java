@@ -73,7 +73,7 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         itemInfoApi.updateInStockOnSaleReturn(orderReturnInfo.getId());
 
-        //TODO reverse ledger entry
+        ledgerInfoApi.saveOnOrderReturn(orderReturnInfo.getId());
 
         return orderReturnInfoConverter.convertToDto(orderReturnInfo);
     }
