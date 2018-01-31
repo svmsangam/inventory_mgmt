@@ -439,8 +439,6 @@ public class InvoiceController {
 
             InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
 
-            boolean valid = true;
-
             if (invoiceInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
                 return "redirect:/invoice/list";
@@ -448,32 +446,16 @@ public class InvoiceController {
 
             if (invoiceInfoDTO.isCanceled()){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice already canceled");
-                valid = false;
+                return "redirect:/invoice/" + invoiceId;
             }
 
             if (invoiceInfoDTO.getVersion() != version){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Another User updated Invoice already");
-                valid = false;
+                return "redirect:/invoice/" + invoiceId;
             }
 
-            if (valid){
-                invoiceInfoApi.cancel(invoiceId , note , currentUser.getUserId());
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice canceled successfully");
-
-            }
-
-            modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
-            modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, invoiceInfoDTO.getOrderInfoId()));
-            modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
-            modelMap.put(StringConstants.LOGGER, loggerApi.getAllByStatusAndAssociateIdAndTypeAndStore(Status.ACTIVE, invoiceId, LogType.Invoice_Print, currentUser.getStoreId()));
-
-            List<Status> statusList = new ArrayList<>();
-
-            statusList.add(Status.ACTIVE);
-            statusList.add(Status.INACTIVE);
-
-            modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList, currentUser.getStoreId(), invoiceId));
-
+            invoiceInfoApi.cancel(invoiceId , note , currentUser.getUserId());
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice canceled successfully");
 
         } catch (Exception e) {
             logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
@@ -481,7 +463,7 @@ public class InvoiceController {
             return "redirect:/500";
         }
 
-        return "invoice/show";
+        return "redirect:/invoice/" + invoiceId;
     }
 
 

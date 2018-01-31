@@ -228,8 +228,7 @@
                 </a>
 
                 <c:choose>
-                    <c:when test="${invoice.canceled eq true}"><label
-                            class="label label-danger">canceled</label> </c:when>
+                    <c:when test="${invoice.canceled eq true}"><label class="btn btn-danger">canceled</label> </c:when>
                     <c:otherwise>
                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel
                         </button>
@@ -297,6 +296,18 @@
                                         </th>
                                     </tr>
 
+                                    <c:if test="${paymentInfo.refundPayment ne null}">
+                                        <tr>
+                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                value="${paymentInfo.paymentDate}"/></td>
+                                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true"
+                                                                  value="${paymentInfo.refundPayment.amount}"/></td>
+                                            <td>${paymentInfo.refundPayment.paymentMethod}</td>
+                                            <td>${paymentInfo.remark}</td>
+
+                                        </tr>
+
+                                    </c:if>
                                 </c:forEach>
 
                                 </tbody>

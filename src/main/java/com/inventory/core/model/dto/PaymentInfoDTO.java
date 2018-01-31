@@ -13,6 +13,8 @@ public class PaymentInfoDTO {
 
     private PaymentDTO receivedPayment;
 
+    private PaymentDTO refundPayment;
+
     private String remark;
 
     private long invoiceInfoId;
@@ -28,6 +30,14 @@ public class PaymentInfoDTO {
     private Date paymentDate;
 
     private long invoiceVersion;
+
+    public PaymentDTO getRefundPayment() {
+        return refundPayment;
+    }
+
+    public void setRefundPayment(PaymentDTO refundPayment) {
+        this.refundPayment = refundPayment;
+    }
 
     public long getOrderInfoId() {
         return orderInfoId;
