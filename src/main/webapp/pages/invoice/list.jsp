@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="invoiceListTable" class="display" cellspacing="0" width="100%">
+                                    <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                         <tr>
                                             <th>Invoice No</th>

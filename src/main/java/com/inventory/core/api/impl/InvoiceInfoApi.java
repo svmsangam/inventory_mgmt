@@ -266,7 +266,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public double getTotalReceivableByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+        Double amount = invoiceInfoRepository.findTotalReceivableByStoreInfoAndStatus(storeInfoId , status);
 
         if (amount == null){
             return 0;
