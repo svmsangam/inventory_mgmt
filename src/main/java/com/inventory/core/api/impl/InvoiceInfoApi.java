@@ -26,7 +26,6 @@ import java.util.List;
  * Created by dhiraj on 9/13/17.
  */
 @Service
-@Transactional
 public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Autowired
@@ -135,6 +134,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    @Transactional
     public InvoiceInfoDTO save(long orderInfoId , long createdById) {
 
         InvoiceInfo invoiceInfo = invoiceInfoConverter.convertToEntity(orderInfoId , createdById);
@@ -149,6 +149,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    @Transactional
     public InvoiceInfoDTO saveQuickSale(PaymentInfoDTO paymentInfoDTO) {
 
         OrderInfo orderInfo = orderInfoRepository.findOne(paymentInfoDTO.getOrderInfoId());
@@ -167,6 +168,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    @Transactional
     public void updateOnPayment(long paymentInfoId) {
 
         PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
@@ -183,6 +185,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    @Transactional
     public void updateVersion(long invoiceId) {
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
@@ -329,6 +332,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     }
 
     @Override
+    @Transactional
     public void cancel(long invoiceId, String note , long createdById){
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by dhiraj on 8/27/17.
  */
-@Transactional
+
 @Service
 public class OrderInfoApi implements IOrderInfoApi {
 
@@ -59,6 +59,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     private FiscalYearInfoRepository fiscalYearInfoRepository;
 
     @Override
+    @Transactional
     public OrderInfoDTO save(OrderInfoDTO orderInfoDTO) {
 
         orderInfoDTO.setStatus(Status.ACTIVE);
@@ -80,6 +81,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
+    @Transactional
     public OrderInfoDTO saveQuickSale(OrderInfoDTO orderInfoDTO){
 
         orderInfoDTO.setStatus(Status.INACTIVE);
@@ -165,6 +167,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
+    @Lock(LockModeType.OPTIMISTIC)
     public String generatOrderNumber(long storeId) {
 
         FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeId , true);
@@ -216,6 +219,7 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Override
     @Lock(LockModeType.OPTIMISTIC)
+    @Transactional
     public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track , long createdById) {
 
         OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
