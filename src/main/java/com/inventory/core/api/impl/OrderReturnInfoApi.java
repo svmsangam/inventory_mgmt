@@ -49,6 +49,9 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
     @Autowired
     private ILoggerApi loggerApi;
 
+    @Autowired
+    private IPaymentInfoApi paymentInfoApi;
+
     @Override
     public OrderReturnInfoDTO save(OrderReturnInfoDTO orderReturnInfoDTO) {
 
@@ -78,11 +81,15 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         if (invoiceInfo.getReceivableAmount() - orderReturnInfo.getTotalAmount() < 0){
 
-            ledgerInfoApi.savePaymentOnSaleReturn(invoiceInfo.getId() , orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+            double amount =orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount();
 
-            invoiceInfo.setReceivableAmount(orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+            ledgerInfoApi.savePaymentOnSaleReturn(invoiceInfo.getId() , amount);
+
+            invoiceInfo.setReceivableAmount(amount);
 
             invoiceInfoRepository.save(invoiceInfo);
+
+            paymentInfoApi.refundOnSalesReturn(invoiceInfo.getId() , orderReturnInfo.getCreatedBy().getId() , amount);
 
             loggerApi.save(invoiceInfo.getId() , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , orderReturnInfo.getCreatedBy().getId() , "invoice updated due to of sales return");
 

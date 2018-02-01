@@ -107,6 +107,26 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     }
 
     @Override
+    public void refundOnSalesReturn(long invoiceId, long createdById , double amount){
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
+
+        Payment payment = paymentApi.save(amount);
+
+        PaymentInfo paymentInfo = new PaymentInfo();
+
+        paymentInfo.setCreatedBy(userRepository.findById(createdById));
+        paymentInfo.setInvoiceInfo(invoiceInfo);
+        paymentInfo.setRefundPayment(payment);
+        paymentInfo.setStoreInfo(invoiceInfo.getStoreInfo());
+        paymentInfo.setRemark("cash returned due to of sales return");
+
+        paymentInfoRepository.save(paymentInfo);
+
+
+    }
+
+    @Override
     @Lock(LockModeType.OPTIMISTIC)
     public long collectChuque(long paymentInfoId) {
 
