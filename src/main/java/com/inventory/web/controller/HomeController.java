@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -152,6 +149,16 @@ public class HomeController {
         if (error) {
             modelMap.put(StringConstants.ERROR, "wrong username or password");
         }
+        return "dashboard/login";
+    }
+
+    @RequestMapping(value = "/login/{error}", method = RequestMethod.GET)
+    public String getLoginWithError(@PathVariable(value = "error") String error, HttpServletRequest request, ModelMap modelMap) throws IOException {
+
+        error = error.replace("_" , " ");
+
+        modelMap.put(StringConstants.ERROR, error);
+
         return "dashboard/login";
     }
 

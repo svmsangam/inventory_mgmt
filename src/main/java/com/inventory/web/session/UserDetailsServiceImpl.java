@@ -46,9 +46,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		UserDetailsWrapper userDetailsWrapper = new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString() , userRepository , subscriberServiceApi);
 
-		if (!userDetailsWrapper.isAccountNonLocked()){
+		/*if (!userDetailsWrapper.isAccountNonLocked()){
 			throw new AccountExpiredException("account is expired");
-		}
+		}*/
 		return userDetailsWrapper;
 	}
 
