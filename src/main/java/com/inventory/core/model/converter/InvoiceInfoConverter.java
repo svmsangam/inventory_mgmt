@@ -1,6 +1,7 @@
 package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.dto.InvoiceListDTO;
 import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.LedgerInfo;
@@ -12,14 +13,12 @@ import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -128,6 +127,28 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
     @Override
     public List<InvoiceInfoDTO> convertToDtoList(List<InvoiceInfo> entities) {
         return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    public List<InvoiceListDTO> convertToJsonList(List<InvoiceInfo> entities) {
+
+        List<InvoiceListDTO> json = new ArrayList<>();
+
+        for (InvoiceInfo invoiceInfo : entities) {
+
+            InvoiceListDTO jsonArr = new InvoiceListDTO();
+
+            jsonArr.setInvoiceNo(invoiceInfo.getInvoiceNo());
+            jsonArr.setFiscalYearInfo(invoiceInfo.getFiscalYearInfo().getTitle());
+            jsonArr.setClientInfo(invoiceInfo.getOrderInfo().getClientInfo().getName());
+            jsonArr.setTotalAmount(invoiceInfo.getTotalAmount());
+            jsonArr.setReceivableAmount(invoiceInfo.getReceivableAmount());
+            jsonArr.setInvoiceDate(invoiceInfo.getInvoiceDate().toString());
+
+            json.add(jsonArr);
+
+        }
+
+        return json;
     }
 
     @Override

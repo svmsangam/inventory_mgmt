@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
+                                    <table id="invoiceListTable" class="display" cellspacing="0" width="100%">
                                         <thead>
                                         <tr>
                                             <th>Invoice No</th>
@@ -135,7 +135,37 @@
     </section>
 </div>
 <%@include file="/pages/parts/footer.jsp" %>
+<%--
+<script>
+    $('#invoiceListTable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "${pageContext.request.contextPath}/invoice/ajax/list",
+            "type": "GET",
+            "data": function (d) {
+                var page = $('ul.pagination > li.active > a').text();
 
+                if(page === undefined){
+                    page = 1;
+                }
+
+                if(page === null){
+                    page = 1;
+                }
+
+                if(page === ""){
+                    page = 1;
+                }
+
+                d.page = page;
+            },
+            dataSrc: "data",
+            "columns": ["invoiceNo" ,"fiscalYearInfo", "clientInfo","totalAmount" , "receivableAmount" ,"invoiceDate"
+            ]
+        }
+    } );
+</script>--%>
 
 <script>
     $(document).ready(function () {

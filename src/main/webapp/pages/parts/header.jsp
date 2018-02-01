@@ -19,7 +19,7 @@
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/blue.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <%--select 2--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.min.css">
     <!-- Theme style -->

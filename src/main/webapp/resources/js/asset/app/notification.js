@@ -1,6 +1,7 @@
-/**
+/*
+/!**
  * Created by dhiraj on 1/21/18.
- */
+ *!/
 var socket = null;
 var stompClient = null;
 
@@ -22,9 +23,9 @@ function connectToSocket(secretKey) {
 
             console.log('Connected: ' + frame + " : " + secretKey);
             stompClient.subscribe('/topic/notification/' + secretKey, function (messageOutput) {
-                /*stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
+                stompClient.send("/app/isContactOnline/", {}, JSON.stringify({
                     'checker' : messageOutput.body
-                }));*/
+                }));
                 console.log(messageOutput.body);
                 setNotification(messageOutput.body);
                 notifyMe(messageOutput.body);
@@ -46,7 +47,7 @@ function checkConnection(secretKey) {
         return false;
     }
 
-    /*if (stompClient === undefined){
+    /!*if (stompClient === undefined){
         return false;
     } else {
 
@@ -58,7 +59,7 @@ function checkConnection(secretKey) {
         } else {
             return false;
         }
-    }*/
+    }*!/
 }
 
 function checkStocket(secretKey) {
@@ -197,3 +198,4 @@ function setNotification(msg) {
     updateCount(1);
 }
 
+*/

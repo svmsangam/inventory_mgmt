@@ -37,4 +37,5 @@ public interface ILedgerInfoApi {
 
     double getTotalAmountByStatusAndStoreInfoIdAndAccountInfoAndAccountEntryType(Status status , long storeId , long accountId, AccountEntryType accountEntryType);
 
+    void savePaymentOnSaleReturn(long invoiceId, double amount);
 }

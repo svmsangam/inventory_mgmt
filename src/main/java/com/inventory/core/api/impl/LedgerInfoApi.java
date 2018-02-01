@@ -167,4 +167,20 @@ public class LedgerInfoApi implements ILedgerInfoApi{
 
         return amount;
     }
+
+    @Override
+    public void savePaymentOnSaleReturn(long invoiceId, double amount) {
+
+        LedgerInfo drLedgerInfo = ledgerInfoConverter.convertInvoiceCancelToDRLedger(invoiceId);
+
+        drLedgerInfo.setAmount(amount);
+
+        LedgerInfo crLedgerInfo = ledgerInfoConverter.convertInvoiceCancelToCRLedger(invoiceId);
+
+        crLedgerInfo.setAmount(amount);
+
+        ledgerInfoRepository.save(drLedgerInfo);
+
+        ledgerInfoRepository.save(crLedgerInfo);
+    }
 }

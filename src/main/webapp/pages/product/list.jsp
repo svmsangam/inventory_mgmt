@@ -42,7 +42,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsive">
-                        <table id="table2" class="table table-bordered table-hover table-striped">
+                        <table id="table2" class="display" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th>SN</th>

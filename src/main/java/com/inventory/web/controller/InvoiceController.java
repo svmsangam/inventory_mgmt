@@ -252,7 +252,7 @@ public class InvoiceController {
                 return "redirect:/logout";
             }
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
             }

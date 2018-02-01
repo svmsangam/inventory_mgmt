@@ -10,6 +10,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.model.specification.InvoiceSpecification;
 import com.inventory.core.model.specification.LedgerSpecification;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -222,7 +223,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId, Status status , long storeId) {
-        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByStatusAndStoreInfoAndAndOrderInfo(status , storeId , orderId));
+        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByStatusAndStoreInfoAndOrderInfo(status , storeId , orderId));
     }
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
@@ -236,6 +237,14 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
 
         return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+    }
+
+    @Override
+    public List<InvoiceListDTO> listToJson(Status status, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return invoiceInfoConverter.convertToJsonList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
     }
 
     @Override

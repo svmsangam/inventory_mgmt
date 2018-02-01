@@ -1,9 +1,6 @@
 package com.inventory.core.api.impl;
 
-import com.inventory.core.api.iapi.IItemInfoApi;
-import com.inventory.core.api.iapi.ILedgerInfoApi;
-import com.inventory.core.api.iapi.IOrderReturnInfoApi;
-import com.inventory.core.api.iapi.IReturnItemInfoApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.OrderReturnInfoConverter;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.dto.OrderReturnInfoDTO;
@@ -11,10 +8,7 @@ import com.inventory.core.model.entity.FiscalYearInfo;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.OrderReturnInfo;
-import com.inventory.core.model.enumconstant.OrderType;
-import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
-import com.inventory.core.model.enumconstant.SalesOrderStatus;
-import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.FiscalYearInfoRepository;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.OrderReturnInfoRepository;
@@ -52,6 +46,9 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
     @Autowired
     private ILedgerInfoApi ledgerInfoApi;
 
+    @Autowired
+    private ILoggerApi loggerApi;
+
     @Override
     public OrderReturnInfoDTO save(OrderReturnInfoDTO orderReturnInfoDTO) {
 
@@ -69,11 +66,27 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         orderReturnInfo.setTotalAmount(returnItemInfoApi.save(orderReturnInfoDTO));
 
+        orderReturnInfo.setTotalAmount(orderReturnInfo.getTotalAmount() + ( orderReturnInfo.getTotalAmount() * orderReturnInfo.getOrderInfo().getTax() /100));
+
         orderReturnInfoRepository.save(orderReturnInfo);
 
         itemInfoApi.updateInStockOnSaleReturn(orderReturnInfo.getId());
 
         ledgerInfoApi.saveOnOrderReturn(orderReturnInfo.getId());
+
+        InvoiceInfo invoiceInfo = invoiceInfoRepository.findByStatusAndStoreInfoAndOrderInfo(Status.ACTIVE , orderReturnInfo.getStoreInfo().getId() , orderReturnInfo.getOrderInfo().getId());
+
+        if (invoiceInfo.getReceivableAmount() - orderReturnInfo.getTotalAmount() < 0){
+
+            ledgerInfoApi.savePaymentOnSaleReturn(invoiceInfo.getId() , orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+
+            invoiceInfo.setReceivableAmount(orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount());
+
+            invoiceInfoRepository.save(invoiceInfo);
+
+            loggerApi.save(invoiceInfo.getId() , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , orderReturnInfo.getCreatedBy().getId() , "invoice updated due to of sales return");
+
+        }
 
         return orderReturnInfoConverter.convertToDto(orderReturnInfo);
     }
@@ -89,7 +102,7 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         orderReturnInfo.setFiscalYearInfo(currentFiscalYear);
 
-        orderReturnInfoRepository.save(orderReturnInfo);
+        orderReturnInfo = orderReturnInfoRepository.save(orderReturnInfo);
 
         orderReturnInfo.setTotalAmount(returnItemInfoApi.save(orderReturnInfo.getOrderInfo().getId() , orderReturnInfo.getId()));
 
