@@ -189,7 +189,7 @@ immediately after the control sidebar -->
 <!-- bootstrap datepicker -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
 <!-- DataTables -->
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
 
 <%--
 <script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
