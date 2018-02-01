@@ -227,7 +227,7 @@ public class OrderInfoApi implements IOrderInfoApi {
             itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
         }
 
-        if (track.equals(SalesOrderStatus.SHIPPED) && invoiceInfoRepository.findByStatusAndStoreInfoAndAndOrderInfo(Status.ACTIVE , orderInfo.getStoreInfo().getId() , orderId) == null){
+        if (track.equals(SalesOrderStatus.SHIPPED) && invoiceInfoRepository.findByStatusAndStoreInfoAndOrderInfo(Status.ACTIVE , orderInfo.getStoreInfo().getId() , orderId) == null){
             invoiceInfoApi.save(orderId , createdById);
         }
 

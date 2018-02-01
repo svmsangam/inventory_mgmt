@@ -181,8 +181,6 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
 
         if (paymentInfo.getReceivedPayment().getPaymentMethod().equals(PaymentMethod.CHEQUE)) {
             ledgerEntryType = LedgerEntryType.CHEQUE;
-        } else if (paymentInfo.getReceivedPayment().getPaymentMethod().equals(PaymentMethod.COUPON)) {
-            entity.setLedgerEntryType(LedgerEntryType.COUPON);
         }
 
         entity.setLedgerEntryType(ledgerEntryType);

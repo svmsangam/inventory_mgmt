@@ -5,5 +5,5 @@ package com.inventory.core.model.enumconstant;
  */
 public enum PaymentMethod {
 
-    CASH, CHEQUE, COUPON
+    CASH, CHEQUE
 }
