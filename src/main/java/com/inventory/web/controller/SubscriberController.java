@@ -136,7 +136,7 @@ public class SubscriberController {
             return "redirect:/500";
         }
 
-        return "redirect:/show?subscriberId=" + subscriberDTO.getSubscriberId();
+        return "redirect:/subscriber/show?subscriberId=" + subscriberDTO.getSubscriberId();
     }
 
     @GetMapping(value = "/show")

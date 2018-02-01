@@ -102,8 +102,10 @@ public class ClientInfoConverter implements IListConvertable<ClientInfo , Client
             entity.setCompanyName(dto.getCompanyName().trim());
         }
 
-        if (dto.getPan() != null & !"".equals(dto.getPan().trim())){
-            entity.setPan(dto.getPan().trim());
+        if (dto.getPan() != null){
+            if (!"".equals(dto.getPan().trim())) {
+                entity.setPan(dto.getPan().trim());
+            }
         }
 
         entity.setContact(dto.getContact().trim());
