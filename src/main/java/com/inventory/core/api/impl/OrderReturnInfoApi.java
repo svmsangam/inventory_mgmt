@@ -81,11 +81,13 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         if (invoiceInfo.getReceivableAmount() - orderReturnInfo.getTotalAmount() < 0){
 
-            double amount =orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount();
+            double amount = orderReturnInfo.getTotalAmount() - invoiceInfo.getReceivableAmount();
 
             ledgerInfoApi.savePaymentOnSaleReturn(invoiceInfo.getId() , amount);
 
-            invoiceInfo.setReceivableAmount(amount);
+            invoiceInfo.setReceivableAmount(0.0);
+
+            invoiceInfo.setTotalAmount(invoiceInfo.getTotalAmount() - orderReturnInfo.getTotalAmount());
 
             invoiceInfoRepository.save(invoiceInfo);
 
@@ -93,6 +95,13 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
             loggerApi.save(invoiceInfo.getId() , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , orderReturnInfo.getCreatedBy().getId() , "invoice updated due to of sales return");
 
+        } else {
+
+            invoiceInfo.setReceivableAmount(invoiceInfo.getReceivableAmount() - orderReturnInfo.getTotalAmount());
+
+            invoiceInfo.setTotalAmount(invoiceInfo.getTotalAmount() - orderReturnInfo.getTotalAmount());
+
+            invoiceInfoRepository.save(invoiceInfo);
         }
 
         return orderReturnInfoConverter.convertToDto(orderReturnInfo);

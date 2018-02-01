@@ -171,7 +171,7 @@ public class XLSReport extends AbstractXlsxView {
             cellProduct.setCellValue(orderItemDTO.getItemInfoDTO().getProductInfo().getName());
 
             Cell cellQuantity = rownew.createCell(2);
-            cellQuantity.setCellValue(orderItemDTO.getQuantity());
+            cellQuantity.setCellValue(orderItemDTO.getQuantityAfterReturn());
 
             Cell cellRate = rownew.createCell(3);
             cellRate.setCellValue(formatter(orderItemDTO.getRate()));

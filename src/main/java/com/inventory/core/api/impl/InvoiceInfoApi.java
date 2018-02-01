@@ -344,6 +344,8 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         invoiceInfo.setReceivableAmount(0.0);
 
+        invoiceInfo.setTotalAmount(0.0);
+
         invoiceInfoRepository.save(invoiceInfo);
 
         paymentInfoApi.refundOnInvoiceCancel(invoiceId , createdById);

@@ -131,7 +131,7 @@
                             <tr>
                                 <td>${i.index + 1}</td>
                                 <td>${orderItem.itemInfoDTO.productInfo.name}-${orderItem.itemInfoDTO.tagInfo.name}</td>
-                                <td>${orderItem.quantity} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
+                                <td>${orderItem.quantityAfterReturn} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
                                 <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true"
                                                       value="${orderItem.rate}"/></td>
                                 <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true"

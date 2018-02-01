@@ -51,6 +51,8 @@ public class OrderItemInfoConverter implements IListConvertable<OrderItemInfo , 
         dto.setQuantity(entity.getQuantity());
         dto.setRate(entity.getRate());
         dto.setStatus(entity.getStatus());
+        dto.setReturnQuantity(entity.getReturnQuantity());
+        dto.setQuantityAfterReturn(entity.getQuantity() - entity.getReturnQuantity());
 
         return dto;
     }

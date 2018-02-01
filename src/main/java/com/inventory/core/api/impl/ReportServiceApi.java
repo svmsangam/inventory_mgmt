@@ -240,7 +240,7 @@ class ReportServiceApi implements IReportServiceApi {
             cell1.setPaddingLeft(5);
             table.addCell(cell1);
 
-            PdfPCell cell2 = new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getQuantity())));
+            PdfPCell cell2 = new PdfPCell(new Phrase(String.valueOf(orderItemDTO.getQuantityAfterReturn())));
             cell2.setMinimumHeight(20);
             cell2.setPaddingLeft(5);
             table.addCell(cell2);

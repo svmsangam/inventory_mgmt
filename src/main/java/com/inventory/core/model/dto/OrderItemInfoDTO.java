@@ -17,6 +17,10 @@ public class OrderItemInfoDTO {
 
     private int quantity;
 
+    private int returnQuantity;
+
+    private int quantityAfterReturn;
+
     private double rate;
 
     private double discount;
@@ -24,6 +28,22 @@ public class OrderItemInfoDTO {
     private double amount;
 
     private Status status;
+
+    public int getReturnQuantity() {
+        return returnQuantity;
+    }
+
+    public void setReturnQuantity(int returnQuantity) {
+        this.returnQuantity = returnQuantity;
+    }
+
+    public int getQuantityAfterReturn() {
+        return quantityAfterReturn;
+    }
+
+    public void setQuantityAfterReturn(int quantityAfterReturn) {
+        this.quantityAfterReturn = quantityAfterReturn;
+    }
 
     public long getOrderItemInfoId() {
         return orderItemInfoId;
