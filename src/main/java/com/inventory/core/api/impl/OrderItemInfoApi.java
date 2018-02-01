@@ -56,6 +56,18 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
     }
 
     @Override
+    public double getTotalAmountByStatusAndOrderInfo(Status status, long orderId) {
+
+        Double amount = orderItemInfoRepository.findTotalAmountByStatusAndOrderInfo(status , orderId);
+
+        if (amount == null){
+            return 0;
+        }
+
+        return amount;
+    }
+
+    @Override
     public double getTotalSaleAmountOfItem(long itemId) {
 
         Double amount = orderItemInfoRepository.findTotalSaleAmountOfItem(itemId);

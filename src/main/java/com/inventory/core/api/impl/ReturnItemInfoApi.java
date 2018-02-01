@@ -79,6 +79,12 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
 
             orderItemInfo.setReturnQuantity(orderItemInfo.getReturnQuantity() + entity.getQuantity());
 
+            double orderItemAmount = (orderItemInfo.getQuantity() - orderItemInfo.getReturnQuantity()) * orderItemInfo.getRate();
+
+            orderItemAmount = orderItemAmount - orderItemAmount * orderItemInfo.getDiscount() / 100;
+
+            orderItemInfo.setAmount(orderItemAmount);
+
             orderItemInfoRepository.save(orderItemInfo);
 
         }
@@ -116,6 +122,12 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
             returnItemInfoList.add(entity);
 
             orderItemInfo.setReturnQuantity(orderItemInfo.getReturnQuantity() + entity.getQuantity());
+
+            double orderItemAmount = (orderItemInfo.getQuantity() - orderItemInfo.getReturnQuantity()) * orderItemInfo.getRate();
+
+            orderItemAmount = orderItemAmount - orderItemAmount * orderItemInfo.getDiscount() / 100;
+
+            orderItemInfo.setAmount(orderItemAmount);
 
             orderItemInfoRepository.save(orderItemInfo);
 

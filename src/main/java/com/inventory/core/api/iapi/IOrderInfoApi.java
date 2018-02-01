@@ -3,7 +3,9 @@ package com.inventory.core.api.iapi;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -26,6 +28,9 @@ public interface IOrderInfoApi {
     long countSaleByStatusAndStoreInfoAndSaleTrack(Status status , long storeId , SalesOrderStatus  track);
 
     String generatOrderNumber(long storeId);
+
+    @Lock(LockModeType.OPTIMISTIC)
+    void updateAmount(long orderId);
 
     OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track , long createdById);
 }

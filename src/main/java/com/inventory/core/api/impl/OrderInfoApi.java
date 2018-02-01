@@ -219,6 +219,21 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     @Override
     @Lock(LockModeType.OPTIMISTIC)
+    public void updateAmount(long orderId){
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+
+        orderInfo.setTotalAmount( orderItemInfoApi.getTotalAmountByStatusAndOrderInfo(Status.ACTIVE , orderId));
+
+        orderInfo.setGrandTotal(orderInfo.getTotalAmount() + orderInfo.getTotalAmount() * orderInfo.getTax() / 100);
+
+        orderInfoRepository.save(orderInfo);
+
+
+    }
+
+    @Override
+    @Lock(LockModeType.OPTIMISTIC)
     @Transactional
     public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track , long createdById) {
 

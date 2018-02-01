@@ -52,6 +52,9 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
     @Autowired
     private IPaymentInfoApi paymentInfoApi;
 
+    @Autowired
+    private IOrderInfoApi orderInfoApi;
+
     @Override
     public OrderReturnInfoDTO save(OrderReturnInfoDTO orderReturnInfoDTO) {
 
@@ -104,6 +107,8 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
             invoiceInfoRepository.save(invoiceInfo);
         }
 
+        orderInfoApi.updateAmount(orderReturnInfo.getOrderInfo().getId());
+
         return orderReturnInfoConverter.convertToDto(orderReturnInfo);
     }
 
@@ -136,6 +141,8 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
             ledgerInfoApi.saveOnInvoiceCancel(invoiceId);
         }
+
+        orderInfoApi.updateAmount(orderReturnInfo.getOrderInfo().getId());
 
     }
 
