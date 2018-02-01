@@ -317,6 +317,7 @@ public class OrderInfoController {
 
             return "order/quick/add";
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";

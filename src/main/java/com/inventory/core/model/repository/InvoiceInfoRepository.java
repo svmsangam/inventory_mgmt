@@ -5,9 +5,11 @@ import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Repository
 public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long> , JpaSpecificationExecutor<InvoiceInfo>{
 
+    @Lock(LockModeType.OPTIMISTIC)
     InvoiceInfo findById(long invoiceId);
 
     @Query("select i from InvoiceInfo i where i.id = ?1 and i.status = ?2 and i.storeInfo.id = ?3")

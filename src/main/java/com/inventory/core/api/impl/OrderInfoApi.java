@@ -207,7 +207,9 @@ public class OrderInfoApi implements IOrderInfoApi {
 
             codeGenerator = codeGeneratorRepository.save(codeGenerator);
 
-            return codeGenerator.getPrefix() + "-" + codeGenerator.getNumber();
+            String newNumber = codeGenerator.getPrefix() + "-" + codeGenerator.getNumber();
+
+            return newNumber;
 
         }
     }
