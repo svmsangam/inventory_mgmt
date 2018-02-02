@@ -34,6 +34,8 @@ public class SubscriberDTO {
 
     private String password;
 
+    private String repassword;
+
     private long userId;
 
     private String username;
@@ -172,5 +174,13 @@ public class SubscriberDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRepassword() {
+        return repassword;
+    }
+
+    public void setRepassword(String repassword) {
+        this.repassword = repassword;
     }
 }

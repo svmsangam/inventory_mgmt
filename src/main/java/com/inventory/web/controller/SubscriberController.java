@@ -68,7 +68,7 @@ public class SubscriberController {
                 return "redirect:/logout";
             }
 
-            modelMap.put(StringConstants.SUBSCRIBER_LIST , subscriberApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.SUBSCRIBER_LIST, subscriberApi.list(Status.ACTIVE));
 
         /*current user checking end*/
 
@@ -101,8 +101,8 @@ public class SubscriberController {
 
             /*current user checking end*/
 
-            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
-            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+            modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
 
@@ -114,7 +114,7 @@ public class SubscriberController {
     }
 
     @PostMapping(value = "/save")
-    public String save(@ModelAttribute("subscriber")SubscriberDTO subscriberDTO , ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -148,7 +148,7 @@ public class SubscriberController {
     }
 
     @GetMapping(value = "/show")
-    public String show(@RequestParam("subscriberId")long subscriberId ,  ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String show(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -168,15 +168,15 @@ public class SubscriberController {
 
         /*current user checking end*/
 
-        SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE , subscriberId);
+            SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
-        if (subscriberDTO == null){
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+            if (subscriberDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
 
-            return "redirect:/subscriber/list";
-        }
-        modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
-        modelMap.put(StringConstants.STORE_LIST , storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
+                return "redirect:/subscriber/list";
+            }
+            modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+            modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
 
         } catch (Exception e) {
 
@@ -193,7 +193,7 @@ public class SubscriberController {
 
         try {
 
-            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
 
@@ -205,27 +205,32 @@ public class SubscriberController {
     }
 
     @PostMapping("/register")
-    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name="g-recaptcha-response") String recaptchaResponse, HttpServletRequest request , RedirectAttributes redirectAttributes){
-
-        String ip = request.getRemoteAddr();
-
-        String captchaVerifyMessage = captchaService.verifyRecaptcha(ip, recaptchaResponse);
-
-        if ( StringUtils.isNotEmpty(captchaVerifyMessage)) {
-
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR , captchaVerifyMessage);
-
-            return "redirect:/subscriber/register";
-
-        }
+    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         try {
-            subscriberApi.register(subscriberDTO);
+
+            synchronized (this) {
+
+                String ip = request.getRemoteAddr();
+
+                String captchaVerifyMessage = captchaService.verifyRecaptcha(ip, recaptchaResponse);
+
+                if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
+
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, captchaVerifyMessage);
+
+                    return "redirect:/subscriber/register";
+
+                }
+
+
+                subscriberApi.register(subscriberDTO);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "successfully registered");
+        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered");
 
         return "redirect:/";
     }

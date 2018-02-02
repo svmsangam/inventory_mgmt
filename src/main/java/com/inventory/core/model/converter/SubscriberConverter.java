@@ -68,7 +68,11 @@ public class SubscriberConverter implements IListConvertable<Subscriber , Subscr
 
         entity.setCityInfo(cityInfoRepository.findByIdAndStatus(dto.getCityInfoId() , Status.ACTIVE));
         entity.setContact(dto.getContact());
-        entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
+
+        if (dto.getCreatedById() > 0) {
+            entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
+        }
+
         entity.setEmail(dto.getEmail());
         entity.setFullName(dto.getFullName());
         entity.setMobile(dto.getMobile());
