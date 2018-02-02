@@ -1,6 +1,7 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.SubscriberDTO;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.web.error.SubscriberError;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.regex.Pattern;
 
 /**
@@ -34,8 +37,12 @@ public class SubscriberValidation extends GlobalValidation{
         boolean valid = true;
 
         valid = valid && checkUserName(subscriberDTO.getUsername());
-
         valid = valid && checkPassword(subscriberDTO.getPassword() , subscriberDTO.getRepassword());
+        valid = valid && checkCity(subscriberDTO.getCityInfoId());
+        valid = valid && checkContact(subscriberDTO.getContact());
+        valid = valid && checkEmail(subscriberDTO.getEmail());
+        valid = valid && checkMobile(subscriberDTO.getMobile());
+        valid = valid && checkFullName(subscriberDTO.getFullName());
 
         error.setValid(valid);
 
@@ -133,6 +140,31 @@ public class SubscriberValidation extends GlobalValidation{
             return false;
         }
 
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+
+            error.setEmail("invalid email");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkCity(Long cityId){
+
+        error.setCityName(checkLong(cityId , 1 , "city" , true));
+
+        if (!"".equals(error.getCityName())){
+            return false;
+        }
+
+        if (cityInfoRepository.findByIdAndStatus(cityId , Status.ACTIVE) == null){
+            error.setCityName("invalid city");
+            return false;
+        }
         return true;
     }
 }
