@@ -254,4 +254,20 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         return orderInfoConverter.convertToDto(orderInfo);
     }
+
+    @Override
+    @Transactional
+    public OrderInfoDTO cancelQuickSale(long orderId) {
+
+        itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
+
+        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+
+        orderInfo.setStatus(Status.DELETED);
+        orderInfo.setSaleTrack(SalesOrderStatus.CANCEL);
+
+        orderInfoRepository.save(orderInfo);
+
+        return orderInfoConverter.convertToDto(orderInfo);
+    }
 }

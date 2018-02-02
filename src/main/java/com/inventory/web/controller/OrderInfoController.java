@@ -2,8 +2,10 @@ package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.*;
+import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Permission;
+import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.OrderValidation;
@@ -316,6 +318,66 @@ public class OrderInfoController {
             modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
             return "order/quick/add";
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping(value = "/sale/cancel")
+    public String cancelQuick(@RequestParam("orderId")long orderId , ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+                   /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+
+        /*current user checking end*/
+
+            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE , orderId , currentUser.getStoreId());
+
+            if (orderInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+                return "redirect:/order/sale/list";
+            }
+
+            synchronized (this){
+                orderInfoApi.cancelQuickSale(orderId );
+            }
+
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
+            return "redirect:/order/sale/list";
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));

@@ -286,6 +286,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="modal-footer">
+                        <a href="${pageContext.request.contextPath}/order/sale/cancel?orderId=${order.orderId}" class="btn btn-danger pull-left">Cancel Order</a>
                         <button type="submit" class="btn btn-primary">Confirm Order</button>
                     </div>
 

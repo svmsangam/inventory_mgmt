@@ -33,4 +33,6 @@ public interface IOrderInfoApi {
     void updateAmount(long orderId);
 
     OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track , long createdById);
+
+    OrderInfoDTO cancelQuickSale(long orderId);
 }
