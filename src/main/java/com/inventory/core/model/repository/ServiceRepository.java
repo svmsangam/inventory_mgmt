@@ -15,6 +15,8 @@ public interface ServiceRepository extends JpaRepository<ServiceInfo, Long>{
 
     ServiceInfo findById(long serviceId);
 
+    ServiceInfo findByTitle(String title);
+
     ServiceInfo findByIdAndStatus(long serviceId , Status status);
 
     List<ServiceInfo> findAllByStatus(Status status);

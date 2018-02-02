@@ -215,12 +215,12 @@ public class SubscriberController {
 
             redirectAttributes.addFlashAttribute(StringConstants.ERROR , captchaVerifyMessage);
 
-            return "redirect:/";
+            return "redirect:/subscriber/register";
 
         }
 
         try {
-            subscriberApi.save(subscriberDTO);
+            subscriberApi.register(subscriberDTO);
         } catch (ParseException e) {
             e.printStackTrace();
         }

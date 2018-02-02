@@ -5,6 +5,7 @@ import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.SubscriberConverter;
 import com.inventory.core.model.dto.SubscriberDTO;
+import com.inventory.core.model.entity.ServiceInfo;
 import com.inventory.core.model.entity.Subscriber;
 import com.inventory.core.model.entity.SubscriberService;
 import com.inventory.core.model.enumconstant.Status;
@@ -27,7 +28,6 @@ import java.util.List;
  * Created by dhiraj on 1/25/18.
  */
 @Service
-@Transactional
 public class SubscriberApi implements ISubscriberApi {
 
     @Autowired
@@ -42,7 +42,11 @@ public class SubscriberApi implements ISubscriberApi {
     @Autowired
     private ISubscriberServiceApi subscriberServiceApi;
 
+    @Autowired
+    private ServiceRepository serviceRepository;
+
     @Override
+    @Transactional
     public SubscriberDTO save(SubscriberDTO subscriberDTO) throws ParseException {
 
         subscriberDTO.setUserId(userApi.save(subscriberDTO.getUsername() , subscriberDTO.getPassword()));
@@ -52,6 +56,25 @@ public class SubscriberApi implements ISubscriberApi {
         subscriber = subscriberRepository.save(subscriber);
 
         subscriberServiceApi.save(subscriberDTO.getServiceId() , subscriber.getId());
+
+        return subscriberConverter.convertToDto(subscriber);
+    }
+
+    @Override
+    @Transactional
+    public SubscriberDTO register(SubscriberDTO subscriberDTO) throws ParseException {
+
+        subscriberDTO.setUserId(userApi.save(subscriberDTO.getUsername() , subscriberDTO.getPassword()));
+
+        Subscriber subscriber = subscriberConverter.convertToEntity(subscriberDTO);
+
+        subscriber = subscriberRepository.save(subscriber);
+
+        ServiceInfo serviceInfo = serviceRepository.findByTitle("demo");
+
+        if (serviceInfo != null) {
+            subscriberServiceApi.save(subscriberDTO.getServiceId(), subscriber.getId());
+        }
 
         return subscriberConverter.convertToDto(subscriber);
     }
