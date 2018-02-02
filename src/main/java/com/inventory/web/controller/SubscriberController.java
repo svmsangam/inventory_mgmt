@@ -4,9 +4,12 @@ import com.inventory.core.api.iapi.*;
 import com.inventory.core.api.impl.RecaptchaService;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
+import com.inventory.core.model.entity.Subscriber;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.validation.SubscriberValidation;
+import com.inventory.web.error.SubscriberError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +52,9 @@ public class SubscriberController {
 
     @Autowired
     private IStoreUserInfoApi storeUserInfoApi;
+
+    @Autowired
+    private SubscriberValidation subscriberValidation;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -205,11 +211,25 @@ public class SubscriberController {
     }
 
     @PostMapping("/register")
-    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes , ModelMap modelMap) {
 
         try {
 
             synchronized (this) {
+
+                SubscriberError error = new SubscriberError();
+
+                error = subscriberValidation.onRegister(subscriberDTO);
+
+                if (!error.isValid()){
+
+                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+                    modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
+                    modelMap.put(StringConstants.SUBSCRIBER_ERROR , error);
+
+                    return "subscriber/register";
+
+                }
 
                 String ip = request.getRemoteAddr();
 
