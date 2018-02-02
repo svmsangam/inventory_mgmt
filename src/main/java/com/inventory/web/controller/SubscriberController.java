@@ -1,6 +1,7 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.*;
+import com.inventory.core.api.impl.RecaptchaService;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.enumconstant.Permission;
@@ -8,6 +9,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dhiraj on 1/25/18.
@@ -27,6 +33,8 @@ public class SubscriberController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private RecaptchaService captchaService;
     @Autowired
     private IUserApi userApi;
 
@@ -178,6 +186,48 @@ public class SubscriberController {
         }
 
         return "subscriber/show";
+    }
+
+    @GetMapping(value = "/register")
+    public String register(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+
+        } catch (Exception e) {
+
+            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "subscriber/register";
+    }
+
+    @PostMapping("/register")
+    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name="g-recaptcha-response") String recaptchaResponse, HttpServletRequest request , RedirectAttributes redirectAttributes){
+
+        String ip = request.getRemoteAddr();
+
+        String captchaVerifyMessage = captchaService.verifyRecaptcha(ip, recaptchaResponse);
+
+        if ( StringUtils.isNotEmpty(captchaVerifyMessage)) {
+
+            redirectAttributes.addFlashAttribute(StringConstants.ERROR , captchaVerifyMessage);
+
+            return "redirect:/";
+
+        }
+
+        try {
+            subscriberApi.save(subscriberDTO);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "successfully registered");
+
+        return "redirect:/";
     }
 
 }

@@ -125,13 +125,13 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
         }
 
-        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 10, 10, "pan number", true));
+        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 5, 20, "pan number", true));
 
         if (!("".equals(error.getPanNumber()))) {
             valid = false;
         }
 
-        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 10, 10, "registration number", true));
+        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 5, 20, "registration number", true));
 
         if (!("".equals(error.getRegNumber()))) {
             valid = false;
@@ -226,7 +226,7 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
         }
 
-        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 20, "email", true));
+        error.setEmail(checkString(storeInfoDTO.getEmail(), 5, 50, "email", true));
 
         if (!("".equals(error.getEmail()))) {
             valid = false;
@@ -238,13 +238,13 @@ public class StoreInfoValidation extends GlobalValidation {
             valid = false;
         }
 
-        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 10, 10, "pan number", true));
+        error.setPanNumber(checkString(storeInfoDTO.getPanNumber(), 5, 20, "pan number", true));
 
         if (!("".equals(error.getPanNumber()))) {
             valid = false;
         }
 
-        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 10, 10, "registration number", true));
+        error.setRegNumber(checkString(storeInfoDTO.getRegNumber(), 5, 20, "registration number", true));
 
         if (!("".equals(error.getRegNumber()))) {
             valid = false;
