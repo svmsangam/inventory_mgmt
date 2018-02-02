@@ -217,9 +217,7 @@ public class SubscriberController {
 
             synchronized (this) {
 
-                SubscriberError error = new SubscriberError();
-
-                error = subscriberValidation.onRegister(subscriberDTO);
+                SubscriberError error = subscriberValidation.onRegister(subscriberDTO);
 
                 if (!error.isValid()){
 
@@ -229,6 +227,15 @@ public class SubscriberController {
 
                     return "subscriber/register";
 
+                }
+
+                if (recaptchaResponse == null){
+                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+                    modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
+                    modelMap.put(StringConstants.SUBSCRIBER_ERROR , error);
+                    modelMap.put(StringConstants.ERROR , "please verify captcha");
+
+                    return "subscriber/register";
                 }
 
                 String ip = request.getRemoteAddr();

@@ -14,7 +14,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Inventory | Log in</title>
+    <title>Inventory | Registration</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- jQuery 3 -->
@@ -30,6 +30,11 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/square/blue.css">
 
+    <style>
+        .form-error{
+            color: red;
+        }
+    </style>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -55,6 +60,20 @@
 
 <div class="container">
     <section class="content">
+
+            <c:if test="${not empty message}">
+                <div class="alert alert-success alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                    <strong>${message}</strong>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                    <strong>${error}</strong>
+                </div>
+            </c:if>
 
         <div class="row">
             <div class="col-md-12">

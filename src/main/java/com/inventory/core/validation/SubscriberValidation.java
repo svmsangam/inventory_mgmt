@@ -53,7 +53,7 @@ public class SubscriberValidation extends GlobalValidation{
 
         error.setUsername(checkString(username , 5 , 20 , "username" , true));
 
-        if (!"".equals(username)){
+        if (!"".equals(error.getUsername())){
             return false;
         }
 
@@ -67,7 +67,7 @@ public class SubscriberValidation extends GlobalValidation{
             return false;
         }
 
-        if (userRepository.findByUsername(username) == null){
+        if (userRepository.findByUsername(username) != null){
             error.setUsername("username already in use");
 
             return false;
@@ -112,7 +112,7 @@ public class SubscriberValidation extends GlobalValidation{
 
     private boolean checkContact(String contact){
 
-        error.setContact(checkString(contact , 10 , 10 , "contact" , false));
+        error.setContact(checkString(contact , 9 , 10 , "contact" , false));
 
         if (!"".equals(error.getContact())){
             return false;
