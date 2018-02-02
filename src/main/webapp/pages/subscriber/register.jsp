@@ -72,23 +72,23 @@
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">User Name *</label>
-                                    <input type="text" class="form-control" name="username" placeholder="Name"
+                                    <input type="text" class="form-control" value="${subscriber.username}" name="username" placeholder="username"
                                            required="required"/>
-                                    <p class="form-error inventoryuser"></p>
+                                    <p class="form-error">${subscriberError.username}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Password *</label>
                                     <input type="password" class="form-control" name="password" id="userpassword"
                                            placeholder="password" required/>
-                                    <p class="form-error userpassword"></p>
+                                    <p class="form-error">${subscriberError.password}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Comfirm Password *</label>
-                                    <input type="password" class="form-control" name="confirmpassword"
+                                    <input type="password" class="form-control" name="repassword"
                                            placeholder="password" required/>
-                                    <p class="form-error userpassword"></p>
+                                    <p class="form-error">${subscriberError.repassword}</p>
                                 </div>
 
                             </div>
@@ -97,22 +97,22 @@
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Full Name *</label>
-                                    <input type="text" class="form-control" name="fullName" placeholder="full name"
+                                    <input type="text" class="form-control" value="${subscriber.fullName}" name="fullName" placeholder="full name"
                                            required="required"/>
-                                    <p class="form-error"></p>
+                                    <p class="form-error">${subscriberError.fullName}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Contact </label>
-                                    <input type="text" class="form-control" name="contact" placeholder="contact"/>
-                                    <p class="form-error userpassword"></p>
+                                    <input type="text" class="form-control" value="${subscriber.contact}" name="contact" placeholder="contact"/>
+                                    <p class="form-error">${subscriberError.contact}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Mobile *</label>
-                                    <input type="text" class="form-control" name="mobile" placeholder="mobile"
+                                    <input type="text" class="form-control" value="${subscriber.mobile}" name="mobile" placeholder="mobile"
                                            required/>
-                                    <p class="form-error"></p>
+                                    <p class="form-error">${subscriberError.mobile}</p>
                                 </div>
 
                             </div>
@@ -121,9 +121,9 @@
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Email *</label>
-                                    <input type="email" class="form-control" name="email" placeholder="email"
+                                    <input type="email"  value="${subscriber.email}" class="form-control" name="email" placeholder="email"
                                            required="required"/>
-                                    <p class="form-error"></p>
+                                    <p class="form-error">${subscriberError.email}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
@@ -134,13 +134,13 @@
                                             <option value="${city.cityId}">${city.cityName}</option>
                                         </c:forEach>
                                     </select>
-                                    <p class="form-error userpassword"></p>
+                                    <p class="form-error">${subscriberError.cityName}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">Street</label>
-                                    <input type="text" class="form-control" name="street" placeholder="street"/>
-                                    <p class="form-error"></p>
+                                    <input type="text" value="${subscriber.street}" class="form-control" name="street" placeholder="street"/>
+                                    <p class="form-error">${subscriberError.street}</p>
                                 </div>
 
                             </div>
