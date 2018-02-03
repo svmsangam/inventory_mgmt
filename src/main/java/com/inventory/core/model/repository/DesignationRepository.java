@@ -1,6 +1,7 @@
 package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.Designation;
+import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +17,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface DesignationRepository extends JpaRepository<Designation, Long>, JpaSpecificationExecutor<Designation> {
 
-    Designation findById(long designationId);
+    Designation findByIdAndStatusAndOwner_Id(long designationId , Status status , long ownerId);
 
     Designation findByTitle(String title);
 
-    @Query("select d from Designation d order by d.title asc ")
-    List<Designation> findAll();
+    Designation findByTitleAndStatus(String title , Status status);
+
+    Designation findByTitleAndStatusAndOwner_Id(String title , Status status , long ownerId);
+
+    List<Designation> findAllByStatusAndOwner_Id(Status status , long ownerId);
 }

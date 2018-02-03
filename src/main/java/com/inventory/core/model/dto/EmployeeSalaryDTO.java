@@ -1,21 +1,15 @@
-package com.inventory.core.model.entity;
+package com.inventory.core.model.dto;
 
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 /**
- * Created by dhiraj on 12/19/17.
+ * Created by dhiraj on 2/3/18.
  */
-@Entity
-@Table(name = "employee_salary")
-public class EmployeeSalary extends AbstractEntity<Long>{
+public class EmployeeSalaryDTO {
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private StoreEmployee storeEmployee;
+    private long empSlryId;
+
+    private long storeEmployeeId;
 
     private double increment;//percent
 
@@ -27,12 +21,20 @@ public class EmployeeSalary extends AbstractEntity<Long>{
 
     private Status status;
 
-    public StoreEmployee getStoreEmployee() {
-        return storeEmployee;
+    public long getEmpSlryId() {
+        return empSlryId;
     }
 
-    public void setStoreEmployee(StoreEmployee storeEmployee) {
-        this.storeEmployee = storeEmployee;
+    public void setEmpSlryId(long empSlryId) {
+        this.empSlryId = empSlryId;
+    }
+
+    public long getStoreEmployeeId() {
+        return storeEmployeeId;
+    }
+
+    public void setStoreEmployeeId(long storeEmployeeId) {
+        this.storeEmployeeId = storeEmployeeId;
     }
 
     public double getIncrement() {

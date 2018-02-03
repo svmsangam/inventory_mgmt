@@ -56,6 +56,66 @@ public class EmployeeProfileDTO {
 
     private MultipartFile file;
 
+    private long leqId; // educationQualification Id
+
+    private String leqTitle; // educationQualification Title
+
+    private String leqCode; //educationQualification Code
+
+    private String leqRemarks; // educationQualification Remarks
+
+    private long ownerId;
+
+    private String ownerName;
+
+    public long getLeqId() {
+        return leqId;
+    }
+
+    public void setLeqId(long leqId) {
+        this.leqId = leqId;
+    }
+
+    public String getLeqTitle() {
+        return leqTitle;
+    }
+
+    public void setLeqTitle(String leqTitle) {
+        this.leqTitle = leqTitle;
+    }
+
+    public String getLeqCode() {
+        return leqCode;
+    }
+
+    public void setLeqCode(String leqCode) {
+        this.leqCode = leqCode;
+    }
+
+    public String getLeqRemarks() {
+        return leqRemarks;
+    }
+
+    public void setLeqRemarks(String leqRemarks) {
+        this.leqRemarks = leqRemarks;
+    }
+
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
     public String getPhoto() {
         return photo;
     }

@@ -3,6 +3,7 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IDesignationInfoApi;
 import com.inventory.core.model.converter.DesignationConverter;
 import com.inventory.core.model.dto.DesignationInfoDTO;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.DesignationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class DesignationInfoApi implements IDesignationInfoApi {
     }
 
     @Override
-    public DesignationInfoDTO show(long designationId) {
-        return designationConverter.convertToDto(designationRepository.findById(designationId));
+    public DesignationInfoDTO show(long designationId , Status status , long ownerId) {
+        return designationConverter.convertToDto(designationRepository.findByIdAndStatusAndOwner_Id(designationId , status , ownerId));
     }
 
     @Override

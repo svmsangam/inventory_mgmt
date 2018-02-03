@@ -1,6 +1,7 @@
 package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.DesignationInfoDTO;
+import com.inventory.core.model.enumconstant.Status;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface IDesignationInfoApi {
 
     DesignationInfoDTO save(DesignationInfoDTO designationInfoDTO);
 
-    DesignationInfoDTO show(long designationId);
+    DesignationInfoDTO show(long designationId, Status status, long ownerId);
 
     DesignationInfoDTO getByTitle(String title);
 

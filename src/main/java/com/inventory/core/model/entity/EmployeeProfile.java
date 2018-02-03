@@ -38,15 +38,37 @@ public class EmployeeProfile extends AbstractEntity<Long> {
 
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     private String photo;
 
+    @ManyToOne(fetch = FetchType.LAZY )
+    private QualificationLevel qualificationLevel;
+
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StoreInfo owner;
+
+    public StoreInfo getOwner() {
+        return owner;
+    }
+
+    public void setOwner(StoreInfo owner) {
+        this.owner = owner;
+    }
+
+    public QualificationLevel getQualificationLevel() {
+        return qualificationLevel;
+    }
+
+    public void setQualificationLevel(QualificationLevel qualificationLevel) {
+        this.qualificationLevel = qualificationLevel;
+    }
 
     public String getPhoto() {
         return photo;
