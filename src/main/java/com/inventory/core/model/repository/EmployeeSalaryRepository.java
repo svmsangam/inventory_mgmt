@@ -20,16 +20,16 @@ public interface EmployeeSalaryRepository extends JpaRepository<EmployeeSalary ,
 
     EmployeeSalary findByIdAndStatus(long employeeSalaryId , Status status);
 
-    @Query("select es from EmployeeSalary es join es.storeEmployee as storempl on es.storeEmployee.id = storempl.id where es.id = ?1 and es.storeEmployee.id = ?2 and es.status = ?3")
+    @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.id = ?1 and es.storeEmployee.id = ?2 and es.status = ?3")
     EmployeeSalary findByIdAndStoreEmployee_IdAndStatusWithStoreEmployee(long employeeSalaryId , long storeEmployeeId , Status status);
 
-    @Query("select es from EmployeeSalary es join es.storeEmployee as storempl on es.storeEmployee.id = storempl.id where es.id = ?1 and es.status = ?2")
+    @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.id = ?1 and es.status = ?2")
     EmployeeSalary findByIdAndStatusWithStoreEmployee(long employeeSalaryId , Status status);
 
-    @Query("select es from EmployeeSalary es join es.storeEmployee as storempl on es.storeEmployee.id = storempl.id where es.storeEmployee.id = ?2 and es.status = ?3")
+    @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.storeEmployee.id = ?2 and es.status = ?3")
     List<EmployeeSalary> findAllByStoreEmployee_IdAndStatusWithStoreEmployee(long storeEmployeeId , Status status);
 
-    @Query("select es from EmployeeSalary es join es.storeEmployee as storempl on es.storeEmployee.id = storempl.id where es.storeEmployee.id = ?1 and es.status = ?3")
+    @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.storeEmployee.id = ?1 and es.status = ?3")
     List<EmployeeSalary> findAllByStoreInfo_IdAndStatusWithStoreEmployee(long storeInfoId , Status status);
 
 

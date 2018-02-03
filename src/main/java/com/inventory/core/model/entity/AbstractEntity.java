@@ -3,12 +3,7 @@ package com.inventory.core.model.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -30,7 +25,15 @@ public abstract class AbstractEntity<PK extends Serializable> extends AbstractPe
     private int version;
 
     public AbstractEntity() {
+
         setCreated(new Date());
+
+
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        lastModified = new Date();
     }
 
     public void setCreated(Date created) {

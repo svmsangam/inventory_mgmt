@@ -23,7 +23,7 @@ public interface EmployeeProfileRepository extends JpaRepository<EmployeeProfile
 
     EmployeeProfile findByStatusAndIdAndOwner_Id(Status status , long employeeProfileId , long ownerId);
 
-    @Query("select ep from EmployeeProfile ep join ep.owner as epown on ep.owner.id = epown.id where ep.status = ?1 and  ep.id = ?2 and  ep.owner.id = ?3")
+    @Query("select ep from EmployeeProfile ep join fetch ep.owner as epown where ep.status = ?1 and  ep.id = ?2 and  ep.owner.id = ?3")
     EmployeeProfile findByStatusAndIdAndOwner_IdWithOwner(Status status , long employeeProfileId , long ownerId);
 
     List<EmployeeProfile> findAllByStatusAndOwner(Status status , long ownerId);
