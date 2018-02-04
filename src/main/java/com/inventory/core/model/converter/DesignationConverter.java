@@ -2,8 +2,10 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.DesignationInfoDTO;
 import com.inventory.core.model.entity.Designation;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DesignationConverter implements IConvertable<Designation, DesignationInfoDTO>, IListConvertable<Designation, DesignationInfoDTO> {
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
     @Override
     public Designation convertToEntity(DesignationInfoDTO dto) {
@@ -49,6 +54,7 @@ public class DesignationConverter implements IConvertable<Designation, Designati
         entity.setTitle(dto.getTitle().trim());
         entity.setCode(dto.getCode().trim());
         entity.setRemarks(dto.getRemarks().trim());
+        entity.setOwner(storeInfoRepository.findById(dto.getOwnerId()));
 
         return entity;
     }

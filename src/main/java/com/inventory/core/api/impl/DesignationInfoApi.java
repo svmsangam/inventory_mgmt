@@ -3,6 +3,7 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IDesignationInfoApi;
 import com.inventory.core.model.converter.DesignationConverter;
 import com.inventory.core.model.dto.DesignationInfoDTO;
+import com.inventory.core.model.entity.Designation;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.DesignationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,12 @@ public class DesignationInfoApi implements IDesignationInfoApi {
 
     @Override
     public DesignationInfoDTO save(DesignationInfoDTO designationInfoDTO) {
-        return designationConverter.convertToDto(designationRepository.save(designationConverter.convertToEntity(designationInfoDTO)));
+
+        Designation designation = designationConverter.convertToEntity(designationInfoDTO);
+
+        designation.setStatus(Status.ACTIVE);
+
+        return designationConverter.convertToDto(designationRepository.save(designation));
     }
 
     @Override
@@ -38,7 +44,7 @@ public class DesignationInfoApi implements IDesignationInfoApi {
     }
 
     @Override
-    public List<DesignationInfoDTO> list(Status status , long ownerId) {
+    public List<DesignationInfoDTO> list(Status status, long ownerId) {
         return designationConverter.convertToDtoList(designationRepository.findAllByStatusAndOwner_Id(status , ownerId));
     }
 }

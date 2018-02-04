@@ -53,14 +53,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--<c:forEach var="product" items="${productList}" varStatus="i">
+                                <c:forEach var="designation" items="${designationList}" varStatus="i">
                                     <tr>
                                         <td>${i.index + 1}</td>
-                                        <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
-                                        <td>${product.code}</td>
-                                        <td>${product.trendingLevel}</td>
-                                        <td>${product.subCategoryInfo.name}</td>
-                                        <td>${product.stockInfo.inStock}</td>
+                                        <td>${designation.title}</td>
+                                        <td>${designation.code}</td>
+                                        <td>${designation.remarks}</td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm  btn-flat"
                                                     data-toggle="modal" data-target="#modal-edit"><span
@@ -71,56 +69,7 @@
                                             </button>
                                         </td>
                                     </tr>
-                                </c:forEach>--%>
-
-                                <tr>
-                                    <td>1</td>
-                                    <td>Human Resource Manager</td>
-                                    <td>HR</td>
-                                    <td>dnvcsdnvsdvbshdvbsjdvbsjdv</td>
-
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>Managing Director</td>
-                                    <td>md</td>
-                                    <td>dnvcsdnvsdvbshdvbsjdvbsjdv</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>General Manager</td>
-                                    <td>gm</td>
-                                    <td>dnvcsdnvsdvbshdvbsjdvbsjdv</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
-                                </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
