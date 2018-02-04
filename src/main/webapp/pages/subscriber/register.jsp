@@ -83,7 +83,7 @@
                         <h3 class="box-title">Free Registration for 1 month</h3>
 
                     </div>
-                    <form id="registerForm" onsubmit="check_if_capcha_is_filled(e);" action="${pageContext.request.contextPath}/subscriber/register" method="post" modelAttribute="subscriber">
+                    <form id="registerForm" action="${pageContext.request.contextPath}/subscriber/register" method="post" modelAttribute="subscriber">
                         <div class="box-body">
 
                             <div class="row">
@@ -185,6 +185,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(function () {
         $('input').iCheck({
@@ -198,19 +200,28 @@
 <script>
     var allowSubmit = false;
 
+    var msg = "proof you are not a robot";
+
     function capcha_filled () {
         allowSubmit = true;
     }
 
     function capcha_expired () {
         allowSubmit = false;
+        msg = "captcha is expired , click again on I'm not a robot"
     }
 
     function check_if_capcha_is_filled (e) {
         if(allowSubmit) return true;
         e.preventDefault();
-        alert('Fill in the capcha!');
+        swal(msg);
     }
+    
+    $(document).ready(function () {
+        $("#registerForm").submit(function(e){
+            check_if_capcha_is_filled (e);
+        });
+    })
 </script>
 </body>
 </html>

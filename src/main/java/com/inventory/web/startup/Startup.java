@@ -38,12 +38,17 @@ public class Startup {
     @Autowired
     private DesignationRepository designationRepository;
 
+    @Autowired
+    private ServiceRepository serviceRepository;
+
     @PostConstruct
     public void initialize() {
 
         createUser("system", UserType.SYSTEM, "123456", Status.ACTIVE);
 
         CountryStarter();
+
+        createService();
 
         //System.out.println(" count lot >>>>>> " + lotInfoRepository.count());
         if (lotInfoRepository.count() == 0)
@@ -228,6 +233,26 @@ public class Startup {
         designationList.add(accountant);
 
         designationRepository.save(designationList);
+    }
+
+    private void createService(){
+
+        if (serviceRepository.findByTitle("demo") == null){
+            saveService("demo" , 30 , 0 , 1);
+        }
+    }
+
+    private void saveService(String title , int expDays , double rate , int totalStore){
+
+        ServiceInfo serviceInfo = new ServiceInfo();
+
+        serviceInfo.setTitle(title);
+        serviceInfo.setExpireDays(expDays);
+        serviceInfo.setRate(rate);
+        serviceInfo.setStatus(Status.ACTIVE);
+        serviceInfo.setTotalStore(totalStore);
+
+        serviceRepository.save(serviceInfo);
     }
 
 }

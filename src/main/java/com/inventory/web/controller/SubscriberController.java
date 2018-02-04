@@ -244,7 +244,7 @@ public class SubscriberController {
 
                 if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
 
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, captchaVerifyMessage);
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid captcha ");
 
                     return "redirect:/subscriber/register";
 
