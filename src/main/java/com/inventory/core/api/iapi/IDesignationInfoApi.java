@@ -16,5 +16,5 @@ public interface IDesignationInfoApi {
 
     DesignationInfoDTO getByTitle(String title);
 
-    List<DesignationInfoDTO> list();
+    List<DesignationInfoDTO> list(Status status, long ownerId);
 }

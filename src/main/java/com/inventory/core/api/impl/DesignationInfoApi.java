@@ -38,7 +38,7 @@ public class DesignationInfoApi implements IDesignationInfoApi {
     }
 
     @Override
-    public List<DesignationInfoDTO> list() {
-        return designationConverter.convertToDtoList(designationRepository.findAll());
+    public List<DesignationInfoDTO> list(Status status , long ownerId) {
+        return designationConverter.convertToDtoList(designationRepository.findAllByStatusAndOwner_Id(status , ownerId));
     }
 }

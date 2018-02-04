@@ -157,4 +157,7 @@ public class StringConstants {
 
     public static String QUALIFICATION = "qualification";
     public static String QUALIFICATION_LIST = "qualificationList";
+
+    public static String DESIGNATION = "designation";
+    public static String DESIGNATION_LIST = "designationList";
 }

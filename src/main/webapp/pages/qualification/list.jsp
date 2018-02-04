@@ -58,7 +58,7 @@
                                         <td>${i.index + 1}</td>
                                         <td>${qualification.title}</td>
                                         <td>${qualification.code}</td>
-                                        <td>${qualification.remark}</td>
+                                        <td>${qualification.remarks}</td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm  btn-flat"
                                                     data-toggle="modal" data-target="#modal-edit"><span

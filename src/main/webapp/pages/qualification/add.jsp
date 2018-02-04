@@ -32,8 +32,8 @@
 
                             <div class="form-group">
                                 <label class="control-label">Title</label>
-                                <input type="text" class="form-control" name="name" placeholder="Name">
-                                <p class="error">${error.name}</p>
+                                <input type="text" class="form-control" name="title" placeholder="title">
+                                <p class="error">${error.title}</p>
                             </div>
 
                             <div class="form-group">
@@ -44,8 +44,8 @@
 
                             <div class="form-group">
                                 <label class="control-label">Remarks</label>
-                                <textarea type="text" class="form-control" name="code" placeholder="remarks"></textarea>
-                                <p class="error">${error.code}</p>
+                                <textarea type="text" class="form-control" name="remarks" placeholder="remarks"></textarea>
+                                <p class="error">${error.remarks}</p>
                             </div>
 
                         </div>

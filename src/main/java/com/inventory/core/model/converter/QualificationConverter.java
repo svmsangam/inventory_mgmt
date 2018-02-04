@@ -38,11 +38,14 @@ public class QualificationConverter implements IConvertable<QualificationLevel, 
         dto.setQlfyLvlId(entity.getId());
         dto.setCode(entity.getCode());
 
-        if (entity.getOwner() != null) {
-            dto.setOwnerId(entity.getOwner().getId());
-            dto.setOwnerName(entity.getOwner().getName());
-        }
+       /* if (entity.getOwner() != null) {
 
+            if (entity.getOwner().getId() != null) {
+                dto.setOwnerId(entity.getOwner().getId());
+                dto.setOwnerName(entity.getOwner().getName());
+            }
+        }
+*/
         dto.setRemarks(entity.getRemarks());
         dto.setStatus(entity.getStatus());
         dto.setTitle(entity.getTitle());
@@ -60,8 +63,8 @@ public class QualificationConverter implements IConvertable<QualificationLevel, 
 
         entity.setCode(dto.getCode());
         entity.setOwner(storeInfoRepository.findById(dto.getOwnerId()));
-        entity.setRemarks(entity.getRemarks());
-        entity.setTitle(entity.getTitle());
+        entity.setRemarks(dto.getRemarks());
+        entity.setTitle(dto.getTitle());
 
         return entity;
     }
