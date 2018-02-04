@@ -86,7 +86,7 @@ public class EmployeeProfileController {
                 return "redirect:/profile/list";
             }
 
-            EmployeeProfileDTO employeeProfileDTO = profileApi.show(profileId , Status.ACTIVE);
+            EmployeeProfileDTO employeeProfileDTO = profileApi.show(profileId , Status.ACTIVE , currentUser.getStoreId());
 
             if (employeeProfileDTO == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "employee record not found");
@@ -130,7 +130,7 @@ public class EmployeeProfileController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, profileApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, profileApi.list(Status.ACTIVE , currentUser.getStoreId()));
 
         }catch (Exception e){
             logger.error("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
@@ -242,7 +242,7 @@ public class EmployeeProfileController {
             }
 
         /*current user checking end*/
-            EmployeeProfileDTO employeeProfileDTO = profileApi.show(employeeProfileId, Status.ACTIVE);
+            EmployeeProfileDTO employeeProfileDTO = profileApi.show(employeeProfileId, Status.ACTIVE , currentUser.getStoreId());
 
             modelMap.put(StringConstants.EMPLOYEE_PROFILE, employeeProfileDTO);
 
