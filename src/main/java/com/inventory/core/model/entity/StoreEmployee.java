@@ -14,24 +14,76 @@ import java.util.Date;
 public class StoreEmployee extends AbstractEntity<Long>{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private StoreInfo storeInfo;
+    private StoreInfo owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private EmployeeProfile employeeProfile;
 
     @Temporal(TemporalType.DATE)
-    private Date startingDate;
+    private Date date;
 
-    @Temporal(TemporalType.DATE)
-    private Date endingDate;
-
+    @ManyToOne(fetch = FetchType.LAZY)
     private Designation designation;
 
     private EmployeeStatus employeeStatus;
 
-    private double initialSalary;
-
-    private double tax;//percent
+    private String remarks;
 
     private Status status;
+
+    public StoreInfo getOwner() {
+        return owner;
+    }
+
+    public void setOwner(StoreInfo owner) {
+        this.owner = owner;
+    }
+
+    public EmployeeProfile getEmployeeProfile() {
+        return employeeProfile;
+    }
+
+    public void setEmployeeProfile(EmployeeProfile employeeProfile) {
+        this.employeeProfile = employeeProfile;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Designation getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(Designation designation) {
+        this.designation = designation;
+    }
+
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

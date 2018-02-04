@@ -2,10 +2,8 @@ package com.inventory.core.model.entity;
 
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by dhiraj on 12/19/17.
@@ -17,6 +15,12 @@ public class EmployeeSalary extends AbstractEntity<Long>{
     @OneToOne(fetch = FetchType.LAZY)
     private StoreEmployee storeEmployee;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Designation designation;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
     private double increment;//percent
 
     private double amount;//actual amount
@@ -25,7 +29,33 @@ public class EmployeeSalary extends AbstractEntity<Long>{
 
     private boolean selected;
 
+    private String remarks;
+
     private Status status;
+
+    public Designation getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(Designation designation) {
+        this.designation = designation;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public StoreEmployee getStoreEmployee() {
         return storeEmployee;

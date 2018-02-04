@@ -1,7 +1,10 @@
 package com.inventory.core.model.dto;
 
+import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 /**
  * Created by dhiraj on 8/6/17.
@@ -67,6 +70,36 @@ public class EmployeeProfileDTO {
     private long ownerId;
 
     private String ownerName;
+
+    private EmployeeStatus employeeStatus;
+
+    private long designationId;
+
+    private Date joinDate;
+
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public long getDesignationId() {
+        return designationId;
+    }
+
+    public void setDesignationId(long designationId) {
+        this.designationId = designationId;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
 
     public long getLeqId() {
         return leqId;

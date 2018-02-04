@@ -160,4 +160,6 @@ public class StringConstants {
 
     public static String DESIGNATION = "designation";
     public static String DESIGNATION_LIST = "designationList";
+
+    public static String EMPLOYEE_STATUS_LIST = "employeeStatusList";
 }

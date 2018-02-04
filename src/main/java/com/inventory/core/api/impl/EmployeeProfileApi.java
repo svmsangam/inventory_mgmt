@@ -4,12 +4,18 @@ import com.inventory.core.api.iapi.IEmployeeProfileApi;
 import com.inventory.core.model.converter.EmployeeProfileConverter;
 import com.inventory.core.model.dto.EmployeeProfileDTO;
 import com.inventory.core.model.entity.EmployeeProfile;
+import com.inventory.core.model.entity.StoreEmployee;
+import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.DesignationRepository;
 import com.inventory.core.model.repository.EmployeeProfileRepository;
+import com.inventory.core.model.repository.StoreEmployeeRepository;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +31,15 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
     @Autowired
     private EmployeeProfileConverter employeeProfileConverter;
 
+    @Autowired
+    private StoreEmployeeRepository storeEmployeeRepository;
+
+    @Autowired
+    private DesignationRepository designationRepository;
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
+
     @Override
     public EmployeeProfileDTO save(EmployeeProfileDTO employeeProfileDTO) {
 
@@ -34,12 +49,33 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
 
         employeeProfile = employeeProfileRepository.save(employeeProfile);
 
+        employeeProfileDTO.setEmployeeProfileId(employeeProfile.getId());
+
+        saveStoreEmployee(employeeProfileDTO);
+
         return employeeProfileConverter.convertToDto(employeeProfile);
     }
 
+    private void saveStoreEmployee(EmployeeProfileDTO employeeProfileDTO){
+
+        StoreEmployee storeEmployee = new StoreEmployee();
+
+        if (employeeProfileDTO.getJoinDate() != null && EmployeeStatus.CONFIRM.equals(employeeProfileDTO.getEmployeeStatus())) {
+            storeEmployee.setDate(employeeProfileDTO.getJoinDate());
+        }
+
+        storeEmployee.setDesignation(designationRepository.findOne(employeeProfileDTO.getDesignationId()));
+        storeEmployee.setEmployeeProfile(employeeProfileRepository.findOne(employeeProfileDTO.getEmployeeProfileId()));
+        storeEmployee.setEmployeeStatus(employeeProfileDTO.getEmployeeStatus());
+        storeEmployee.setOwner(storeInfoRepository.findById(employeeProfileDTO.getOwnerId()));
+        storeEmployee.setStatus(Status.ACTIVE);
+
+        storeEmployeeRepository.save(storeEmployee);
+    }
+
     @Override
-    public EmployeeProfileDTO show(long employeeProfileId, Status status) {
-        return employeeProfileConverter.convertToDto(employeeProfileRepository.findByStatusAndId(status , employeeProfileId));
+    public EmployeeProfileDTO show(long employeeProfileId, Status status , long ownerId) {
+        return employeeProfileConverter.convertToDto(storeEmployeeRepository.findEmployeeProfileByIdAndStatusAndOwner(employeeProfileId , status , ownerId));
     }
 
     @Override
@@ -48,8 +84,8 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
     }
 
     @Override
-    public List<EmployeeProfileDTO> list(Status status) {
-        return employeeProfileConverter.convertToDtoList(employeeProfileRepository.findAllByStatus(status));
+    public List<EmployeeProfileDTO> list(Status status , long ownerId) {
+        return employeeProfileConverter.convertToDtoList(storeEmployeeRepository.findAllEmployeeProfileByStatusAndOwner(status , ownerId));
     }
 
     @Override

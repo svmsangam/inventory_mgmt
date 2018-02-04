@@ -12,11 +12,11 @@ public interface IEmployeeProfileApi {
 
     EmployeeProfileDTO save(EmployeeProfileDTO employeeProfileDTO);
 
-    EmployeeProfileDTO show(long employeeProfileId , Status status);
+    EmployeeProfileDTO show(long employeeProfileId, Status status, long ownerId);
 
     EmployeeProfileDTO update(EmployeeProfileDTO employeeProfileDTO);
 
-    List<EmployeeProfileDTO> list(Status status);
+    List<EmployeeProfileDTO> list(Status status, long ownerId);
 
     EmployeeProfileDTO getByStatusAndUser(Status status , long userId);
 }

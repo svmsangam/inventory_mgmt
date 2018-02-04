@@ -1,10 +1,12 @@
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.ICityInfoApi;
+import com.inventory.core.api.iapi.IDesignationInfoApi;
 import com.inventory.core.api.iapi.IEmployeeProfileApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.EmployeeProfileDTO;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
@@ -36,6 +38,9 @@ public class EmployeeProfileController {
 
     @Autowired
     private ICityInfoApi cityInfoApi;
+
+    @Autowired
+    private IDesignationInfoApi designationInfoApi;
 
     @GetMapping(value = "/")
     public String index(RedirectAttributes redirectAttributes) {
@@ -160,6 +165,8 @@ public class EmployeeProfileController {
 
         modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
+        modelMap.put(StringConstants.DESIGNATION_LIST , designationInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+        modelMap.put(StringConstants.EMPLOYEE_STATUS_LIST , EmployeeStatus.values());
 
         return "employee/add";
     }
@@ -196,6 +203,7 @@ public class EmployeeProfileController {
             }
 
             profileDTO.setCreatedById(currentUser.getUserId());
+            profileDTO.setOwnerId(currentUser.getStoreId());
 
             profileDTO = profileApi.save(profileDTO);
 
