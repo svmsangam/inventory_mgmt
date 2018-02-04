@@ -53,14 +53,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--<c:forEach var="product" items="${productList}" varStatus="i">
+                                <c:forEach var="qualification" items="${qualificationList}" varStatus="i">
                                     <tr>
                                         <td>${i.index + 1}</td>
-                                        <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
-                                        <td>${product.code}</td>
-                                        <td>${product.trendingLevel}</td>
-                                        <td>${product.subCategoryInfo.name}</td>
-                                        <td>${product.stockInfo.inStock}</td>
+                                        <td>${qualification.title}</td>
+                                        <td>${qualification.code}</td>
+                                        <td>${qualification.remark}</td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm  btn-flat"
                                                     data-toggle="modal" data-target="#modal-edit"><span
@@ -71,40 +69,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                </c:forEach>--%>
+                                </c:forEach>
 
-                                <tr>
-                                    <td>1</td>
-                                    <td>Higher Secendory</td>
-                                    <td>+2</td>
-                                    <td>dnvcsdnvsdvbshdvbsjdvbsjdv</td>
-
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>Bachelor In Information Technology</td>
-                                    <td>bim</td>
-                                    <td>dnvcsdnvsdvbshdvbsjdvbsjdv</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>

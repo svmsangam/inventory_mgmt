@@ -24,10 +24,10 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Product</h3>
+                        <h3 class="box-title">Add Qualification</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/product/save" method="post" modelAttribute="product" >
+                    <form action="${pageContext.request.contextPath}/qualification/save" method="post" modelAttribute="qualification" >
                         <div class="box-body">
 
                             <div class="form-group">
