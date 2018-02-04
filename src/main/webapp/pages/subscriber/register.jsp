@@ -83,8 +83,7 @@
                         <h3 class="box-title">Free Registration for 1 month</h3>
 
                     </div>
-                    <form action="${pageContext.request.contextPath}/subscriber/register" method="post"
-                          modelAttribute="subscriber">
+                    <form id="registerForm" onsubmit="check_if_capcha_is_filled(e);" action="${pageContext.request.contextPath}/subscriber/register" method="post" modelAttribute="subscriber">
                         <div class="box-body">
 
                             <div class="row">
@@ -166,7 +165,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 form-group">
-                                    <div class="g-recaptcha" data-sitekey="6LeG-kMUAAAAACApsSOmYiulgmDIMHn6aMqaKeUM"></div>
+                                    <div class="g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeG-kMUAAAAACApsSOmYiulgmDIMHn6aMqaKeUM"></div>
                                 </div>
                             </div>
                         </div>
@@ -194,6 +193,24 @@
             increaseArea: '20%' // optional
         });
     });
+</script>
+
+<script>
+    var allowSubmit = false;
+
+    function capcha_filled () {
+        allowSubmit = true;
+    }
+
+    function capcha_expired () {
+        allowSubmit = false;
+    }
+
+    function check_if_capcha_is_filled (e) {
+        if(allowSubmit) return true;
+        e.preventDefault();
+        alert('Fill in the capcha!');
+    }
 </script>
 </body>
 </html>

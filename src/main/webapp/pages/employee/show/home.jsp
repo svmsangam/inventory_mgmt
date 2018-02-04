@@ -10,15 +10,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:if test="${profile.photo ne null}">
-    <img class="profile-user-img img-responsive img-circle"
-         src="${pageContext.request.contextPath}/employee/${profile.photo}" alt="User profile picture">
-</c:if>
+<img class="profile-user-img img-responsive img-circle" src="${pageContext.request.contextPath}/resources/img/avatar.png" alt="User profile picture">
 
-<c:if test="${profile.photo eq null}">
-    <a class="btn btn-default"
-       href="${pageContext.request.contextPath}/profile/image/upload/${profile.employeeProfileId}">upload image</a>
-</c:if>
+<%--<c:if test="${profile.photo ne null}">
+    <img class="profile-user-img img-responsive img-circle" src="${pageContext.request.contextPath}/employee/${profile.photo}" alt="User profile picture">
+</c:if>--%>
+
+<%--<c:if test="${profile.photo eq null}">
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/profile/image/upload/${profile.employeeProfileId}">upload image</a>
+</c:if>--%>
 
 <h3 class="profile-username text-center">${profile.username}</h3>
 <p class="text-muted text-center">${profile.firstName} ${profile.middleName} ${profile.lastName}</p>

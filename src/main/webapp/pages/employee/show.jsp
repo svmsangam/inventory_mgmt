@@ -109,7 +109,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="user">
-                            ${subscriber.username}
+                            jujnjn
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="service">
