@@ -154,4 +154,7 @@ public class StringConstants {
 
     public static String FISCAL_YEAR = "fiscalYear";
     public static String FISCAL_YEAR_LIST = "fiscalYearList";
+
+    public static String QUALIFICATION = "qualification";
+    public static String QUALIFICATION_LIST = "qualificationList";
 }

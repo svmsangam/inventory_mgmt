@@ -1,5 +1,6 @@
 package com.inventory.web.controller;
 
+import com.inventory.core.api.iapi.IQualificationApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.Permission;
@@ -30,6 +31,8 @@ public class QualificationLevelController {
     @Autowired
     private IUserApi userApi;
 
+    @Autowired
+    private IQualificationApi qualificationApi;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -61,6 +64,8 @@ public class QualificationLevelController {
 
         /*current user checking end*/
 
+        modelMap.put(StringConstants.QUALIFICATION_LIST , qualificationApi.list(Status.ACTIVE , currentUser.getStoreId()));
+
 
         } catch (Exception e) {
 
@@ -69,5 +74,44 @@ public class QualificationLevelController {
         }
 
         return "qualification/list";
+    }
+
+    @GetMapping(value = "/add")
+    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+        /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+        /*current user checking end*/
+
+        } catch (Exception e) {
+
+            logger.error("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "qualification/add";
     }
 }
