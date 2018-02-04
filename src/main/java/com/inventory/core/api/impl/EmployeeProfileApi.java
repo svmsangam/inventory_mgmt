@@ -5,12 +5,10 @@ import com.inventory.core.model.converter.EmployeeProfileConverter;
 import com.inventory.core.model.dto.EmployeeProfileDTO;
 import com.inventory.core.model.entity.EmployeeProfile;
 import com.inventory.core.model.entity.StoreEmployee;
+import com.inventory.core.model.entity.StoreUserInfo;
 import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.model.repository.DesignationRepository;
-import com.inventory.core.model.repository.EmployeeProfileRepository;
-import com.inventory.core.model.repository.StoreEmployeeRepository;
-import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +37,9 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
 
     @Autowired
     private StoreInfoRepository storeInfoRepository;
+
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
 
     @Override
     public EmployeeProfileDTO save(EmployeeProfileDTO employeeProfileDTO) {
@@ -74,8 +75,13 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
     }
 
     @Override
-    public EmployeeProfileDTO show(long employeeProfileId, Status status , long ownerId) {
+    public EmployeeProfileDTO show(long employeeProfileId, Status status, long ownerId) {
         return employeeProfileConverter.convertToDto(storeEmployeeRepository.findEmployeeProfileByIdAndStatusAndOwner(employeeProfileId , status , ownerId));
+    }
+
+    @Override
+    public EmployeeProfileDTO showForSuperAdmin(long employeeProfileId, Status status, long superAdminId) {
+        return employeeProfileConverter.convertToDto(storeEmployeeRepository.findEmployeeProfileByIdAndStatusAndOwnerIn(employeeProfileId , status , storeUserInfoRepository.findAllStoreIdByUserAndStatus(superAdminId , Status.ACTIVE)));
     }
 
     @Override
@@ -84,8 +90,13 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
     }
 
     @Override
-    public List<EmployeeProfileDTO> list(Status status , long ownerId) {
+    public List<EmployeeProfileDTO> list(Status status, long ownerId) {
         return employeeProfileConverter.convertToDtoList(storeEmployeeRepository.findAllEmployeeProfileByStatusAndOwner(status , ownerId));
+    }
+
+    @Override
+    public List<EmployeeProfileDTO> listForSuperAdmin(Status status, long superAdminId) {
+        return employeeProfileConverter.convertToDtoList(storeEmployeeRepository.findAllEmployeeProfileByStatusAndOwnerIn(status , storeUserInfoRepository.findAllStoreIdByUserAndStatus(superAdminId , Status.ACTIVE)));
     }
 
     @Override

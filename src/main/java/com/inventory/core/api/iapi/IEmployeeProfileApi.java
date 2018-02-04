@@ -14,9 +14,13 @@ public interface IEmployeeProfileApi {
 
     EmployeeProfileDTO show(long employeeProfileId, Status status, long ownerId);
 
+    EmployeeProfileDTO showForSuperAdmin(long employeeProfileId, Status status, long superAdminId);
+
     EmployeeProfileDTO update(EmployeeProfileDTO employeeProfileDTO);
 
     List<EmployeeProfileDTO> list(Status status, long ownerId);
+
+    List<EmployeeProfileDTO> listForSuperAdmin(Status status, long superAdminId);
 
     EmployeeProfileDTO getByStatusAndUser(Status status , long userId);
 }
