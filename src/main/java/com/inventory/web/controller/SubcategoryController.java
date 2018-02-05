@@ -123,7 +123,7 @@ public class SubcategoryController {
             }
         /*current user checking end*/
 
-            modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
 
         } catch (Exception e) {
 

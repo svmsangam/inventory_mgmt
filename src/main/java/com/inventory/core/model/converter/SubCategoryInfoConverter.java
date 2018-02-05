@@ -2,8 +2,10 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.entity.SubCategoryInfo;
+import com.inventory.core.model.enumconstant.CategoryType;
 import com.inventory.core.model.repository.CategoryInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.SubCategoryInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -27,10 +29,7 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
     private UserRepository userRepository;
 
     @Autowired
-    private CategoryInfoConverter categoryInfoConverter;
-
-    @Autowired
-    private CategoryInfoRepository categoryInfoRepository;
+    private SubCategoryInfoRepository subCategoryInfoRepository;
 
     @Override
     public SubCategoryInfo convertToEntity(SubCategoryInfoDTO dto) {
@@ -46,8 +45,6 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
         SubCategoryInfoDTO dto = new SubCategoryInfoDTO();
 
         dto.setSubCategoryId(entity.getId());
-        dto.setCategoryId(entity.getCategoryInfo().getId());
-        dto.setCategoryInfoDto(categoryInfoConverter.convertToDto(entity.getCategoryInfo()));
         dto.setCode(entity.getCode());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
@@ -69,7 +66,16 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
         entity.setCode(dto.getCode().trim());
         entity.setName(dto.getName().trim());
         entity.setDescription(dto.getDescription().trim());
-        entity.setCategoryInfo(categoryInfoRepository.findById(dto.getCategoryId()));
+        if (dto.getCategoryId() != null){
+
+            entity.setParent(subCategoryInfoRepository.findById(dto.getCategoryId()));
+            entity.setType(CategoryType.Child);
+
+        }else {
+
+            entity.setType(CategoryType.Parent);
+        }
+
         entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
         entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
 

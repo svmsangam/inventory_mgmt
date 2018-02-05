@@ -38,7 +38,7 @@ public interface ItemInfoRepository extends JpaRepository<ItemInfo, Long>, JpaSp
     @Query("select i from ItemInfo i where i.status = ?1 and i.productInfo.storeInfo.id = ?2 and i.productInfo.id = ?3 order by i.id desc ")
     List<ItemInfo> findAllByStatusAndStoreInfoAndProductInfo(Status status, long storeInfoId, long productInfoId);
 
-    @Query("select i from ItemInfo i where (i.status = ?2 and i.productInfo.storeInfo.id = ?3 and i.inStock > 0) and (i.tagInfo.name like concat('%' , ?1) or i.tagInfo.code like concat('%' , ?1) or i.productInfo.name like concat('%' , ?1) or i.productInfo.code like concat('%' , ?1) or i.productInfo.subCategoryInfo.name like concat('%' , ?1) or i.productInfo.subCategoryInfo.code like concat('%' , ?1) or i.productInfo.subCategoryInfo.categoryInfo.name like concat('%' , ?1) or i.productInfo.subCategoryInfo.categoryInfo.code like concat('%' , ?1)) ")
+    @Query("select i from ItemInfo i where (i.status = ?2 and i.productInfo.storeInfo.id = ?3 and i.inStock > 0) and (i.tagInfo.name like concat('%' , ?1) or i.tagInfo.code like concat('%' , ?1) or i.productInfo.name like concat('%' , ?1) or i.productInfo.code like concat('%' , ?1) or i.productInfo.subCategoryInfo.name like concat('%' , ?1) or i.productInfo.subCategoryInfo.code like concat('%' , ?1)) ")
     List<ItemInfo> search(String query, Status status, long storeInfoId, Pageable pageable);// to limit the result pageable used
 
     @Query("select (i.costPrice * i.quantity) from ItemInfo i where i.productInfo.id = ?1 and i.productInfo.status = 0")

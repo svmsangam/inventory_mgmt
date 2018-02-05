@@ -89,9 +89,9 @@ public class SubCategoryInfoValidation extends GlobalValidation {
 
         error.setCategoryId(checkLong(subCategoryInfoDTO.getCategoryId(), 1, "categoryId", true));
 
-        if (!("".equals(error.getCode()))) {
+        if (!("".equals(error.getCategoryId()))) {
             valid = false;
-        } else if (categoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
+        } else if (subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
             valid = false;
             error.setCategoryId("invalid category");
         }

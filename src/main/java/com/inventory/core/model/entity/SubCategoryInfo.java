@@ -1,21 +1,15 @@
 package com.inventory.core.model.entity;
 
+import com.inventory.core.model.enumconstant.CategoryType;
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
 @Table(name = "subcategory_table")
 public class SubCategoryInfo extends AbstractEntity<Long> {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 5073587115963440263L;
 
     private String name;
 
@@ -31,8 +25,37 @@ public class SubCategoryInfo extends AbstractEntity<Long> {
 
     private Status status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private CategoryInfo categoryInfo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SubCategoryInfo parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    private List<SubCategoryInfo> childList;
+
+    private CategoryType type;
+
+    public List<SubCategoryInfo> getChildList() {
+        return childList;
+    }
+
+    public void setChildList(List<SubCategoryInfo> childList) {
+        this.childList = childList;
+    }
+
+    public SubCategoryInfo getParent() {
+        return parent;
+    }
+
+    public void setParent(SubCategoryInfo parent) {
+        this.parent = parent;
+    }
+
+    public CategoryType getType() {
+        return type;
+    }
+
+    public void setType(CategoryType type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -72,14 +95,6 @@ public class SubCategoryInfo extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public CategoryInfo getCategoryInfo() {
-        return categoryInfo;
-    }
-
-    public void setCategoryInfo(CategoryInfo categoryInfo) {
-        this.categoryInfo = categoryInfo;
     }
 
     public User getCreatedBy() {
