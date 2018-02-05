@@ -120,6 +120,7 @@ dependencies {
     compile group: 'com.github.darrachequesne', name: 'spring-data-jpa-datatables', version: '4.3'*/
 
 
+
     compile ('ar.com.fdvs:DynamicJasper:5+'){
         exclude group: 'org.springframework'
         exclude group: 'commons-beanutils'

@@ -83,6 +83,7 @@
 
     $(document).ready(function () {
 
+        $(".item").select2();
 // for dynamically add or remove row
         $("#add_row").click(function () {
             //alert(count);

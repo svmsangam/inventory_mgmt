@@ -43,6 +43,14 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
+
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
         <p class="login-box-msg">Sign in to start your session</p>
         <c:if test="${error ne null}">
             <label class="has-error form-error" style="color: #dd4b39;">${error}</label>

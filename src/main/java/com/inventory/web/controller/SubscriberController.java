@@ -259,7 +259,7 @@ public class SubscriberController {
 
         redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered");
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 }

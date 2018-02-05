@@ -73,7 +73,7 @@ public class SubscriberApi implements ISubscriberApi {
         ServiceInfo serviceInfo = serviceRepository.findByTitle("demo");
 
         if (serviceInfo != null) {
-            subscriberServiceApi.save(subscriberDTO.getServiceId(), serviceInfo.getId());
+            subscriberServiceApi.save(serviceInfo.getId() , subscriber.getId());
         }
 
         return subscriberConverter.convertToDto(subscriber);
