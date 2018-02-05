@@ -17,9 +17,6 @@ public class StateInfo extends AbstractEntity<Long> {
     @Column(nullable = false)
     private Status status;
 
-    @OneToOne
-    private User createdBy;
-
     public String getName() {
         return name;
     }
@@ -42,14 +39,6 @@ public class StateInfo extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
     }
 
 }
