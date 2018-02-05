@@ -17,8 +17,7 @@
                 <p class="form-error">${orderError.clientInfo}</p>
             </div>
         </div>
-        <div class="col-md-4">&nbsp;</div>
-        <div class="col-md-4">
+        <div class="col-md-4 pull-right">
             <div class="form-group">
                 <label>Delivery Date:</label>
                 <div class='input-group date'>
@@ -33,9 +32,9 @@
                 <p class="form-error">${orderError.deliveryDate}</p>
             </div>
         </div>
-        <%--</div>
+    </div>
 
-        <div class="row">--%>
+    <div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <label>Order Date:</label>
@@ -51,8 +50,7 @@
                 <p class="form-error">${orderError.orderDate}</p>
             </div>
         </div>
-        <div class="col-md-4">&nbsp;</div>
-        <div class="col-md-4">
+        <div class="col-md-4 pull-right">
             <div class="form-group">
                 <label>Deliver To:</label>
                 <div class="input-group">
@@ -96,7 +94,7 @@
                             <c:set var="rate" value="0"></c:set>
                             <tr class="border-bottom itemTable">
                                 <td>
-                                    <select class='form-control item' name="orderItemInfoDTOList[${i}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
+                                    <select class='form-control item' name="orderItemInfoDTOList[${i.index}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
                                         <option value="">select item</option>
                                         <c:forEach items="${itemList}" var="item">
                                             <c:choose>
@@ -111,9 +109,9 @@
                                         </c:forEach>
                                     </select>
                                 </td>
-                                <td><input onkeypress="return event.charCode > 47 &amp;&amp; event.charCode < 58;" pattern="[0-9]{5}" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>
-                                <td><input class="form-control form-control-sm" value="${rate}" name="orderItemInfoDTOList[${i}].rate" required="required" readonly="readonly" type="number"></td>
-                                <td><input step="any" onkeypress="return event.charCode > 47 &amp;&amp; event.charCode < 58;" pattern="[0-9]{5}" value="${orderItem.discount}" class="form-control form-control-sm discount" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i}].discount" placeholder="enter discount percent" required="required" type="number"></td>
+                                <td><input onkeypress="return event.charCode > 47 &amp;&amp; event.charCode < 58;" pattern="[0-9]{5}" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>
+                                <td><input class="form-control form-control-sm" value="${rate}" name="orderItemInfoDTOList[${i.index}].rate" required="required" readonly="readonly" type="number"></td>
+                                <td><input step="any" onkeypress="return event.charCode > 47 &amp;&amp; event.charCode < 58;" pattern="[0-9]{5}" value="${orderItem.discount}" class="form-control form-control-sm discount" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].discount" placeholder="enter discount percent" required="required" type="number"></td>
                                 <td class="text-right">Rs.<span>${mydisamount}</span></td>
                                 <td><a href="javascript:void(0);" class="remCF"><i class="glyphicon glyphicon-remove text-danger"></i></a></td>
                             </tr>
@@ -136,15 +134,23 @@
     <div class="col-md-2">
         <div class="form-group">
             <label class="lable">Tax(%) </label>
+            <c:set var="tax" value="13.0"></c:set>
+            <c:choose>
+                <c:when test="${order.tax ne null}">
+                    <c:set var="tax" value="${order.tax}"></c:set>
+                </c:when>
+            </c:choose>
+
             <input type="number" value="${tax}" id="tax" step="any"
                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0 "
                    class="form-control"
                    onkeyup='calculate(amountUpdate);'
                    name="tax" required/>
+
         </div>
         <div class="form-group">
             <label>Total Cost </label>
-            <span>Rs.<strong id="total">0</strong></span>
+            <span>Rs.<strong id="total">${mytotalamount + mytotalamount * tax /100}</strong></span>
         </div>
     </div>
 
