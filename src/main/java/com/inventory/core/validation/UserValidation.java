@@ -6,11 +6,13 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.web.error.PasswordError;
 import com.inventory.web.error.UserError;
 import com.inventory.web.error.UserManageError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -30,11 +32,65 @@ public class UserValidation extends GlobalValidation {
     @Autowired
     private StoreInfoRepository storeInfoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     UserError error = new UserError();
 
     boolean valid = true;
+
+    public PasswordError change(String oldPassword , String newPassword , String confirmPassword , long userId){
+
+        PasswordError error = new PasswordError();
+
+        valid = true;
+
+        if (oldPassword == null | newPassword == null | confirmPassword == null){
+
+            valid = false;
+
+            error.setError("invalid request");
+
+        } else if (oldPassword.trim().equals("") | newPassword.trim().equals("")| confirmPassword.trim().equals("")) {
+
+            valid = false;
+
+            error.setError("invalid request");
+
+        } else if (newPassword.length() < 6 | newPassword.length() > 15){
+
+            valid = false;
+
+            error.setError("password must be between 6 and 15 length");
+
+        }else if (!newPassword.equals(confirmPassword)){
+
+            valid = false;
+
+            error.setError("password did not matched with confirm password");
+
+        }else {
+
+            User user = userRepository.findByIdAndStatus(userId , Status.ACTIVE);
+
+            if (user == null){
+                valid = false;
+
+                error.setError("user not found");
+            } else if (!passwordEncoder.matches(oldPassword , user.getPassword())){
+
+                valid = false;
+
+                error.setError("you current password is incorrect");
+            }
+        }
+
+        error.setValid(valid);
+
+        return error;
+    }
 
     public UserError saveValidation(InvUserDTO userDto, BindingResult result) {
 

@@ -10,9 +10,11 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.UserValidation;
+import com.inventory.web.error.PasswordError;
 import com.inventory.web.error.UserManageError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,60 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    @GetMapping(value = "/changepassword")
+    public String changePassword(RedirectAttributes redirectAttributes) {
+
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/";
+        }
+
+        return "user/changePassword";
+    }
+
+    @PostMapping(value = "/changepassword")
+    public String updatePassword(@RequestParam("oldpassword")String oldPassword , @RequestParam("newpassword")String newPassword , @RequestParam("confirmpassword")String confirmPassword , RedirectAttributes redirectAttributes) {
+
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            PasswordError error = userValidation.change(oldPassword , newPassword , confirmPassword , currentUser.getUserId());
+
+            if (!error.isValid()){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+                return "redirect:/user/changepassword";
+            }
+
+            userApi.changePassword(currentUser.getUserId() , newPassword.trim());
+
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "password changed successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/";
+        }
+
+        return "redirect:/dashboard";
+    }
+
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
@@ -93,7 +149,7 @@ public class UserController {
 
                 modelMap.put(StringConstants.USERTYPE_LIST, userTypeList);
 
-                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeInAndSuperAdmin(Status.ACTIVE, userTypeList , currentUser.getUserId()));
+                modelMap.put(StringConstants.USER_LIST, userApi.getAllByStatusAndUserTypeInAndSuperAdmin(Status.ACTIVE, userTypeList, currentUser.getUserId()));
 
                 modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
 
@@ -244,7 +300,7 @@ public class UserController {
                 }
 
 				/*if (!userDTO.getEnable()){
-					sessionInfo.listSale(userDTO.getInventoryuser());
+                    sessionInfo.listSale(userDTO.getInventoryuser());
 				}*/
 
                 redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user updated successfully");
