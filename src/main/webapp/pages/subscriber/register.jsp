@@ -30,6 +30,11 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/square/blue.css">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <%--select 2--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.min.css">
+
     <style>
         .form-error{
             color: red;
@@ -146,7 +151,7 @@
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">City *</label>
-                                    <select class="form-control" name="cityInfoId" required>
+                                    <select class="form-control selectMe" name="cityInfoId" style="width: 100%;" required>
                                         <option value="0">select city</option>
                                         <c:forEach items="${cityList}" var="city">
                                             <option value="${city.cityId}">${city.cityName}</option>
@@ -164,10 +169,19 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-5 form-group">
+                                <div class="col-md-6 form-group">
                                     <div class="g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeG-kMUAAAAACApsSOmYiulgmDIMHn6aMqaKeUM"></div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="checkbox icheck">
+                                        <label class="">
+                                            <div class="icheckbox_square-blue" style="position: relative;" aria-checked="false" aria-disabled="false"><input style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;" type="checkbox" required><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> I agree to the <a href="#">terms</a>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
                         <div class="box-footer">
@@ -188,6 +202,10 @@
 <script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!--select2 dropdown-->
+<script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
+
 <script>
     $(function () {
         $('input').iCheck({
@@ -219,6 +237,9 @@
     }
     
     $(document).ready(function () {
+
+        $(".selectMe").select2();
+
         $("#registerForm").submit(function(e){
             check_if_capcha_is_filled (e);
         });
