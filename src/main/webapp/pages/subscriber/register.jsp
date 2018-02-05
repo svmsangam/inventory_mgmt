@@ -50,7 +50,7 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
+<div class="login-box" style="margin-top: 0; margin-bottom: 5px;">
     <div class="login-logo">
         <a href="${pageContext.request.contextPath}/"><b>Inventory</b>Management</a>
     </div>
@@ -171,7 +171,8 @@
                         </div>
 
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-registered"></i> &nbsp;Register</button>
+                            <a href="${pageContext.request.contextPath}/login" class="btn btn-default pull-right"><i class="fa fa-sign-in"></i> &nbsp;already have username signin</a>
                         </div>
                     </form>
 
