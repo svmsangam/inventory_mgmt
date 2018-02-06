@@ -240,33 +240,24 @@ public class UserApi implements IUserApi {
 
     @Override
     @Transactional
-    public void verifyUser(String token, HttpServletRequest request){
+    public InvUserDTO verifyUser(String token){
 
         User user = verificationTokenRepository.findUserByToken(token);
 
         if (user != null){
             user.setStatus(Status.ACTIVE);
             userRepository.save(user);
-
-            authenticateUserAndSetSession(user , request);
             verificationTokenRepository.deleteByToken(token);
         }
 
+        InvUserDTO userDTO = userConverter.convertToDto(user);
+
+        userDTO.setUserpassword(user.getPassword());
+
+        return userDTO;
     }
 
-    private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
 
-        String username = user.getUsername();
-        String password = user.getPassword();
-
-        UserDetailsServiceImpl service = new UserDetailsServiceImpl(userRepository);
-
-        UserDetailsWrapper wrapper  = (UserDetailsWrapper) service.loadUserByUsername(username);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(wrapper, password, AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthority()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
 
     /*public void authWithoutPassword(User user){
         List<Privilege> privileges = user.getAuthority().stream()

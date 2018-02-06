@@ -10,6 +10,7 @@ import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,12 +45,19 @@ public class SubscriberServiceConverter implements IListConvertable<SubscriberSe
 
         subscriberService.setSelected(true);
         subscriberService.setServiceInfo(serviceRepository.findById(serviceId));
-        subscriberService.setExpireOn(getExpireDate(subscriberService.getServiceInfo().getExpireDays()));
+        subscriberService.setExpireOn(calculateExpiryDate(subscriberService.getServiceInfo().getExpireDays()));
         subscriberService.setStatus(Status.ACTIVE);
         subscriberService.setSubscriber(subscriberRepository.findById(subscriberId));
 
         return subscriberService;
 
+    }
+
+    private Date calculateExpiryDate(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.DATE, days);
+        return new Date(cal.getTime().getTime());
     }
 
     private Date getExpireDate(int days) throws ParseException {

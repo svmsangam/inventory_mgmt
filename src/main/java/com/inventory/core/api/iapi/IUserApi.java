@@ -49,5 +49,5 @@ public interface IUserApi {
     InvUserDTO getByToken(String token);
 
     @Transactional
-    void verifyUser(String token, HttpServletRequest request);
+    InvUserDTO verifyUser(String token);
 }

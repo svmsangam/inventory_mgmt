@@ -14,6 +14,7 @@ import com.inventory.core.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -158,5 +159,12 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
         Date expireDate = sdf.parse(output);
 
         return expireDate;
+    }
+
+    private Date calculateExpiryDate(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.DATE, days);
+        return new Date(cal.getTime().getTime());
     }
 }

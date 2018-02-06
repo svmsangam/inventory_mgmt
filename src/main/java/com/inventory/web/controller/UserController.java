@@ -9,6 +9,7 @@ import com.inventory.core.model.dto.UserPermissionDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.util.CustomSessionService;
 import com.inventory.core.validation.UserValidation;
 import com.inventory.web.error.PasswordError;
 import com.inventory.web.error.UserManageError;
@@ -49,6 +50,9 @@ public class UserController {
 
     @Autowired
     private IStoreUserInfoApi storeUserInfoApi;
+
+    @Autowired
+    private CustomSessionService sessionService;
 
 	/*@Autowired
     private SessionInfo sessionInfo;*/
@@ -340,8 +344,9 @@ public class UserController {
                 return "redirect:/";
             }
 
-            userApi.verifyUser(token , request);
+            currentUser = userApi.verifyUser(token);
 
+            sessionService.authenticateUserAndSetSession(currentUser , request);
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user activated successfully");
 
         } catch (Exception e) {

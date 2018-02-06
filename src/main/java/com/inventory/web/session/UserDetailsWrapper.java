@@ -13,6 +13,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -136,7 +138,7 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 				return false;
 			}
 
-			Date currentDate = new Date();
+			Date currentDate = calculateExpiryDate();
 
 			if (subscriberServiceDTO.getExpireOn().before(currentDate)) {
 				return false;
@@ -148,6 +150,12 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	private Date calculateExpiryDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Timestamp(cal.getTime().getTime()));
+		return new Date(cal.getTime().getTime());
 	}
 
 }
