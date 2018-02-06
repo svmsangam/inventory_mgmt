@@ -95,7 +95,7 @@ public class HomeController {
         }
 
         if (!currentUser.getUserType().equals(UserType.SYSTEM) & currentUser.getStoreId() == null) {
-            modelMap.put(StringConstants.ERROR , "no store found");
+            modelMap.put(StringConstants.ERROR , "no store found please add store first");
             return "dashboard/index";//store not assigned page
         }
 

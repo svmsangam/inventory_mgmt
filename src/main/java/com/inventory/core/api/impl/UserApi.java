@@ -249,12 +249,13 @@ public class UserApi implements IUserApi {
             userRepository.save(user);
 
             authenticateUserAndSetSession(user , request);
-           // verificationTokenRepository.deleteByToken(token);
+            verificationTokenRepository.deleteByToken(token);
         }
 
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
+
         String username = user.getUsername();
         String password = user.getPassword();
 

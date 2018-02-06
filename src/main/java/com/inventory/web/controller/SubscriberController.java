@@ -255,7 +255,7 @@ public class SubscriberController {
 
                 String token = subscriberApi.register(subscriberDTO);
 
-                mailApi.sendHtmlMail(StringConstants.VerificationMainSender , "dhirajbadu50@gmail.com", getVerificationMsg(token , request.getServerName()) , "email verification request");
+                mailApi.sendHtmlMail(StringConstants.VerificationMainSender , subscriberDTO.getEmail(), getVerificationMsg(token , request.getServerName()) , "email verification request");
             }
         } catch (ParseException e) {
             e.printStackTrace();
