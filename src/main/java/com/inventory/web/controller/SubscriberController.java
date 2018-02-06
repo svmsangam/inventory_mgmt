@@ -56,6 +56,9 @@ public class SubscriberController {
     @Autowired
     private SubscriberValidation subscriberValidation;
 
+    @Autowired
+    private ISendMailSSL mailApi;
+
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -215,6 +218,14 @@ public class SubscriberController {
 
         try {
 
+            if (recaptchaResponse == null){
+                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+                modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
+                modelMap.put(StringConstants.ERROR , "please verify captcha");
+
+                return "subscriber/register";
+            }
+
             synchronized (this) {
 
                 SubscriberError error = subscriberValidation.onRegister(subscriberDTO);
@@ -227,15 +238,6 @@ public class SubscriberController {
 
                     return "subscriber/register";
 
-                }
-
-                if (recaptchaResponse == null){
-                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                    modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
-                    modelMap.put(StringConstants.SUBSCRIBER_ERROR , error);
-                    modelMap.put(StringConstants.ERROR , "please verify captcha");
-
-                    return "subscriber/register";
                 }
 
                 String ip = request.getRemoteAddr();
@@ -251,15 +253,34 @@ public class SubscriberController {
                 }
 
 
-                subscriberApi.register(subscriberDTO);
+                String token = subscriberApi.register(subscriberDTO);
+
+                mailApi.sendHtmlMail(StringConstants.VerificationMainSender , "dhirajbadu50@gmail.com", getVerificationMsg(token , request.getServerName()) , "email verification request");
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered");
+        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered please check your email to activate account");
 
         return "redirect:/login";
+    }
+
+    private String getVerificationMsg(String token , String contextPath){
+
+        String msg = "";
+
+        String url = "";
+
+        if (contextPath.equals("localhost")){
+            url = StringConstants.Local_url + "/user/activate?token=" + token;
+        }else {
+            url = StringConstants.Server_url + "/user/activate?token=" + token;;
+        }
+
+        msg = "to activate your account <a href='" + url + "' style='border-color: #367fa9; border-radius: 3px;'>click here</a>";
+
+        return msg;
     }
 
 }

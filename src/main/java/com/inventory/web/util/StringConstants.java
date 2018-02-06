@@ -2,6 +2,10 @@ package com.inventory.web.util;
 
 public class StringConstants {
 
+    public static final String VerificationMainSender = "dhirajbadu50@gmail.com";
+    public static final String Server_url = "http://139.59.30.219:8080";
+    public static final String Local_url = "http://localhost:8080";
+
     public static String PAGE_LAST = "lastpage";
     public static String PAGE_CURRENT = "currentpage";
     public static String PAGE_LIST = "pagelist";

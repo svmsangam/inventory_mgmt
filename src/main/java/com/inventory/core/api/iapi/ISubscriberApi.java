@@ -13,7 +13,7 @@ public interface ISubscriberApi {
 
     SubscriberDTO save(SubscriberDTO subscriberDTO) throws ParseException;
 
-    SubscriberDTO register(SubscriberDTO subscriberDTO) throws ParseException;
+    String register(SubscriberDTO subscriberDTO) throws ParseException;
 
     SubscriberDTO show(Status status , long subscribId);
 

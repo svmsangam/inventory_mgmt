@@ -62,9 +62,9 @@ public class SubscriberApi implements ISubscriberApi {
 
     @Override
     @Transactional
-    public SubscriberDTO register(SubscriberDTO subscriberDTO) throws ParseException {
+    public String register(SubscriberDTO subscriberDTO) throws ParseException {
 
-        subscriberDTO.setUserId(userApi.save(subscriberDTO.getUsername() , subscriberDTO.getPassword()));
+        subscriberDTO.setUserId(userApi.save(subscriberDTO.getEmail().trim().toLowerCase() , subscriberDTO.getPassword()));
 
         Subscriber subscriber = subscriberConverter.convertToEntity(subscriberDTO);
 
@@ -76,7 +76,7 @@ public class SubscriberApi implements ISubscriberApi {
             subscriberServiceApi.save(serviceInfo.getId() , subscriber.getId());
         }
 
-        return subscriberConverter.convertToDto(subscriber);
+        return userApi.saveVerificationToken(subscriberDTO.getUserId());
     }
 
     @Override

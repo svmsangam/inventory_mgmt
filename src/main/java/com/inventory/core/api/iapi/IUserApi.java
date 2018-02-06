@@ -42,4 +42,9 @@ public interface IUserApi {
 
     List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId);
 
+    String saveVerificationToken(long userId);
+
+    InvUserDTO getByToken(String token);
+
+    void verifyUser(String token);
 }

@@ -5,13 +5,11 @@ import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.entity.UserPermission;
+import com.inventory.core.model.entity.VerificationToken;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
-import com.inventory.core.model.repository.StoreInfoRepository;
-import com.inventory.core.model.repository.StoreUserInfoRepository;
-import com.inventory.core.model.repository.UserPermissionRepository;
-import com.inventory.core.model.repository.UserRepository;
+import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -46,13 +45,16 @@ public class UserApi implements IUserApi {
     @Autowired
     private StoreUserInfoRepository storeUserInfoRepository;
 
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
     @Override
     public long save(String username , String password){
 
         User entity = new User();
 
         entity.setUsername(username.trim().toLowerCase());
-        entity.setStatus(Status.ACTIVE);
+        entity.setStatus(Status.INACTIVE);
         entity.setUserType(UserType.SUPERADMIN);
         entity.setEnabled(true);
         entity.setAuthority(Authorities.SUPERADMIN + "," + Authorities.AUTHENTICATED);
@@ -195,6 +197,45 @@ public class UserApi implements IUserApi {
     @Override
     public List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId) {
         return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndStoreInfo(status, userTypeList, storeInfoId));
+    }
+
+    @Override
+    public String saveVerificationToken(long userId){
+
+        User user = userRepository.findById(userId);
+
+        VerificationToken verificationToken = new VerificationToken();
+
+        String token = UUID.randomUUID().toString();
+
+        verificationToken.setToken(token);
+        verificationToken.setUser(user);
+
+        verificationTokenRepository.save(verificationToken);
+
+        return token;
+
+    }
+
+    @Override
+    public InvUserDTO getByToken(String token){
+
+        return userConverter.convertToDto(verificationTokenRepository.findUserByToken(token));
+    }
+
+    @Override
+    @Transactional
+    public void verifyUser(String token){
+
+        User user = verificationTokenRepository.findUserByToken(token);
+
+        if (user != null){
+            user.setStatus(Status.ACTIVE);
+            userRepository.save(user);
+
+            verificationTokenRepository.deleteByToken(token);
+        }
+
     }
 
 }

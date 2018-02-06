@@ -59,12 +59,15 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 
 	@Override
 	public boolean isAccountNonExpired() {
-        return !user.getStatus().equals(Status.DELETED);
+
+		return checkAccount(user.getUsername());
+
     }
  
 	@Override
 	public boolean isAccountNonLocked() {
-        return checkAccount(user.getUsername());
+
+		return user.getStatus().equals(Status.ACTIVE);
         // return !user.isDisabled();
 	}
 

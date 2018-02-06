@@ -36,7 +36,7 @@ public class SubscriberValidation extends GlobalValidation{
 
         boolean valid = true;
 
-        valid = valid && checkUserName(subscriberDTO.getUsername());
+        //valid = valid && checkUserName(subscriberDTO.getUsername());
         valid = valid && checkPassword(subscriberDTO.getPassword() , subscriberDTO.getRepassword());
         valid = valid && checkCity(subscriberDTO.getCityInfoId());
         valid = valid && checkContact(subscriberDTO.getContact());
@@ -143,6 +143,13 @@ public class SubscriberValidation extends GlobalValidation{
         try {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
+
+            if (userRepository.findByUsername(email) != null){
+                error.setUsername("email already in use");
+
+                return false;
+            }
+
         } catch (AddressException ex) {
 
             error.setEmail("invalid email");

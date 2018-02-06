@@ -94,10 +94,10 @@
                             <div class="row">
 
                                 <div class="col-md-4 form-group">
-                                    <label class="control-label">User Name *</label>
-                                    <input type="text" class="form-control" value="${subscriber.username}" name="username" placeholder="username"
+                                    <label class="control-label">Email *</label>
+                                    <input type="email"  value="${subscriber.email}" class="form-control" name="email" placeholder="email"
                                            required="required"/>
-                                    <p class="form-error">${subscriberError.username}</p>
+                                    <p class="form-error">${subscriberError.email}</p>
                                 </div>
 
                                 <div class="col-md-4 form-group">
@@ -142,12 +142,6 @@
 
                             <div class="row">
 
-                                <div class="col-md-4 form-group">
-                                    <label class="control-label">Email *</label>
-                                    <input type="email"  value="${subscriber.email}" class="form-control" name="email" placeholder="email"
-                                           required="required"/>
-                                    <p class="form-error">${subscriberError.email}</p>
-                                </div>
 
                                 <div class="col-md-4 form-group">
                                     <label class="control-label">City *</label>
@@ -166,13 +160,13 @@
                                     <p class="form-error">${subscriberError.street}</p>
                                 </div>
 
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-4 form-group">
                                     <div class="g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeG-kMUAAAAACApsSOmYiulgmDIMHn6aMqaKeUM"></div>
                                 </div>
 
+                            </div>
+
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="checkbox icheck">
                                         <label class="">
