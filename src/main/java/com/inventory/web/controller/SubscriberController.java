@@ -256,12 +256,14 @@ public class SubscriberController {
                 String token = subscriberApi.register(subscriberDTO);
 
                 mailApi.sendHtmlMail(StringConstants.VerificationMainSender , subscriberDTO.getEmail(), getVerificationMsg(token , request.getServerName()) , "email verification request");
+
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered please check your email to activate account");
+
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered please check your email to activate account");
 
         return "redirect:/login";
     }

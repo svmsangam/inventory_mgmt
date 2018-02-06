@@ -20,7 +20,4 @@ public interface INotificationApi {
 
     List<NotificationDTO> findAllByStatusAndTo_Id(Status status , long toUserId , int page , int size);
 
-    void send(NotificationDTO notificationDTO, String receiverKey);
-
-    void send(String notification, long storeInfoId);
 }

@@ -1,6 +1,8 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.ISendMailSSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -13,6 +15,8 @@ import java.util.Properties;
  */
 @Service
 public class SendMailSSL implements ISendMailSSL {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Properties getProperty() {
 
@@ -62,6 +66,8 @@ public class SendMailSSL implements ISendMailSSL {
         } catch (AddressException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
+
+            logger.error("error on mail send : " + e.getMessage());
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -115,12 +121,16 @@ public class SendMailSSL implements ISendMailSSL {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
 
+            logger.error("error on address exception mail send : " + e.getMessage());
+
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
+            logger.error("error on MessagingException mail send : " + e.getMessage());
 
         } finally {
-            System.out.println("Email sent!");
+            System.out.println("Email sent! to : " + to + " : by : " + from);
+            logger.info("Email sent! to : " + to + " : by : " + from);
         }
     }
 }

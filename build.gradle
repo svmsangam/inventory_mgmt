@@ -66,11 +66,11 @@ dependencies {
     // https://mvnrepository.com/artifact/tomcat/tomcat-juli
     compile group: 'tomcat', name: 'tomcat-juli', version: '5.5.23'
 
-
+/*
 // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.0.33'
 
-    // https://mvnrepository.com/artifact/org.olap4j/olap4j
+  */  // https://mvnrepository.com/artifact/org.olap4j/olap4j
     compile group: 'org.olap4j', name: 'olap4j', version: '1.2.0'
 
 
@@ -103,19 +103,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
 
     compile 'com.google.firebase:firebase-admin:5.6.0'*/
-
-    // https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api
-    compile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
-
-// https://mvnrepository.com/artifact/javax.websocket/javax.websocket-client-api
-    compile group: 'javax.websocket', name: 'javax.websocket-client-api', version: '1.1'
-
-    // https://mvnrepository.com/artifact/org.springframework/spring-websocket
-    compile group: 'org.springframework', name: 'spring-websocket', version: '4.3.5.RELEASE'
-
-    // https://mvnrepository.com/artifact/org.springframework/spring-messaging
-    compile group: 'org.springframework', name: 'spring-messaging', version: '4.3.5.RELEASE'
-
+    
   /*  // https://mvnrepository.com/artifact/com.github.darrachequesne/spring-data-jpa-datatables
     compile group: 'com.github.darrachequesne', name: 'spring-data-jpa-datatables', version: '4.3'*/
 

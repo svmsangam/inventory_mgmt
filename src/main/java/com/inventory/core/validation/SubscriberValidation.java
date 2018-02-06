@@ -145,7 +145,7 @@ public class SubscriberValidation extends GlobalValidation{
             emailAddr.validate();
 
             if (userRepository.findByUsername(email) != null){
-                error.setUsername("email already in use");
+                error.setEmail("email already in use");
 
                 return false;
             }

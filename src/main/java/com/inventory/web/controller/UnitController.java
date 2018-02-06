@@ -176,8 +176,6 @@ public class UnitController {
                 }
 
                 unitInfoApi.save(unitInfoDTO);
-
-                notificationApi.send(unitInfoDTO.getName() + " created" , currentUser.getStoreId());
             }
 
         } catch (Exception e) {

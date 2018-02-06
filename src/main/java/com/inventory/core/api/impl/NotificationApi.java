@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +33,6 @@ public class NotificationApi implements INotificationApi{
     @Autowired
     private StoreUserInfoRepository storeUserInfoRepository;
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     public NotificationDTO saveAndSendForSuperAdmin(String title, String body, String url , long storeInfoId) {
@@ -93,19 +90,5 @@ public class NotificationApi implements INotificationApi{
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));
-    }
-
-
-
-    @Override
-    public void send(NotificationDTO notificationDTO, String receiverKey) {
-        messagingTemplate.convertAndSend("/topic/notification/" + receiverKey, notificationDTO);
-    }
-
-    @Override
-    public void send(String notification, long storeInfoId) {
-        User superAdmin = storeUserInfoRepository.findSuperAdminByStoreInfo(storeInfoId);
-
-        messagingTemplate.convertAndSend("/topic/notification/" + superAdmin.getUsername(), notification);
     }
 }
