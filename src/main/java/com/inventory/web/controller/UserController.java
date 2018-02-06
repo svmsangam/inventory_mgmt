@@ -24,6 +24,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,7 +87,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/changepassword")
-    public String updatePassword(@RequestParam("oldpassword")String oldPassword , @RequestParam("newpassword")String newPassword , @RequestParam("confirmpassword")String confirmPassword , RedirectAttributes redirectAttributes) {
+    public String updatePassword(@RequestParam("oldpassword") String oldPassword, @RequestParam("newpassword") String newPassword, @RequestParam("confirmpassword") String confirmPassword, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -97,14 +98,14 @@ public class UserController {
                 return "redirect:/logout";
             }
 
-            PasswordError error = userValidation.change(oldPassword , newPassword , confirmPassword , currentUser.getUserId());
+            PasswordError error = userValidation.change(oldPassword, newPassword, confirmPassword, currentUser.getUserId());
 
-            if (!error.isValid()){
+            if (!error.isValid()) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
                 return "redirect:/user/changepassword";
             }
 
-            userApi.changePassword(currentUser.getUserId() , newPassword.trim());
+            userApi.changePassword(currentUser.getUserId(), newPassword.trim());
 
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "password changed successfully");
 
@@ -316,5 +317,38 @@ public class UserController {
             logger.error("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
+    }
+
+    @GetMapping(value = "/activate")
+    public String updateEnable(@RequestParam("token") String token, ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request) {
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser != null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/";
+            }
+
+            if (token == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
+                return "redirect:/";
+            }
+
+            if (userApi.getByToken(token) == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid token");
+                return "redirect:/";
+            }
+
+            userApi.verifyUser(token , request);
+
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user activated successfully");
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            return "redirect:/500";
+        }
+
+        return "redirect:/";
     }
 }

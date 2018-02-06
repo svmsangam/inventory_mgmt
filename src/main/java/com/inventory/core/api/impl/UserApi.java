@@ -11,14 +11,26 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
+import com.inventory.web.session.UserDetailsServiceImpl;
+import com.inventory.web.session.UserDetailsWrapper;
+import netscape.security.Privilege;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +59,9 @@ public class UserApi implements IUserApi {
 
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Override
     public long save(String username , String password){
@@ -225,7 +240,7 @@ public class UserApi implements IUserApi {
 
     @Override
     @Transactional
-    public void verifyUser(String token){
+    public void verifyUser(String token, HttpServletRequest request){
 
         User user = verificationTokenRepository.findUserByToken(token);
 
@@ -233,9 +248,36 @@ public class UserApi implements IUserApi {
             user.setStatus(Status.ACTIVE);
             userRepository.save(user);
 
-            verificationTokenRepository.deleteByToken(token);
+            authenticateUserAndSetSession(user , request);
+           // verificationTokenRepository.deleteByToken(token);
         }
 
     }
+
+    private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        UserDetailsServiceImpl service = new UserDetailsServiceImpl(userRepository);
+
+        UserDetailsWrapper wrapper  = (UserDetailsWrapper) service.loadUserByUsername(username);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(wrapper, password, AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthority()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    /*public void authWithoutPassword(User user){
+        List<Privilege> privileges = user.getAuthority().stream()
+                .map(role -> role.getPrivileges())
+                .flatMap(list -> list.stream())
+                .distinct().collect(Collectors.toList());
+        List<GrantedAuthority> authorities = privileges.stream()
+                .map(p -> new SimpleGrantedAuthority(p.getName()))
+                .collect(Collectors.toList());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }*/
 
 }

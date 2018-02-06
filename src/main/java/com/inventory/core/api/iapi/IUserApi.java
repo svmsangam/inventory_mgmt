@@ -5,7 +5,9 @@ import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import org.json.JSONException;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,5 +48,6 @@ public interface IUserApi {
 
     InvUserDTO getByToken(String token);
 
-    void verifyUser(String token);
+    @Transactional
+    void verifyUser(String token, HttpServletRequest request);
 }
