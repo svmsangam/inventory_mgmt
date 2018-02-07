@@ -20,7 +20,6 @@ import java.util.List;
 @Repository
 public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long> , JpaSpecificationExecutor<InvoiceInfo>{
 
-    @Lock(LockModeType.OPTIMISTIC)
     InvoiceInfo findById(long invoiceId);
 
     @Query("select i from InvoiceInfo i where i.id = ?1 and i.status = ?2 and i.storeInfo.id = ?3")
