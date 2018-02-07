@@ -20,9 +20,19 @@ public class SubscriberServiceDTO {
 
     private boolean selected;
 
+    private boolean expired;
+
     private Date expireOn;
 
     private Status status;
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
 
     public long getSubscriberServiceId() {
         return subscriberServiceId;

@@ -7,6 +7,7 @@ import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

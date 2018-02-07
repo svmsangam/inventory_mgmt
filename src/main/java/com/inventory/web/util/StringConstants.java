@@ -102,6 +102,7 @@ public class StringConstants {
     public static String CUSTOMER_LIST = "customerList";
     public static String CUSTOMER = "customer";
     public static String CUSTOMER_ERROR = "customerError";
+    public static String CURRENT_DATE = "currentDate";
 
     public static String VENDOR_LIST = "vendorList";
     public static String VENDOR = "vendor";

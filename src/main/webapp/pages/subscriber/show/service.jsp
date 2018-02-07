@@ -7,6 +7,7 @@
 --%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="row">
     <div class="col-md-12">
@@ -18,6 +19,7 @@
                 <th>Total Store</th>
                 <th>Validity</th>
                 <th>Rate</th>
+                <th>Expire Date</th>
                 <th>Selected</th>
                 <th>Status</th>
             </tr>
@@ -30,12 +32,13 @@
                     <td>${subscriberService.serviceInfo.totalStore}</td>
                     <td>${subscriberService.serviceInfo.expireDays} days</td>
                     <td>${subscriberService.serviceInfo.rate}</td>
+                    <td><fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${subscriberService.expireOn}"/></td>
                     <td>
                         <c:if test="${subscriberService.selected eq true}"><i class="fa fa-check-square"></i></c:if>
                     </td>
                     <td>
-                        <c:if test="${subscriberService.status eq 'ACTIVE'}"><span class="label label-success">Active</span></c:if>
-                        <c:if test="${subscriberService.status ne 'ACTIVE'}"><span class="label label-danger">Deactive</span></c:if>
+                        <c:if test="${subscriberService.expired eq false}"><span class="label label-success">Active</span></c:if>
+                        <c:if test="${subscriberService.expired eq true}"><span class="label label-danger">Expired</span></c:if>
                     </td>
                 </tr>
             </c:forEach>
