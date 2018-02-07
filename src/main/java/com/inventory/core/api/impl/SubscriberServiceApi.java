@@ -47,7 +47,7 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
     private ServiceConverter serviceConverter;
 
     @Override
-    public void save(long serviceId , long subscriberId) throws ParseException {
+    public SubscriberServiceDTO save(long serviceId , long subscriberId) throws ParseException {
 
         SubscriberService subscriberService = subscriberServiceConverter.convertToEntity(serviceId , subscriberId);
 
@@ -58,7 +58,7 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
             subscriberServiceRepository.save(selected);
         }
 
-        subscriberServiceRepository.save(subscriberService);
+        return subscriberServiceConverter.convertToDto(subscriberServiceRepository.save(subscriberService));
     }
 
     @Override

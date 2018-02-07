@@ -4,11 +4,13 @@ import com.inventory.core.api.iapi.*;
 import com.inventory.core.api.impl.RecaptchaService;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
+import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.entity.Subscriber;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.SubscriberValidation;
+import com.inventory.web.error.RenewError;
 import com.inventory.web.error.SubscriberError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.StringConstants;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,6 +196,7 @@ public class SubscriberController {
             modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
             modelMap.put(StringConstants.USER_LIST, storeUserInfoApi.getAllUserBySuperAdmin(subscriberDTO.getUserId()));
             modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST , subscriberServiceApi.list(Status.ACTIVE , subscriberId));
+            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
 
         } catch (Exception e) {
 
@@ -205,7 +209,7 @@ public class SubscriberController {
     }
 
     @GetMapping(value = "/service/renew")
-    public String renew(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String renew(@RequestParam("subscriberId") long subscriberId, @RequestParam("serviceId") long serviceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -225,6 +229,8 @@ public class SubscriberController {
 
         /*current user checking end*/
 
+        synchronized (this) {
+
             SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
             if (subscriberDTO == null) {
@@ -233,9 +239,21 @@ public class SubscriberController {
                 return "redirect:/subscriber/list";
             }
 
-            modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
-            modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
-            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
+            RenewError error = subscriberValidation.onRenew(subscriberDTO.getUserId() , serviceId);
+
+            if (!error.isValid()){
+
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+
+                return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+            }
+
+            SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.save(serviceId , subscriberId);
+
+            mailApi.sendHtmlMail(StringConstants.VerificationMainSender , subscriberDTO.getEmail() , getRenewMsg(subscriberServiceDTO.getServiceInfo().getTitle() ,  subscriberServiceDTO.getExpireOn() , subscriberDTO.getFullName() , subscriberServiceDTO.getServiceInfo().getTotalStore()) , "account renew");
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully renewed");
+
+        }
 
         } catch (Exception e) {
 
@@ -244,7 +262,16 @@ public class SubscriberController {
             return "redirect:/500";
         }
 
-        return "subscriber/renew";
+        return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+    }
+
+    private String getRenewMsg(String serviceName , Date expireOn, String subscribername , int totalStore){
+
+        String msg = "";
+
+        msg = "dear " + subscribername + " " + serviceName + " service is successfull renewed and will be expire on " + expireOn + " now your are able to manage " + totalStore + " stores thank you";
+
+        return msg;
     }
 
     @GetMapping(value = "/register")

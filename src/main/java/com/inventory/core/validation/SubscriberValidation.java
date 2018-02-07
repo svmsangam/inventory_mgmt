@@ -1,9 +1,13 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.SubscriberDTO;
+import com.inventory.core.model.entity.ServiceInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CityInfoRepository;
+import com.inventory.core.model.repository.ServiceRepository;
+import com.inventory.core.model.repository.StoreUserInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.web.error.RenewError;
 import com.inventory.web.error.SubscriberError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +33,15 @@ public class SubscriberValidation extends GlobalValidation{
     @Autowired
     private CityInfoRepository cityInfoRepository;
 
+    @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
+
     private SubscriberError error;
+
+    private RenewError renewError ;
 
     public SubscriberError onRegister(SubscriberDTO subscriberDTO){
 
@@ -47,6 +60,45 @@ public class SubscriberValidation extends GlobalValidation{
         error.setValid(valid);
 
         return error;
+    }
+
+    public RenewError onRenew(long subscriberUserId , long serviceId){
+
+        renewError = new RenewError();
+
+        boolean valid = true;
+
+
+        valid = valid && checkService(serviceId , subscriberUserId);
+
+        renewError.setValid(valid);
+
+        return renewError;
+    }
+
+    private boolean checkService(long serviceId , long subscriberUserId){
+
+        renewError.setError(checkLong(serviceId , 1 , "service" , true));
+
+        if (!"".equals(renewError.getError())){
+            return false;
+        }
+
+        ServiceInfo serviceInfo = serviceRepository.findByIdAndStatus(serviceId , Status.ACTIVE);
+
+        if ( serviceInfo == null){
+            renewError.setError("invalid service");
+            return false;
+        }
+
+        long countStore = storeUserInfoRepository.countAllByUserAndStatus(subscriberUserId , Status.ACTIVE);
+
+        if (serviceInfo.getTotalStore() < countStore){
+            renewError.setError("to use " + serviceInfo.getTitle() + " service the subscriber must have store less than " + serviceInfo.getTotalStore());
+            return false;
+        }
+
+        return true;
     }
 
     private boolean checkUserName(String username){

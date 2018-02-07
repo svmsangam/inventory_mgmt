@@ -93,10 +93,10 @@
                     <div class="box-header">
                         <h3 class="box-title">Subscriber Service Renew</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriber=${subscriber.subscriberId}"
+                           <%-- <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriber=${subscriber.subscriberId}"
                                class="btn btn-success btn-sm btn-flat pull-right">
                                 <span class="glyphicon glyphicon-stats"></span> &nbsp;Renew
-                            </a>
+                            </a>--%>
                         </div>
                     </div>
                     <!-- /.box-header -->

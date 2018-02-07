@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface ISubscriberServiceApi {
 
-    void save(long serviceId , long subscriberId) throws ParseException;
+    SubscriberServiceDTO save(long serviceId , long subscriberId) throws ParseException;
 
     SubscriberServiceDTO getSelected(long subscriberId);
 

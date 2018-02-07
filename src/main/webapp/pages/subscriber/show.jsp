@@ -92,9 +92,9 @@
                     <div class="box-header">
                         <h3 class="box-title">Subscriber Details</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriberId=${subscriber.subscriberId}" class="btn btn-success btn-sm btn-flat pull-right">
+                           <%-- <a href="" class="btn btn-success btn-sm btn-flat pull-right">
                                 <span class="glyphicon glyphicon-stats"></span> &nbsp;Renew
-                            </a>
+                            </a>--%>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -133,6 +133,29 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <form action="${pageContext.request.contextPath}/subscriber/service/renew" method="get">
+
+                                <input type="hidden" name="subscriberId" value="${subscriber.subscriberId}">
+                                <div class="box-body">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Service *</label>
+                                        <select class="form-control" name="serviceId" required>
+                                            <option value="0">select service</option>
+                                            <c:forEach items="${serviceList}" var="serviceInfo">
+                                                <option value="${serviceInfo.serviceId}">${serviceInfo.title}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <p class="form-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-stats"></span>&nbsp;Renew</button>
+                                </div>
+                            </form>
                         </div>
 
                     </div>

@@ -22,6 +22,7 @@
                 <th>Expire Date</th>
                 <th>Current</th>
                 <th>Status</th>
+                <th>Renew</th>
             </tr>
             </thead>
             <tbody>
@@ -40,6 +41,7 @@
                         <c:if test="${subscriberService.expired eq false}"><span class="label label-success">Active</span></c:if>
                         <c:if test="${subscriberService.expired eq true}"><span class="label label-danger">Expired</span></c:if>
                     </td>
+                    <td><a class="btn btn-default" href="${pageContext.request.contextPath}/subscriber/service/renew?subscriberId=${subscriber.subscriberId}&serviceId=${subscriberService.serviceInfo.serviceId}">Renew</a> </td>
                 </tr>
             </c:forEach>
             </tbody>
