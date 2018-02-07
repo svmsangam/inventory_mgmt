@@ -94,7 +94,7 @@ public class SubscriberValidation extends GlobalValidation{
         long countStore = storeUserInfoRepository.countAllByUserAndStatus(subscriberUserId , Status.ACTIVE);
 
         if (serviceInfo.getTotalStore() < countStore){
-            renewError.setError("to use " + serviceInfo.getTitle() + " service the subscriber must have store less than " + serviceInfo.getTotalStore());
+            renewError.setError("to use " + serviceInfo.getTitle() + " service the subscriber must have store less than or equals to " + serviceInfo.getTotalStore());
             return false;
         }
 
