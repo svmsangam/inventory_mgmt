@@ -354,6 +354,6 @@ public class UserController {
             return "redirect:/500";
         }
 
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 }

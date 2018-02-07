@@ -87,20 +87,27 @@ public class HomeController {
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String getDashboard(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes , ModelMap modelMap) throws IOException {
 
+        logger.debug("inside dashboard " );
+
         InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
         if (currentUser == null) {
+            logger.debug("inside dashboard current user null " );
             redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
             return "redirect:/logout";
         }
 
+        logger.debug("inside dashboard authorities : " +  currentUser.getUserauthority());
+
         if (!currentUser.getUserType().equals(UserType.SYSTEM) & currentUser.getStoreId() == null) {
+            logger.debug("inside system dashboard " );
             modelMap.put(StringConstants.ERROR , "no store found please add store first");
             return "dashboard/index";//store not assigned page
         }
 
         if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) | (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
 
+            logger.debug("inside superadmin or admin dashboard " );
             modelMap.put(StringConstants.TOTALSTOCK , stockInfoApi.getTotalStockByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TOTALSALE , invoiceInfoApi.getTotalAmountByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));
             modelMap.put(StringConstants.TOTALUSER , userApi.getTotalUserByStoreInfoAndStatus(currentUser.getStoreId() , Status.ACTIVE));

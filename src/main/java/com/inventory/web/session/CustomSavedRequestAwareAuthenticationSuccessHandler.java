@@ -23,15 +23,18 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
+        logger.debug("success handler");
         requestCache = RequestCacheUtil.get();
 
-        String defaultURL = request.getContextPath()  + "/";
+        String defaultURL = request.getContextPath()  + "/dashboard";
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest == null) {
 
             clearAuthenticationAttributes(request);
+
+            logger.debug("success handler redirects defaulturl " + defaultURL);
 
             getRedirectStrategy().sendRedirect(request, response, defaultURL);
 
@@ -56,6 +59,8 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
         String targetUrl = savedRequest.getRedirectUrl();
 
         RequestCacheUtil.removeRequest(request, response);
+
+        logger.debug("success handler redirects cached url  " + targetUrl);
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
