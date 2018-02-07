@@ -3,6 +3,7 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.model.converter.ServiceConverter;
 import com.inventory.core.model.converter.SubscriberServiceConverter;
+import com.inventory.core.model.dto.ServiceDTO;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.entity.StoreUserInfo;
 import com.inventory.core.model.entity.Subscriber;
@@ -41,6 +42,9 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
 
     @Autowired
     private StoreUserInfoRepository storeUserInfoRepository;
+
+    @Autowired
+    private ServiceConverter serviceConverter;
 
     @Override
     public void save(long serviceId , long subscriberId) throws ParseException {
@@ -146,6 +150,11 @@ public class SubscriberServiceApi implements ISubscriberServiceApi{
     @Override
     public List<SubscriberServiceDTO> list(Status status, long subscriberId){
         return subscriberServiceConverter.convertToDtoList(subscriberServiceRepository.findAllByStatusAndSubscriber_Id(status , subscriberId));
+    }
+
+    @Override
+    public List<ServiceDTO> listService(Status status, long subscriberId) {
+        return serviceConverter.convertToDtoList(subscriberServiceRepository.findAllServiceByStatusAndSubscriber_Id(Status.ACTIVE , subscriberId));
     }
 
     private Date getExpireDate(int days) throws ParseException {

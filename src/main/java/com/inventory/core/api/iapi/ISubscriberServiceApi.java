@@ -1,5 +1,6 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.ServiceDTO;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.enumconstant.Status;
 
@@ -18,4 +19,6 @@ public interface ISubscriberServiceApi {
     SubscriberServiceDTO getSelectedByUserId(long userId);
 
     List<SubscriberServiceDTO> list(Status status, long subscriberId);
+
+    List<ServiceDTO> listService(Status status, long subscriberId);
 }

@@ -89,6 +89,7 @@ public class StringConstants {
     public static String SUBSCRIBER_LIST = "subscriberList";
     public static String SUBSCRIBER = "subscriber";
     public static String SUBSCRIBER_ERROR = "subscriberError";
+    public static String SUBSCRIBER_SERVICE_LIST = "subscriberServiceList";
 
     public static String ITEM_LIST = "itemList";
     public static String ITEM = "item";

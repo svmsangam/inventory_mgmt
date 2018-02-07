@@ -1,5 +1,6 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.dto.StoreUserInfoDTO;
 
@@ -17,4 +18,6 @@ public interface IStoreUserInfoApi {
     List<StoreInfoDTO> getAllStoreByUser(long userId);
 
     List<Long> getAllStoreIdStoreByUser(long userId);
+
+    List<InvUserDTO> getAllUserBySuperAdmin(long superAdminId);
 }

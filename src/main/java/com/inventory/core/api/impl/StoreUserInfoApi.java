@@ -3,9 +3,12 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.model.converter.StoreInfoConverter;
 import com.inventory.core.model.converter.StoreUserInfoConverter;
+import com.inventory.core.model.converter.UserConverter;
+import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.dto.StoreUserInfoDTO;
 import com.inventory.core.model.entity.StoreUserInfo;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.StoreUserInfoRepository;
@@ -24,19 +27,22 @@ import java.util.List;
 public class StoreUserInfoApi implements IStoreUserInfoApi {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    StoreInfoRepository storeInfoRepository;
+    private StoreInfoRepository storeInfoRepository;
 
     @Autowired
-    StoreInfoConverter storeInfoConverter;
+    private StoreInfoConverter storeInfoConverter;
 
     @Autowired
-    StoreUserInfoConverter storeUserInfoConverter;
+    private StoreUserInfoConverter storeUserInfoConverter;
 
     @Autowired
-    StoreUserInfoRepository storeUserInfoRepository;
+    private StoreUserInfoRepository storeUserInfoRepository;
+
+    @Autowired
+    private UserConverter userConverter;
 
     @Override
     public StoreUserInfoDTO save(long userId, long storeId) {
@@ -63,5 +69,21 @@ public class StoreUserInfoApi implements IStoreUserInfoApi {
     @Override
     public List<Long> getAllStoreIdStoreByUser(long userId) {
         return storeUserInfoRepository.findAllStoreIdByUserAndStatus(userId , Status.ACTIVE);
+    }
+
+    @Override
+    public List<InvUserDTO> getAllUserBySuperAdmin(long superAdminId){
+
+        List<Long> storeIdList = storeUserInfoRepository.findAllStoreIdByUserAndStatus(superAdminId , Status.ACTIVE);
+
+        if (storeIdList == null){
+            return null;
+        }
+
+        if (storeIdList.isEmpty()){
+            return null;
+        }
+
+        return userConverter.convertToDtoList(userRepository.findAllByStoreInfo_IdIn(storeIdList));
     }
 }

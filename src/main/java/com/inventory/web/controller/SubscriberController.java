@@ -38,6 +38,7 @@ public class SubscriberController {
 
     @Autowired
     private RecaptchaService captchaService;
+
     @Autowired
     private IUserApi userApi;
 
@@ -58,6 +59,9 @@ public class SubscriberController {
 
     @Autowired
     private ISendMailSSL mailApi;
+
+    @Autowired
+    private ISubscriberServiceApi subscriberServiceApi;
 
     @GetMapping(value = "/list")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -184,8 +188,11 @@ public class SubscriberController {
 
                 return "redirect:/subscriber/list";
             }
+
             modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
             modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
+            modelMap.put(StringConstants.USER_LIST, storeUserInfoApi.getAllUserBySuperAdmin(subscriberDTO.getUserId()));
+            modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST , subscriberServiceApi.list(Status.ACTIVE , subscriberId));
 
         } catch (Exception e) {
 
