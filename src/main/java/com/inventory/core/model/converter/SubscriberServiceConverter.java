@@ -89,7 +89,7 @@ public class SubscriberServiceConverter implements IListConvertable<SubscriberSe
 
         if (new Date().equals(entity.getExpireOn())){
             dto.setExpired(true);
-        }else if (new Date().before(entity.getExpireOn())){
+        }else if (new Date().after(entity.getExpireOn())){
             dto.setExpired(true);
         }else {
             dto.setExpired(false);

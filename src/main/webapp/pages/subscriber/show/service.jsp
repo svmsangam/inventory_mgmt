@@ -20,7 +20,7 @@
                 <th>Validity</th>
                 <th>Rate</th>
                 <th>Expire Date</th>
-                <th>Selected</th>
+                <th>Current</th>
                 <th>Status</th>
             </tr>
             </thead>
