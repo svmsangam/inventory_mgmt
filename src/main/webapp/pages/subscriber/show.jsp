@@ -92,9 +92,8 @@
                     <div class="box-header">
                         <h3 class="box-title">Subscriber Details</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/unit/add"
-                               class="btn btn-info btn-sm btn-flat pull-right"><span
-                                    class="glyphicon glyphicon-plus-sign"></span> Add
+                            <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriber=${subscriber.subscriberId}" class="btn btn-success btn-sm btn-flat pull-right">
+                                <span class="glyphicon glyphicon-stats"></span> &nbsp;Renew
                             </a>
                         </div>
                     </div>

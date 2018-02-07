@@ -48,7 +48,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="table-responsive">
+                        <div>
                             <table id="table2" class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <tr>
