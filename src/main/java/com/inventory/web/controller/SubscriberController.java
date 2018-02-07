@@ -204,6 +204,49 @@ public class SubscriberController {
         return "subscriber/show";
     }
 
+    @GetMapping(value = "/service/renew")
+    public String renew(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+        /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+
+        /*current user checking end*/
+
+            SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
+
+            if (subscriberDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+
+                return "redirect:/subscriber/list";
+            }
+
+            modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+            modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
+            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "subscriber/renew";
+    }
+
     @GetMapping(value = "/register")
     public String register(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 

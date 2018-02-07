@@ -1,10 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
   User: dhiraj
-  Date: 1/25/18
-  Time: 3:35 PM
+  Date: 2/7/18
+  Time: 3:36 PM
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -90,9 +91,10 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Subscriber Details</h3>
+                        <h3 class="box-title">Subscriber Service Renew</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriberId=${subscriber.subscriberId}" class="btn btn-success btn-sm btn-flat pull-right">
+                            <a href="${pageContext.request.contextPath}/subscriber/service/renew?subscriber=${subscriber.subscriberId}"
+                               class="btn btn-success btn-sm btn-flat pull-right">
                                 <span class="glyphicon glyphicon-stats"></span> &nbsp;Renew
                             </a>
                         </div>
@@ -104,12 +106,10 @@
                             <div class="col-md-12">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#home" aria-controls="home"
-                                                                              role="tab" data-toggle="tab">Subscriber</a>
+                                                                              role="tab"
+                                                                              data-toggle="tab">Subscriber</a>
                                     </li>
-                                    <li role="presentation"><a href="#user" aria-controls="user" role="tab"
-                                                               data-toggle="tab">User</a></li>
-                                    <li role="presentation"><a href="#service" aria-controls="service" role="tab"
-                                                               data-toggle="tab">service</a></li>
+
                                     <li role="presentation"><a href="#store" aria-controls="store" role="tab"
                                                                data-toggle="tab">store</a></li>
                                 </ul>
@@ -117,22 +117,38 @@
                                 <div class="tab-content">
 
                                     <div role="tabpanel" class="tab-pane active" id="home">
-                                        <%@include file="/pages/subscriber/show/home.jsp" %>
-                                    </div>
-
-                                    <div role="tabpanel" class="tab-pane" id="user">
-                                        <%@include file="/pages/subscriber/show/user.jsp" %>
-                                    </div>
-
-                                    <div role="tabpanel" class="tab-pane" id="service">
-                                        <%@include file="/pages/subscriber/show/service.jsp" %>
+                                        <%@include file="/pages/subscriber/renew/home.jsp" %>
                                     </div>
 
                                     <div role="tabpanel" class="tab-pane" id="store">
-                                        <%@include file="/pages/subscriber/show/store.jsp" %>
+                                        <%@include file="/pages/subscriber/renew/store.jsp" %>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <form action="${pageContext.request.contextPath}/subscriber/service/renew" method="post"
+                                  modelAttribute="subscriber">
+
+                                <input type="hidden" name="subscriberId" value="${subscriber.subscriberId}">
+                                <div class="box-body">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Service *</label>
+                                        <select class="form-control" name="serviceId" required>
+                                            <option value="0">select service</option>
+                                            <c:forEach items="${serviceList}" var="serviceInfo">
+                                                <option value="${serviceInfo.serviceId}">${serviceInfo.title}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <p class="form-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
                         </div>
 
                     </div>
@@ -145,4 +161,5 @@
 </div>
 
 <%@include file="/pages/parts/footer.jsp" %>
+
 
