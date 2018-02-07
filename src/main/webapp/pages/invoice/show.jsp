@@ -153,11 +153,14 @@
                 <c:if test="${invoice.description ne null and '' ne invoice.description}">
                     <!-- accepted payments column -->
                     <div class="col-xs-6 no-print">
-                        <p class="lead">Remark:</p>
-
-                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                ${invoice.description}
-                        </p>
+                        <div class="panel panel-color panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Remarks</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p>${invoice.description}</p>
+                            </div>
+                        </div>
                     </div>
                 </c:if>
 
@@ -199,11 +202,16 @@
                 <c:choose>
                     <c:when test="${invoice.canceled eq true}">
                         <div class="col-xs-6 no-print">
-                            <p class="lead">Cancel Reason:</p>
 
-                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                    ${invoice.cancelNote}
-                            </p>
+                            <div class="panel panel-color panel-danger">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Cancel Reason</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p> ${invoice.cancelNote}</p>
+                                </div>
+                            </div>
+
                         </div>
                     </c:when>
                     <c:otherwise>
