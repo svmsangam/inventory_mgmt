@@ -14,6 +14,7 @@ import com.inventory.core.validation.OrderReturnValidation;
 import com.inventory.web.error.OrderError;
 import com.inventory.web.error.OrderReturnError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by dhiraj on 1/17/18.
@@ -235,7 +237,7 @@ public class OrderReturnInfoController {
 
 
     @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String list(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -272,7 +274,30 @@ public class OrderReturnInfoController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.ORDER_RETURN_LIST, orderReturnInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            long totalList = orderReturnInfoApi.countAllByStatusAndStoreInfo_Id(Status.ACTIVE, currentUser.getStoreId());
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+            modelMap.put(StringConstants.ORDER_RETURN_LIST, orderReturnInfoApi.list(Status.ACTIVE, currentUser.getStoreId() , currentpage, (int) PageInfo.pageList));
+            modelMap.put("lastpage", totalpage);
+            modelMap.put("currentpage", page);
+            modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
             logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));

@@ -49,7 +49,9 @@
                                 <thead>
                                 <tr>
                                     <th>S.N.</th>
+                                    <th>OrderNo</th>
                                     <th>Return Date</th>
+                                    <th>Client</th>
                                     <th>Total Cost</th>
                                 </tr>
                                 </thead>
@@ -59,7 +61,18 @@
 
                                     <tr>
                                         <td>${i.index + 1}</td>
+                                        <td>${orderReturn.orderInfoOrderNo}</td>
                                         <td><fmt:formatDate pattern="MMM dd, yyyy" value="${orderReturn.returnDate}"/></td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${orderReturn.clientInfoCompanyName ne null and not empty orderReturn.clientInfoCompanyName}">
+                                                    ${orderReturn.clientInfoCompanyName}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${orderReturn.clientInfoName}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.totalAmount}"/></td>
                                     </tr>
 
@@ -78,9 +91,7 @@
 
                                     <c:if test="${currentpage > 1}">
                                         <li class="page-item">
-
-                                            <a href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage-1}"
-                                               class="page-link">Prev</a>
+                                            <a href="${pageContext.request.contextPath}/orderreturn/list?pageNo=${currentpage-1}" class="page-link">Prev</a>
                                         </li>
                                     </c:if>
 
@@ -97,11 +108,7 @@
 
                                             </c:when>
                                             <c:otherwise>
-
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/order/sale/list?pageNo=${pagelist}">${pagelist}</a>
-                                                </li>
-
+                                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/orderreturn/list?pageNo=${pagelist}">${pagelist}</a></li>
                                             </c:otherwise>
 
                                         </c:choose>
@@ -109,8 +116,7 @@
 
                                     <c:if test="${currentpage + 1 <= lastpage}">
                                         <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageContext.request.contextPath}/order/sale/list?pageNo=${currentpage+1}">Next</a>
+                                            <a class="page-link" href="${pageContext.request.contextPath}/orderreturn/list?pageNo=${currentpage+1}">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>

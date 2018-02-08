@@ -2,17 +2,17 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.OrderReturnInfoConverter;
-import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.dto.OrderReturnInfoDTO;
-import com.inventory.core.model.entity.FiscalYearInfo;
-import com.inventory.core.model.entity.InvoiceInfo;
-import com.inventory.core.model.entity.OrderInfo;
-import com.inventory.core.model.entity.OrderReturnInfo;
+import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.*;
+import com.inventory.core.model.liteentity.OrderReturnInfoDomain;
 import com.inventory.core.model.repository.FiscalYearInfoRepository;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.OrderReturnInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +54,11 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
     @Autowired
     private IOrderInfoApi orderInfoApi;
+
+    private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
+
+        return new PageRequest(page, size, new Sort(direction, properties));
+    }
 
     @Override
     public OrderReturnInfoDTO save(OrderReturnInfoDTO orderReturnInfoDTO) {
@@ -147,8 +152,16 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
     }
 
     @Override
-    public List<OrderReturnInfoDTO> list(Status status, long storeId) {
-        return orderReturnInfoConverter.convertToDtoList(orderReturnInfoRepository.findAllByStatusAndStoreInfo_Id(status , storeId));
+    public long countAllByStatusAndStoreInfo_Id(Status status, long storeId) {
+        return orderReturnInfoRepository.countAllByStatusAndStoreInfo_Id(status , storeId);
+    }
+
+    @Override
+    public List<OrderReturnInfoDomain> list(Status status, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return orderReturnInfoRepository.findAllForLiteByStatusAndStoreInfo_Id(status , storeId , pageable);
     }
 
 }

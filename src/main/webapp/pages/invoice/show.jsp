@@ -241,8 +241,8 @@
                 <c:choose>
                     <c:when test="${invoice.canceled eq true}"><label class="btn btn-danger">canceled</label> </c:when>
                     <c:otherwise>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel
-                        </button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel</button>
+                        <a href="${pageContext.request.contextPath}/orderreturn/add?orderInfoId=${invoice.orderInfo.orderId}" class="btn-primary btn">return order</a>
                     </c:otherwise>
                 </c:choose>
 
