@@ -136,7 +136,9 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
 
         orderReturnInfoRepository.save(orderReturnInfo);
 
-        ledgerInfoApi.saveOnOrderReturn(orderReturnInfo.getId());
+        if (0 < orderReturnInfo.getTotalAmount()) {
+            ledgerInfoApi.saveOnOrderReturn(orderReturnInfo.getId());
+        }
 
         itemInfoApi.updateInStockOnSaleReturn(orderReturnInfo.getId());
 
