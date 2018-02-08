@@ -13,6 +13,8 @@ public class ReturnItemInfoDomain {
 
     private double rate;
 
+    private double discount;
+
     private double totalAmount;
 
     private long orderItemInfoId;
@@ -23,7 +25,7 @@ public class ReturnItemInfoDomain {
 
     private Status status;
 
-    public ReturnItemInfoDomain(long returnItemInfoId , int quantity , double rate , double totalAmount , long orderItemInfoId , long itemInfoId , String itemName , Status status){
+    public ReturnItemInfoDomain(long returnItemInfoId , int quantity , double rate , double totalAmount , long orderItemInfoId , long itemInfoId , String itemName , Status status , double discount){
 
         this.orderItemInfoId = returnItemInfoId;
         this.quantity = quantity;
@@ -33,6 +35,15 @@ public class ReturnItemInfoDomain {
         this.itemInfoId = itemInfoId;
         this.itemName = itemName;
         this.status = status;
+        this.discount = discount;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
     public long getReturnItemInfoId() {

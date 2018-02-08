@@ -164,4 +164,10 @@ public class OrderReturnInfoApi implements IOrderReturnInfoApi {
         return orderReturnInfoRepository.findAllForLiteByStatusAndStoreInfo_Id(status , storeId , pageable);
     }
 
+    @Override
+    public OrderReturnInfoDomain show(long orderReturnId , Status status, long storeId) {
+
+        return orderReturnInfoRepository.findForLiteByStatusAndStoreInfo_Id(orderReturnId , status , storeId);
+    }
+
 }

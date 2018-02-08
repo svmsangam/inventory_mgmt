@@ -19,7 +19,7 @@ public interface ReturnItemInfoRepository extends JpaRepository<ReturnItemInfo ,
 
     List<ReturnItemInfo> findAllByStatusAndOrderReturnInfo_Id(Status status , long returnOrderInfoId);
 
-    @Query("select new com.inventory.core.model.liteentity.ReturnItemInfoDomain(ri.id , ri.quantity , ri.rate , ri.totalAmount , ri.orderItemInfo.id , ri.orderItemInfo.itemInfo.id , ri.orderItemInfo.itemInfo.productInfo.name , ri.status) from ReturnItemInfo ri where ri.status = ?1 and ri.orderReturnInfo.id =?2")
+    @Query("select new com.inventory.core.model.liteentity.ReturnItemInfoDomain(ri.id , ri.quantity , ri.rate , ri.totalAmount , ri.orderItemInfo.id , ri.orderItemInfo.itemInfo.id , ri.orderItemInfo.itemInfo.productInfo.name , ri.status , ri.orderItemInfo.discount) from ReturnItemInfo ri where ri.status = ?1 and ri.orderReturnInfo.id =?2")
     List<ReturnItemInfoDomain> findForLiteByStatusAndStoreInfo_Id(Status status , long returnOrderInfoId);
 
 }

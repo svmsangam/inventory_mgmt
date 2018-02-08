@@ -18,4 +18,6 @@ public interface IOrderReturnInfoApi {
     long countAllByStatusAndStoreInfo_Id(Status status, long storeId);
 
     List<OrderReturnInfoDomain> list(Status status, long storeId, int page, int size);
+
+    OrderReturnInfoDomain show(long orderReturnId, Status status, long storeId);
 }

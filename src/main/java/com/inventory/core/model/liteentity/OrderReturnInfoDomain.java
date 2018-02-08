@@ -16,6 +16,8 @@ public class OrderReturnInfoDomain {
 
     private Date returnDate;
 
+    private double netTotal;
+
     private double totalAmount;
 
     private long orderInfoId;
@@ -25,6 +27,10 @@ public class OrderReturnInfoDomain {
     private String clientInfoName;
 
     private String clientInfoCompanyName;
+
+    private double tax;
+
+    private String description;
 
     private List<ReturnItemInfoDomain> returnItemInfoList;
 
@@ -38,6 +44,45 @@ public class OrderReturnInfoDomain {
         this.orderInfoOrderNo = orderInfoOrderNo;
         this.clientInfoName = clientInfoName;
         this.clientInfoCompanyName = clientInfoCompanyName;
+    }
+
+    public OrderReturnInfoDomain(long orderReturnId , Status status , Date returnDate , double totalAmount , long orderInfoId , String orderInfoOrderNo , String clientInfoName , String clientInfoCompanyName , double tax ,  String description){
+
+        this.orderReturnId = orderReturnId;
+        this.status = status;
+        this.returnDate = returnDate;
+        this.totalAmount = totalAmount;
+        this.orderInfoId = orderInfoId;
+        this.orderInfoOrderNo = orderInfoOrderNo;
+        this.clientInfoName = clientInfoName;
+        this.clientInfoCompanyName = clientInfoCompanyName;
+        this.tax = tax;
+        this.netTotal = totalAmount - totalAmount * tax / 100;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getNetTotal() {
+        return netTotal;
+    }
+
+    public void setNetTotal(double netTotal) {
+        this.netTotal = netTotal;
+    }
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
     }
 
     public List<ReturnItemInfoDomain> getReturnItemInfoList() {
