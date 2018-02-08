@@ -235,6 +235,8 @@ public class XLSReport extends AbstractXlsxView {
 
         //total amount end
 
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
         renderWorkbook(workbook , response);
 
 
