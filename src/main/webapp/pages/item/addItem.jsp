@@ -103,25 +103,25 @@
 
                             <div class="form-group">
                                 <label class="control-label">Cost Price</label>
-                                <input type="number" class="form-control" value="${item.costPrice}" name="costPrice" placeholder="costPrice">
+                                <input type="number" class="form-control" value="${item.costPrice}" onkeypress="return validate(event);"  name="costPrice" placeholder="costPrice">
                                 <p class="form-error">${itemError.costPrice}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Selling Price</label>
-                                <input type="number" class="form-control" value="${item.sellingPrice}" name="sellingPrice" placeholder="sellingPrice">
+                                <input type="number" class="form-control" value="${item.sellingPrice}" onkeypress="return validate(event);"  name="sellingPrice" placeholder="sellingPrice">
                                 <p class="form-error">${itemError.sellingPrice}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Quantity</label>
-                                <input type="number" class="form-control" value="${item.quantity}" name="quantity" placeholder="quantity">
+                                <input type="number" class="form-control" onkeypress="return validate(event);"  value="${item.quantity}" name="quantity" placeholder="quantity">
                                 <p class="form-error">${itemError.quantity}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Threshold</label>
-                                <input type="number" class="form-control" value="${item.threshold}" name="threshold" placeholder="threshold">
+                                <input type="number" class="form-control" onkeypress="return validate(event);"  value="${item.threshold}" name="threshold" placeholder="threshold">
                                 <p class="form-error">${itemError.threshold}</p>
                             </div>
 
@@ -222,6 +222,6 @@
         });
     });
 </script>
-
+<script src="${pageContext.request.contextPath}/resources/js/asset/app/numberValidation.js"></script>
 
 
