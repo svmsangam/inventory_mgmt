@@ -224,11 +224,12 @@ public class ItemController {
             }
 
             if (itemInfoDTO.getProductId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Bad request");
-                return "redirect:/product/list";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "select any product");
+                return "redirect:/item/add";//store not assigned page
             }
 
             synchronized (this.getClass()) {
+
                 ItemInfoError error = itemInfoValidation.onSave(itemInfoDTO, currentUser.getStoreId(), bindingResult);
 
                 if (!error.isValid()) {

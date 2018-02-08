@@ -70,5 +70,6 @@
 
 <%@include file="/pages/parts/footer.jsp" %>
 <%@include file="/pages/order/script/form_script.jsp" %>
+<script src="${pageContext.request.contextPath}/resources/js/asset/app/numberValidation.js"></script>
 
 

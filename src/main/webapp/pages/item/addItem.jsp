@@ -20,6 +20,20 @@
     <!-- Main content -->
     <section class="content">
 
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="box box-info">

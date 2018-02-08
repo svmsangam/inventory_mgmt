@@ -569,7 +569,7 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping(value = "/xls")
+    @GetMapping(value = "/xls" , produces = "application/xls")
     public void xls(@RequestParam("invoiceId") Long invoiceId, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
