@@ -61,7 +61,7 @@
 
                                     <tr>
                                         <td>${i.index + 1}</td>
-                                        <td>${orderReturn.orderInfoOrderNo}</td>
+                                        <td><a href="${pageContext.request.contextPath}/orderreturn/show/${orderReturn.orderReturnId}">${orderReturn.orderInfoOrderNo}</a></td>
                                         <td><fmt:formatDate pattern="MMM dd, yyyy" value="${orderReturn.returnDate}"/></td>
                                         <td>
                                             <c:choose>

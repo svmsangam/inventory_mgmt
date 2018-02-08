@@ -16,8 +16,6 @@ public class OrderReturnInfoDomain {
 
     private Date returnDate;
 
-    private double netTotal;
-
     private double totalAmount;
 
     private long orderInfoId;
@@ -57,7 +55,6 @@ public class OrderReturnInfoDomain {
         this.clientInfoName = clientInfoName;
         this.clientInfoCompanyName = clientInfoCompanyName;
         this.tax = tax;
-        this.netTotal = totalAmount - totalAmount * tax / 100;
         this.description = description;
     }
 
@@ -67,14 +64,6 @@ public class OrderReturnInfoDomain {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public double getNetTotal() {
-        return netTotal;
-    }
-
-    public void setNetTotal(double netTotal) {
-        this.netTotal = netTotal;
     }
 
     public double getTax() {

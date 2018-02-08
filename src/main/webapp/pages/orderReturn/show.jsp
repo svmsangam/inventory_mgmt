@@ -63,7 +63,9 @@
                 </thead>
                 <tbody>
 
+                <c:set var="netTotal" value="${0}"></c:set>
                 <c:forEach items="${orderReturnItemList}" var="orderItem" varStatus="i">
+                    <c:set var="netTotal" value="${netTotal + orderItem.totalAmount}"></c:set>
                     <tr>
                         <td>${i.index + 1}</td>
                         <td>${orderItem.itemName}</td>
@@ -83,10 +85,17 @@
         <div class="row">
             <!-- accepted payments column -->
             <div class="col-xs-4">
-                <p class="lead">Description</p>
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    ${orderReturn.description}
-                </p>
+
+                <c:if test="${orderReturn.description ne null}">
+                    <div class="panel panel-color panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Remarks</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>${orderReturn.description}</p>
+                        </div>
+                    </div>
+                </c:if>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">&nbsp;</div>
@@ -94,12 +103,12 @@
                 <table class="table">
                     <tr>
                         <th>Net Total</th>
-                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.netTotal}"/></td>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal}"/></td>
                     </tr>
 
                     <tr>
                         <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.tax}"/>%)</th>
-                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.netTotal * orderReturn.tax / 100}"/></td>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal * orderReturn.tax / 100}"/></td>
                     </tr>
 
                     <tr>
