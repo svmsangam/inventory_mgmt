@@ -87,11 +87,11 @@ public class SubCategoryInfoValidation extends GlobalValidation {
             valid = false;
         }
 
-        error.setCategoryId(checkLong(subCategoryInfoDTO.getCategoryId(), 1, "categoryId", true));
+        error.setCategoryId(checkLong(subCategoryInfoDTO.getCategoryId(), 1, "categoryId", false));
 
         if (!("".equals(error.getCategoryId()))) {
             valid = false;
-        } else if (subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
+        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
             valid = false;
             error.setCategoryId("invalid category");
         }
