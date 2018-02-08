@@ -119,8 +119,8 @@
                         <td><input type="checkbox" name="orderItemInfoIdList" value="${orderItem.orderItemInfoId}" class="returnOrder" /></td>
                         <td>${orderItem.itemInfoDTO.productInfo.name}-${orderItem.itemInfoDTO.tagInfo.name}</td>
                         <td>${orderItem.itemInfoDTO.lotInfo.lot}</td>
-                        <td>${orderItem.quantity} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
-                        <td><input type="number" name="returnQuantityList" class="form-control returnQuantity" placeholder="Return Quantity" min="1" max="${orderItem.quantity}" disabled></td>
+                        <td>${orderItem.quantityAfterReturn} &nbsp; ${orderItem.itemInfoDTO.productInfo.unitInfo.code}</td>
+                        <td><input type="number" name="returnQuantityList" class="form-control returnQuantity" placeholder="Return Quantity" min="1" max="${orderItem.quantityAfterReturn}" disabled></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.rate}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.discount}"/></td>
                         <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.amount}"/></td>
