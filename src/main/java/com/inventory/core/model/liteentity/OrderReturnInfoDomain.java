@@ -3,6 +3,7 @@ package com.inventory.core.model.liteentity;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dhiraj on 2/8/18.
@@ -25,6 +26,8 @@ public class OrderReturnInfoDomain {
 
     private String clientInfoCompanyName;
 
+    private List<ReturnItemInfoDomain> returnItemInfoList;
+
     public OrderReturnInfoDomain(long orderReturnId , Status status , Date returnDate , double totalAmount , long orderInfoId , String orderInfoOrderNo , String clientInfoName , String clientInfoCompanyName){
 
         this.orderReturnId = orderReturnId;
@@ -35,7 +38,14 @@ public class OrderReturnInfoDomain {
         this.orderInfoOrderNo = orderInfoOrderNo;
         this.clientInfoName = clientInfoName;
         this.clientInfoCompanyName = clientInfoCompanyName;
+    }
 
+    public List<ReturnItemInfoDomain> getReturnItemInfoList() {
+        return returnItemInfoList;
+    }
+
+    public void setReturnItemInfoList(List<ReturnItemInfoDomain> returnItemInfoList) {
+        this.returnItemInfoList = returnItemInfoList;
     }
 
     public long getOrderReturnId() {

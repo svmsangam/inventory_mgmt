@@ -4,6 +4,7 @@ import com.inventory.core.model.enumconstant.Status;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dhiraj on 1/17/18.
@@ -30,6 +31,9 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
 
     @ManyToOne(fetch = FetchType.EAGER)
     private FiscalYearInfo fiscalYearInfo;
+
+    @OneToMany(mappedBy = "orderReturnInfo" , fetch = FetchType.LAZY)
+    private List<ReturnItemInfo> returnItemInfoList;
 
     private Status status;
 
@@ -95,5 +99,13 @@ public class OrderReturnInfo extends AbstractEntity<Long>{
 
     public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
         this.fiscalYearInfo = fiscalYearInfo;
+    }
+
+    public List<ReturnItemInfo> getReturnItemInfoList() {
+        return returnItemInfoList;
+    }
+
+    public void setReturnItemInfoList(List<ReturnItemInfo> returnItemInfoList) {
+        this.returnItemInfoList = returnItemInfoList;
     }
 }

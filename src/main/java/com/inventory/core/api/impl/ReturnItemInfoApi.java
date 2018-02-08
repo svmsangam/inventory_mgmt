@@ -10,6 +10,7 @@ import com.inventory.core.model.entity.OrderItemInfo;
 import com.inventory.core.model.entity.OrderReturnInfo;
 import com.inventory.core.model.entity.ReturnItemInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.ReturnItemInfoDomain;
 import com.inventory.core.model.repository.OrderItemInfoRepository;
 import com.inventory.core.model.repository.OrderReturnInfoRepository;
 import com.inventory.core.model.repository.ReturnItemInfoRepository;
@@ -139,7 +140,7 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
     }
 
     @Override
-    public List<ReturnItemInfoDTO> list(Status status, long returnOrderInfoId) {
-        return returnItemInfoConverter.convertToDtoList(returnItemInfoRepository.findAllByStatusAndOrderReturnInfo_Id(status , returnOrderInfoId));
+    public List<ReturnItemInfoDomain> list(Status status, long returnOrderInfoId) {
+        return returnItemInfoRepository.findForLiteByStatusAndStoreInfo_Id(status , returnOrderInfoId);
     }
 }

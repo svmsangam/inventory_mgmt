@@ -28,4 +28,8 @@ public interface OrderReturnInfoRepository extends JpaRepository<OrderReturnInfo
     List<OrderReturnInfoDomain> findAllForLiteByStatusAndStoreInfo_Id(Status status , long storeInfoId , Pageable pageable);
 
     OrderReturnInfo findById(long orderReturnInfoId);
+
+    @Query("select new com.inventory.core.model.liteentity.OrderReturnInfoDomain( r.id , r.status , r.returnDate , r.totalAmount , r.orderInfo.id , r.orderInfo.orderNo , r.orderInfo.clientInfo.name , r.orderInfo.clientInfo.companyName) from OrderReturnInfo r where r.id = ?1 and r.status = ?2 and r.storeInfo.id =?3")
+    OrderReturnInfoDomain findForLiteByStatusAndStoreInfo_Id(long orderReternId , Status status , long storeInfoId , Pageable pageable);
+
 }

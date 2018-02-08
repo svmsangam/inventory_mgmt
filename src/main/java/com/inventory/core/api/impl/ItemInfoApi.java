@@ -9,6 +9,7 @@ import com.inventory.core.model.entity.OrderItemInfo;
 import com.inventory.core.model.entity.ReturnItemInfo;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.ReturnItemInfoDomain;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.OrderItemInfoRepository;
 import com.inventory.core.model.repository.ReturnItemInfoRepository;
@@ -122,11 +123,11 @@ public class ItemInfoApi implements IItemInfoApi{
     @Override
     public void updateInStockOnSaleReturn(long orderReturnIdId) {
 
-        List<ReturnItemInfo> returnItemInfoList = returnItemInfoRepository.findAllByStatusAndOrderReturnInfo_Id(Status.ACTIVE, orderReturnIdId);
+        List<ReturnItemInfoDomain> returnItemInfoList = returnItemInfoRepository.findForLiteByStatusAndStoreInfo_Id(Status.ACTIVE, orderReturnIdId);
 
-        for (ReturnItemInfo returnItemInfo : returnItemInfoList) {
+        for (ReturnItemInfoDomain returnItemInfo : returnItemInfoList) {
 
-            ItemInfo itemInfo = itemInfoRepository.findById(returnItemInfo.getOrderItemInfo().getItemInfo().getId());
+            ItemInfo itemInfo = itemInfoRepository.findById(returnItemInfo.getItemInfoId());
 
             itemInfo.setInStock(itemInfo.getInStock() + returnItemInfo.getQuantity());
 

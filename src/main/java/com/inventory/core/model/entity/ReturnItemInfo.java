@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "return_item_info")
 public class ReturnItemInfo extends AbstractEntity<Long>{
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private OrderItemInfo orderItemInfo;
 
     private int quantity;
