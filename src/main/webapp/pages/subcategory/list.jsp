@@ -26,7 +26,7 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Subcategory List</h3>
+                        <h3 class="box-title">Category List</h3>
                         <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/subcategory/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
                             </a>
