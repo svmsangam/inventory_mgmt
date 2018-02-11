@@ -726,13 +726,6 @@
 <%@include file="/pages/parts/footer.jsp" %>
 
 <script>
-   /* $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%'
-        });
-    });*/
 
     $(function () {
         var checkAll = $('input.all');
@@ -760,25 +753,5 @@
             }
             checkAll.iCheck('update');
         });
-    });
-
-    $(document).ready(function () {
-
-        $('input').on('ifChecked', function(event){
-            console.log(event.type + ' callback');
-        });
-
-        // Remove the checked state from "All" if any checkbox is unchecked
-        $(document).on('click', 'uncheck' , function (event) {
-            $('#check-all').iCheck('uncheck');
-        });
-
-// Make "All" checked if all checkboxes are checked
-        $('.check').on('ifChecked', function (event) {
-            if ($('.check').filter(':checked').length == $('.check').length) {
-                $('#check-all').iCheck('check');
-            }
-        });
-
     });
 </script>
