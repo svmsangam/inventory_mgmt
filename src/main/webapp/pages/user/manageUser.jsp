@@ -45,28 +45,27 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <div class="col-md-6">
-                            <div class="box box-solid">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">${user.inventoryuser}</h3>
+                            <div class="col-md-6">
+                                <div class="box box-solid">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">${user.inventoryuser}</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <dl>
+                                            <dd>User Type: <b>${user.userType}</b></dd>
+                                            <c:if test="${store ne null}">
+                                                <dd>Associated With: <b>${store.name}</b></dd>
+                                                <dd>Contact No.: <b>${store.contact}</b></dd>
+                                                <dd>Mobile No.: <b>${store.mobileNumber}</b></dd>
+                                                <dd>Address: <b>${store.cityName}</b></dd>
+                                            </c:if>
+                                        </dl>
+                                    </div>
+                                    <!-- /.box-body -->
                                 </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                    <dl>
-                                        <dd>User Type: <b>${user.userType}</b></dd>
-                                        <c:if test="${store ne null}">
-                                            <dd>Associated With: <b>${store.name}</b></dd>
-                                            <dd>Contact No.: <b>${store.contact}</b></dd>
-                                            <dd>Mobile No.: <b>${store.mobileNumber}</b></dd>
-                                            <dd>Address: <b>${store.cityName}</b></dd>
-                                        </c:if>
-                                    </dl>
-                                </div>
-                                <!-- /.box-body -->
+                                <!-- /.box -->
                             </div>
-                            <!-- /.box -->
-                        </div>
-
                         <style>
                             .myiterat {
                                 margin-right: 10px;
@@ -80,7 +79,7 @@
                             <table class="table table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Service</th>
+                                    <th>Service &nbsp;<input type="checkbox" class="all" /><strong >Select All</strong></th>
                                     <th>Create</th>
                                     <th>View</th>
                                     <th>Update</th>
@@ -727,11 +726,59 @@
 <%@include file="/pages/parts/footer.jsp" %>
 
 <script>
-    $(function () {
+   /* $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
-            //increaseArea: '20%' // optional
+            increaseArea: '20%'
         });
+    });*/
+
+    $(function () {
+        var checkAll = $('input.all');
+        var checkboxes = $('input.myiterator');
+
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%'
+        });
+
+        checkAll.on('ifChecked ifUnchecked', function(event) {
+            if (event.type == 'ifChecked') {
+                checkboxes.iCheck('check');
+            } else {
+                checkboxes.iCheck('uncheck');
+            }
+        });
+
+        checkboxes.on('ifChanged', function(event){
+            if(checkboxes.filter(':checked').length == checkboxes.length) {
+                checkAll.prop('checked', 'checked');
+            } else {
+                checkAll.removeProp('checked');
+            }
+            checkAll.iCheck('update');
+        });
+    });
+
+    $(document).ready(function () {
+
+        $('input').on('ifChecked', function(event){
+            console.log(event.type + ' callback');
+        });
+
+        // Remove the checked state from "All" if any checkbox is unchecked
+        $(document).on('click', 'uncheck' , function (event) {
+            $('#check-all').iCheck('uncheck');
+        });
+
+// Make "All" checked if all checkboxes are checked
+        $('.check').on('ifChecked', function (event) {
+            if ($('.check').filter(':checked').length == $('.check').length) {
+                $('#check-all').iCheck('check');
+            }
+        });
+
     });
 </script>
