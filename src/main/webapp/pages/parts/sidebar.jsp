@@ -20,12 +20,12 @@
     <%@include file="/pages/parts/admin-sidebar.jsp" %>
 </sec:authorize>
 
-<sec:authorize access="hasRole('ROLE_USER')">
-    <%@include file="/pages/parts/user-sidebar.jsp" %>
-</sec:authorize>
-
 <sec:authorize access="hasRole('ROLE_SYSTEM')">
     <%@include file="/pages/parts/system-sidebar.jsp" %>
+</sec:authorize>
+
+<sec:authorize ifAnyGranted=" ROLE_USER , ROLE_DASHBOARD">
+    <%@include file="/pages/parts/user-sidebar.jsp" %>
 </sec:authorize>
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "userpermission")
 public class UserPermission extends AbstractEntity<Long> {
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @ElementCollection(fetch = FetchType.EAGER)

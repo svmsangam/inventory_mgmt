@@ -35,6 +35,21 @@ public class User extends AbstractEntity<Long> {
 
     private String fcmKey;
 
+    @OneToOne(mappedBy = "user" , fetch = FetchType.LAZY)
+    private UserPermission permission;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public UserPermission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(UserPermission permission) {
+        this.permission = permission;
+    }
+
     public String getFcmKey() {
         return fcmKey;
     }

@@ -21,10 +21,12 @@
     <%@include file="/pages/dashboard/admin-index.jsp" %>
 </sec:authorize>
 
-<sec:authorize access="hasRole('ROLE_USER')">
+<sec:authorize ifAnyGranted=" ROLE_USER , ROLE_DASHBOARD">
     <%@include file="/pages/dashboard/user-index.jsp" %>
 </sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_SYSTEM')">
     <%@include file="/pages/dashboard/system-index.jsp" %>
 </sec:authorize>
+
+<sec:authentication property="principal.authorities"/>

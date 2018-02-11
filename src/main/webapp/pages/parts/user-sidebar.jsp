@@ -39,56 +39,73 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
+
             <li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
-            <!-- Optionally, you can add icons to the links -->
-            <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Invoice</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+            <sec:authorize ifAnyGranted=" ROLE_USER , INVOICE_CREATE">
+                <!-- Optionally, you can add icons to the links -->
+                <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Invoice</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
+            </sec:authorize>
 
-            <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
+            <sec:authorize ifAnyGranted=" ROLE_USER , INVOICE_VIEW">
+                <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+            </sec:authorize>
 
-            <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
+            <sec:authorize ifAnyGranted=" ROLE_USER , REPORT_VIEW">
+                <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
+            </sec:authorize>
 
-            <li class="treeview">
-                <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>
-                    <span class="pull-right-container">
+            <sec:authorize ifAnyGranted=" ROLE_USER , PRODUCT_VIEW">
+                <li><a href="${pageContext.request.contextPath}/product/list"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
+            </sec:authorize>
+
+            <sec:authorize ifAnyGranted=" ROLE_USER , ITEM_CREATE">
+                <li><a href="${pageContext.request.contextPath}/item/add"><i class="fa fa-plus-square-o"></i> <span>New Item</span></a></li>
+            </sec:authorize>
+
+
+            <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_VIEW , SALES_ORDER_CREATE , SALES_ORDER_RETURN_VIEW">
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-line-chart"></i> <span>Sales Order</span>
+                        <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/orderreturn/list"><i class="fa fa-backward"></i> <span>Order Return</span></a></li>
-                </ul>
-            </li>
+                    </a>
+                    <ul class="treeview-menu">
 
-            <%--<li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Purchase Order</span>
-                    <span class="pull-right-container">
+                        <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_VIEW">
+                            <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
+                        </sec:authorize>
+
+                        <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_CREATE">
+                            <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
+                        </sec:authorize>
+
+                        <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_RETURN_VIEW">
+                            <li><a href="${pageContext.request.contextPath}/orderreturn/list"><i class="fa fa-backward"></i> <span>Order Return</span></a></li>
+                        </sec:authorize>
+
+                    </ul>
+                </li>
+            </sec:authorize>
+
+
+            <sec:authorize ifAnyGranted=" ROLE_USER , CLIENT_VIEW">
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-address-book-o"></i> <span>Client</span>
+                        <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#">Order List</a></li>
-                    <li><a href="#">Order Add</a></li>
-                    <li><a href="#">Return List</a></li>
-                    <li><a href="#">Return Add</a></li>
-                </ul>
-            </li>--%>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="${pageContext.request.contextPath}/customer/list"><i class="fa fa-male"></i> <span>Customer</span></a></li>
+                        <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-truck"></i> <span>Vendor</span></a></li>
+                    </ul>
+                </li>
 
-            <li class="treeview">
-                <a href="#"><i class="fa fa-address-book-o"></i> <span>Client</span>
-                    <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="${pageContext.request.contextPath}/customer/list"><i class="fa fa-male"></i> <span>Customer</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/vendor/list"><i class="fa fa-truck"></i> <span>Vendor</span></a></li>
-                </ul>
-            </li>
+            </sec:authorize>
+
 
         </ul>
         <!-- /.sidebar-menu -->

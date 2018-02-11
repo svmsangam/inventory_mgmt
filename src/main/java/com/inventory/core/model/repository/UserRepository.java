@@ -19,6 +19,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     User findByUsername(String username);
 
+    @Query("select u from User u join u.permission where u.username = ?1")
+    User findByUsernameJoinPermission(String username);
+
     List<User> findAllByUserTypeAndStoreInfo_Id(UserType userType , long storeId);
 
     User findByIdAndStatus(long userId, Status status);
