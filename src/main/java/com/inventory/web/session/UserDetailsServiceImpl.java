@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException , AccountExpiredException {
 
-		User u = userRepository.findByUsernameJoinPermission(username.trim().toLowerCase());
+		User u = userRepository.findByUsername(username.trim().toLowerCase());
 
 		//System.out.println("login");
 
@@ -57,7 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetailsWrapper userDetailsWrapper = new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString() , userRepository , subscriberServiceApi);
 
 		if (u.getUserType().equals(UserType.USER)) {
-			userDetailsWrapper = new UserDetailsWrapper(u, getAuthorities(u), msg.toString(), userRepository, subscriberServiceApi);
+			userDetailsWrapper = new UserDetailsWrapper(u, getAuthorities(u.getUsername()), msg.toString(), userRepository, subscriberServiceApi);
 		}
 
 		/*if (!userDetailsWrapper.isAccountNonLocked()){
@@ -66,7 +66,32 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userDetailsWrapper;
 	}
 
-	private List<GrantedAuthority> getAuthorities(User user){
+	private List<GrantedAuthority> getAuthorities(String username){
+
+		User user = userRepository.findByUsernameJoinPermission(username);
+
+		if (user == null){
+
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(2);
+
+			authorities.add(new SimpleGrantedAuthority(user.getAuthority()));
+
+			authorities.add(new SimpleGrantedAuthority("ROLE_DASHBOARD"));
+
+			return authorities;
+		}
+
+		if (user.getPermission() == null){
+
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(2);
+
+			authorities.add(new SimpleGrantedAuthority(user.getAuthority()));
+
+			authorities.add(new SimpleGrantedAuthority("ROLE_DASHBOARD"));
+
+			return authorities;
+		}
+
 
 		Set<String> authoritySet = new HashSet<>();
 

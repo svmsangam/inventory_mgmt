@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<sec:authorize ifAnyGranted=" ROLE_USER , CATEGORY_VIEW">
+<sec:authorize ifAnyGranted=" ROLE_USER , SUBCATEGORY_VIEW">
     <li><a href="${pageContext.request.contextPath}/subcategory/list"><i class="fa fa-th-large"></i> <span>Category</span></a></li>
 </sec:authorize>
 

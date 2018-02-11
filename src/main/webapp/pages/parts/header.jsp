@@ -199,7 +199,7 @@
                                         Administrator
                                     </sec:authorize>
 
-                                    <sec:authorize access="hasRole('ROLE_USER')">
+                                    <sec:authorize access="hasAnyRole('ROLE_USER , ROLE_DASHBOARD')">
                                         User
                                     </sec:authorize>
 

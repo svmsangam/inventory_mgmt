@@ -91,50 +91,6 @@
                                 <tr>
                                     <td>Category</td>
                                     <td>
-                                        <div class="checkbox icheck"><label class="myiterat"><c:choose><c:when
-                                                test="${fn:contains(userpermission, 'CATEGORY_CREATE')}"><input
-                                                type="checkbox" name="permissionList" value="CATEGORY_CREATE"
-                                                class="myiterator" checked/></c:when><c:otherwise><input type="checkbox"
-                                                                                                         name="permissionList"
-                                                                                                         value="CATEGORY_CREATE"
-                                                                                                         class="myiterator"/></c:otherwise></c:choose></label></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="checkbox icheck"><label><c:choose><c:when
-                                                test="${fn:contains(userpermission, 'CATEGORY_VIEW')}"><input
-                                                type="checkbox" name="permissionList" value="CATEGORY_VIEW"
-                                                class="myiterator" checked/></c:when><c:otherwise><input type="checkbox"
-                                                                                                         name="permissionList"
-                                                                                                         value="CATEGORY_VIEW"
-                                                                                                         class="myiterator"/></c:otherwise></c:choose></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="checkbox icheck"><label><c:choose><c:when
-                                                test="${fn:contains(userpermission, 'CATEGORY_UPDATE')}"><input
-                                                type="checkbox" name="permissionList" value="CATEGORY_UPDATE"
-                                                class="myiterator" checked/></c:when><c:otherwise><input type="checkbox"
-                                                                                                         name="permissionList"
-                                                                                                         value="CATEGORY_UPDATE"
-                                                                                                         class="myiterator"/></c:otherwise></c:choose></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="checkbox icheck"><label><c:choose><c:when
-                                                test="${fn:contains(userpermission, 'CATEGORY_DELETE')}"><input
-                                                type="checkbox" name="permissionList" value="CATEGORY_DELETE"
-                                                class="myiterator" checked/></c:when><c:otherwise><input type="checkbox"
-                                                                                                         name="permissionList"
-                                                                                                         value="CATEGORY_DELETE"
-                                                                                                         class="myiterator"/></c:otherwise></c:choose></label>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>SubCategory</td>
-                                    <td>
                                         <div class="checkbox icheck"><label><c:choose><c:when
                                                 test="${fn:contains(userpermission, 'SUBCATEGORY_CREATE')}"><input
                                                 type="checkbox" name="permissionList" value="SUBCATEGORY_CREATE"
