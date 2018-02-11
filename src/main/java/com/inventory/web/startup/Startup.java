@@ -41,7 +41,6 @@ public class Startup {
     @Autowired
     private ServiceRepository serviceRepository;
 
-    @PostConstruct
     public void initialize() {
 
         createUser("system", UserType.SYSTEM, "123456", Status.ACTIVE);

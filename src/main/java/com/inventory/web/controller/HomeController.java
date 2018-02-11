@@ -7,6 +7,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.ParameterConstants;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
@@ -50,31 +51,18 @@ public class HomeController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    @RequestMapping(value = "/send", method = RequestMethod.GET)
-    public String toTestJspPage() {
-
-        /*try {
-
-            sendMailSSL.sendMail(from , to , msg, "test mail");
-
-        }catch (Exception e){
-
-        }*/
-
-        logger.info("dhiraj info");
-        logger.debug("dhiraj debug");
-        logger.error("dhiraj error");
-
-        return "test";
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getMainPage(HttpServletRequest request, @ModelAttribute("message") String message, RedirectAttributes redirectAttributes) throws IOException {
+    public String getMainPage(@RequestParam(value = "message" , required = false)String message , RedirectAttributes redirectAttributes) throws IOException {
 
-        if (AuthenticationUtil.getCurrentUser(userApi) == null) {
+        logger.debug("inside getMainPage " );
+
+        if (AuthenticationUtil.getCurrentUser() == null) {
+            logger.debug( "AuthenticationUtil.getCurrentUser ==>> : Null");
             //redirectAttributes.addFlashAttribute(StringConstants.ERROR , "Athentication failed");
             return "dashboard/login";
         }
+
+        logger.debug("AuthenticationUtil.getCurrentUser ==>> : true redirecting to dashboard");
 
         redirectAttributes.addFlashAttribute(ParameterConstants.PARAM_MESSAGE, message);
         return "redirect:/dashboard";
@@ -84,8 +72,8 @@ public class HomeController {
 
     //for business owner
 
-    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String getDashboard(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes , ModelMap modelMap) throws IOException {
+    @GetMapping(value = "/dashboard")
+    public String getDashboard(RedirectAttributes redirectAttributes , ModelMap modelMap) throws IOException {
 
         logger.debug("inside dashboard " );
 

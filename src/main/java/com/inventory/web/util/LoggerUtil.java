@@ -14,4 +14,14 @@ public class LoggerUtil {
         LOGGER.debug("Error message " + exception.getMessage());
     }
 
+    public static void logMessage(Class className, String message) {
+        LOGGER.debug("Message class " + className);
+        LOGGER.debug("Message " + message);
+    }
+
+    public static void main(String[] a){
+        LOGGER.debug("Error new message ");
+        logMessage(LoggerUtil.class , "main class");
+    }
+
 }

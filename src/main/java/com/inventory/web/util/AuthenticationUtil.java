@@ -11,6 +11,32 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthenticationUtil {
 
+    public static final UserDetailsWrapper getCurrentUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return null;
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetailsWrapper) {
+
+            UserDetailsWrapper user = (UserDetailsWrapper) principal;
+
+            return user;
+
+        }
+
+        return null;
+    }
+
+
     public static final InvUserDTO getCurrentUser(IUserApi userApi) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
