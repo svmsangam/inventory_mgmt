@@ -5,7 +5,9 @@ import com.inventory.core.model.converter.SubCategoryInfoConverter;
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.entity.SubCategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
+import com.inventory.core.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +24,21 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;
 
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public SubCategoryInfoDTO save(SubCategoryInfoDTO subCategoryInfoDTO) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoConverter.convertToEntity(subCategoryInfoDTO);
 
         subCategoryInfo.setStatus(Status.ACTIVE);
+
+        subCategoryInfo.setCreatedBy(userRepository.findOne(subCategoryInfoDTO.getCreatedById()));
+        subCategoryInfo.setStoreInfo(storeInfoRepository.findOne(subCategoryInfoDTO.getStoreInfoId()));
 
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
     }
@@ -39,7 +50,9 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
         subCategoryInfo = subCategoryInfoConverter.copyConvertToEntity(subCategoryInfoDTO, subCategoryInfo);
 
-        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
+        subCategoryInfoRepository.save(subCategoryInfo);
+
+        return subCategoryInfoConverter.convertToDto(subCategoryInfo);
     }
 
     @Override
@@ -64,7 +77,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
     @Override
     public List<SubCategoryInfoDTO> getAllByStatusAndStoreInfoAndCagegoryInfo(Status status, long storeId, long categoryId) {
-        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfoAndCategoryInfo(status, storeId, categoryId));
+        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllChildByStatusAndStoreInfoAndCategoryInfo(status, storeId, categoryId));
     }
 
     @Override

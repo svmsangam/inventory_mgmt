@@ -27,7 +27,7 @@
                         <h3 class="box-title">Edit Subcategory</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/subcategory/update" method="post" modelAttribute="subCategory" >
+                    <form action="${pageContext.request.contextPath}/category/update" method="post" modelAttribute="subCategory" >
                         <div class="box-body">
 
                                 <div class="form-group">
@@ -36,11 +36,11 @@
                                         <option value="">select category</option>
                                         <c:forEach items="${categoryList}" var="category">
                                             <c:choose>
-                                                <c:when test="${category.categoryId eq subcategory.categoryId}">
-                                                    <option value="${category.categoryId}" selected>${category.name}</option>
+                                                <c:when test="${subcategory.categoryId ne null and category.subCategoryId eq subcategory.categoryId}">
+                                                    <option value="${category.subCategoryId}" selected>${category.name}</option>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <option value="${category.categoryId}">${category.name}</option>
+                                                    <option value="${category.subCategoryId}">${category.name}</option>
                                                 </c:otherwise>
                                             </c:choose>
 
@@ -49,8 +49,9 @@
                                     <p class="form-error">${error.categoryId}</p>
                                 </div>
                             <div class="form-group">
-                                <label>Subcategory Name</label><input type="hidden" name="subCategoryId" value="${subcategory.subCategoryId}" /> <input type="text" name="name"
-                                                                                                                                                        class="form-control input-sm" value="${subcategory.name}">
+                                <label>Subcategory Name</label>
+                                <input type="hidden" name="subCategoryId" value="${subcategory.subCategoryId}" />
+                                <input type="text" name="name" class="form-control input-sm" value="${subcategory.name}">
                                 <p class="error">${error.name}</p>
                             </div>
                             <div class="form-group">

@@ -23,12 +23,6 @@ import java.util.stream.Collectors;
 public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, SubCategoryInfoDTO>, IListConvertable<SubCategoryInfo, SubCategoryInfoDTO> {
 
     @Autowired
-    private StoreInfoRepository storeInfoRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;
 
     @Override
@@ -53,6 +47,12 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
         dto.setStoreInfoId(entity.getStoreInfo().getId());
         dto.setVersion(entity.getVersion());
+        dto.setDepth(entity.getDepth());
+
+        if (entity.getParent() != null) {
+            dto.setParent(convertToDto(entity.getParent()));
+            dto.setCategoryId(entity.getParent().getId());
+        }
 
         return dto;
     }
@@ -70,18 +70,19 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
 
             if (dto.getCategoryId() <=0){
                 entity.setType(CategoryType.Parent);
+                entity.setDepth(0);
+                entity.setParent(null);
             }else {
                 entity.setParent(subCategoryInfoRepository.findById(dto.getCategoryId()));
                 entity.setType(CategoryType.Child);
+                entity.setDepth(entity.getParent().getDepth() + 1);
             }
 
         }else {
-
+            entity.setDepth(0);
             entity.setType(CategoryType.Parent);
+            entity.setParent(null);
         }
-
-        entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
-        entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
 
         return entity;
     }

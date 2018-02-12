@@ -28,13 +28,13 @@
                     <div class="box-header">
                         <h3 class="box-title">Category List</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/subcategory/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            <a href="${pageContext.request.contextPath}/category/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add
                             </a>
                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="table-responsive">
+                        <div>
                         <table id="table2" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
@@ -51,9 +51,9 @@
                                     <td>${i.index + 1}</td>
                                     <td>${subcategory.name}</td>
                                     <td>${subcategory.code}</td>
-                                    <td>${subcategory.categoryInfoDto.name}</td>
+                                    <td>${subcategory.parent.name}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/subcategory/edit?subCategoryId=${subcategory.subCategoryId}"
+                                        <a href="${pageContext.request.contextPath}/category/edit?subCategoryId=${subcategory.subCategoryId}"
                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
                                             Edit </a>
                                        <%-- <button type="button" class="btn btn-danger btn-sm btn-flat"><span

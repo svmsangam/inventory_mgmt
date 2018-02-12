@@ -27,7 +27,7 @@
                         <h3 class="box-title">Add Category</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/subcategory/save" method="post" modelAttribute="subcategory" >
+                    <form action="${pageContext.request.contextPath}/category/save" method="post" modelAttribute="subcategory" >
                         <div class="box-body">
 
                             <div class="form-group">

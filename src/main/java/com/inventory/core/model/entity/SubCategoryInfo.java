@@ -17,21 +17,49 @@ public class SubCategoryInfo extends AbstractEntity<Long> {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private StoreInfo storeInfo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="parent_id")
     private SubCategoryInfo parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<SubCategoryInfo> childList;
 
     private CategoryType type;
+
+    private int depth;
+
+    public SubCategoryInfo( ){
+    }
+
+    public SubCategoryInfo( long id , String name){
+        this.setId(id);
+        this.name = name;
+    }
+
+    public SubCategoryInfo(long id , String name , String code , String description , int depth ,long parentId , String parentName){
+        this.setId(id);
+        this.name = name;
+        this.code = code;
+        this.description = description;
+        this.depth = depth;
+        this.setParent(new SubCategoryInfo(parentId , parentName));
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
 
     public List<SubCategoryInfo> getChildList() {
         return childList;

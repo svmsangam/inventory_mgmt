@@ -1,3 +1,4 @@
+/*
 package com.inventory.web.controller;
 
 import com.inventory.core.api.iapi.ICategoryInfoApi;
@@ -52,7 +53,9 @@ public class CategoryController {
 
         try {
 
-        /*current user checking start*/
+        */
+/*current user checking start*//*
+
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -78,7 +81,9 @@ public class CategoryController {
                 return "redirect:/";//store not assigned page
             }
 
-        /*current user checking end*/
+        */
+/*current user checking end*//*
+
 
             modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
@@ -96,7 +101,9 @@ public class CategoryController {
 
         try {
 
-                /*current user checking start*/
+                */
+/*current user checking start*//*
+
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -122,7 +129,9 @@ public class CategoryController {
                 return "redirect:/";//store not assigned page
             }
 
-        /*current user checking end*/
+        */
+/*current user checking end*//*
+
         } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
@@ -137,7 +146,9 @@ public class CategoryController {
 
         try {
 
-                /*current user checking start*/
+                */
+/*current user checking start*//*
+
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -160,7 +171,9 @@ public class CategoryController {
                 return "redirect:/";//store not assigned page
             }
 
-        /*current user checking end*/
+        */
+/*current user checking end*//*
+
 
             if (categoryInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
@@ -197,7 +210,9 @@ public class CategoryController {
 
         try {
 
-                /*current user checking start*/
+                */
+/*current user checking start*//*
+
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -225,7 +240,9 @@ public class CategoryController {
 
             CategoryInfoDTO categoryInfoDTO = categoryInfoApi.get(categoryId);
             modelMap.put("category", categoryInfoDTO);
-        /*current user checking end*/
+        */
+/*current user checking end*//*
+
         } catch (Exception e) {
 
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
@@ -240,7 +257,9 @@ public class CategoryController {
 
         try {
 
-                /*current user checking start*/
+                */
+/*current user checking start*//*
+
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -263,7 +282,9 @@ public class CategoryController {
                 return "redirect:/";//store not assigned page
             }
 
-        /*current user checking end*/
+        */
+/*current user checking end*//*
+
 
             if (categoryInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
@@ -309,3 +330,4 @@ public class CategoryController {
 
 
 
+*/

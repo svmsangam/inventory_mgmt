@@ -7,7 +7,7 @@
 --%>
 
 <sec:authorize ifAnyGranted=" ROLE_USER , SUBCATEGORY_VIEW">
-    <li><a href="${pageContext.request.contextPath}/subcategory/list"><i class="fa fa-th-large"></i> <span>Category</span></a></li>
+    <li><a href="${pageContext.request.contextPath}/category/list"><i class="fa fa-th-large"></i> <span>Category</span></a></li>
 </sec:authorize>
 
 <sec:authorize ifAnyGranted=" ROLE_USER , UNIT_VIEW">

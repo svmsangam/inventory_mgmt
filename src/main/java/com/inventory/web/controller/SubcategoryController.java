@@ -16,7 +16,6 @@ import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,7 +28,7 @@ import java.util.Arrays;
 
 
 @Controller
-@RequestMapping("/subcategory")
+@RequestMapping("/category")
 public class SubcategoryController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -51,7 +50,7 @@ public class SubcategoryController {
     public String index(RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/subcategory/list";
+        return "redirect:/category/list";
     }
 
 
@@ -169,7 +168,7 @@ public class SubcategoryController {
 
             if (subCategoryInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/subcategory/add";
+                return "redirect:/category/add";
             }
 
             synchronized (this.getClass()) {
@@ -181,7 +180,7 @@ public class SubcategoryController {
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
                     modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                    modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
                     return "subcategory/add";
                 }
 
@@ -194,7 +193,7 @@ public class SubcategoryController {
             return "redirect:/500";
         }
 
-        return "redirect:/subcategory/list";
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/edit")
@@ -229,8 +228,14 @@ public class SubcategoryController {
             }
 
             SubCategoryInfoDTO subCategoryInfoDTO = subcategoryInfoApi.show(subcategoryId,currentUser.getStoreId(),Status.ACTIVE);
-            modelMap.put("subcategory", subCategoryInfoDTO);
-            modelMap.put(StringConstants.CATEGORY_LIST, categoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+
+            if (subCategoryInfoDTO == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "category not found");
+                return "redirect:/category/list";//store not assigned page
+            }
+
+            modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
+            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
         /*current user checking end*/
         } catch (Exception e) {
 
@@ -273,19 +278,16 @@ public class SubcategoryController {
 
             if (subCategoryInfoDTO == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/tag/add";
+                return "redirect:/category/list";
             }
 
             synchronized (this.getClass()) {
 
-                subCategoryInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                subCategoryInfoDTO.setCreatedById(currentUser.getUserId());
-
-                SubCategoryInfoError error = subCategoryInfoValidation.onSave(subCategoryInfoDTO, bindingResult);
+                SubCategoryInfoError error = subCategoryInfoValidation.onUpdate(subCategoryInfoDTO, bindingResult);
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
-                    modelMap.put(StringConstants.TAG, subCategoryInfoDTO);
+                    modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
                     return "subcategory/add";
                 }
 
@@ -299,18 +301,18 @@ public class SubcategoryController {
         }
 
 
-        return "redirect:/subcategory/list";
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/show")
     public String show(@ModelAttribute("subCategory")SubCategoryInfoDTO subCategoryInfoDTO, ModelMap modelMap,BindingResult bindingResult,RedirectAttributes redirectAttributes) {
 
-        return "redirect:/subcategory/list";
+        return "redirect:/category/list";
     }
 
     @GetMapping(value = "/delete")
     public String delete(@RequestParam("subcategory") long subcategoryId, RedirectAttributes redirectAttributes) {
 
-        return "redirect:/subcategory/list";
+        return "redirect:/category/list";
     }
 }
