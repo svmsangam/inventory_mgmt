@@ -10,7 +10,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%--
 <img class="profile-user-img img-responsive img-circle" src="${pageContext.request.contextPath}/resources/img/avatar.png" alt="User profile picture">
+--%>
 
 <%--<c:if test="${profile.photo ne null}">
     <img class="profile-user-img img-responsive img-circle" src="${pageContext.request.contextPath}/employee/${profile.photo}" alt="User profile picture">

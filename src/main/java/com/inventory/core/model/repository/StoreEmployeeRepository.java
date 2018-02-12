@@ -21,6 +21,12 @@ public interface StoreEmployeeRepository extends JpaRepository<StoreEmployee , L
     @Query("select se.employeeProfile from StoreEmployee se where se.employeeProfile.id = ?1 and se.status = ?2 and se.owner.id in (?3)")
     EmployeeProfile findEmployeeProfileByIdAndStatusAndOwnerIn(long employeeId , Status status , List<Long> ownerIdList);
 
+    @Query("select se from StoreEmployee se where se.employeeProfile.id = ?1 and se.status = ?2 and se.owner.id = ?3")
+    StoreEmployee findByIdAndStatusAndOwner(long employeeId , Status status , long owner);
+
+    @Query("select se from StoreEmployee se where se.employeeProfile.id = ?1 and se.status = ?2 and se.owner.id in (?3)")
+    StoreEmployee findByIdAndStatusAndOwnerIn(long employeeId , Status status , List<Long> ownerIdList);
+
     @Query("select se.employeeProfile from StoreEmployee se where se.status = ?1 and se.owner.id = ?2")
     List<EmployeeProfile> findAllEmployeeProfileByStatusAndOwner(Status status , long ownerId);
 

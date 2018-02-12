@@ -172,7 +172,7 @@
                                     <p class="form-error">${profileError.designationId}</p>
                                 </div>
 
-                                <div class="col-md-4 form-group">
+                                <%--<div class="col-md-4 form-group">
                                     <label class="control-label">Status</label>
                                     <select name="employeeStatus" class="form-control select2" id="employeeStatus">
                                         <option value="" selected>select status</option>
@@ -202,7 +202,7 @@
                                     </span>
                                     </div>
                                     <p class="form-error">${profileError.joinDate}</p>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                         <!-- /.box-body -->

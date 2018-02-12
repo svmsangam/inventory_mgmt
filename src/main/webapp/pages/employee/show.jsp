@@ -94,12 +94,10 @@
                         <li role="presentation" class="active"><a href="#home" aria-controls="home"
                                                                   role="tab" data-toggle="tab">Home</a>
                         </li>
-                        <li role="presentation"><a href="#user" aria-controls="user" role="tab"
+                       <%-- <li role="presentation"><a href="#user" aria-controls="user" role="tab"
                                                    data-toggle="tab">Profile</a></li>
-                        <li role="presentation"><a href="#service" aria-controls="service" role="tab"
-                                                   data-toggle="tab">Salary Details</a></li>
                         <li role="presentation"><a href="#store" aria-controls="store" role="tab"
-                                                   data-toggle="tab">store</a></li>
+                                                   data-toggle="tab">store</a></li>--%>
                     </ul>
 
                     <div class="tab-content">
@@ -110,10 +108,6 @@
 
                         <div role="tabpanel" class="tab-pane" id="user">
                             jujnjn
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane" id="service">
-                            subscriber service details
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="store">
@@ -130,7 +124,7 @@
                                 </tr>
                                 </thead>
                                 <tbody id="myData">
-                                <c:forEach var="store" items="${storeList}" varStatus="i">
+                                <%--<c:forEach var="store" items="${storeList}" varStatus="i">--%>
                                     <tr>
                                         <td>${i.index + 1}</td>
                                         <td>${store.name}</td>
@@ -138,11 +132,12 @@
                                         <td>${store.email}</td>
                                         <td>${store.cityName}</td>
                                         <td>${store.street}</td>
-                                        <td><c:if test="${store.status eq 'ACTIVE'}"><span class="label label-success">Active</span></c:if>
+                                        <td>
+                                            <c:if test="${store.status eq 'ACTIVE'}"><span class="label label-success">Active</span></c:if>
                                             <c:if test="${store.status ne 'ACTIVE'}"><span class="label label-danger">Deactive</span></c:if>
                                         </td>
                                     </tr>
-                                </c:forEach>
+                               <%-- </c:forEach>--%>
                                 </tbody>
                             </table>
                         </div>
