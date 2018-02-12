@@ -28,7 +28,6 @@
             </a>
             <ul class="treeview-menu" style="display: none;">
                 <li><a href="${pageContext.request.contextPath}/profile/list"><i class="fa fa-list"></i> List</a></li>
-                <li><a href="${pageContext.request.contextPath}/qualification/list"><i class="fa fa-list"></i>Qualification</a></li>
                 <li><a href="${pageContext.request.contextPath}/designation/list"><i class="fa fa-list"></i> Designation</a></li>
             </ul>
         </li>

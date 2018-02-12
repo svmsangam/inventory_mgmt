@@ -3,6 +3,7 @@ package com.inventory.core.model.converter;
 import com.inventory.core.model.dto.EmployeeProfileDTO;
 import com.inventory.core.model.entity.EmployeeProfile;
 import com.inventory.core.model.repository.CityInfoRepository;
+import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
@@ -28,6 +29,9 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
 
     @Autowired
     private CityInfoRepository cityInfoRepository;
+
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
     @Override
     public EmployeeProfile convertToEntity(EmployeeProfileDTO dto) {
@@ -82,7 +86,10 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
             return null;
         }
 
-        entity.setCitizenShipCity(cityInfoRepository.findOne(dto.getCitizenShipCityId()));
+        if (dto.getCitizenShipCityId() != null) {
+            entity.setCitizenShipCity(cityInfoRepository.findOne(dto.getCitizenShipCityId()));
+        }
+
         entity.setCitizenShipNo(dto.getCitizenShipNo());
         entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
         entity.setEmail(dto.getEmail());
@@ -92,10 +99,14 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
         entity.setMiddleName(dto.getMiddleName());
         entity.setMobileNumber(dto.getMobileNumber());
         entity.setPermanentAddress(dto.getPermanentAddress());
-        entity.setPermanentCity(cityInfoRepository.findOne(dto.getPermanentCityId()));
+        if (dto.getPermanentCityId() != null) {
+            entity.setPermanentCity(cityInfoRepository.findOne(dto.getPermanentCityId()));
+        }
         entity.setTemporaryAddress(dto.getTemporaryAddress());
         entity.setTemporaryCity(cityInfoRepository.findOne(dto.getTemporaryCityId()));
         entity.setUser(userRepository.findById(dto.getUserId()));
+        entity.setOwner(storeInfoRepository.findById(dto.getOwnerId()));
+
 
         return entity;
     }

@@ -59,7 +59,7 @@
 
                                 <div class="col-md-6 form-group">
                                     <label class="control-label">Permanent City</label>
-                                    <select name="permanentCityId" class="form-control select2" id="lotId" required>
+                                    <select name="permanentCityId" class="form-control select2" required>
                                         <option value="" selected>select city</option>
                                         <c:forEach items="${cityList}" var="city">
                                             <c:choose>
