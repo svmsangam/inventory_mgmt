@@ -189,6 +189,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
@@ -283,12 +284,14 @@ public class SubcategoryController {
 
             synchronized (this.getClass()) {
 
-                SubCategoryInfoError error = subCategoryInfoValidation.onUpdate(subCategoryInfoDTO, bindingResult);
+                SubCategoryInfoError error = subCategoryInfoValidation.onUpdate(subCategoryInfoDTO, bindingResult , currentUser.getStoreId());
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
                     modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                    return "subcategory/add";
+                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+
+                    return "subcategory/edit";
                 }
 
                 subcategoryInfoApi.update(subCategoryInfoDTO);

@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
     @Autowired
@@ -31,6 +30,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public SubCategoryInfoDTO save(SubCategoryInfoDTO subCategoryInfoDTO) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoConverter.convertToEntity(subCategoryInfoDTO);
@@ -44,6 +44,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     }
 
     @Override
+    @Transactional
     public SubCategoryInfoDTO update(SubCategoryInfoDTO subCategoryInfoDTO) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryInfoDTO.getSubCategoryId());
@@ -56,6 +57,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     }
 
     @Override
+    @Transactional
     public void delete(long subCategoryId) {
 
         SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryId);
@@ -67,7 +69,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
     @Override
     public SubCategoryInfoDTO show(long subCategoryId, long storeId, Status status) {
-        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryId, status, storeId));
+        return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subCategoryId, status, storeId));
     }
 
     @Override

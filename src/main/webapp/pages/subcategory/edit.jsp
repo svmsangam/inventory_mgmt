@@ -35,36 +35,38 @@
                                     <select name="categoryId" class="form-control select2" id="cityId">
                                         <option value="">select category</option>
                                         <c:forEach items="${categoryList}" var="category">
-                                            <c:choose>
-                                                <c:when test="${subcategory.categoryId ne null and category.subCategoryId eq subcategory.categoryId}">
-                                                    <option value="${category.subCategoryId}" selected>${category.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${category.subCategoryId}">${category.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
 
+                                            <c:if test="${category.subCategoryId ne subcategory.subCategoryId}">
+                                                <c:choose>
+                                                    <c:when test="${subcategory.categoryId ne null and category.subCategoryId eq subcategory.categoryId}">
+                                                        <option value="${category.subCategoryId}" selected>${category.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${category.subCategoryId}">${category.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:if>
                                         </c:forEach>
                                     </select>
-                                    <p class="form-error">${error.categoryId}</p>
+                                    <p class="form-error">${subcategoryError.categoryId}</p>
                                 </div>
                             <div class="form-group">
                                 <label>Subcategory Name</label>
                                 <input type="hidden" name="subCategoryId" value="${subcategory.subCategoryId}" />
                                 <input type="text" name="name" class="form-control input-sm" value="${subcategory.name}">
-                                <p class="error">${error.name}</p>
+                                <p class="error">${subcategoryError.name}</p>
                             </div>
                             <div class="form-group">
                                 <label>Code</label> <input type="text" name="code"
                                                            class="form-control input-sm" required="required"
                                                            value="${subcategory.code}">
-                                <p class="error">${error.code}</p>
+                                <p class="error">${subcategoryError.code}</p>
                             </div>
                                 <div class="form-group">
                                     <label>Description</label> <input type="text" name="description"
                                                                class="form-control input-sm" required="required"
                                                                value="${subcategory.description}">
-                                    <p class="error">${error.description}</p>
+                                    <p class="error">${subcategoryError.description}</p>
                                 </div>
                         </div>
                         <!-- /.box-body -->

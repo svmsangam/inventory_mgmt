@@ -19,8 +19,7 @@ public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo
 
     SubCategoryInfo findById(long subCategoryId);
 
-    @Query("select s from SubCategoryInfo s where s.id = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
-    SubCategoryInfo findByIdAndStatusAndStoreInfo(long subCategoryId, Status status, long storeId);
+    SubCategoryInfo findByIdAndStatusAndStoreInfo_Id(long subCategoryId, Status status, long storeId);
 
     SubCategoryInfo findByName(String name);
 

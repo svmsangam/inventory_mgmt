@@ -26,7 +26,6 @@ public class SubCategoryInfo extends AbstractEntity<Long> {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="parent_id")
     private SubCategoryInfo parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL , fetch = FetchType.LAZY)

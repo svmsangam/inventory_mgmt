@@ -93,7 +93,7 @@ public class SubCategoryInfoValidation extends GlobalValidation {
 
         if (!("".equals(error.getCategoryId()))) {
             valid = false;
-        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
+        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
             valid = false;
             error.setCategoryId("invalid category");
         }
@@ -105,8 +105,9 @@ public class SubCategoryInfoValidation extends GlobalValidation {
     }
 
 
-    public SubCategoryInfoError onUpdate(SubCategoryInfoDTO subCategoryInfoDTO, BindingResult result) {
+    public SubCategoryInfoError onUpdate(SubCategoryInfoDTO subCategoryInfoDTO, BindingResult result , long storeId) {
 
+        subCategoryInfoDTO.setStoreInfoId(storeId);
         valid = true;
 
         if (result.hasErrors()) {
@@ -177,7 +178,7 @@ public class SubCategoryInfoValidation extends GlobalValidation {
 
         if (!("".equals(error.getCategoryId()))) {
             valid = false;
-        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
+        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
             valid = false;
             error.setCategoryId("invalid category");
         }

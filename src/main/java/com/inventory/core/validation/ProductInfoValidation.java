@@ -153,22 +153,22 @@ public class ProductInfoValidation extends GlobalValidation {
                 return false;
             }
 
-            error.setSubCategoryId(checkLong(subcategoryId, 1, "subcategoryId", true));
+            error.setSubCategoryId(checkLong(subcategoryId, 1, "categoryId", true));
 
             if (!"".equals(error.getSubCategoryId())) {
 
                 return false;
 
-            } else if (subCategoryInfoRepository.findByIdAndStatusAndStoreInfo(subcategoryId, Status.ACTIVE, storeId) == null) {
+            } else if (subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subcategoryId, Status.ACTIVE, storeId) == null) {
 
-                error.setSubCategoryId("invalid subcategory");
+                error.setSubCategoryId("invalid category");
 
                 return false;
             }
 
         } catch (Exception e) {
             logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
-            error.setSubCategoryId("invalid subcategory");
+            error.setSubCategoryId("invalid category");
             return false;
         }
 

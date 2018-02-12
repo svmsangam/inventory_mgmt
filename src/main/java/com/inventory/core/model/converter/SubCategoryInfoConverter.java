@@ -43,9 +43,16 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setStatus(entity.getStatus());
-        dto.setCreatedById(entity.getCreatedBy().getId());
-        dto.setCreatedByName(entity.getCreatedBy().getUsername());
-        dto.setStoreInfoId(entity.getStoreInfo().getId());
+/*
+        if (entity.getCreatedBy() != null) {
+            dto.setCreatedById(entity.getCreatedBy().getId());
+            dto.setCreatedByName(entity.getCreatedBy().getUsername());
+        }
+
+        if (entity.getStoreInfo() != null) {
+            dto.setStoreInfoId(entity.getStoreInfo().getId());
+        }*/
+
         dto.setVersion(entity.getVersion());
         dto.setDepth(entity.getDepth());
 
