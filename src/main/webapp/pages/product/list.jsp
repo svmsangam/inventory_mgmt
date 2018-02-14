@@ -51,7 +51,6 @@
                                 <th>Trend</th>
                                 <th>SubCategory</th>
                                 <th>Instock</th>
-                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,15 +62,6 @@
                                     <td>${product.trendingLevel}</td>
                                     <td>${product.subCategoryInfo.name}</td>
                                     <td>${product.stockInfo.inStock}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
-                                                data-toggle="modal" data-target="#modal-edit"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
-                                                class="glyphicon glyphicon-minus-sign"></span> Delete
-                                        </button>
-                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>

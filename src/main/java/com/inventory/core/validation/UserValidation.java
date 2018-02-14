@@ -19,6 +19,7 @@ import org.springframework.validation.FieldError;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by dhiraj on 5/2/17.
@@ -240,6 +241,15 @@ public class UserValidation extends GlobalValidation {
 
 
     private String checkUserName(String username) {
+
+        Pattern pattern = Pattern.compile("[A-Za-z0-9_]+");
+
+        boolean valid = pattern.matcher(username).matches();
+
+        if (!valid){
+
+            return "invalid username format";
+        }
 
         if (userRepository.findByUsername(username.trim()) != null) {
 

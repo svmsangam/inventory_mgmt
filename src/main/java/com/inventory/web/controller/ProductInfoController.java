@@ -122,7 +122,7 @@ public class ProductInfoController {
 
             modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-            modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
 
             modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
 
@@ -181,7 +181,7 @@ public class ProductInfoController {
                     modelMap.put(StringConstants.PRODUCT_ERROR, error);
                     modelMap.put(StringConstants.PRODUCT, productInfoDTO);
                     modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                    modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
 
                     return "product/add";

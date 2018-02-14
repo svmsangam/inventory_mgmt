@@ -46,7 +46,6 @@
                                 <tr>
                                     <th>SN</th>
                                     <th>Name</th>
-                                    <th>username</th>
                                     <th>mobile</th>
                                     <th>email</th>
                                 </tr>
@@ -57,7 +56,6 @@
                                     <tr>
                                         <td>${i.index + 1}</td>
                                         <td><a href="${pageContext.request.contextPath}/profile/show/${profile.employeeProfileId}">${profile.firstName} ${profile.middleName} ${profile.lastName}</a></td>
-                                        <td>${profile.username}</td>
                                         <td>${profile.mobileNumber}</td>
                                         <td>${profile.email}</td>
                                     </tr>
