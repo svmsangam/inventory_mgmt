@@ -53,6 +53,7 @@
                                             <th>Trend</th>
                                             <th>Category</th>
                                             <th>Instock</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -64,6 +65,7 @@
                                                 <td>${product.trendingLevel}</td>
                                                 <td>${product.subCategoryInfo.name}</td>
                                                 <td>${product.stockInfo.inStock}</td>
+                                                <td><a href="${pageContext.request.contextPath}/product/edit?productId=${product.productId}" class="btn btn-danger"><i class="fa fa-edit"></i> edit </a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

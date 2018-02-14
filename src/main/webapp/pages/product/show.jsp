@@ -17,6 +17,17 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
+    <section class="content-header">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <c:forEach items="${categoryList}" var="category" >
+                    <li class="breadcrumb-item" aria-current="page"> ${category.categoryName}</li>
+                </c:forEach>
+                <li class="breadcrumb-item active" aria-current="page"> ${product.name}</li>
+            </ol>
+        </nav>
+    </section>
+
     <section class="content">
         <c:if test="${not empty message}">
             <div class="alert alert-success alert-dismissable">
@@ -37,10 +48,6 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title text-bold">
-                            <c:forEach items="${categoryList}" var="category" >
-                                ${category.categoryName} &nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;
-
-                            </c:forEach>
                             ${product.name}
                         </h3>
                         <div class="box-tools">
