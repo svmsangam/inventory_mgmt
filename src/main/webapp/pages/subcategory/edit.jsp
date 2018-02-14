@@ -35,9 +35,9 @@
                                     <select name="categoryId" class="form-control select2" id="cityId">
                                         <option value="">select category</option>
                                         <c:forEach items="${categoryList}" var="category">
-                                            <c:if test="${category.categoryId ne subcategory.subCategoryId}">
+                                            <c:if test="${category.categoryId ne subcategory.categoryId}">
                                                 <c:choose>
-                                                    <c:when test="${category.categoryId eq subcategory.subCategoryId}">
+                                                    <c:when test="${category.categoryId eq subcategory.parentId}">
                                                         <option value="${category.categoryId}" selected>${category.categoryName}</option>
                                                     </c:when>
                                                     <c:otherwise>
@@ -51,14 +51,14 @@
                                 </div>
                             <div class="form-group">
                                 <label>Subcategory Name</label>
-                                <input type="hidden" name="subCategoryId" value="${subcategory.subCategoryId}" />
-                                <input type="text" name="name" class="form-control input-sm" value="${subcategory.name}">
+                                <input type="hidden" name="subCategoryId" value="${subcategory.categoryId}" />
+                                <input type="text" name="name" class="form-control input-sm" value="${subcategory.categoryName}">
                                 <p class="error">${subcategoryError.name}</p>
                             </div>
                             <div class="form-group">
                                 <label>Code</label> <input type="text" name="code"
                                                            class="form-control input-sm" required="required"
-                                                           value="${subcategory.code}">
+                                                           value="${subcategory.categoryCode}">
                                 <p class="error">${subcategoryError.code}</p>
                             </div>
                                 <div class="form-group">

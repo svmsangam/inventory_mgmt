@@ -76,6 +76,11 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     }
 
     @Override
+    public CategoryDomain showLite(long categoryId, long storeId, Status status) {
+        return subCategoryInfoRepository.findLiteCategoryByIdAndStatusAndStoreInfo_Id(categoryId, status, storeId);
+    }
+
+    @Override
     public CategoryDomain getLiteCategory(long subCategoryId, long storeId, Status status) {
         return subCategoryInfoRepository.findLiteCategoryByIdAndStatusAndStoreInfo_Id(subCategoryId, status, storeId);
     }

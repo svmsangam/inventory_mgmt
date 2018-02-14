@@ -16,6 +16,8 @@ public interface ISubcategoryInfoApi {
 
     SubCategoryInfoDTO show(long subCategoryId, long storeId, Status status);
 
+    CategoryDomain showLite(long categoryId, long storeId, Status status);
+
     CategoryDomain getLiteCategory(long subCategoryId, long storeId, Status status);
 
     List<CategoryDomain> list(Status status, long storeId);

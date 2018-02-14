@@ -7,6 +7,7 @@ import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.SubCategoryInfoValidation;
 import com.inventory.web.error.SubCategoryInfoError;
@@ -228,7 +229,7 @@ public class SubcategoryController {
                 return "redirect:/";//store not assigned page
             }
 
-            SubCategoryInfoDTO subCategoryInfoDTO = subcategoryInfoApi.show(subcategoryId,currentUser.getStoreId(),Status.ACTIVE);
+            CategoryDomain subCategoryInfoDTO = subcategoryInfoApi.showLite(subcategoryId,currentUser.getStoreId(),Status.ACTIVE);
 
             if (subCategoryInfoDTO == null){
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "category not found");
