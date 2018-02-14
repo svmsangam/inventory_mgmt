@@ -138,6 +138,78 @@ public class OrderInfoController {
         return "order/listSale";
     }
 
+    @GetMapping(value = "/sale/inactive")
+    public String listSaleInactive(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+
+            /*current user checking end*/
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            long totalList = orderInfoApi.countListSale(Status.INACTIVE, currentUser.getStoreId());
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.INACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
+            modelMap.put("lastpage", totalpage);
+            modelMap.put("currentpage", page);
+            modelMap.put("pagelist", pagesnumbers);
+
+        } catch (Exception e) {
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/";
+        }
+
+        return "order/listSaleInactive";
+    }
+
     @GetMapping(value = "/sale/add")
     public String addOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -374,6 +446,66 @@ public class OrderInfoController {
 
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
             return "redirect:/order/sale/list";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping(value = "/sale/quit")
+    public String quitQuick(@RequestParam("orderId")long orderId , ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+
+            /*current user checking end*/
+
+            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE , orderId , currentUser.getStoreId());
+
+            if (orderInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+                return "redirect:/order/sale/inactive";
+            }
+
+            synchronized (this){
+                orderInfoApi.cancelQuickSale(orderId );
+            }
+
+            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
+            return "redirect:/order/sale/inactive";
 
         } catch (Exception e) {
             e.printStackTrace();

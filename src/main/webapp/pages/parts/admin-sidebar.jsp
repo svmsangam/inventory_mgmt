@@ -62,6 +62,7 @@
                 <ul class="treeview-menu">
                     <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/order/sale/add"><i class="fa fa-plus"></i> <span>Order Add</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/order/sale/inactive"><i class="fa fa-trash-o"></i> <span>Order Inactive</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/orderreturn/list"><i class="fa fa-backward"></i> <span>Order Return</span></a></li>
                 </ul>
             </li>

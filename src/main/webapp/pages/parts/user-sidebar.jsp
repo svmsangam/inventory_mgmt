@@ -76,6 +76,11 @@
 
                         <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_VIEW">
                             <li><a href="${pageContext.request.contextPath}/order/sale/list"><i class="fa fa-list-ul"></i> <span>Order List</span></a></li>
+
+                        </sec:authorize>
+
+                        <sec:authorize ifAnyGranted=" ROLE_USER , INVOICE_VIEW">
+                            <li><a href="${pageContext.request.contextPath}/order/sale/inactive"><i class="fa fa-trash-o"></i> <span>Order Inactive</span></a></li>
                         </sec:authorize>
 
                         <sec:authorize ifAnyGranted=" ROLE_USER , SALES_ORDER_CREATE">
