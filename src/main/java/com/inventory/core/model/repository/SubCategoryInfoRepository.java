@@ -1,6 +1,7 @@
 package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.SubCategoryInfo;
+import com.inventory.core.model.enumconstant.CategoryType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.liteentity.CategoryDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,4 +39,8 @@ public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo
 
     @Query("select new com.inventory.core.model.liteentity.CategoryDomain(s.id , s.name , s.code , s.description , s.depth , p.id , p.name) from SubCategoryInfo s left join s.parent  as p where s.status = ?1 and s.storeInfo.id = ?2 order by s.id desc")
     List<CategoryDomain> findAllByStatusAndStoreInfo(Status status, long storeId);
+
+    @Query("select new com.inventory.core.model.liteentity.CategoryDomain(s.id , s.name , s.code , s.description , s.depth , p.id , p.name) from SubCategoryInfo s left join s.parent  as p where s.status = ?1 and s.storeInfo.id = ?2 and s.type = ?3 order by s.id desc")
+    List<CategoryDomain> findAllByStatusAndStoreInfoAndType(Status status, long storeId , CategoryType type);
+
 }

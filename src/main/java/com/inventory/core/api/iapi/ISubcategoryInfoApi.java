@@ -24,4 +24,5 @@ public interface ISubcategoryInfoApi {
 
     SubCategoryInfoDTO getSubCategoryByNameAndStoreAndStatus(String subCategoryName, long storeId, Status status);
 
+    List<CategoryDomain> getTree(Status status, long storeId);
 }

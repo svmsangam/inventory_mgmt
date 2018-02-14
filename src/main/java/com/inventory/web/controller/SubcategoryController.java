@@ -84,7 +84,7 @@ public class SubcategoryController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
 
         } catch (Exception e) {
 
@@ -124,7 +124,7 @@ public class SubcategoryController {
             }
         /*current user checking end*/
 
-            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
+            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE , currentUser.getStoreId()));
 
         } catch (Exception e) {
 
@@ -180,7 +180,7 @@ public class SubcategoryController {
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
                     modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
                     return "subcategory/add";
                 }
 
@@ -236,7 +236,7 @@ public class SubcategoryController {
             }
 
             modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
         /*current user checking end*/
         } catch (Exception e) {
 
@@ -289,7 +289,7 @@ public class SubcategoryController {
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.SUBCATEGORY_ERROR, error);
                     modelMap.put(StringConstants.SUBCATEGORY, subCategoryInfoDTO);
-                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.CATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
 
                     return "subcategory/edit";
                 }

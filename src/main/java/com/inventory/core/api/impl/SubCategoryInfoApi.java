@@ -4,6 +4,7 @@ import com.inventory.core.api.iapi.ISubcategoryInfoApi;
 import com.inventory.core.model.converter.SubCategoryInfoConverter;
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.entity.SubCategoryInfo;
+import com.inventory.core.model.enumconstant.CategoryType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.model.repository.StoreInfoRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -93,5 +95,15 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.findByNameAndStatusAndStoreInfo(subCategoryName, status, storeId));
     }
 
+    @Override
+    public List<CategoryDomain> getTree(Status status, long storeId){
 
+        List<CategoryDomain> parentList = subCategoryInfoRepository.findAllByStatusAndStoreInfoAndType(status , storeId , CategoryType.Parent);
+
+        List<CategoryDomain> childList = subCategoryInfoRepository.findAllByStatusAndStoreInfoAndType(status , storeId , CategoryType.Child);
+
+        CategoryTreeService tree = new CategoryTreeService(childList);
+
+        return tree.getTree(parentList);
+    }
 }
