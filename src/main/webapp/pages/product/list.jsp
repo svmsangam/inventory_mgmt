@@ -41,31 +41,88 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="table-responsive">
-                        <table id="table2" class="display" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th>SN</th>
-                                <th>Name</th>
-                                <th>Code</th>
-                                <th>Trend</th>
-                                <th>SubCategory</th>
-                                <th>Instock</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="product" items="${productList}" varStatus="i">
-                                <tr>
-                                    <td>${i.index + 1}</td>
-                                    <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
-                                    <td>${product.code}</td>
-                                    <td>${product.trendingLevel}</td>
-                                    <td>${product.subCategoryInfo.name}</td>
-                                    <td>${product.stockInfo.inStock}</td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>SN</th>
+                                            <th>Name</th>
+                                            <th>Code</th>
+                                            <th>Trend</th>
+                                            <th>Category</th>
+                                            <th>Instock</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="product" items="${productList}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
+                                                <td>${product.code}</td>
+                                                <td>${product.trendingLevel}</td>
+                                                <td>${product.subCategoryInfo.name}</td>
+                                                <td>${product.stockInfo.inStock}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <c:if test="${fn:length(pagelist) gt 1}">
+
+                                    <div class="col-xs-12">
+                                        <nav class="pull-right">
+                                            <ul class="pagination">
+
+                                                <c:if test="${currentpage > 1}">
+                                                    <li class="page-item">
+
+                                                        <a href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage-1}"
+                                                           class="page-link">Prev</a>
+                                                    </li>
+                                                </c:if>
+
+                                                <c:forEach var="pagelist" items="${pagelist}">
+                                                    <c:choose>
+                                                        <c:when test="${pagelist == currentpage}">
+
+                                                            <li class="page-item active">
+                                                  <span class="page-link">
+                                                    ${pagelist}
+                                                    <span class="sr-only">(current)</span>
+                                                  </span>
+                                                            </li>
+
+                                                        </c:when>
+                                                        <c:otherwise>
+
+                                                            <li class="page-item"><a class="page-link"
+                                                                                     href="${pageContext.request.contextPath}/product/list?pageNo=${pagelist}">${pagelist}</a>
+                                                            </li>
+
+                                                        </c:otherwise>
+
+                                                    </c:choose>
+                                                </c:forEach>
+
+                                                <c:if test="${currentpage + 1 <= lastpage}">
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage+1}">Next</a>
+                                                    </li>
+                                                </c:if>
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -74,85 +131,6 @@
             </div>
         </div>
     </section>
-
-    <div class="modal fade" id="modal-add">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Tag</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Name">
-                                <p class="error">${error.name}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" name="code" placeholder="Code">
-                                <p class="error">${error.code}</p>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                    <button type="submit" pagecontext="${pageContext.request.contextPath}"
-                            url="${pageContext.request.contextPath}/tag/save"  class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-    <div class="modal fade" id="modal-edit">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit Tag</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/tag/edit"
-                          modelAttribute="tagInfoDto">
-                        <input type="hidden" name="tagId" value="${tagInfo.tagId}"/>
-                        <div class="box-body">
-
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" value="" required>
-                                <p class="error">${error.name}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" name="code" value="" placeholder="Code">
-                                <p class="error">${error.code}</p>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <button type="submit" url="${pageContext.request.contextPath}/tag/update" class="btn btn-primary savetag">Save changes</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 </div>
 
 <%@include file="/pages/parts/footer.jsp" %>

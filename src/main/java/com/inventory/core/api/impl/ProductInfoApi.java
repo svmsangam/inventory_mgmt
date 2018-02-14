@@ -11,6 +11,9 @@ import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,11 +79,6 @@ public class ProductInfoApi implements IProductInfoApi{
     }
 
     @Override
-    public ProductInfoDTO getByNameAndStoreAndStatus(String productName, long storeId, Status status) {
-        return null;
-    }
-
-    @Override
     public ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status) {
         return productInfoConverter.convertToDtoDetail(productInfoRepository.findByIdAndStatusAndStoreInfo(productInfoId , status , storeId));
     }
@@ -105,6 +103,24 @@ public class ProductInfoApi implements IProductInfoApi{
     @Override
     public List<ProductInfoDTO> list(Status status, long storeId) {
         return productInfoConverter.convertToDtoList(productInfoRepository.findAllByStatusAndStoreInfo(status , storeId));
+    }
+
+    private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
+
+        return new PageRequest(page, size, new Sort(direction, properties));
+    }
+
+    @Override
+    public List<ProductInfoDTO> list(Status status, long storeId, int page, int size) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return productInfoConverter.convertToDtoList(productInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+    }
+
+    @Override
+    public long countList(Status status, long storeId) {
+        return productInfoRepository.countAllByStatusAndStoreInfo_Id(status , storeId);
     }
 
     @Override

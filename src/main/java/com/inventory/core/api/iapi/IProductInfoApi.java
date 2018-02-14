@@ -17,13 +17,15 @@ public interface IProductInfoApi {
 
     void delete(long productInfoId);
 
-    ProductInfoDTO getByNameAndStoreAndStatus(String productName, long storeId, Status status);
-
     ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status);
 
     List<CategoryDomain> getAllCategory(long productInfoCategoryId, long storeId, Status status ,  List<CategoryDomain> categoryDomainList);
 
     List<ProductInfoDTO> list(Status status, long storeId);
+
+    List<ProductInfoDTO> list(Status status, long storeId , int page , int size);
+
+    long countList(Status status, long storeId);
 
     double getTotalCosting(long productId);
 }

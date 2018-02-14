@@ -3,6 +3,7 @@ package com.inventory.web.controller;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.ProductInfoDTO;
+import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.TrendingLevel;
@@ -10,6 +11,7 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.ProductInfoValidation;
 import com.inventory.web.error.ProductInfoError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by dhiraj on 8/23/17.
@@ -51,7 +54,7 @@ public class ProductInfoController {
     private ProductInfoValidation productInfoValidation;
 
     @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String list(@RequestParam(value = "pageNo", required = false) Integer page , ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -80,7 +83,30 @@ public class ProductInfoController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            long totalList = productInfoApi.countList(Status.ACTIVE, currentUser.getStoreId());
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+            modelMap.put("lastpage", totalpage);
+            modelMap.put("currentpage", page);
+            modelMap.put("pagelist", pagesnumbers);
+            modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE, currentUser.getStoreId() , currentpage, (int) PageInfo.pageList ));
 
         } catch (Exception e) {
 
