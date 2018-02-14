@@ -176,6 +176,7 @@ public class UnitController {
                 }
 
                 unitInfoApi.save(unitInfoDTO);
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit saved successfully");
             }
 
         } catch (Exception e) {
@@ -271,7 +272,7 @@ public class UnitController {
                 unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
                 unitInfoDTO.setCreatedById(currentUser.getUserId());
 
-                UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
+                UnitInfoError error = unitInfoValidation.onUpdate(unitInfoDTO, bindingResult);
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.UNIT_ERROR, error);
@@ -280,6 +281,8 @@ public class UnitController {
                 }
 
                 unitInfoApi.update(unitInfoDTO);
+
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit updated successfully");
             }
 
         } catch (Exception e) {

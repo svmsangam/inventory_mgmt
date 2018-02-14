@@ -170,8 +170,10 @@ public class TagController {
                     return "tag/add";
                 }
 
-                System.out.println("save");
                 tagInfoApi.save(tagInfoDTO);
+
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "tag saved successfully");
+
             }
 
         } catch (Exception e) {
@@ -230,7 +232,7 @@ public class TagController {
     }
 
     @PostMapping(value = "/update")
-    public String update(@ModelAttribute("tag")TagInfoDTO tagInfoDTO, ModelMap modelMap,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("tag")TagInfoDTO tagInfoDTO , BindingResult bindingResult , ModelMap modelMap , RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -269,7 +271,7 @@ public class TagController {
                 tagInfoDTO.setStoreInfoId(currentUser.getStoreId());
                 tagInfoDTO.setCreatedById(currentUser.getUserId());
 
-                TagInfoError error = tagInfoValidation.onSave(tagInfoDTO, bindingResult);
+                TagInfoError error = tagInfoValidation.onUpdate(tagInfoDTO, bindingResult);
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.TAG_ERROR, error);
@@ -278,6 +280,9 @@ public class TagController {
                 }
 
                 tagInfoApi.update(tagInfoDTO);
+
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "tag updated successfully");
+
             }
 
         } catch (Exception e) {
