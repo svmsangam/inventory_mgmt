@@ -176,7 +176,6 @@ public class OrderInfoController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
             modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
             modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
@@ -234,7 +233,6 @@ public class OrderInfoController {
 
                 if (!error.isValid()) {
 
-                    modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
                     modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
                     modelMap.put(StringConstants.ORDER_ERROR, error);
@@ -313,7 +311,6 @@ public class OrderInfoController {
 
         /*current user checking end*/
 
-            modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
             modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
             modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
 
@@ -432,7 +429,7 @@ public class OrderInfoController {
 
                 if (!error.isValid()) {
 
-                    modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByStatusAndStoreWithStock(Status.ACTIVE, currentUser.getStoreId()));
+                    orderInfoDTO.setOrderItemInfoDTOList(orderItemInfoApi.getAllOnValidationFaild(orderInfoDTO.getOrderItemInfoDTOList() , currentUser.getStoreId()));
                     modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
                     modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
                     modelMap.put(StringConstants.ORDER_ERROR, error);

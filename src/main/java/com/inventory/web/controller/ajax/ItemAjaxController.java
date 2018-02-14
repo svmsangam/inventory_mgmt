@@ -4,6 +4,7 @@ import com.inventory.core.api.iapi.IItemInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
+import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
@@ -71,7 +72,6 @@ public class ItemAjaxController {
                 return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
             }
 
-
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
             result.setDetail(itemInfoApi.getByIdAndStoreAndStatus(itemId , currentUser.getStoreId() , Status.ACTIVE));
@@ -85,4 +85,43 @@ public class ItemAjaxController {
 
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
+
+
+    @GetMapping(value = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("term") String term, HttpServletRequest request) {
+        RestResponseDTO result = new RestResponseDTO();
+
+        try {
+
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                request.getSession().invalidate();
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+
+                request.getSession().invalidate();
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            result.setStatus(ResponseStatus.SUCCESS.getValue());
+            result.setMessage("store successfully saved");
+            result.setDetail(itemInfoApi.search(Status.ACTIVE , term , 0 , 50 , currentUser.getStoreId()));
+
+
+        } catch (Exception e) {
+            logger.error("Stack trace: " + e.getStackTrace());
+            result.setStatus(ResponseStatus.FAILURE.getValue());
+            result.setMessage("internal server error");
+        }
+
+        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+    }
+
 }

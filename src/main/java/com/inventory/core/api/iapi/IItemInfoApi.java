@@ -3,6 +3,7 @@ package com.inventory.core.api.iapi;
 import com.inventory.core.model.dto.ItemInfoDTO;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.ItemDomain;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface IItemInfoApi {
     void updateInStockOnSaleTrack(SalesOrderStatus track , long orderId);
 
     void updateInStockOnSaleReturn(long orderReturnIdId);
+
+    List<ItemDomain> search(Status status ,String term , int page , int size , long storeId);
 }

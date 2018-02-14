@@ -33,12 +33,19 @@
         </div>
         </c:if>
 
+        <c:if test="${not empty orderError.error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${orderError.error}</strong>
+            </div>
+        </c:if>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Add Sales Order</h3>
-                        <div class="pull-right">Order No. #${orderNo}<p class="form-error">${orderError.orderNo}</p><p class="form-error">${orderError.error}</p></div>
+                        <div class="pull-right">Order No. #${orderNo}<p class="form-error">${orderError.orderNo}</p></div>
                     </div>
                     <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="order">
 

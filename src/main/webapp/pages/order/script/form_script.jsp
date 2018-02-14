@@ -67,7 +67,7 @@
     function addRow() {
 
         var row = "<tr class='border-bottom itemTable' >";
-        row += "<td><select class='form-control item' name='' url='${pageContext.request.contextPath}/item/show'><option value=''>select item</option><c:forEach items="${itemList}" var="item"><option value='${item.itemId}'>${item.productInfo.name}-${item.tagInfo.name}</option></c:forEach> </select></td>";
+        row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'></select></td>";
         row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
         row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
         row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
@@ -75,15 +75,14 @@
         row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
         row += "</tr>";
         $("#customFields").prepend(row);
-        $(".item").select2();
+        /*$(".item").select2();*/
+        select2Item($(".item"));
         count++;
         max ++;
         updateName();
     }
 
     $(document).ready(function () {
-
-        $(".item").select2();
 // for dynamically add or remove row
         $("#add_row").click(function () {
             //alert(count);
@@ -153,4 +152,53 @@
     })( jQuery );
 
 </script>
+
+
+<script>
+
+    function select2Item(that) {
+
+            $(that).select2({
+                ajax: {
+                    url: '${pageContext.request.contextPath}/item/search',
+                    dataType: 'json',
+                    headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    delay: 250,
+                    type: 'GET',
+                    data: function (params) {
+                        return {
+                            term: params.term, // search term
+                            /* page: params.page*/
+                        };
+                    },
+                    processResults: function (data , params) {
+                        params.page = params.page || 1;
+                        var arr = []
+                        $.each(data.detail, function (index, value) {
+
+                            arr.push({
+                                id: value.itemId,
+                                text: value.productName + ' - ' + value.itemName
+                            })
+                        })
+
+
+
+                        return {
+                            results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                placeholder: "Search item by Name & code"
+            });
+        }
+
+</script>
+
 

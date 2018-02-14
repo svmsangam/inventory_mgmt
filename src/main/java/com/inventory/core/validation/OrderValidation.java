@@ -51,7 +51,6 @@ public class OrderValidation extends GlobalValidation {
 
         valid = true;
 
-
         if (result.hasErrors()) {
 
             valid = false;
@@ -62,6 +61,10 @@ public class OrderValidation extends GlobalValidation {
 
                 if (errorResult.getField().equals("orderNo")) {
                     error.setOrderNo("invalid order number");
+                }else if (errorResult.getField().equals("orderDate")) {
+                    error.setOrderDate("invalid order date");
+                }else if (errorResult.getField().equals("deliveryDate")) {
+                    error.setDeliveryDate("invalid delivery date");
                 }
             }
 

@@ -11,6 +11,8 @@ public class OrderItemInfoDTO {
 
     private long itemInfoId;
 
+    private String itemName;
+
     private ItemInfoDTO itemInfoDTO;
 
     private long orderInfoId;
@@ -28,6 +30,14 @@ public class OrderItemInfoDTO {
     private double amount;
 
     private Status status;
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
     public int getReturnQuantity() {
         return returnQuantity;

@@ -15,6 +15,8 @@ public interface IOrderItemInfoApi {
 
     List<OrderItemInfoDTO> getAllByStatusAndOrderInfo(Status status , long orderId);
 
+    List<OrderItemInfoDTO> getAllOnValidationFaild( List<OrderItemInfoDTO> itemInfoDTOList , long storeId);
+
     double getTotalAmountByStatusAndOrderInfo(Status status , long orderId);
 
     double getTotalSaleAmountOfItem(long itemId );

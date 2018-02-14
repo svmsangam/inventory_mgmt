@@ -95,18 +95,8 @@
                             <tr class="border-bottom itemTable">
                                 <td>
                                     <select class='form-control item' name="orderItemInfoDTOList[${i.index}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
-                                        <option value="">select item</option>
-                                        <c:forEach items="${itemList}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.itemId eq orderItem.itemInfoId}">
-                                                    <option value="${item.itemId}" selected>${item.productInfo.name}-${item.tagInfo.name}</option>
-                                                    <c:set var="rate" value="${item.sellingPrice}"></c:set>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.itemId}">${item.productInfo.name}-${item.tagInfo.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
+                                         <option value="${orderItem.itemInfoId}" selected>${orderItem.itemName}</option>
+                                        <c:set var="rate" value="${orderItem.rate}"></c:set>
                                     </select>
                                 </td>
                                 <td><input onkeypress="return validate(event);" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>

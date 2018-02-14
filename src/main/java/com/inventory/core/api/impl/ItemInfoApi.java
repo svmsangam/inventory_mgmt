@@ -9,11 +9,15 @@ import com.inventory.core.model.entity.OrderItemInfo;
 import com.inventory.core.model.entity.ReturnItemInfo;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.ItemDomain;
 import com.inventory.core.model.liteentity.ReturnItemInfoDomain;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.OrderItemInfoRepository;
 import com.inventory.core.model.repository.ReturnItemInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -136,5 +140,18 @@ public class ItemInfoApi implements IItemInfoApi{
             itemInfoRepository.save(itemInfo);
 
         }
+    }
+
+    private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
+
+        return new PageRequest(page, size, new Sort(direction, properties));
+    }
+
+    @Override
+    public List<ItemDomain> search(Status status, String term, int page, int size, long storeId) {
+
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+
+        return itemInfoRepository.search(term , status , storeId , pageable);
     }
 }
