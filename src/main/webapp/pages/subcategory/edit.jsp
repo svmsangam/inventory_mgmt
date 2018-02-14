@@ -35,14 +35,13 @@
                                     <select name="categoryId" class="form-control select2" id="cityId">
                                         <option value="">select category</option>
                                         <c:forEach items="${categoryList}" var="category">
-
-                                            <c:if test="${category.subCategoryId ne subcategory.subCategoryId}">
+                                            <c:if test="${category.categoryId ne subcategory.subCategoryId}">
                                                 <c:choose>
-                                                    <c:when test="${subcategory.categoryId ne null and category.subCategoryId eq subcategory.categoryId}">
-                                                        <option value="${category.subCategoryId}" selected>${category.name}</option>
+                                                    <c:when test="${category.categoryId eq subcategory.subCategoryId}">
+                                                        <option value="${category.categoryId}" selected>${category.categoryName}</option>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <option value="${category.subCategoryId}">${category.name}</option>
+                                                        <option value="${category.categoryId}">${category.categoryName}</option>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </c:if>

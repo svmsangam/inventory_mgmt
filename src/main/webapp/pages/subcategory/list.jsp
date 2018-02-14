@@ -49,11 +49,11 @@
                             <c:forEach var="subcategory" items="${subcategoryList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
-                                    <td>${subcategory.name}</td>
-                                    <td>${subcategory.code}</td>
-                                    <td>${subcategory.parent.name}</td>
+                                    <td>${subcategory.categoryName}</td>
+                                    <td>${subcategory.categoryCode}</td>
+                                    <td>${subcategory.parentName}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/category/edit?subCategoryId=${subcategory.subCategoryId}"
+                                        <a href="${pageContext.request.contextPath}/category/edit?subCategoryId=${subcategory.categoryId}"
                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
                                             Edit </a>
                                        <%-- <button type="button" class="btn btn-danger btn-sm btn-flat"><span

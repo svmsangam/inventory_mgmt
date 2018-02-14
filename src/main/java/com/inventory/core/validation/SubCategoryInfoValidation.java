@@ -178,9 +178,23 @@ public class SubCategoryInfoValidation extends GlobalValidation {
 
         if (!("".equals(error.getCategoryId()))) {
             valid = false;
-        } else if (subCategoryInfoDTO.getCategoryId() != null && subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId()) == null) {
-            valid = false;
-            error.setCategoryId("invalid category");
+        } else if (subCategoryInfoDTO.getCategoryId() != null) {
+
+            if (subCategoryInfoDTO.getCategoryId() == subCategoryInfoDTO.getSubCategoryId()){
+                valid = false;
+                error.setCategoryId("same category can not be parent self");
+            } else {
+
+                SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findByIdAndStatusAndStoreInfo_Id(subCategoryInfoDTO.getCategoryId(), Status.ACTIVE, subCategoryInfoDTO.getStoreInfoId());
+
+                if (subCategoryInfo == null) {
+                    valid = false;
+                    error.setCategoryId("invalid category");
+                } else if (subCategoryInfo.getDepth() == 10) {
+                    valid = false;
+                    error.setCategoryId("this category already reached child limit");
+                }
+            }
         }
 
         error.setValid(valid);

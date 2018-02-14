@@ -2,16 +2,21 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.IProductInfoApi;
 import com.inventory.core.api.iapi.IStockInfoApi;
+import com.inventory.core.api.iapi.ISubcategoryInfoApi;
 import com.inventory.core.model.converter.ProductInfoConverter;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,6 +37,9 @@ public class ProductInfoApi implements IProductInfoApi{
 
     @Autowired
     private ItemInfoRepository itemInfoRepository;
+
+    @Autowired
+    private ISubcategoryInfoApi subcategoryInfoApi;
 
     @Override
     public ProductInfoDTO save(ProductInfoDTO productInfoDTO) {
@@ -75,6 +83,23 @@ public class ProductInfoApi implements IProductInfoApi{
     @Override
     public ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status) {
         return productInfoConverter.convertToDtoDetail(productInfoRepository.findByIdAndStatusAndStoreInfo(productInfoId , status , storeId));
+    }
+
+    @Override
+    public List<CategoryDomain> getAllCategory(long productInfoCategoryId, long storeId, Status status ,  List<CategoryDomain> categoryDomainList) {
+
+        CategoryDomain categoryDomain = subcategoryInfoApi.getLiteCategory(productInfoCategoryId , storeId , status);
+
+        categoryDomainList.add(categoryDomain);
+
+        if (categoryDomain.getDepth() == 0) {
+
+            Collections.reverse(categoryDomainList);
+
+            return categoryDomainList;
+        }
+
+        return getAllCategory(categoryDomain.getParentId() , storeId , status , categoryDomainList);
     }
 
     @Override

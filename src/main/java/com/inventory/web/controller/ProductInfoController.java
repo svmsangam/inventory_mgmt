@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -237,13 +238,18 @@ public class ProductInfoController {
                 return "redirect:/product/list";//store not assigned page
             }
 
-            modelMap.put(StringConstants.PRODUCT, productInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE));
+            ProductInfoDTO productInfoDTO = productInfoApi.getByIdAndStoreAndStatus(productId, currentUser.getStoreId(), Status.ACTIVE);
 
-            if (modelMap.get(StringConstants.PRODUCT) == null){
-                return "redirect:/400";
+            if (productInfoDTO == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "product not found");
+                return "redirect:/product/list";//store not assigned page
             }
 
+            modelMap.put(StringConstants.PRODUCT, productInfoDTO);
+
             modelMap.put(StringConstants.ITEM_LIST, itemInfoApi.getAllByProductAndStatusAndStore(productId, Status.ACTIVE , currentUser.getStoreId()));
+
+            modelMap.put(StringConstants.CATEGORY_LIST , productInfoApi.getAllCategory(productInfoDTO.getSubCategoryId() , currentUser.getStoreId() , Status.ACTIVE ,  new ArrayList<>()));
 
         } catch (Exception e) {
 

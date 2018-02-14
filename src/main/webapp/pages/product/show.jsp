@@ -36,7 +36,13 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title text-bold">${product.name}</h3>
+                        <h3 class="box-title text-bold">
+                            <c:forEach items="${categoryList}" var="category" >
+                                ${category.categoryName} &nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;
+
+                            </c:forEach>
+                            ${product.name}
+                        </h3>
                         <div class="box-tools">
                             <a href="${pageContext.request.contextPath}/product/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add New Product
                             </a>
@@ -51,8 +57,6 @@
                                 <th>Unit</th>
                                 <th>Code</th>
                                 <th>Trend</th>
-                                <th>Category</th>
-                                <th>SubCategory</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,8 +64,6 @@
                                     <td>${product.unitInfo.name}</td>
                                     <td>${product.code}</td>
                                     <td>${product.trendingLevel}</td>
-                                    <td>${product.subCategoryInfo.categoryInfoDto.name}</td>
-                                    <td>${product.subCategoryInfo.name}</td>
                                 </tr>
                             </tbody>
                         </table>

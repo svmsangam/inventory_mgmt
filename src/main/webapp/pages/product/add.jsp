@@ -36,11 +36,11 @@
                                     <option value="">select subcategory</option>
                                     <c:forEach items="${subcategoryList}" var="subcategory">
                                         <c:choose>
-                                            <c:when test="${subcategory.subCategoryId eq product.subCategoryId}">
-                                                <option value="${subcategory.subCategoryId}" selected>${subcategory.name}</option>
+                                            <c:when test="${subcategory.categoryId eq product.subCategoryId}">
+                                                <option value="${subcategory.subCategoryId}" selected>${subcategory.categoryName}</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="${subcategory.subCategoryId}">${subcategory.name}</option>
+                                                <option value="${subcategory.categoryId}">${subcategory.categoryName}</option>
                                             </c:otherwise>
                                         </c:choose>
 

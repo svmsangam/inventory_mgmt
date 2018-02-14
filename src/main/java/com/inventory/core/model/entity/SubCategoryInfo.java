@@ -35,23 +35,6 @@ public class SubCategoryInfo extends AbstractEntity<Long> {
 
     private int depth;
 
-    public SubCategoryInfo( ){
-    }
-
-    public SubCategoryInfo( long id , String name){
-        this.setId(id);
-        this.name = name;
-    }
-
-    public SubCategoryInfo(long id , String name , String code , String description , int depth ,long parentId , String parentName){
-        this.setId(id);
-        this.name = name;
-        this.code = code;
-        this.description = description;
-        this.depth = depth;
-        this.setParent(new SubCategoryInfo(parentId , parentName));
-    }
-
     public int getDepth() {
         return depth;
     }

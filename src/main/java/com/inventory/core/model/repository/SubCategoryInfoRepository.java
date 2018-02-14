@@ -2,6 +2,7 @@ package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.SubCategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.CategoryDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,9 @@ public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo
 
     SubCategoryInfo findByIdAndStatusAndStoreInfo_Id(long subCategoryId, Status status, long storeId);
 
+    @Query("select new com.inventory.core.model.liteentity.CategoryDomain(s.id , s.name , s.code , s.description , s.depth , p.id , p.name) from SubCategoryInfo s left join s.parent  as p where s.id = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
+    CategoryDomain findLiteCategoryByIdAndStatusAndStoreInfo_Id(long subCategoryId, Status status, long storeId);
+
     SubCategoryInfo findByName(String name);
 
     @Query("select s from SubCategoryInfo s where s.name = ?1 and s.status = ?2 and s.storeInfo.id = ?3")
@@ -32,6 +36,6 @@ public interface SubCategoryInfoRepository extends JpaRepository<SubCategoryInfo
     @Query("select sc from SubCategoryInfo s join s.childList as sc where s.status = ?1 and s.storeInfo.id = ?2 and s.id = ?3 order by s.id desc")
     List<SubCategoryInfo> findAllChildByStatusAndStoreInfoAndCategoryInfo(Status status, long storeId, long categoryId);
 
-    @Query("select s from SubCategoryInfo s where s.status = ?1 and s.storeInfo.id = ?2 order by s.id desc")
-    List<SubCategoryInfo> findAllByStatusAndStoreInfo(Status status, long storeId);
+    @Query("select new com.inventory.core.model.liteentity.CategoryDomain(s.id , s.name , s.code , s.description , s.depth , p.id , p.name) from SubCategoryInfo s left join s.parent  as p where s.status = ?1 and s.storeInfo.id = ?2 order by s.id desc")
+    List<CategoryDomain> findAllByStatusAndStoreInfo(Status status, long storeId);
 }

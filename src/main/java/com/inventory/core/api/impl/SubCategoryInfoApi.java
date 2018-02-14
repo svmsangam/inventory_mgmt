@@ -5,6 +5,7 @@ import com.inventory.core.model.converter.SubCategoryInfoConverter;
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.entity.SubCategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
@@ -73,8 +74,13 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     }
 
     @Override
-    public List<SubCategoryInfoDTO> list(Status status, long storeId) {
-        return subCategoryInfoConverter.convertToDtoList(subCategoryInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
+    public CategoryDomain getLiteCategory(long subCategoryId, long storeId, Status status) {
+        return subCategoryInfoRepository.findLiteCategoryByIdAndStatusAndStoreInfo_Id(subCategoryId, status, storeId);
+    }
+
+    @Override
+    public List<CategoryDomain> list(Status status, long storeId) {
+        return subCategoryInfoRepository.findAllByStatusAndStoreInfo(status, storeId);
     }
 
     @Override
