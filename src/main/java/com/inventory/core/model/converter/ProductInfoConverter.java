@@ -23,12 +23,6 @@ import java.util.stream.Collectors;
 public class ProductInfoConverter implements IConvertable<ProductInfo, ProductInfoDTO>, IListConvertable<ProductInfo, ProductInfoDTO> {
 
     @Autowired
-    private StoreInfoRepository storeInfoRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;
 
     @Autowired
@@ -123,10 +117,8 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         }
 
         entity.setCode(dto.getCode().trim());
-        entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
         entity.setDescription(dto.getDescription().trim());
         entity.setName(dto.getName().trim());
-        entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
         entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()));
         entity.setTrendingLevel(dto.getTrendingLevel());
         entity.setUnitInfo(unitInfoRepository.findById(dto.getUnitId()));

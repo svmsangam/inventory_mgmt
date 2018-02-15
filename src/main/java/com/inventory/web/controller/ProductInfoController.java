@@ -214,6 +214,7 @@ public class ProductInfoController {
                 }
 
                 productInfoDTO = productInfoApi.save(productInfoDTO);
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "product saved successfully");
             }
 
         } catch (Exception e) {
@@ -345,5 +346,69 @@ public class ProductInfoController {
 
         return "product/edit";
     }
+
+    @PostMapping(value = "/update")
+    public String update(@ModelAttribute("product") ProductInfoDTO productInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            /*current user checking end*/
+
+            if (productInfoDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/product/add";
+            }
+
+            synchronized (this.getClass()) {
+                productInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
+                ProductInfoError error = productInfoValidation.onUpdate(productInfoDTO, bindingResult);
+
+                if (!error.isValid()) {
+                    modelMap.put(StringConstants.PRODUCT_ERROR, error);
+                    modelMap.put(StringConstants.PRODUCT, productInfoDTO);
+                    modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.SUBCATEGORY_LIST, subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
+                    modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
+
+                    return "product/edit";
+                }
+
+                productInfoDTO = productInfoApi.update(productInfoDTO);
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "product updated successfully");
+            }
+
+        } catch (Exception e) {
+
+            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "redirect:/product/" + productInfoDTO.getProductId();
+    }
+
 
 }

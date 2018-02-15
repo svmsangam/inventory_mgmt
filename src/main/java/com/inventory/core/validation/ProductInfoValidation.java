@@ -1,6 +1,7 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.ProductInfoDTO;
+import com.inventory.core.model.entity.ProductInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
@@ -87,6 +88,85 @@ public class ProductInfoValidation extends GlobalValidation {
         return error;
     }
 
+    public ProductInfoError onUpdate(ProductInfoDTO productInfoDTO, BindingResult result) {
+
+        error = new ProductInfoError();
+
+        boolean valid = true;
+
+        if (result.hasErrors()) {
+
+            List<FieldError> errors = result.getFieldErrors();
+            for (FieldError errorResult : errors) {
+
+                if (errorResult.getField().equals("name")) {
+                    error.setName("invalid store name");
+                } else if (errorResult.getField().equals("code")) {
+                    error.setCode("invalid code");
+                } else if (errorResult.getField().equals("description")) {
+                    error.setDescription("invalid description");
+                } else if (errorResult.getField().equals("trendingLevel")) {
+                    error.setTrendingLevel("invalid trendingLevel");
+                } else if (errorResult.getField().equals("subCategoryId")) {
+                    error.setSubCategoryId("invalid subCategory");
+                } else if (errorResult.getField().equals("unitId")) {
+                    error.setUnitId("invalid unit");
+                }else if (errorResult.getField().equals("productId")) {
+                    error.setName("invalid product");
+                }
+            }
+
+            error.setValid(false);
+
+            return error;
+        }
+
+        valid = valid && checkProduct(productInfoDTO.getProductId() , productInfoDTO.getStoreInfoId());
+
+        valid = valid && checkNameOnUpdate(productInfoDTO.getName(), productInfoDTO.getStoreInfoId() , productInfoDTO.getProductId());
+
+        valid = valid && checkCodeOnUpdate(productInfoDTO.getCode(), productInfoDTO.getStoreInfoId() , productInfoDTO.getProductId());
+
+        valid = valid && checkDescription(productInfoDTO.getDescription());
+
+        valid = valid && checkSubCategory(productInfoDTO.getSubCategoryId(), productInfoDTO.getStoreInfoId());
+
+        valid = valid && checkUnit(productInfoDTO.getUnitId(), productInfoDTO.getStoreInfoId());
+
+        if (productInfoDTO.getTrendingLevel() == null){
+            valid = false;
+            error.setTrendingLevel("trending level required");
+        }
+
+        error.setValid(valid);
+
+        return error;
+    }
+
+    private boolean checkProduct(Long productId , long storeId){
+        try {
+            error.setName(checkLong(productId, 0, "name", true));
+
+            if (!("".equals(error.getName()))) {
+
+                return false;
+
+            } else if (productInfoRepository.findByIdAndStatusAndStoreInfo(productId, Status.ACTIVE, storeId) == null) {
+
+                error.setName("product not found to update");
+
+                return false;
+            }
+        }catch (Exception e){
+            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            error.setName("invalid product");
+            return false;
+        }
+
+        return true;
+    }
+
+
     private boolean checkName(String value, long storeId) {
 
         try {
@@ -112,6 +192,39 @@ public class ProductInfoValidation extends GlobalValidation {
         return true;
     }
 
+    private boolean checkNameOnUpdate(String value, long storeId , long productId) {
+
+        try {
+
+            error.setName(checkString(value, 3, 50, "name", true));
+
+            if (!("".equals(error.getName()))) {
+
+                return false;
+
+            } else {
+
+                ProductInfo productInfo = productInfoRepository.findByNameAndStatusAndStoreInfo(value.trim(), Status.ACTIVE, storeId);
+
+                if (productInfo != null){
+                    if (productInfo.getId() != productId){
+                        error.setName("this name already in use");
+
+                        return false;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            error.setName("invalid name");
+            return false;
+        }
+
+        return true;
+    }
+
+
     private boolean checkCode(String value, long storeId) {
 
         try {
@@ -127,6 +240,38 @@ public class ProductInfoValidation extends GlobalValidation {
                 error.setName("this code already in use");
 
                 return false;
+            }
+        } catch (Exception e) {
+            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            error.setName("invalid code");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkCodeOnUpdate(String value, long storeId , long productId) {
+
+        try {
+
+            error.setCode(checkString(value, 1, 50, "code", true));
+
+            if (!("".equals(error.getCode()))) {
+
+                return false;
+
+            } else {
+
+                ProductInfo productInfo = productInfoRepository.findByCodeAndStatusAndStoreInfo(value.trim(), Status.ACTIVE, storeId);
+
+                if (productInfo != null){
+                    if (productInfo.getId() != productId){
+                        error.setName("this code already in use");
+
+                        return false;
+                    }
+                }
+
             }
         } catch (Exception e) {
             logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));

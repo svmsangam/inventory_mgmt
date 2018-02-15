@@ -10,6 +10,8 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.liteentity.CategoryDomain;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
+import com.inventory.core.model.repository.StoreInfoRepository;
+import com.inventory.core.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,12 +46,20 @@ public class ProductInfoApi implements IProductInfoApi{
     @Autowired
     private ISubcategoryInfoApi subcategoryInfoApi;
 
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public ProductInfoDTO save(ProductInfoDTO productInfoDTO) {
 
         ProductInfo productInfo = productInfoConverter.convertToEntity(productInfoDTO);
 
         productInfo.setStatus(Status.ACTIVE);
+        productInfo.setCreatedBy(userRepository.findOne(productInfoDTO.getCreatedById()));
+        productInfo.setStoreInfo(storeInfoRepository.findOne(productInfoDTO.getStoreInfoId()));
 
         productInfo = productInfoRepository.save(productInfo);
 
