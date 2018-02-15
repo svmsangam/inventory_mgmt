@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: dhiraj
-  Date: 8/24/17
-  Time: 9:43 PM
+  User: bidhee
+  Date: 2/15/18
+  Time: 10:27 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -24,11 +24,13 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Product</h3>
+                        <h3 class="box-title">Edit Product</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/product/save" method="post" modelAttribute="product" >
+                    <form action="${pageContext.request.contextPath}/product/update" method="post" modelAttribute="product" >
                         <div class="box-body">
+
+                            <input type="hidden" name="productId" value="${product.productId}">
 
                             <div class="form-group">
                                 <label class="control-label">SubCategory</label>
@@ -128,6 +130,7 @@
         $('.select2').select2()
     })
 </script>
+
 
 
 
