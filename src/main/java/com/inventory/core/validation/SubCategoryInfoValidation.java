@@ -3,7 +3,6 @@ package com.inventory.core.validation;
 import com.inventory.core.model.dto.SubCategoryInfoDTO;
 import com.inventory.core.model.entity.SubCategoryInfo;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.model.repository.CategoryInfoRepository;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
 import com.inventory.web.error.SubCategoryInfoError;
 import org.slf4j.Logger;
@@ -23,9 +22,6 @@ import java.util.Objects;
 public class SubCategoryInfoValidation extends GlobalValidation {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private CategoryInfoRepository categoryInfoRepository;
 
     @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;

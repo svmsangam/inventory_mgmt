@@ -1,6 +1,5 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.ICategoryInfoApi;
 import com.inventory.core.api.iapi.ISubcategoryInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -42,10 +41,6 @@ public class SubcategoryController {
 
     @Autowired
     private SubCategoryInfoValidation subCategoryInfoValidation;
-
-    @Autowired
-    private ICategoryInfoApi categoryInfoApi;
-
 
     @GetMapping(value = "/")
     public String index(RedirectAttributes redirectAttributes) {
