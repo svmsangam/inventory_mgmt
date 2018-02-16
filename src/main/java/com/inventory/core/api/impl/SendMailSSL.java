@@ -51,6 +51,16 @@ public class SendMailSSL implements ISendMailSSL {
     @Override
     public void sendMail(String from, String to, String msg, String sub) {
 
+        taskExecutor.execute( new Runnable() {
+            public void run() {
+                simpleMailHalper(from , to , msg , sub);
+            }
+        });
+
+    }
+
+    private void simpleMailHalper(String from, String to, String msg, String sub) {
+
         try {
 
             Properties properties = getProperty();
@@ -64,16 +74,12 @@ public class SendMailSSL implements ISendMailSSL {
             message.setSubject(sub);
             message.setText(msg);
 
-            taskExecutor.execute( new Runnable() {
-                public void run() {
-                    try {
-                        Transport.send(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
-                    }
-                }
-            });
+            try {
+                Transport.send(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
+            }
 
             System.out.println("Done");
 
@@ -90,6 +96,16 @@ public class SendMailSSL implements ISendMailSSL {
 
     @Override
     public void sendHtmlMail(String from, String to, String msg, String sub) {
+
+        taskExecutor.execute( new Runnable() {
+            public void run() {
+                htmlMailHelper(from, to, msg, sub);
+            }
+        });
+
+    }
+
+    private void htmlMailHelper(String from, String to, String msg, String sub) {
 
         try {
 
@@ -122,24 +138,14 @@ public class SendMailSSL implements ISendMailSSL {
             /*if (replyto != null)
                 message.setReplyTo(new InternetAddress[]{new InternetAddress(replyto)});
             else*/
-                message.setReplyTo(new InternetAddress[]{new InternetAddress(from)});
+            message.setReplyTo(new InternetAddress[]{new InternetAddress(from)});
 
             InternetAddress[] toAddresses = {new InternetAddress(to)};
             message.setRecipients(Message.RecipientType.TO, toAddresses);
             message.setSubject(sub);
             message.setSentDate(new Date());
 
-            taskExecutor.execute( new Runnable() {
-                public void run() {
-                    try {
-                        Transport.send(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
-                    }
-                }
-            });
-
+            Transport.send(message);
 
         } catch (AddressException e) {
             e.printStackTrace();
