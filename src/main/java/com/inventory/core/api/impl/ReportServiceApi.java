@@ -255,7 +255,7 @@ class ReportServiceApi implements IReportServiceApi {
             cell4.setPaddingLeft(5);
             table.addCell(cell4);
 
-            double amount = orderItemDTO.getRate() * orderItemDTO.getQuantity();
+            double amount = orderItemDTO.getRate() * orderItemDTO.getQuantityAfterReturn();
 
             amount = amount - (amount * (orderItemDTO.getDiscount() / 100));
 

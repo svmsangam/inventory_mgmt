@@ -179,7 +179,7 @@ public class XLSReport extends AbstractXlsxView {
             Cell cellDiscount = rownew.createCell(4);
             cellDiscount.setCellValue(formatter(orderItemDTO.getDiscount()));
 
-            double amount = orderItemDTO.getRate() * orderItemDTO.getQuantity();
+            double amount = orderItemDTO.getRate() * orderItemDTO.getQuantityAfterReturn();
 
             amount = amount - (amount * (orderItemDTO.getDiscount() / 100));
 
