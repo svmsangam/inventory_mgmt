@@ -1,3 +1,4 @@
+/*
 package com.inventory.core.config;
 
 import org.springframework.context.annotation.Bean;
@@ -5,9 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+*/
 /**
  * Created by dhiraj on 2/5/18.
- */
+ *//*
+
 
 @Configuration
 public class ThreadConfig {
@@ -30,3 +33,4 @@ public class ThreadConfig {
     }
 }
 
+*/

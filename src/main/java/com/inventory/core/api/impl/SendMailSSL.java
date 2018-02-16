@@ -3,6 +3,8 @@ package com.inventory.core.api.impl;
 import com.inventory.core.api.iapi.ISendMailSSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -17,6 +19,9 @@ import java.util.Properties;
 public class SendMailSSL implements ISendMailSSL {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     private Properties getProperty() {
 
@@ -59,7 +64,16 @@ public class SendMailSSL implements ISendMailSSL {
             message.setSubject(sub);
             message.setText(msg);
 
-            Transport.send(message);
+            taskExecutor.execute( new Runnable() {
+                public void run() {
+                    try {
+                        Transport.send(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
+                    }
+                }
+            });
 
             System.out.println("Done");
 
@@ -115,7 +129,17 @@ public class SendMailSSL implements ISendMailSSL {
             message.setSubject(sub);
             message.setSentDate(new Date());
 
-            Transport.send(message);
+            taskExecutor.execute( new Runnable() {
+                public void run() {
+                    try {
+                        Transport.send(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
+                    }
+                }
+            });
+
 
         } catch (AddressException e) {
             e.printStackTrace();
@@ -133,4 +157,5 @@ public class SendMailSSL implements ISendMailSSL {
             logger.info("Email sent! to : " + to + " : by : " + from);
         }
     }
+
 }
