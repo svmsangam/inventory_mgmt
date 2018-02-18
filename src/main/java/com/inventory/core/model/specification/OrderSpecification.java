@@ -40,19 +40,19 @@ public class OrderSpecification  implements Specification<OrderInfo> {
         }
 
         if(filterDTO.getFrom()!=null){
-            predicates.add(cb.greaterThan(root.get("orderDate"),filterDTO.getFrom()));
+            predicates.add(cb.greaterThanOrEqualTo(root.get("orderDate"),filterDTO.getFrom()));
         }
 
         if(filterDTO.getTo()!=null){
-            predicates.add(cb.lessThan(root.get("orderDate"),filterDTO.getTo()));
+            predicates.add(cb.lessThanOrEqualTo(root.get("orderDate"),filterDTO.getTo()));
         }
 
         if(filterDTO.getDlfrom()!=null){
-            predicates.add(cb.greaterThan(root.get("deliveryDate"),filterDTO.getFrom()));
+            predicates.add(cb.greaterThanOrEqualTo(root.get("deliveryDate"),filterDTO.getDlfrom()));
         }
 
         if(filterDTO.getDlto()!=null){
-            predicates.add(cb.lessThan(root.get("deliveryDate"),filterDTO.getTo()));
+            predicates.add(cb.lessThanOrEqualTo(root.get("deliveryDate"),filterDTO.getDlto()));
         }
 
         predicates.add(cb.equal(root.get("storeInfo").get("id"),filterDTO.getStoreId()));
