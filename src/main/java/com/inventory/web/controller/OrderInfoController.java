@@ -12,6 +12,7 @@ import com.inventory.core.validation.OrderValidation;
 import com.inventory.core.validation.PaymentInfoValidation;
 import com.inventory.web.error.OrderError;
 import com.inventory.web.error.PaymentInfoError;
+import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
@@ -24,6 +25,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -128,6 +131,9 @@ public class OrderInfoController {
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
+            modelMap.put(StringConstants.SALE_TRACK_LIST , SalesOrderStatus.values());
+
 
         } catch (Exception e) {
             logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
@@ -136,6 +142,101 @@ public class OrderInfoController {
         }
 
         return "order/listSale";
+    }
+
+    @GetMapping(value = "/sale/filter")
+    public String filter(@ModelAttribute("filter")OrderFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request, response);
+
+                return "redirect:/login";
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+                return "redirect:/";//access deniled page
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+                return "redirect:/";//store not assigned page
+            }
+
+            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+
+            if (currentFiscalYear == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please create current fiscal year");
+                return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+
+            /*current user checking end*/
+
+            if (filterDTO == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+                return "redirect:/sale/list";
+            }
+
+            Integer page = filterDTO.getPageNo();
+
+            filterDTO.setStatus(Status.ACTIVE);
+            filterDTO.setStoreId(currentUser.getStoreId());
+
+            if (page == null) {
+                page = 1;
+            }
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            int currentpage = page - 1;
+
+            long totalList = orderInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+
+            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+            if (currentpage > totalpage || currentpage < 0) {
+                currentpage = 0;
+            }
+
+            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+            filterDTO.setPageNo(currentpage);
+            filterDTO.setSize((int) PageInfo.pageList);
+
+            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.filter(filterDTO));
+            modelMap.put(StringConstants.SALE_TRACK_LIST , SalesOrderStatus.values());
+
+            modelMap.put("lastpage", totalpage);
+            modelMap.put("currentpage", page);
+            modelMap.put("pagelist", pagesnumbers);
+            modelMap.put("filterDTO" , filterDTO);
+            modelMap.put("totalResult" , totalList);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+
+            return "redirect:/";
+        }
+
+        return "order/filter";
+
     }
 
     @GetMapping(value = "/sale/inactive")

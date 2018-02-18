@@ -142,6 +142,7 @@ public class InvoiceController {
             filterDTO.setSize((int) PageInfo.pageList);
 
             modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.filter(filterDTO));
+            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
             modelMap.put("lastpage", totalpage);
             modelMap.put("currentpage", page);
             modelMap.put("pagelist", pagesnumbers);

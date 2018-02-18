@@ -1,6 +1,8 @@
 package com.inventory.core.model.converter;
 
+import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
+import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.repository.ClientInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
@@ -8,8 +10,10 @@ import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -100,5 +104,16 @@ public class OrderInfoConverter implements IListConvertable<OrderInfo , OrderInf
     @Override
     public List<OrderInfo> convertToEntityList(List<OrderInfoDTO> dtoList) {
         return dtoList.parallelStream().filter(Objects::nonNull).map(this::convertToEntity).collect(Collectors.toList());
+    }
+
+    public List<OrderInfoDTO> convertPageToDtoList(Page<OrderInfo> entities) {
+
+        List<OrderInfoDTO> dtoList = new ArrayList<>();
+
+        for (OrderInfo entity : entities) {
+            dtoList.add(convertToDto(entity));
+        }
+
+        return dtoList;
     }
 }

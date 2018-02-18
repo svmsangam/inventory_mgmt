@@ -104,7 +104,6 @@
                                         <td>${customer.street}</td>
                                         <td>
                                             <a class="btn btn-success" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}"><i class="fa fa-calendar-check-o"></i>&nbsp;invoice</a>
-                                            <a class="btn btn-primary" href="#"><i class="fa fa-line-chart"></i>&nbsp;order</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

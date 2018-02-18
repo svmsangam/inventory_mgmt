@@ -445,11 +445,11 @@ public class CustomerController {
     }
 
 
-    @GetMapping(value = "/customer/incoice")
+    /*@GetMapping(value = "/customer/incoice")
     public String invoice(@RequestParam(value = "pageNo" , required = false)Integer page , @RequestParam("clientId")Long clientId , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
 
         try {
-        /*current user checking start*/
+        *//*current user checking start*//*
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -475,7 +475,7 @@ public class CustomerController {
                 return "redirect:/";//store not assigned page
             }
 
-        /*current user checking end*/
+        *//*current user checking end*//*
 
 
             if (clientId == null){
@@ -523,5 +523,5 @@ public class CustomerController {
             return "redirect:/500";
         }
         return "customer/invoice";
-    }
+    }*/
 }

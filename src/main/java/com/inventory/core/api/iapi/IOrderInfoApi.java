@@ -1,5 +1,6 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.OrderFilterDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
@@ -35,4 +36,8 @@ public interface IOrderInfoApi {
     OrderInfoDTO updateSaleTrack(long orderId , SalesOrderStatus track , long createdById);
 
     OrderInfoDTO cancelQuickSale(long orderId);
+
+    List<OrderInfoDTO> filter(OrderFilterDTO filterDTO);
+
+    long filterCount(OrderFilterDTO filterDTO);
 }

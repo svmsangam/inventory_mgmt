@@ -5,6 +5,7 @@ import com.inventory.core.api.iapi.IItemInfoApi;
 import com.inventory.core.api.iapi.IOrderInfoApi;
 import com.inventory.core.api.iapi.IOrderItemInfoApi;
 import com.inventory.core.model.converter.OrderInfoConverter;
+import com.inventory.core.model.dto.OrderFilterDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.entity.CodeGenerator;
 import com.inventory.core.model.entity.FiscalYearInfo;
@@ -12,6 +13,7 @@ import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.entity.StoreInfo;
 import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.*;
+import com.inventory.core.model.specification.OrderSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -270,4 +272,29 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         return orderInfoConverter.convertToDto(orderInfo);
     }
+
+    @Override
+    public List<OrderInfoDTO> filter(OrderFilterDTO filterDTO) {
+
+        OrderSpecification specification = new OrderSpecification(filterDTO);
+
+        Pageable pageable = createPageRequest(filterDTO.getPageNo(),filterDTO.getSize() ,"id" , Sort.Direction.DESC);
+
+        return orderInfoConverter.convertPageToDtoList(orderInfoRepository.findAll(specification , pageable));
+    }
+
+    @Override
+    public long filterCount(OrderFilterDTO filterDTO) {
+
+        OrderSpecification specification = new OrderSpecification(filterDTO);
+
+        Long count = orderInfoRepository.count(specification );
+
+        if (count == null){
+            return 0;
+        }
+
+        return count;
+    }
+
 }
