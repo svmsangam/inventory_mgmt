@@ -87,7 +87,6 @@
                                     <th>Email</th>
                                     <th>City</th>
                                     <th>Street</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -102,9 +101,6 @@
                                         <td>${customer.email}</td>
                                         <td>${customer.cityInfoDTO.cityName}</td>
                                         <td>${customer.street}</td>
-                                        <td>
-                                            <a class="btn btn-success" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}"><i class="fa fa-calendar-check-o"></i>&nbsp;invoice</a>
-                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
