@@ -9,7 +9,7 @@
     	http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <jpa:repositories base-package="com.inventory.core.model.repository"/>
+    <jpa:repositories base-package="com.inventory.core.model.repository" repository-impl-postfix="MyPostfix" />
 
     <tx:annotation-driven/>
 
