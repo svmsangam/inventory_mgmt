@@ -84,7 +84,7 @@ public class UserValidation extends GlobalValidation {
 
                 valid = false;
 
-                error.setError("you current password is incorrect");
+                error.setError("your current password is incorrect");
             }
         }
 

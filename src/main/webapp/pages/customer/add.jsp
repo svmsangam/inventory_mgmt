@@ -70,7 +70,7 @@
                                 <label class="control-label">Pan Number</label>
                                 <input type="text" class="form-control" value="${customer.pan}" name="pan"
                                        placeholder="pan number">
-                                <p class="form-error">${customerError.pan}</p>
+                                <p class="form-error"></p>
                             </div>
 
                             <div class="form-group">
