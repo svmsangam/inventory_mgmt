@@ -41,7 +41,7 @@ public class SendMailSSL implements ISendMailSSL {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("dhirajbadu50@gmail.com", "123456789");
+                        return new PasswordAuthentication("inventory.sys.info@gmail.com", "deamon50");
                     }
                 });
 
@@ -150,18 +150,24 @@ public class SendMailSSL implements ISendMailSSL {
         } catch (AddressException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
-
             logger.error("error on address exception mail send : " + e.getMessage());
+
+        } catch (AuthenticationFailedException e){
+            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
+
+            logger.error("email address password miss matched : " + e.getMessage());
 
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
             logger.error("error on MessagingException mail send : " + e.getMessage());
 
-        } finally {
-            System.out.println("Email sent! to : " + to + " : by : " + from);
-            logger.info("Email sent! to : " + to + " : by : " + from);
         }
+
+        System.out.println("Email sent! to : " + to + " : by : " + from);
+            logger.info("Email sent! to : " + to + " : by : " + from);
+
     }
 
 }
