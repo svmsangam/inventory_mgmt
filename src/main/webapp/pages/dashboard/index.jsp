@@ -29,4 +29,4 @@
     <%@include file="/pages/dashboard/system-index.jsp" %>
 </sec:authorize>
 
-<sec:authentication property="principal.authorities"/>
+<%--<sec:authentication property="principal.authorities"/>--%>
