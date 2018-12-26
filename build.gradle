@@ -13,6 +13,7 @@ configurations.all {
 
 dependencies {
 
+    compile "org.slf4j:slf4j-api:1.7.18"
     //2. bridge logging from JCL to SLF4j
     compile 'org.slf4j:jcl-over-slf4j:1.7.12'
 
@@ -20,7 +21,6 @@ dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
 
     runtime "mysql:mysql-connector-java:5+"
-    /*compile "org.slf4j:slf4j-api:1.7.18"*/
     compile "javax.servlet:jstl:1.2"
     testCompile 'junit:junit:4.12'
     compile 'org.springframework.data:spring-data-jpa:1.10.4.RELEASE'
