@@ -13,6 +13,7 @@ import com.inventory.core.validation.SubscriberValidation;
 import com.inventory.web.error.RenewError;
 import com.inventory.web.error.SubscriberError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.RequestUtils;
 import com.inventory.web.util.StringConstants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class SubscriberController {
 
         try {
 
-        /*current user checking start*/
+            /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -86,7 +87,7 @@ public class SubscriberController {
 
             modelMap.put(StringConstants.SUBSCRIBER_LIST, subscriberApi.list(Status.ACTIVE));
 
-        /*current user checking end*/
+            /*current user checking end*/
 
         } catch (Exception e) {
 
@@ -102,7 +103,7 @@ public class SubscriberController {
 
         try {
 
-        /*current user checking start*/
+            /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -134,7 +135,7 @@ public class SubscriberController {
 
         try {
 
-        /*current user checking start*/
+            /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -168,7 +169,7 @@ public class SubscriberController {
 
         try {
 
-        /*current user checking start*/
+            /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -182,7 +183,7 @@ public class SubscriberController {
             }
 
 
-        /*current user checking end*/
+            /*current user checking end*/
 
             SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
@@ -195,8 +196,8 @@ public class SubscriberController {
             modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
             modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
             modelMap.put(StringConstants.USER_LIST, storeUserInfoApi.getAllUserBySuperAdmin(subscriberDTO.getUserId()));
-            modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST , subscriberServiceApi.list(Status.ACTIVE , subscriberId));
-            modelMap.put(StringConstants.SERVICE_LIST , serviceInfoApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST, subscriberServiceApi.list(Status.ACTIVE, subscriberId));
+            modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
 
         } catch (Exception e) {
 
@@ -213,7 +214,7 @@ public class SubscriberController {
 
         try {
 
-        /*current user checking start*/
+            /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
             if (currentUser == null) {
@@ -227,33 +228,33 @@ public class SubscriberController {
             }
 
 
-        /*current user checking end*/
+            /*current user checking end*/
 
-        synchronized (this) {
+            synchronized (this) {
 
-            SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
+                SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
-            if (subscriberDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+                if (subscriberDTO == null) {
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
 
-                return "redirect:/subscriber/list";
+                    return "redirect:/subscriber/list";
+                }
+
+                RenewError error = subscriberValidation.onRenew(subscriberDTO.getUserId(), serviceId);
+
+                if (!error.isValid()) {
+
+                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+
+                    return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+                }
+
+                SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.save(serviceId, subscriberId);
+
+                mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(), getRenewMsg(subscriberServiceDTO.getServiceInfo().getTitle(), subscriberServiceDTO.getExpireOn(), subscriberDTO.getFullName(), subscriberServiceDTO.getServiceInfo().getTotalStore()), "account renew");
+                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully renewed");
+
             }
-
-            RenewError error = subscriberValidation.onRenew(subscriberDTO.getUserId() , serviceId);
-
-            if (!error.isValid()){
-
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-
-                return "redirect:/subscriber/show?subscriberId=" + subscriberId;
-            }
-
-            SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.save(serviceId , subscriberId);
-
-            mailApi.sendHtmlMail(StringConstants.VerificationMainSender , subscriberDTO.getEmail() , getRenewMsg(subscriberServiceDTO.getServiceInfo().getTitle() ,  subscriberServiceDTO.getExpireOn() , subscriberDTO.getFullName() , subscriberServiceDTO.getServiceInfo().getTotalStore()) , "account renew");
-            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully renewed");
-
-        }
 
         } catch (Exception e) {
 
@@ -265,7 +266,7 @@ public class SubscriberController {
         return "redirect:/subscriber/show?subscriberId=" + subscriberId;
     }
 
-    private String getRenewMsg(String serviceName , Date expireOn, String subscribername , int totalStore){
+    private String getRenewMsg(String serviceName, Date expireOn, String subscribername, int totalStore) {
 
         String msg = "";
 
@@ -291,14 +292,14 @@ public class SubscriberController {
     }
 
     @PostMapping("/register")
-    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes , ModelMap modelMap) {
+    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
 
-            if (recaptchaResponse == null){
+            if (recaptchaResponse == null) {
                 modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
-                modelMap.put(StringConstants.ERROR , "please verify captcha");
+                modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+                modelMap.put(StringConstants.ERROR, "please verify captcha");
 
                 return "subscriber/register";
             }
@@ -307,11 +308,11 @@ public class SubscriberController {
 
                 SubscriberError error = subscriberValidation.onRegister(subscriberDTO);
 
-                if (!error.isValid()){
+                if (!error.isValid()) {
 
                     modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                    modelMap.put(StringConstants.SUBSCRIBER , subscriberDTO);
-                    modelMap.put(StringConstants.SUBSCRIBER_ERROR , error);
+                    modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+                    modelMap.put(StringConstants.SUBSCRIBER_ERROR, error);
 
                     return "subscriber/register";
 
@@ -332,7 +333,7 @@ public class SubscriberController {
 
                 String token = subscriberApi.register(subscriberDTO);
 
-                mailApi.sendHtmlMail(StringConstants.VerificationMainSender , subscriberDTO.getEmail(), getVerificationMsg(token , request.getServerName()) , "email verification request");
+                mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(), getVerificationMsg(token, RequestUtils.getServerUlr(request)), "email verification request");
 
                 redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered please check your email to activate account");
 
@@ -345,17 +346,11 @@ public class SubscriberController {
         return "redirect:/login";
     }
 
-    private String getVerificationMsg(String token , String contextPath){
+    private String getVerificationMsg(String token, String url) {
 
         String msg = "";
 
-        String url = "";
-
-        if (contextPath.equals("localhost")){
-            url = StringConstants.Local_url + "/user/activate?token=" + token;
-        }else {
-            url = StringConstants.Server_url + "/user/activate?token=" + token;;
-        }
+        url = url + "/user/activate?token=" + token;
 
         msg = "to activate your account <a href='" + url + "' style='border-color: #367fa9; border-radius: 3px;'>click here</a>";
 
