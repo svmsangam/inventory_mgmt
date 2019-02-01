@@ -1,5 +1,12 @@
 package com.inventory.core.api.impl;
 
+import java.text.ParseException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inventory.core.api.iapi.ISubscriberApi;
 import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.api.iapi.IUserApi;
@@ -7,22 +14,11 @@ import com.inventory.core.model.converter.SubscriberConverter;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.entity.ServiceInfo;
 import com.inventory.core.model.entity.Subscriber;
-import com.inventory.core.model.entity.SubscriberService;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ServiceRepository;
 import com.inventory.core.model.repository.SubscriberRepository;
-import com.inventory.core.model.repository.SubscriberServiceRepository;
-import com.inventory.web.controller.SubscriberController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.xml.crypto.Data;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.inventory.core.model.repository.UserRepository;
 
 /**
  * Created by dhiraj on 1/25/18.
@@ -44,6 +40,9 @@ public class SubscriberApi implements ISubscriberApi {
 
     @Autowired
     private ServiceRepository serviceRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -82,6 +81,14 @@ public class SubscriberApi implements ISubscriberApi {
     @Override
     public SubscriberDTO show(Status status, long subscribId) {
         return subscriberConverter.convertToDto(subscriberRepository.findByIdAndStatus(subscribId , status));
+    }
+    
+    @Override
+    public void activate(long subscribId) {
+    	 Subscriber subscriber= subscriberRepository.findOne(subscribId);
+    	 User u = userRepository.findOne(subscriber.getUser().getId());
+    	 u.setStatus(Status.ACTIVE);
+    	 userRepository.save(u);
     }
 
     @Override

@@ -208,6 +208,40 @@ public class SubscriberController {
 
         return "subscriber/show";
     }
+    
+    @GetMapping(value = "/activate")
+    public String activate(@RequestParam("subid") long subscriberId, RedirectAttributes redirectAttributes) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+                return "redirect:/logout";
+            }
+
+
+            /*current user checking end*/
+
+            subscriberApi.activate(subscriberId);
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            return "redirect:/500";
+        }
+
+        return "redirect:/subscriber/show?subscriberId="+subscriberId;
+    }
 
     @GetMapping(value = "/service/renew")
     public String renew(@RequestParam("subscriberId") long subscriberId, @RequestParam("serviceId") long serviceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {

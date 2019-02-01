@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                         </div>
-
+							<a href="${pageContext.request.contextPath}/subscriber/activate?subid=${subscriber.subscriberId}" class="btn btn-primary">Activate User</a>
                         <div class="row">
                             <form action="${pageContext.request.contextPath}/subscriber/service/renew" method="get">
 

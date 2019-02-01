@@ -18,4 +18,6 @@ public interface ISubscriberApi {
     SubscriberDTO show(Status status , long subscribId);
 
     List<SubscriberDTO> list(Status status);
+
+	void activate(long subscribId);
 }
