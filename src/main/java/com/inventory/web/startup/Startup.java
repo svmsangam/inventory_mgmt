@@ -49,7 +49,10 @@ public class Startup {
 
     public void initialize() throws Exception {
 
-        if (!ParseUtls.isValidMacAddress(new String[]{"54:e1:ad:53:17:06" , "f8:28:19:c7:eb:47"})){
+        String[] deviceMacAddr = new String[]{"54:e1:ad:53:17:06"};
+        String[] resultMacAddr = new String[]{ParseUtls.getMacAddress()};
+
+        if (!ParseUtls.isValidMacAddress( deviceMacAddr, resultMacAddr)){
             sendMailSSL.sendMail("inventory.sys.info@gmail.com" , "dhirajbadu50@gmail.com", "war provided to Dev Raj Three Monks" , "Alert : some one trying to install on unverified server" );
             throw new Exception("invalid mac Address");
         }
