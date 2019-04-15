@@ -1,8 +1,6 @@
 package com.inventory.core.util;
 
 import com.inventory.web.util.LoggerUtil;
-import com.inventory.web.util.ParameterConstants;
-import org.apache.tomcat.jni.OS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
