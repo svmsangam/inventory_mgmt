@@ -1,14 +1,17 @@
 package com.inventory.web.startup;
 
+import com.inventory.core.api.iapi.ISendMailSSL;
 import com.inventory.core.model.entity.*;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.util.ParseUtls;
+import com.inventory.core.util.ShellUtls;
+import com.inventory.web.util.ParameterConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +44,15 @@ public class Startup {
     @Autowired
     private ServiceRepository serviceRepository;
 
-    public void initialize() {
+    @Autowired
+    private ISendMailSSL sendMailSSL;
+
+    public void initialize() throws Exception {
+
+        if (!ParseUtls.isValidMacAddress(new String[]{"54:e1:ad:53:17:06" , "f8:28:19:c7:eb:47"})){
+            sendMailSSL.sendMail("inventory.sys.info@gmail.com" , "dhirajbadu50@gmail.com", "war provided to Dev Raj Three Monks" , "Alert : some one trying to install on unverified server" );
+            throw new Exception("invalid mac Address");
+        }
 
         createUser("system", UserType.SYSTEM, "123456", Status.ACTIVE);
 
