@@ -49,6 +49,11 @@ public class ParseUtls {
             command.add(prefix);
             command.add(c);
             command.add(terminalCommand);
+        }else if (isWindow()){
+            //write command for windows like lenux
+
+        }else if (isMac()){
+            //write command for windows like lenux
         }
 
         return command;
