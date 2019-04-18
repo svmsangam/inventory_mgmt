@@ -76,14 +76,16 @@ public class ParseUtls {
             return "";
         }
 
-        for (String str : mac) {
+        return mac.get(2).trim();
+       /* for (String str : mac) {
             //write your necessary filter logic to get mac only
+        	
             if (isNotNull(str) && str.length() == 17) {
                 return str;
             }
-        }
+        }*/
 
-        return "";
+      /*  return "";*/
     }
 
     public static String getMacAddressOfMac() {
@@ -118,7 +120,7 @@ public class ParseUtls {
 
             String prefix = "cmd.exe";
             String c = "/C";
-            String terminalCommand = "ipconfig /all";// write the command to filter out mac address only
+            String terminalCommand = "wmic bios get serialnumber";// write the command to filter out mac address only
             command.add(prefix);
             command.add(c);
             command.add(terminalCommand);
