@@ -53,7 +53,7 @@ public class ParseUtls {
     }
 
     public static String getMacAddressOfLenux() {
-        List<String> mac = ShellUtls.run(ParseUtls.getCommandToGetMacAddr());
+        List<String> mac = ShellUtls.run(getCommandToGetMacAddr());
 
         if (mac == null) {
             return "";
@@ -70,7 +70,7 @@ public class ParseUtls {
     }
 
     public static String getMacAddressOfWindows() {
-        List<String> mac = ShellUtls.run(ParseUtls.getCommandToGetMacAddr());
+        List<String> mac = ShellUtls.run(getCommandToGetMacAddr());
 
         if (mac == null) {
             return "";
@@ -87,7 +87,7 @@ public class ParseUtls {
     }
 
     public static String getMacAddressOfMac() {
-        List<String> mac = ShellUtls.run(ParseUtls.getCommandToGetMacAddr());
+        List<String> mac = ShellUtls.run(getCommandToGetMacAddr());
 
         if (mac == null) {
             return "";
