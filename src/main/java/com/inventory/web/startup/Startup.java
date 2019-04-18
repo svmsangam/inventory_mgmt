@@ -7,8 +7,6 @@ import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.util.ParseUtls;
-import com.inventory.core.util.ShellUtls;
-import com.inventory.web.util.ParameterConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -53,7 +51,7 @@ public class Startup {
         String[] resultMacAddr = new String[]{ParseUtls.getMacAddress()};
 
         if (!ParseUtls.isValidMacAddress( deviceMacAddr, resultMacAddr)){
-            sendMailSSL.sendMail("inventory.sys.info@gmail.com" , "dhirajbadu50@gmail.com", "war provided to Dev Raj Three Monks" , "Alert : some one trying to install on unverified server" );
+            //sendMailSSL.sendMail("inventory.sys.info@gmail.com" , "dhirajbadu50@gmail.com", "war provided to Dev Raj Three Monks" , "Alert : some one trying to install on unverified server" );
             throw new Exception("invalid mac Address");
         }
 
