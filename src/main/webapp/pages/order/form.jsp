@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<div class="box-body">
+
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -236,6 +236,5 @@
         </div>
 
     </div>
-</div>
 
 <!-- add customer Modal end -->

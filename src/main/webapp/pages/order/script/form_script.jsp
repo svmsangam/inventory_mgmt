@@ -83,10 +83,16 @@
     }
 
     $(document).ready(function () {
+        select2Item($(".itemQrSearch"));
+
+        $(document).on("change" , ".itemQrSearch" , function () {
+           addQrItem($(this));
+        });
+
 // for dynamically add or remove row
         $("#add_row").click(function () {
             //alert(count);
-            if (max === 10){
+            if (max === 20){
                 alert("max 10");
                 return;
             }
@@ -198,6 +204,39 @@
                 placeholder: "Search item by Name & code"
             });
         }
+
+        function addQrItem(self) {
+
+            that = $(".itemQrSearch :selected");
+            addRowOnQrItem(new ItemDetails(that.val() , that.text()));
+        }
+
+    function addRowOnQrItem(itemModal) {
+
+        var row = "<tr class='border-bottom itemTable' >";
+        row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'>" +
+                "<option selected value='"+itemModal.itemId+"'>" +itemModal.name + "</option>" +
+            "</select></td>";
+        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
+        row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
+        row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+        row += "<td class='text-right'>Rs.<span>0</span></div>";
+        row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
+        row += "</tr>";
+        $("#customFields").prepend(row);
+        /*$(".item").select2();*/
+        select2Item($(".item"));
+        count++;
+        max ++;
+        updateName();
+    }
+
+    function ItemDetails(itemId , name) {
+        return {
+            itemId : itemId,
+            name : name
+        }
+    }
 
 </script>
 
