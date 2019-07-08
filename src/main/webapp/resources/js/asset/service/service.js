@@ -509,6 +509,9 @@ function OrderInfoService() {
 
         getItemById : function (itemId, url , event) {
 
+            if(itemId === undefined ){
+                return null;
+            }
             var that = new OrderInfoService();
 
             if (orderInfoRequest !== undefined) {
@@ -526,6 +529,11 @@ function OrderInfoService() {
                 timeout: 30000,
                 tryCount : 0,
                 retryLimit : 3,
+                beforeSend : function () {
+                    if(itemId === undefined ){
+                        return null;
+                    }
+                },
                 success: function (data) {
 
                     var result = data.detail;

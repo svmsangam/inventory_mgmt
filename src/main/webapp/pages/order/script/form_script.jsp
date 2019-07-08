@@ -83,7 +83,7 @@
     }
 
     $(document).ready(function () {
-        select2Item($(".itemQrSearch"));
+        select2ORItem($(".itemQrSearch"));
 
         $(document).on("change" , ".itemQrSearch" , function () {
            addQrItem($(this));
@@ -205,10 +205,70 @@
             });
         }
 
+    function select2ORItem(that) {
+
+        $(that).select2({
+            closeOnSelect: false,
+            ajax: {
+                url: '${pageContext.request.contextPath}/item/search',
+                dataType: 'json',
+                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data , params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+
+                        arr.push({
+                            id: value.itemId,
+                            text: value.productName + ' - ' + value.itemName
+                        })
+                    })
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            initSelection: function(element, callback) {
+
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            placeholder: "Search item by Name & code"
+        });
+    }
+
         function addQrItem(self) {
 
             that = $(".itemQrSearch :selected");
-            addRowOnQrItem(new ItemDetails(that.val() , that.text()));
+            addRowOnQrItem(new ItemDetails(that.val() , that.text() , "${pageContext.request.contextPath}/item/show"));
+
+        }
+
+        function getRateOnQr(itemModal , self) {
+        console.log($('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select").val());
+            var orderService = new OrderInfoService();
+            orderService.getItemById(itemModal.itemId, itemModal.showUrl , $('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select"));
+            //select2ORItem($(".itemQrSearch"));
+            clearSelect2($(".itemQrSearch"));
+        }
+
+        function clearSelect2(self) {
+            $(".select2-search__field").val("");
+            self.empty();
+            $(".select2-results__option").remove();
         }
 
     function addRowOnQrItem(itemModal) {
@@ -217,7 +277,7 @@
         row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'>" +
                 "<option selected value='"+itemModal.itemId+"'>" +itemModal.name + "</option>" +
             "</select></td>";
-        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
+        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' on onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
         row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
         row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
         row += "<td class='text-right'>Rs.<span>0</span></div>";
@@ -229,12 +289,14 @@
         count++;
         max ++;
         updateName();
+        getRateOnQr(itemModal , self);
     }
 
-    function ItemDetails(itemId , name) {
+    function ItemDetails(itemId , name , showUrl) {
         return {
             itemId : itemId,
-            name : name
+            name : name,
+            showUrl : showUrl
         }
     }
 
