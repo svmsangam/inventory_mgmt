@@ -83,10 +83,16 @@
     }
 
     $(document).ready(function () {
+        calculate(amountUpdate);
         select2ORItem($(".itemQrSearch"));
 
         $(document).on("change" , ".itemQrSearch" , function () {
            addQrItem($(this));
+        });
+
+
+        $(document).on("click" , ".calculation" , function () {
+            calculate(amountUpdate);
         });
 
 // for dynamically add or remove row

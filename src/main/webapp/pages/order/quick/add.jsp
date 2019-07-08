@@ -59,7 +59,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group pull-right">
                                     <label>Total Cost </label>
-                                    <span class="btn btn-default btn-flat">Rs.&nbsp;<h2 id="total">${mytotalamount + mytotalamount * tax /100}</h2></span>
+                                    <span class="btn btn-default btn-flat calculation">Rs.&nbsp;<h2 id="total">${mytotalamount + mytotalamount * tax /100}</h2></span>
                                 </div>
                             </div>
                         </div>
