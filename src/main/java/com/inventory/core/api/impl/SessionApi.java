@@ -150,7 +150,7 @@ public class SessionApi implements ISessionApi, InitializingBean {
 
 		List<UserSession> userSession=userSessionRepository.findActiveUser();
 
-		return ConvertUtil.convertSessionList(userSession);
+		return null;//ConvertUtil.convertSessionList(userSession);
 		
 	}
 

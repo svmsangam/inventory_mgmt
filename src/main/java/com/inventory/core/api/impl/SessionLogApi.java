@@ -108,6 +108,7 @@ public class SessionLogApi implements ISessionLogApi {
 
 	@Override
 	public String getUserAccountActivity() {
+/*
 
 		SessionLog login = getUserSessionLogin(AuthenticationUtil.getCurrentUser().getId());
 
@@ -121,9 +122,12 @@ public class SessionLogApi implements ISessionLogApi {
 		}
 
 		TimeDifferenceCalUtil timeDiff = new TimeDifferenceCalUtil(logout, login.getLoggedIn().toString());
+*/
+		//return timeDiff.getTimeDifference();
 
-		return timeDiff.getTimeDifference();
-	} 
+		return null;
+
+	}
 
 	@Override
 	public String getUserAccountActivity(User user) {
