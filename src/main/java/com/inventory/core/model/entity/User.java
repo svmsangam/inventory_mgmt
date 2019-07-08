@@ -26,12 +26,37 @@ public class User extends AbstractEntity<Long> {
     @Column
     private String secret_key;
 
-    private Boolean enabled;
+    private boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
     private long associateProfileId;
+
+    private String fcmKey;
+
+    @OneToOne(mappedBy = "user" , fetch = FetchType.LAZY)
+    private UserPermission permission;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public UserPermission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(UserPermission permission) {
+        this.permission = permission;
+    }
+
+    public String getFcmKey() {
+        return fcmKey;
+    }
+
+    public void setFcmKey(String fcmKey) {
+        this.fcmKey = fcmKey;
+    }
 
     private ProfileAssociateType profileAssociateType;
 
@@ -83,11 +108,11 @@ public class User extends AbstractEntity<Long> {
         this.secret_key = secret_key;
     }
 
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

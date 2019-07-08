@@ -7,4 +7,4 @@
     <bean id="startup" class="com.inventory.web.startup.Startup"
           init-method="initialize"/>
 
-</beans>    	
+</beans>

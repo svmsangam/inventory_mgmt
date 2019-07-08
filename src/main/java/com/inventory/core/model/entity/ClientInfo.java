@@ -12,115 +12,130 @@ import javax.persistence.Table;
 @Table(name = "invclient")
 public class ClientInfo extends AbstractEntity<Long> {
 
-	private static final long serialVersionUID = 1L;
+    private String name;
 
-	private String name;
+    private String companyName;
 
-	private String companyName;
+    private String contact;
 
-	private String contact;
+    private String mobileNumber;
 
-	private String mobileNumber;
-	
-	private String email;
-	
-	private ClientType clientType;
-	
-	private String street;
+    private String email;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private CityInfo cityInfo;
+    private ClientType clientType;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private User createdBy;
-	
-	private Status status;
+    private String street;
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
+    private String pan;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CityInfo cityInfo;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User createdBy;
 
-	public String getCompanyName() {
-		return companyName;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private StoreInfo storeInfo;
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+    private Status status;
 
-	public String getContact() {
-		return contact;
-	}
+    public String getPan() {
+        return pan;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public void setPan(String pan) {
+        this.pan = pan;
+    }
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getCompanyName() {
+        return companyName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
-	public ClientType getClientType() {
-		return clientType;
-	}
+    public String getContact() {
+        return contact;
+    }
 
-	public void setClientType(ClientType clientType) {
-		this.clientType = clientType;
-	}
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-	public CityInfo getCityInfo() {
-		return cityInfo;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setCityInfo(CityInfo cityInfo) {
-		this.cityInfo = cityInfo;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public ClientType getClientType() {
+        return clientType;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
+    }
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public StoreInfo getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(StoreInfo storeInfo) {
+        this.storeInfo = storeInfo;
+    }
 }
-	
+
 	
 	
 	

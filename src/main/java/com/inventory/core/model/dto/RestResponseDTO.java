@@ -2,75 +2,53 @@ package com.inventory.core.model.dto;
 
 public class RestResponseDTO {
 
-	String Status;
-	
-	String message;
-	
-	String refresh;
+    String Status;
 
-	int nextPage;
+    String message;
 
-	int previousPage;
+    String refresh;
 
-	int currentPage;
-	
-	Object detail;
-	
-	
+    int length;
 
-	public String getRefresh() {
-		return refresh;
-	}
+    Object detail;
 
-	public void setRefresh(String refresh) {
-		this.refresh = refresh;
-	}
+    public int getLength() {
+        return length;
+    }
 
-	public String getStatus() {
-		return Status;
-	}
+    public void setLength(int length) {
+        this.length = length;
+    }
 
-	public void setStatus(String status) {
-		Status = status;
-	}
+    public String getRefresh() {
+        return refresh;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public String getStatus() {
+        return Status;
+    }
 
-	public Object getDetail() {
-		return detail;
-	}
+    public void setStatus(String status) {
+        Status = status;
+    }
 
-	public void setDetail(Object detail) {
-		this.detail = detail;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public int getNextPage() {
-		return nextPage;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public void setNextPage(int nextPage) {
-		this.nextPage = nextPage;
-	}
+    public Object getDetail() {
+        return detail;
+    }
 
-	public int getPreviousPage() {
-		return previousPage;
-	}
-
-	public void setPreviousPage(int previousPage) {
-		this.previousPage = previousPage;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
+    public void setDetail(Object detail) {
+        this.detail = detail;
+    }
 }

@@ -1,32 +1,32 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dhiraj
+  Date: 8/13/17
+  Time: 10:58 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="/pages/parts/header.jsp" %>
-<%@include file="/pages/parts/sidebar.jsp" %>
 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Page Header
-            <small>Optional description</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-            <li class="active">Here</li>
-        </ol>
-    </section>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-    <!-- Main content -->
-    <section class="content container-fluid">
+<%--    <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+        <%@include file="/pages/dashboard/superadmin-index.jsp" %>
+    </sec:authorize>--%>
 
-        <!--------------------------
-          | Your Page Content Here |
-          -------------------------->
-        <p>edit here</p>
+<sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
+    <%@include file="/pages/dashboard/superadmin-index.jsp" %>
+</sec:authorize>
 
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+<sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+    <%@include file="/pages/dashboard/admin-index.jsp" %>
+</sec:authorize>
 
-<%@include file="/pages/parts/footer.jsp" %>
+<sec:authorize ifAnyGranted=" ROLE_USER , ROLE_DASHBOARD">
+    <%@include file="/pages/dashboard/user-index.jsp" %>
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_SYSTEM')">
+    <%@include file="/pages/dashboard/system-index.jsp" %>
+</sec:authorize>
+
+<%--<sec:authentication property="principal.authorities"/>--%>

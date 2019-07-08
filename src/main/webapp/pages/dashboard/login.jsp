@@ -10,6 +10,8 @@
     <title>Inventory | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- jQuery 3 -->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -21,11 +23,13 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/square/blue.css">
 
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 
     <!-- Google Font -->
@@ -35,34 +39,43 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>Inventory</b>Management</a>
+        <a href="${pageContext.request.contextPath}/"><b>Inventory</b>Management</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
+
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
+
         <p class="login-box-msg">Sign in to start your session</p>
         <c:if test="${error ne null}">
-            <label class="has-error">${error}</label>
+            <label class="has-error form-error" style="color: #dd4b39;">${error}</label>
         </c:if>
         <form action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="Username" name="j_username" autofocus>
+                <input type="text" class="form-control" placeholder="Username" name="j_username" autofocus required/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password" name="j_password">
+                <input type="password" class="form-control" placeholder="Password" name="j_password" required/>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
-                <div class="col-xs-8">
+                <%--<div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
                             <input type="checkbox"> Remember Me
                         </label>
                     </div>
-                </div>
+                </div>--%>
                 <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-flat">Sign In</button>
+                    <a class="btn btn-info btn-flat pull-right" href="${pageContext.request.contextPath}/subscriber/register">register</a>
                 </div>
                 <!-- /.col -->
             </div>
@@ -76,8 +89,6 @@
 </div>
 <!-- /.login-box -->
 
-<!-- jQuery 3 -->
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <!-- iCheck -->

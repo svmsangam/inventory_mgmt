@@ -17,8 +17,7 @@
 
     <mvc:annotation-driven/>
     <tx:annotation-driven/>
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/pages/</value>
         </property>
@@ -49,6 +48,5 @@
     <import resource="classpath:spring-core-config.xml"/>
     <import resource="classpath:security-context.xml"/>
     <import resource="classpath:startup-context.xml"/>
-
 
 </beans>  

@@ -22,7 +22,7 @@ public class AccountHeadController {
 
 
     @GetMapping(value = "generate")
-    public String generate(@RequestParam("associateId") Long associateId , @RequestParam("clientType")ClientType clientType , ModelMap modelMap , RedirectAttributes redirectAttributes){
+    public String generate(@RequestParam("associateId") Long associateId, @RequestParam("clientType") ClientType clientType, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         return "redirect:/";
     }

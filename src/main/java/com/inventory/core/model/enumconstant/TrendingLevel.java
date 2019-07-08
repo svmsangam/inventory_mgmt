@@ -5,7 +5,7 @@ package com.inventory.core.model.enumconstant;
  */
 public enum TrendingLevel {
 
-    VERYLOW("Very low"), LOW("Low"), AVERAGE("Average"),HIGH("Hight") ;
+    VERYLOW("Very low"), LOW("Low"), AVERAGE("Average"), HIGH("Hight");
 
     private final String value;
 

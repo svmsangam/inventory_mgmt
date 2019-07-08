@@ -33,6 +33,48 @@ public class InvoiceInfoDTO {
 
     private String createdByName;
 
+    private Integer version;
+
+    private StoreInfoDTO storeInfoDTO;
+
+    private FiscalYearInfoDTO fiscalYearInfo;
+
+    private boolean canceled;
+
+    private String cancelNote;
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public String getCancelNote() {
+        return cancelNote;
+    }
+
+    public void setCancelNote(String cancelNote) {
+        this.cancelNote = cancelNote;
+    }
+
+    public StoreInfoDTO getStoreInfoDTO() {
+        return storeInfoDTO;
+    }
+
+    public void setStoreInfoDTO(StoreInfoDTO storeInfoDTO) {
+        this.storeInfoDTO = storeInfoDTO;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Long getInvoiceId() {
         return invoiceId;
     }
@@ -127,5 +169,13 @@ public class InvoiceInfoDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public FiscalYearInfoDTO getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfoDTO fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }

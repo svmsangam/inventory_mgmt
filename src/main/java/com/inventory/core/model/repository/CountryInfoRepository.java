@@ -5,6 +5,7 @@ import com.inventory.core.model.enumconstant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,11 +13,12 @@ import java.util.List;
  * Created by dhiraj on 8/2/17.
  */
 @Repository
-public interface CountryInfoRepository extends JpaRepository<CountryInfo, Long> , JpaSpecificationExecutor<CountryInfo>{
+@Transactional(readOnly = true)
+public interface CountryInfoRepository extends JpaRepository<CountryInfo, Long>, JpaSpecificationExecutor<CountryInfo> {
 
-    CountryInfo findByIdAndStatus(long countryId , Status status);
+    CountryInfo findByIdAndStatus(long countryId, Status status);
 
-    CountryInfo findByNameAndStatus(String countryName , Status status);
+    CountryInfo findByNameAndStatus(String countryName, Status status);
 
     CountryInfo findByName(String countryName);
 

@@ -2,83 +2,93 @@ package com.inventory.web.error;
 
 public class UserError {
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private String repassword;
+    private String repassword;
 
-	private String authority;
+    private String authority;
 
-	private String timeZone;
+    private String timeZone;
 
-	private String userType;
+    private String userType;
 
-	private String status;
+    private String status;
 
-	private boolean isValid;
+    private String storeId;
 
-	public String getUsername() {
-		return username;
-	}
+    private boolean isValid;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getRepassword() {
-		return repassword;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRepassword(String repassword) {
-		this.repassword = repassword;
-	}
+    public String getRepassword() {
+        return repassword;
+    }
 
-	public String getAuthority() {
-		return authority;
-	}
+    public void setRepassword(String repassword) {
+        this.repassword = repassword;
+    }
 
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
+    public String getAuthority() {
+        return authority;
+    }
 
-	public String getTimeZone() {
-		return timeZone;
-	}
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
 
-	public void setTimeZone(String timeZone) {
-		this.timeZone = timeZone;
-	}
+    public String getTimeZone() {
+        return timeZone;
+    }
 
-	public String getUserType() {
-		return userType;
-	}
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
+    public String getUserType() {
+        return userType;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public boolean isValid() {
-		return isValid;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setValid(boolean valid) {
-		isValid = valid;
-	}
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 }

@@ -7,7 +7,7 @@ import com.inventory.core.model.enumconstant.Status;
  */
 public class StoreInfoDTO {
 
-    private String storeId;
+    private Long storeId;
 
     private String name;
 
@@ -25,13 +25,41 @@ public class StoreInfoDTO {
 
     private String cityName;
 
+    private String stateName;
+
+    private String countryName;
+
     private Status status;
 
-    public String getStoreId() {
+    private String email;
+
+    private long accountId;
+
+    private String accountNo;
+
+    private Integer version;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Long getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(String storeId) {
+    public void setStoreId(Long storeId) {
         this.storeId = storeId;
     }
 
@@ -105,5 +133,37 @@ public class StoreInfoDTO {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

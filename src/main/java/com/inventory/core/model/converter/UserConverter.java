@@ -16,91 +16,85 @@ import java.util.stream.Collectors;
 
 /**
  * @author manohar
- *
  */
 @Service
 public class UserConverter implements IConvertable<User, InvUserDTO>, IListConvertable<User, InvUserDTO> {
 
-	@Autowired
-	private StoreInfoRepository storeInfoRepository;
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
-	@Override
-	public User convertToEntity(InvUserDTO dto) {
+    @Override
+    public User convertToEntity(InvUserDTO dto) {
 
-		if (dto == null) {
-			return null;
-		}
+        return copyConvertToEntity(dto, new User());
+    }
 
-		User entity = new User();
+    @Override
+    public InvUserDTO convertToDto(User entity) {
 
-		entity.setUsername(dto.getInventoryuser());
-		entity.setPassword(dto.getUserpassword());
-		entity.setAuthority(dto.getUserauthority());
-		entity.setStatus(dto.getUserstatus());
-		entity.setUserType(dto.getUserType());
+        if (entity == null) {
+            return null;
+        }
 
-		return entity;
-	}
+        InvUserDTO dto = new InvUserDTO();
 
-	@Override
-	public InvUserDTO convertToDto(User entity) {
+        dto.setInventoryuser(entity.getUsername());
+        dto.setUserauthority(entity.getAuthority());
+        dto.setUserstatus(entity.getStatus());
+        dto.setUserType(entity.getUserType());
+        dto.setUserId(entity.getId());
+        dto.setEnable(entity.getEnabled());
 
-		if (entity == null) {
-			return null;
-		}
+        if (entity.getStoreInfo() != null) {
+            dto.setStoreId(entity.getStoreInfo().getId());
+            dto.setStoreName(entity.getStoreInfo().getName());
+        } else {
+            dto.setStoreId(null);
+        }
 
-		InvUserDTO dto = new InvUserDTO();
+        return dto;
+    }
 
-		dto.setInventoryuser(entity.getUsername());
-		dto.setUserauthority(entity.getAuthority());
-		dto.setUserstatus(entity.getStatus());
-		dto.setUserType(entity.getUserType());
-		dto.setUserId(entity.getId());
-		dto.setEnable(entity.getEnabled());
+    @Override
+    public User copyConvertToEntity(InvUserDTO dto, User entity) {
 
-		return dto;
-	}
+        if (dto == null | entity == null) {
+            return null;
+        }
 
-	@Override
-	public User copyConvertToEntity(InvUserDTO dto , User entity) {
+        entity.setUsername(dto.getInventoryuser().trim().toLowerCase());
+        entity.setStatus(Status.ACTIVE);
+        if (dto.getStoreId() != null) {
+            entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreId()));
+        }
+        entity.setPassword(dto.getUserpassword());
+        entity.setUserType(dto.getUserType());
+        entity.setEnabled(true);
 
-		if (dto == null | entity == null){
-			return null;
-		}
-
-		entity.setUsername(dto.getInventoryuser());
-		entity.setStatus(Status.ACTIVE);
-		entity.setEnabled(dto.getEnable());
-		if (dto.getStoreId() != null) {
-			entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreId()));
-		}
-		entity.setPassword(dto.getUserpassword());
-		entity.setUserType(dto.getUserType());
-
-		if (dto.getUserType().equals(UserType.ADMIN)) {
-			entity.setAuthority(Authorities.ADMINISTRATOR + "," + Authorities.AUTHENTICATED);
-		}else if (dto.getUserType().equals(UserType.SUPERADMIN)) {
-			entity.setAuthority(Authorities.SUPERADMIN + "," + Authorities.AUTHENTICATED);
-		} else if (dto.getUserType().equals(UserType.SYSTEM)) {
-			entity.setAuthority(Authorities.SYSTEM + "," + Authorities.AUTHENTICATED);
-		}else if (dto.getUserType().equals(UserType.USER)) {
-			entity.setAuthority(Authorities.USER + "," + Authorities.AUTHENTICATED);
-		}else if (dto.getUserType().equals(UserType.GUEST)) {
-			entity.setAuthority(Authorities.GUEST + "," + Authorities.AUTHENTICATED);
-		}
+        if (dto.getUserType().equals(UserType.ADMIN)) {
+            entity.setAuthority(Authorities.ADMINISTRATOR + "," + Authorities.AUTHENTICATED);
+        } else if (dto.getUserType().equals(UserType.SUPERADMIN)) {
+            entity.setAuthority(Authorities.SUPERADMIN + "," + Authorities.AUTHENTICATED);
+        } else if (dto.getUserType().equals(UserType.SYSTEM)) {
+            entity.setAuthority(Authorities.SYSTEM + "," + Authorities.AUTHENTICATED);
+        } else if (dto.getUserType().equals(UserType.USER)) {
+            entity.setAuthority(Authorities.USER + "," + Authorities.AUTHENTICATED);
+        } else if (dto.getUserType().equals(UserType.GUEST)) {
+            entity.setAuthority(Authorities.GUEST + "," + Authorities.AUTHENTICATED);
+        }
 
 
-		return entity;
-	}
+        return entity;
+    }
 
-	@Override
-	public List<InvUserDTO> convertToDtoList(List<User> entities) {
-		return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
-	}
+    @Override
+    public List<InvUserDTO> convertToDtoList(List<User> entities) {
+        return entities.parallelStream().map(this::convertToDto).collect(Collectors.toList());
+    }
 
-	@Override
-	public List<User> convertToEntityList(List<InvUserDTO> dtoList) {
-		return dtoList.parallelStream().map(this::convertToEntity).collect(Collectors.toList());
-	}
+    @Override
+    public List<User> convertToEntityList(List<InvUserDTO> dtoList) {
+        return dtoList.parallelStream().map(this::convertToEntity).collect(Collectors.toList());
+    }
 
 }

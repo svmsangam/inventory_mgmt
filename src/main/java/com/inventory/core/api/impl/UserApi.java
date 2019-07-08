@@ -4,122 +4,261 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.entity.UserPermission;
+import com.inventory.core.model.entity.VerificationToken;
+import com.inventory.core.model.enumconstant.Permission;
+import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
-import com.inventory.web.util.ClientException;
-import com.inventory.core.model.repository.UserRepository;
+import com.inventory.core.model.repository.*;
+import com.inventory.core.util.Authorities;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
+@Transactional
 public class UserApi implements IUserApi {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserConverter userConverter;
-	
-	@Override
-	public User saveUserABC(User user) {
-		return userRepository.save(user);
-	}
+    @Autowired
+    private UserConverter userConverter;
 
-	
+    @Autowired
+    private StoreInfoRepository storeInfoRepository;
 
-	@Override
-	public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
+    @Autowired
+    private UserPermissionRepository userPermissionRepository;
 
-		userDTO.setEnable(false);
+    @Autowired
+    private StoreUserInfoRepository storeUserInfoRepository;
 
-		User user = userConverter.convertToEntity(userDTO);
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
 
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-		user = userRepository.save(user);
+    @Override
+    public long save(String username , String password){
 
-		return userConverter.convertToDto(user);
-	}
+        User entity = new User();
 
-	@Override
-	public void editUser(InvUserDTO userDto , String status) throws IOException, JSONException {
-		User user = userRepository.findOne(userDto.getUserId());
+        entity.setUsername(username.trim().toLowerCase());
+        entity.setStatus(Status.INACTIVE);
+        entity.setUserType(UserType.SUPERADMIN);
+        entity.setEnabled(true);
+        entity.setAuthority(Authorities.SUPERADMIN + "," + Authorities.AUTHENTICATED);
+        entity.setPassword(passwordEncoder.encode(password.trim()));
 
-		userRepository.save(user);
+        entity = userRepository.save(entity);
 
-	}
+        return entity.getId();
 
-	public void changePassword(long userId, String newPassword) throws IOException, JSONException {
-		User user = userRepository.findOne(userId);
+    }
 
-		user.setPassword(passwordEncoder.encode(newPassword));
+    @Override
+    public long getTotalUserByStoreInfoAndStatus(long storeInfoId, Status status) {
+        return userRepository.countAllByStoreInfoAndStatus(storeInfoId , status);
+    }
 
-		userRepository.save(user);
-	}
+    @Override
+    public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
 
-	@Override
-	public List<InvUserDTO> getAllUser() {
-		return null;
-	}
+        User user = userConverter.convertToEntity(userDTO);
 
-	@Override
-	public InvUserDTO getUserWithId(long userId) {
-		return null;// ConvertUtil.convertUser(userRepository.findOne(userId));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-	}
-	
-	@Override
-	public User getUser(long userId) {
-		return userRepository.findOne(userId);
+        user = userRepository.save(user);
 
-	}
+        return userConverter.convertToDto(user);
+    }
 
-	@Override
-	public List<InvUserDTO> findAllUserExceptAdmin() {
-		return null;
+    public void changePassword(long userId, String newPassword) throws IOException, JSONException {
 
-	}
+        User user = userRepository.findOne(userId);
 
-	public List<InvUserDTO> findUser() {
-		return null;
-	}
+        user.setPassword(passwordEncoder.encode(newPassword));
 
-	@Override
-	public List<InvUserDTO> findAllUserExceptDefaultAdmin() {
-		return null;
-	}
+        userRepository.save(user);
+    }
 
-	@Override
-	public void deleteUser(Long userId) {
-		userRepository.delete(userId);
-	}
+    @Override
+    public InvUserDTO getUserWithId(long userId) {
+        return userConverter.convertToDto(userRepository.findByIdAndStatus(userId, Status.ACTIVE));
 
-	@Override
-	public String generateSecretKey(String clientId, String accessKey) throws ClientException {
+    }
 
-		return null;
-	}
+    @Override
+    public InvUserDTO getUserPermission(InvUserDTO userDTO) {
 
-	@Override
-	public InvUserDTO getUserByUserName(String userName) {
+        UserPermission userPermission = userPermissionRepository.findByPermissionUser(userDTO.getUserId());
 
-		User user = userRepository.findByUsername(userName);
+        if (userPermission != null)
+            userDTO.setPermissionList(userPermission.getPermissionList());
 
-		return userConverter.convertToDto(user);
-	}
+        return userDTO;
+    }
 
-	@Override
-	public boolean nameExists(String userName) {
-		return userRepository.findByUsername(userName) != null;
-	}
+    @Override
+    public List<Permission> getUserPermission(long userId) {
+
+        UserPermission userPermission = userPermissionRepository.findByPermissionUser(userId);
+
+        if (userPermission != null)
+            return userPermission.getPermissionList();
+
+        return null;
+
+    }
+
+    @Override
+    public InvUserDTO updateEnable(long userId) {
+
+        User user = userRepository.findById(userId);
+
+        if (user.getEnabled()) {
+            user.setEnabled(false);
+
+        } else {
+            user.setEnabled(true);
+        }
+
+        return userConverter.convertToDto(userRepository.save(user));
+    }
+
+    @Override
+    public InvUserDTO getUserByUserName(String userName) {
+
+        User user = userRepository.findByUsername(userName);
+
+        return userConverter.convertToDto(user);
+    }
+
+    @Override
+    public boolean nameExists(String userName) {
+        return userRepository.findByUsername(userName) != null;
+    }
+
+    @Override
+    public void updateFCMToken(String token, long userId) {
+
+        synchronized (this) {
+
+            User user = userRepository.findById(userId);
+
+            if (!token.equals(user.getFcmKey())) {
+
+                user.setFcmKey(token);
+
+                userRepository.save(user);
+            }
+        }
+    }
+
+    @Override
+    public InvUserDTO changeStore(long userId, long storeId) {
+
+        User user = userRepository.findById(userId);
+
+        user.setStoreInfo(storeInfoRepository.findById(storeId));
+
+        return userConverter.convertToDto(userRepository.save(user));
+    }
+
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeIn(Status status, List<UserType> userTypeList) {
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeIn(status , userTypeList));
+    }
+
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeInAndSuperAdmin(Status status, List<UserType> userTypeList , long userId) {
+
+        List<Long> storeList = storeUserInfoRepository.findAllStoreIdByUserAndStatus(userId , Status.ACTIVE);
+
+        if (storeList == null){
+            storeList = new ArrayList<>();
+
+            storeList.add((long)0);
+        }
+
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndSuperAdmin(status, userTypeList , storeList));
+    }
+
+    @Override
+    public List<InvUserDTO> getAllByStatusAndUserTypeInAndStoreInfo(Status status, List<UserType> userTypeList, long storeInfoId) {
+        return userConverter.convertToDtoList(userRepository.findAllByStatusAndUserTypeInAndStoreInfo(status, userTypeList, storeInfoId));
+    }
+
+    @Override
+    public String saveVerificationToken(long userId){
+
+        User user = userRepository.findById(userId);
+
+        VerificationToken verificationToken = new VerificationToken();
+
+        String token = UUID.randomUUID().toString();
+
+        verificationToken.setToken(token);
+        verificationToken.setUser(user);
+
+        verificationTokenRepository.save(verificationToken);
+
+        return token;
+
+    }
+
+    @Override
+    public InvUserDTO getByToken(String token){
+
+        return userConverter.convertToDto(verificationTokenRepository.findUserByToken(token));
+    }
+
+    @Override
+    @Transactional
+    public InvUserDTO verifyUser(String token){
+
+        User user = verificationTokenRepository.findUserByToken(token);
+
+        if (user != null){
+            user.setStatus(Status.ACTIVE);
+            userRepository.save(user);
+            verificationTokenRepository.deleteByToken(token);
+        }
+
+        InvUserDTO userDTO = userConverter.convertToDto(user);
+
+        userDTO.setUserpassword(user.getPassword());
+
+        return userDTO;
+    }
+
+
+
+    /*public void authWithoutPassword(User user){
+        List<Privilege> privileges = user.getAuthority().stream()
+                .map(role -> role.getPrivileges())
+                .flatMap(list -> list.stream())
+                .distinct().collect(Collectors.toList());
+        List<GrantedAuthority> authorities = privileges.stream()
+                .map(p -> new SimpleGrantedAuthority(p.getName()))
+                .collect(Collectors.toList());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }*/
 
 }

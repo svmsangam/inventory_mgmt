@@ -4,12 +4,18 @@ import com.inventory.core.model.enumconstant.AccountEntryType;
 import com.inventory.core.model.enumconstant.LedgerEntryType;
 import com.inventory.core.model.enumconstant.Status;
 
+import java.util.Date;
+
 /**
  * Created by dhiraj on 8/6/17.
  */
 public class LedgerInfoDTO {
 
     private Long ledgerId;
+
+    private Date date;
+
+    private String accountNo;
 
     private AccountInfoDTO accountInfo;
 
@@ -26,6 +32,26 @@ public class LedgerInfoDTO {
     private long storeInfoId;
 
     private Status status;
+
+    private long fiscalYearId;
+
+    private String fiscalYear;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
 
     public Long getLedgerId() {
         return ledgerId;
@@ -97,5 +123,21 @@ public class LedgerInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getFiscalYearId() {
+        return fiscalYearId;
+    }
+
+    public void setFiscalYearId(long fiscalYearId) {
+        this.fiscalYearId = fiscalYearId;
+    }
+
+    public String getFiscalYear() {
+        return fiscalYear;
+    }
+
+    public void setFiscalYear(String fiscalYear) {
+        this.fiscalYear = fiscalYear;
     }
 }

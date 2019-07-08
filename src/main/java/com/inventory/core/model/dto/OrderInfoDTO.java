@@ -6,6 +6,7 @@ import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dhiraj on 8/6/17.
@@ -47,6 +48,18 @@ public class OrderInfoDTO {
     private double tax;
 
     private double grandTotal;
+
+    private Integer version;
+
+    private List<OrderItemInfoDTO> orderItemInfoDTOList;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Long getOrderId() {
         return orderId;
@@ -190,5 +203,13 @@ public class OrderInfoDTO {
 
     public void setGrandTotal(double grandTotal) {
         this.grandTotal = grandTotal;
+    }
+
+    public List<OrderItemInfoDTO> getOrderItemInfoDTOList() {
+        return orderItemInfoDTOList;
+    }
+
+    public void setOrderItemInfoDTOList(List<OrderItemInfoDTO> orderItemInfoDTOList) {
+        this.orderItemInfoDTOList = orderItemInfoDTOList;
     }
 }

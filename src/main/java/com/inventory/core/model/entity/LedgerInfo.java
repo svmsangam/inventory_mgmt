@@ -13,8 +13,8 @@ import javax.persistence.Table;
  * Created by manohar-td-003 on 6/25/17.
  */
 @Entity
-@Table(name="ledger_table")
-public class LedgerInfo extends AbstractEntity<Long>{
+@Table(name = "ledger_table")
+public class LedgerInfo extends AbstractEntity<Long> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private AccountInfo accountInfo;
@@ -30,7 +30,18 @@ public class LedgerInfo extends AbstractEntity<Long>{
     @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private FiscalYearInfo fiscalYearInfo;
+
     private Status status;
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
+    }
 
     public AccountInfo getAccountInfo() {
         return accountInfo;
@@ -80,11 +91,11 @@ public class LedgerInfo extends AbstractEntity<Long>{
         this.storeInfo = storeInfo;
     }
 
-	public Status getStatus() {
-		return status;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

@@ -2,6 +2,7 @@ package com.inventory.core.model.dto;
 
 import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -42,21 +43,135 @@ public class EmployeeProfileDTO {
 
     private String email;
 
-    private Date startingDate;
-
-    private Date endingDate;
-
-    private DesignationInfoDTO designationInfoDTO;
-
-    private Long designationId;
-
-    private EmployeeStatus employeeStatus;
-
     private long createdById;
 
     private String createdByName;
 
+    private long userId;
+
+    private String username;
+
     private Status status;
+
+    private Integer version;
+
+    private String photo;
+
+    private MultipartFile file;
+
+    private long leqId; // educationQualification Id
+
+    private String leqTitle; // educationQualification Title
+
+    private String leqCode; //educationQualification Code
+
+    private String leqRemarks; // educationQualification Remarks
+
+    private long ownerId;
+
+    private String ownerName;
+
+    private EmployeeStatus employeeStatus;
+
+    private long designationId;
+
+    private Date joinDate;
+
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public long getDesignationId() {
+        return designationId;
+    }
+
+    public void setDesignationId(long designationId) {
+        this.designationId = designationId;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public long getLeqId() {
+        return leqId;
+    }
+
+    public void setLeqId(long leqId) {
+        this.leqId = leqId;
+    }
+
+    public String getLeqTitle() {
+        return leqTitle;
+    }
+
+    public void setLeqTitle(String leqTitle) {
+        this.leqTitle = leqTitle;
+    }
+
+    public String getLeqCode() {
+        return leqCode;
+    }
+
+    public void setLeqCode(String leqCode) {
+        this.leqCode = leqCode;
+    }
+
+    public String getLeqRemarks() {
+        return leqRemarks;
+    }
+
+    public void setLeqRemarks(String leqRemarks) {
+        this.leqRemarks = leqRemarks;
+    }
+
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Long getEmployeeProfileId() {
         return employeeProfileId;
@@ -186,46 +301,6 @@ public class EmployeeProfileDTO {
         this.email = email;
     }
 
-    public Date getStartingDate() {
-        return startingDate;
-    }
-
-    public void setStartingDate(Date startingDate) {
-        this.startingDate = startingDate;
-    }
-
-    public Date getEndingDate() {
-        return endingDate;
-    }
-
-    public void setEndingDate(Date endingDate) {
-        this.endingDate = endingDate;
-    }
-
-    public DesignationInfoDTO getDesignationInfoDTO() {
-        return designationInfoDTO;
-    }
-
-    public void setDesignationInfoDTO(DesignationInfoDTO designationInfoDTO) {
-        this.designationInfoDTO = designationInfoDTO;
-    }
-
-    public Long getDesignationId() {
-        return designationId;
-    }
-
-    public void setDesignationId(Long designationId) {
-        this.designationId = designationId;
-    }
-
-    public EmployeeStatus getEmployeeStatus() {
-        return employeeStatus;
-    }
-
-    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
     public long getCreatedById() {
         return createdById;
     }
@@ -248,5 +323,21 @@ public class EmployeeProfileDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

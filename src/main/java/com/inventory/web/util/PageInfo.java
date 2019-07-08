@@ -9,23 +9,22 @@ import java.util.List;
  */
 public class PageInfo {
 
-    public static double pageList=2.0;
-    public static int numberOfPage=2;
+    public static double pageList = 30.0;/*the munber of row on page*/
+    public static int numberOfPage = 10;/*the number of pagelist*/
 
     private static int decrement;
     private static int increment;
-
 
 
     public static List<Integer> PageLimitCalculator(int page, int lastpage, int pageLimit) {
 
         boolean crossfire = false;
         List<Integer> in = new ArrayList<Integer>();
-        decrement = (page-1);
-        increment = (page+1);
+        decrement = (page - 1);
+        increment = (page + 1);
         in.add(page);
         for (int i = 1; i < pageLimit; i++) {
-            if(page!=decrement || page!=increment){
+            if (page != decrement || page != increment) {
                 if (crossfire) {
                     if (decrement > 0) {
                         in.add(decrement);
@@ -34,16 +33,16 @@ public class PageInfo {
                         in.add(increment);
                         increment++;
                     }
-                    crossfire=false;
-                } else{
+                    crossfire = false;
+                } else {
                     if (increment <= lastpage) {
                         in.add(increment);
                         increment++;
-                    }else if (decrement > 0) {
+                    } else if (decrement > 0) {
                         in.add(decrement);
                         decrement--;
                     }
-                    crossfire=true;
+                    crossfire = true;
                 }
             }
 

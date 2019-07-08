@@ -13,8 +13,6 @@ public class StockInfoDTO {
 
     private long quantity;
 
-    private ProductInfoDTO productInfo;
-
     private Long productId;
 
     private Status status;
@@ -41,14 +39,6 @@ public class StockInfoDTO {
 
     public void setQuantity(long quantity) {
         this.quantity = quantity;
-    }
-
-    public ProductInfoDTO getProductInfo() {
-        return productInfo;
-    }
-
-    public void setProductInfo(ProductInfoDTO productInfo) {
-        this.productInfo = productInfo;
     }
 
     public Long getProductId() {

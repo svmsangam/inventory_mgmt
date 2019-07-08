@@ -1,82 +1,65 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Shashwat
+  Date: 1/11/2018
+  Time: 9:59 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@include file="/pages/common/header.jsp" %>
-<%@include file="../common/businessOwnerSettings.jsp" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="#">
-                <svg class="glyph stroked home">
-                    <use xlink:href="#stroked-home"></use>
-                </svg>
-            </a></li>
-            <li class="active">Customer</li>
-        </ol>
-    </div>
-    <!--/.row-->
-    <c:if test="${not empty message}">
-        <div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${message}</strong>
-        </div>
-    </c:if>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Add Customer</div>
-                <div class="panel-body">
-                    <form action="${pageContext.request.contextPath}/unitInfo/update"
-                          method="POST" modelAttribute="unitInfo"
-                          enctype="multipart/form-data" id="registerform"
-                          novalidate="novalidate" class="col-lg-8">
-                        <input type="hidden" name="unitId" value="${unitInfo.unitId}"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-                        <div class="form-group" id="inputDiv">
-                            <label class="lable">Name * </label> <input type="text"
-                                                                        value="${clientInfo.name }" class="form-control"
-                                                                        name="name"
-                                                                        required/>
-                            <p class="error">${error.name}</p>
+    <!-- Main content -->
+    <section class="content">
 
-                            <label class="lable">Contact * </label> <input type="text"
-                                                                           value="${clientInfo.contact }"
-                                                                           class="form-control" name="contact"
-                                                                           required/>
-                            <p class="error">${error.contact}</p>
-
-                            <label class="lable">Address * </label> <input type="text"
-                                                                           value="${clientInfo.address }"
-                                                                           class="form-control" name="address"
-                                                                           required/>
-                            <p class="error">${error.address}</p>
-
-                            <label class="lable">Email </label> <input type="text"
-                                                                       value="${clientInfo.email }" class="form-control"
-                                                                       name="email"
-                                                                       required/>
-                            <p class="error">${error.email}</p>
-                            <label class="lable"> alias </label> <input type="text"
-                                                                        value="${clientInfo.alias }"
-                                                                        class="form-control" name="alias"
-                                                                        required/>
-                            <p class="error">${error.alias}</p>
-
-
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Edit Unit</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <form action="${pageContext.request.contextPath}/unit/update" method="post" modelAttribute="unit" >
+                        <div class="box-body">
+                            <%--<div class="form-group">
+                                <input type="hidden" name="categoryId" value="${category.categoryId}" />
+                            </div>--%>
+                            <div class="form-group">
+                                <label>Unit Name</label><input type="hidden" name="unitId" value="${unit.unitId}" /> <input type="text" name="name"
+                                                                                                                                            class="form-control input-sm" value="${unit.name}">
+                                <p class="error">${error.name}</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Code</label> <input type="text" name="code"
+                                                           class="form-control input-sm" required="required"
+                                                           value="${unit.code}">
+                                <p class="error">${error.code}</p>
+                            </div>
                         </div>
-
-
-                        <input type="hidden" name="${_csrf.parameterName}"
-                               value="${_csrf.token}"/> <input type="submit" value="Update unitInfo"
-                                                               class="btn btn-primary pull-right">
+                        <!-- /.box-body -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
                     </form>
                 </div>
+                <!-- /.box -->
             </div>
         </div>
-    </div>
+
+    </section>
+    <!-- /.content -->
 </div>
-<%@include file="../common/footer.jsp" %>
+<!-- /.content-wrapper -->
+
+<%@include file="/pages/parts/footer.jsp" %>
+
+
+

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * Created by dhiraj on 8/6/17.
  */
 @Repository
-public interface UnitInfoRepository extends JpaRepository<UnitInfo , Long> , JpaSpecificationExecutor<UnitInfo> {
+@Transactional(readOnly = true)
+public interface UnitInfoRepository extends JpaRepository<UnitInfo, Long>, JpaSpecificationExecutor<UnitInfo> {
 
     UnitInfo findById(long unitId);
 
@@ -24,6 +26,9 @@ public interface UnitInfoRepository extends JpaRepository<UnitInfo , Long> , Jpa
 
     @Query("select u from UnitInfo u where u.name = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
     UnitInfo findByNameAndStatusAndStoreInfo(String unitName, Status status, long storeId);
+
+    @Query("select u from UnitInfo u where u.code = ?1 and u.status = ?2 and  u.storeInfo.id = ?3")
+    UnitInfo findByCodeAndStatusAndStoreInfo(String unitCode, Status status, long storeId);
 
     @Query("select u from UnitInfo u where u.status = ?1 and u.storeInfo.id=?2 order by u.id desc")
     List<UnitInfo> findAllByStatusAndStoreInfo(Status status, long storeId);

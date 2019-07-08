@@ -8,6 +8,7 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.StateInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by dhiraj on 4/25/17.
  */
 @Service
+@Transactional
 public class StateInfoApi implements IStateInfoApi {
 
     @Autowired
@@ -32,13 +34,13 @@ public class StateInfoApi implements IStateInfoApi {
     @Override
     public StateInfoDTO update(StateInfoDTO stateDTO) {
 
-        return stateConverter.convertToDto(stateRepository.save(stateConverter.copyConvertToEntity(stateDTO , stateRepository.findByIdAndStatus(stateDTO.getStateId() , Status.ACTIVE))));
+        return stateConverter.convertToDto(stateRepository.save(stateConverter.copyConvertToEntity(stateDTO, stateRepository.findByIdAndStatus(stateDTO.getStateId(), Status.ACTIVE))));
     }
 
     @Override
     public void delete(long stateId) {
 
-        StateInfo state = stateRepository.findByIdAndStatus(stateId , Status.ACTIVE);
+        StateInfo state = stateRepository.findByIdAndStatus(stateId, Status.ACTIVE);
 
         state.setStatus(Status.DELETED);
 
@@ -48,7 +50,7 @@ public class StateInfoApi implements IStateInfoApi {
     @Override
     public StateInfoDTO show(long stateId) {
 
-        return stateConverter.convertToDto(stateRepository.findByIdAndStatus(stateId , Status.ACTIVE));
+        return stateConverter.convertToDto(stateRepository.findByIdAndStatus(stateId, Status.ACTIVE));
     }
 
     @Override
@@ -62,8 +64,8 @@ public class StateInfoApi implements IStateInfoApi {
         return stateConverter.convertToDtoList(stateRepository.findAllByStatus(Status.ACTIVE));
     }
 
-	@Override
-	public StateInfoDTO getStateByName(String stateName) {
-		return stateConverter.convertToDto(stateRepository.findByNameAndStatus(stateName , Status.ACTIVE));
-	}
+    @Override
+    public StateInfoDTO getStateByName(String stateName) {
+        return stateConverter.convertToDto(stateRepository.findByNameAndStatus(stateName, Status.ACTIVE));
+    }
 }

@@ -21,6 +21,8 @@ public class CityInfoDTO {
 
     private Status cityStatus;
 
+    private Integer version;
+
     public Long getCityId() {
         return cityId;
     }
@@ -75,5 +77,13 @@ public class CityInfoDTO {
 
     public void setCityStatus(Status cityStatus) {
         this.cityStatus = cityStatus;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class GlobalValidation {
 
-    public String checkDouble(Double value,int min,int maxFraction,String target,boolean notNull ){
+    public String checkDouble(Double value, int min, int maxFraction, String target, boolean notNull) {
 
-        if(notNull && value == null){
+        if (notNull && value == null) {
 
             return "Cannot Be Null";
         }
@@ -25,14 +25,14 @@ public class GlobalValidation {
                 return "Must Be Greater Than" + min;
             }
 
-            return checkFraction(value , maxFraction);
+            return checkFraction(value, maxFraction);
         }
         return "";
     }
 
-    public String checkInteger(Integer value , int min , int max , String target , boolean notNull){
+    public String checkInteger(Integer value, int min, int max, String target, boolean notNull) {
 
-        if (notNull && value == null){
+        if (notNull && value == null) {
 
             return "Cannot Be null";
         }
@@ -54,23 +54,45 @@ public class GlobalValidation {
 
     }
 
-    public String checkString(String value , int minLength , int maxLength , String target , boolean notNull){
+    public String checkLong(Long value, int min, String target, boolean notNull) {
 
-        if (notNull && value == null ){
+        if (notNull && value == null) {
 
-            return "Cannot Be Null";
+            return "Cannot Be null";
         }
 
         if (value != null) {
 
-            if ( "".equals(value.trim())){
+            if (value < min) {
+
+                return "Must Be Greater Than " + min;
+            }
+
+        }
+
+        return "";
+
+    }
+
+    public String checkString(String value, int minLength, int maxLength, String target, boolean notNull) {
+
+        if (notNull && value == null) {
+
+            return "Cannot Be Null";
+        } else if (notNull && value.isEmpty()){
+            return "Cannot Be Null";
+        }
+
+        if (value != null && !value.isEmpty()) {
+
+            if ("".equals(value.trim())) {
 
                 return "Cannot Be Blank";
             }
 
-            if (minLength == maxLength){
+            if (minLength == maxLength) {
 
-                if (value.length() != minLength){
+                if (value.length() != minLength) {
 
                     return "Exactly " + minLength + " length required";
                 }
@@ -92,13 +114,13 @@ public class GlobalValidation {
         return "";
     }
 
-    public String checkDoubleGreaterThan(Double value , Double checker , String target , String checkerTarget , boolean isEqual){
+    public String checkDoubleGreaterThan(Double value, Double checker, String target, String checkerTarget, boolean isEqual) {
 
-        if (value != null && checker != null){
+        if (value != null && checker != null) {
 
             if (isEqual) {
 
-                if (value < checker ) {
+                if (value < checker | checker > value) {
 
                     return "Must be Greater or Equal Than " + checkerTarget;
                 }
@@ -114,13 +136,13 @@ public class GlobalValidation {
         return "";
     }
 
-    public String checkIntegerGreaterThan(Integer value , Integer checker , String target , String checkerTarget , boolean isEqual){
+    public String checkIntegerGreaterThan(Integer value, Integer checker, String target, String checkerTarget, boolean isEqual) {
 
-        if (value != null && checker != null){
+        if (value != null && checker != null) {
 
             if (isEqual) {
 
-                if (value < checker ) {
+                if (value < checker) {
 
                     return "Must Be Greater or Equal Than " + checkerTarget;
                 }
@@ -136,28 +158,38 @@ public class GlobalValidation {
         return "";
     }
 
-    public String checkDate(String dateStr , String target , boolean notNull , boolean isBefore , boolean isAfter){
+    public String checkDate(String dateStr, String target, boolean notNull, boolean isBefore, boolean isAfter) {
 
-        if (notNull && dateStr == null){
+        if (notNull && dateStr == null) {
 
             return "Cannot Be Null";
         }
 
-        if (dateStr != null){
+        if (dateStr != null) {
 
-            if (dateStr.length() != 10 || !(dateStr.matches("\\d{4}-[01]\\d-[0-3]\\d"))){
+            if (dateStr.length() != 10 || !(dateStr.matches("\\d{4}-[01]\\d-[0-3]\\d"))) {
 
                 return "invalid date";
             }
 
-            return checkDateFormat(dateStr , isBefore , isAfter);
+            return checkDateFormat(dateStr, isBefore, isAfter);
+        }
+
+        return "";
+    }
+
+    public String checkDate(Date dateStr, String target, boolean notNull, boolean isBefore, boolean isAfter) {
+
+        if (notNull && dateStr == null) {
+
+            return "Cannot Be Null";
         }
 
         return "";
     }
 
 
-    private String checkFraction(double value , int maxFraction){
+    private String checkFraction(double value, int maxFraction) {
 
         String aString = Double.toString(value);
 
@@ -177,7 +209,7 @@ public class GlobalValidation {
         return "";
     }
 
-    private String checkDateFormat(String dateStr , boolean isBefore , boolean isAfter){
+    private String checkDateFormat(String dateStr, boolean isBefore, boolean isAfter) {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -189,12 +221,12 @@ public class GlobalValidation {
 
             if (isBefore) {
 
-                return checkDateIsBefore(date , df);
+                return checkDateIsBefore(date, df);
             }
 
-            if (isAfter){
+            if (isAfter) {
 
-                return checkDateIsAfter(date , df);
+                return checkDateIsAfter(date, df);
 
             }
 
@@ -206,7 +238,7 @@ public class GlobalValidation {
         return "";
     }
 
-    private String checkDateIsBefore(Date date , SimpleDateFormat df){
+    private String checkDateIsBefore(Date date, SimpleDateFormat df) {
 
         try {
 
@@ -218,7 +250,7 @@ public class GlobalValidation {
 
                 return "date must be before current date";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
             return "date must be before current date";
         }
@@ -226,9 +258,9 @@ public class GlobalValidation {
         return "";
     }
 
-    private String checkDateIsAfter(Date date , SimpleDateFormat df){
+    private String checkDateIsAfter(Date date, SimpleDateFormat df) {
 
-        try{
+        try {
 
             String currentDateStr = df.format(new Date());
 
@@ -239,7 +271,7 @@ public class GlobalValidation {
                 return "date must be after current date";
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             return "date must be after current date";
         }

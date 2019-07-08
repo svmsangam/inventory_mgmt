@@ -5,10 +5,7 @@ import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.PurchaseOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -16,14 +13,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "invorderinfo")
-public class OrderInfo extends AbstractEntity<Long>{
-
-    private static final long serialVersionUID = -6245833303340171164L;
-
+public class OrderInfo extends AbstractEntity<Long> {
+    
     private String orderNo;
 
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
 
+    @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
     private OrderType orderType;
@@ -52,6 +49,9 @@ public class OrderInfo extends AbstractEntity<Long>{
     private double tax;
 
     private double grandTotal;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    FiscalYearInfo fiscalYearInfo;
 
     public String getOrderNo() {
         return orderNo;
@@ -171,5 +171,13 @@ public class OrderInfo extends AbstractEntity<Long>{
 
     public void setGrandTotal(double grandTotal) {
         this.grandTotal = grandTotal;
+    }
+
+    public FiscalYearInfo getFiscalYearInfo() {
+        return fiscalYearInfo;
+    }
+
+    public void setFiscalYearInfo(FiscalYearInfo fiscalYearInfo) {
+        this.fiscalYearInfo = fiscalYearInfo;
     }
 }

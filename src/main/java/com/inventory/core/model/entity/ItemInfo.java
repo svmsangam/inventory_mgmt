@@ -2,116 +2,125 @@ package com.inventory.core.model.entity;
 
 import com.inventory.core.model.enumconstant.Status;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "item_table")
-public class ItemInfo extends AbstractEntity<Long>{
+public class ItemInfo extends AbstractEntity<Long> {
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private ProductInfo productInfo;
-	
-	private double costPrice;
-	
-	private double sellingPrice;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ProductInfo productInfo;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private TagInfo tagInfo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ClientInfo vendorInfo;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private LotInfo lotInfo;
-	
-	private Date expireDate;
+    private double costPrice;
 
-	private int inStock;
-	
-	private int quantity;
+    private double sellingPrice;
 
-	private int threshold;
-	
-	private Status status;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TagInfo tagInfo;
 
-	public ProductInfo getProductInfo() {
-		return productInfo;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private LotInfo lotInfo;
 
-	public void setProductInfo(ProductInfo productInfo) {
-		this.productInfo = productInfo;
-	}
+    @Temporal(TemporalType.DATE)
+    private Date expireDate;
 
-	public double getCostPrice() {
-		return costPrice;
-	}
+    private int inStock;
 
-	public void setCostPrice(double costPrice) {
-		this.costPrice = costPrice;
-	}
+    private long quantity;
 
-	public double getSellingPrice() {
-		return sellingPrice;
-	}
+    private int threshold;
 
-	public void setSellingPrice(double sellingPrice) {
-		this.sellingPrice = sellingPrice;
-	}
+    private Status status;
 
-	public TagInfo getTagInfo() {
-		return tagInfo;
-	}
+    public ProductInfo getProductInfo() {
+        return productInfo;
+    }
 
-	public void setTagInfo(TagInfo tagInfo) {
-		this.tagInfo = tagInfo;
-	}
+    public void setProductInfo(ProductInfo productInfo) {
+        this.productInfo = productInfo;
+    }
 
-	public LotInfo getLotInfo() {
-		return lotInfo;
-	}
+    public double getCostPrice() {
+        return costPrice;
+    }
 
-	public void setLotInfo(LotInfo lotInfo) {
-		this.lotInfo = lotInfo;
-	}
+    public void setCostPrice(double costPrice) {
+        this.costPrice = costPrice;
+    }
 
-	public Date getExpireDate() {
-		return expireDate;
-	}
+    public double getSellingPrice() {
+        return sellingPrice;
+    }
 
-	public void setExpireDate(Date expireDate) {
-		this.expireDate = expireDate;
-	}
+    public void setSellingPrice(double sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
 
-	public int getInStock() {
-		return inStock;
-	}
+    public TagInfo getTagInfo() {
+        return tagInfo;
+    }
 
-	public void setInStock(int inStock) {
-		this.inStock = inStock;
-	}
+    public void setTagInfo(TagInfo tagInfo) {
+        this.tagInfo = tagInfo;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public LotInfo getLotInfo() {
+        return lotInfo;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public void setLotInfo(LotInfo lotInfo) {
+        this.lotInfo = lotInfo;
+    }
 
-	public int getThreshold() {
-		return threshold;
-	}
+    public Date getExpireDate() {
+        return expireDate;
+    }
 
-	public void setThreshold(int threshold) {
-		this.threshold = threshold;
-	}
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public int getInStock() {
+        return inStock;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setInStock(int inStock) {
+        this.inStock = inStock;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public ClientInfo getVendorInfo() {
+        return vendorInfo;
+    }
+
+    public void setVendorInfo(ClientInfo vendorInfo) {
+        this.vendorInfo = vendorInfo;
+    }
 }

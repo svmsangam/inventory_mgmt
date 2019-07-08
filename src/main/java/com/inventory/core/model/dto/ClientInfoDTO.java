@@ -34,6 +34,32 @@ public class ClientInfoDTO {
 
     private Status status;
 
+    private Integer version;
+
+    private String accountNo;
+
+    private long accountId;
+
+    private long storeInfoId;
+
+    private String pan;
+
+    public String getPan() {
+        return pan;
+    }
+
+    public void setPan(String pan) {
+        this.pan = pan;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Long getClientId() {
         return clientId;
     }
@@ -136,5 +162,29 @@ public class ClientInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
+
+    public long getStoreInfoId() {
+        return storeInfoId;
+    }
+
+    public void setStoreInfoId(long storeInfoId) {
+        this.storeInfoId = storeInfoId;
     }
 }

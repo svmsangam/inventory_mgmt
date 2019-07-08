@@ -3,7 +3,7 @@ package com.inventory.core.model.enumconstant;
 /**
  * Created by dhiraj on 6/29/17.
  */
-public enum  ClientType {
+public enum ClientType {
 
     CUSTOMER("Customer"), VENDOR("Vendor");
 

@@ -8,23 +8,23 @@ import java.util.List;
 
 public interface ICityInfoApi {
 
-	CityInfoDTO save(CityInfoDTO cityDTO);
+    CityInfoDTO save(CityInfoDTO cityDTO);
 
-	CityInfoDTO update(CityInfoDTO cityDTO);
+    CityInfoDTO update(CityInfoDTO cityDTO);
 
-	void delete(long cityId);
+    void delete(long cityId);
 
-	CityInfoDTO show(long cityId);
+    CityInfoDTO show(long cityId);
 
-	List<CityInfoDTO> list(PageableDTO pageableDTO);
+    List<CityInfoDTO> list(PageableDTO pageableDTO);
 
-	List<CityInfoDTO> list();
+    List<CityInfoDTO> list();
 
-	CityInfoDTO getCityByName(String cityName);
-	
-	List<CityInfoDTO> getCityByStateId(long id);
+    CityInfoDTO getCityByName(String cityName);
 
-	long cityCount(Status status);
+    List<CityInfoDTO> getCityByStateId(long id);
+
+    long cityCount(Status status);
 
 }
 

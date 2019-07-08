@@ -11,86 +11,96 @@ import javax.persistence.Table;
 @Table(name = "store_table")
 public class StoreInfo extends AbstractEntity<Long> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String name;
+    private String name;
 
-	private String street;
+    private String street;
 
-	private String panNumber;
-	
-	private String regNumber;
-	
-	private String contact;
+    private String panNumber;
 
-	private String mobileNumber;
+    private String regNumber;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private CityInfo cityInfo;
-	
-	private Status status;
+    private String contact;
 
-	public String getName() {
-		return name;
-	}
+    private String mobileNumber;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String email;
 
-	public String getStreet() {
-		return street;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CityInfo cityInfo;
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    private Status status;
 
-	public String getPanNumber() {
-		return panNumber;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setPanNumber(String panNumber) {
-		this.panNumber = panNumber;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getRegNumber() {
-		return regNumber;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setRegNumber(String regNumber) {
-		this.regNumber = regNumber;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getContact() {
-		return contact;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
+    public String getPanNumber() {
+        return panNumber;
+    }
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
 
-	public CityInfo getCityInfo() {
-		return cityInfo;
-	}
+    public String getRegNumber() {
+        return regNumber;
+    }
 
-	public void setCityInfo(CityInfo cityInfo) {
-		this.cityInfo = cityInfo;
-	}
+    public void setRegNumber(String regNumber) {
+        this.regNumber = regNumber;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public String getContact() {
+        return contact;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

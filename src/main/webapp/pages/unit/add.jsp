@@ -1,64 +1,63 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: dhiraj
+  Date: 8/24/17
+  Time: 7:11 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@include file="/pages/common/header.jsp" %>
-<%@include file="../common/businessOwnerSettings.jsp" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="#">
-                <svg class="glyph stroked home">
-                    <use xlink:href="#stroked-home"></use>
-                </svg>
-            </a></li>
-            <li class="active">Unit</li>
-        </ol>
-    </div>
-    <!--/.row-->
-    <c:if test="${not empty message}">
-        <div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${message}</strong>
-        </div>
-    </c:if>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Add Unit</div>
-                <div class="panel-body">
-                    <form action="${pageContext.request.contextPath}/unitInfo/save"
-                          method="POST" modelAttribute="clientInfo"
-                          enctype="multipart/form-data" id="registerform"
-                          novalidate="novalidate" class="col-lg-8">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
+    <!-- Main content -->
+    <section class="content">
 
-                        <div class="form-group" id="inputDiv">
-                            <label class="lable">Name * </label> <input type="text"
-                                                                        value="${unitInfo.name }" class="form-control"
-                                                                        name="name" required/>
-                            <p class="error">${error.name}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Add Unit</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <form action="${pageContext.request.contextPath}/unit/save" method="post" modelAttribute="unit" >
+                        <div class="box-body">
 
-                            <p class="error">${error.name}</p>
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" value="${unit.name}" name="name" placeholder="Name">
+                                <p class="form-error">${unitError.name}</p>
+                            </div>
 
-                            <label class="lable"> Unit Code* </label> <input type="text"
-                                                                             value="${unitInfo.code }"
-                                                                             class="form-control" name="code" required/>
+                            <div class="form-group">
+                                <label class="control-label">Code</label>
+                                <input type="text" class="form-control" value="${unit.code}" name="code" placeholder="code">
+                                <p class="form-error">${unitError.code}</p>
+                            </div>
 
-                            <p class="error">${error.code}</p>
                         </div>
-
-
-                        <input type="hidden" name="${_csrf.parameterName}"
-                               value="${_csrf.token}"/> <input type="submit" value="Add Unit"
-                                                               class="btn btn-primary pull-right">
+                        <!-- /.box-body -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
                     </form>
                 </div>
+                <!-- /.box -->
             </div>
         </div>
-    </div>
+
+    </section>
+    <!-- /.content -->
 </div>
-<%@include file="../common/footer.jsp" %>
+<!-- /.content-wrapper -->
+
+<%@include file="/pages/parts/footer.jsp" %>
+
+

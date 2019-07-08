@@ -274,13 +274,13 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
-                        var arr = []
+                        var arr = [];
                         $.each(data.detail, function (index, value) {
                             arr.push({
                                 id: value.tagId,
                                 text: value.tagName
                             })
-                        })
+                        });
 
 
                         return {

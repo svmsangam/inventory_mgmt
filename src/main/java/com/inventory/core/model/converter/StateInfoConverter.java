@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>, IListConvertable<StateInfo , StateInfoDTO> {
+public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>, IListConvertable<StateInfo, StateInfoDTO> {
 
     @Autowired
     private CountryInfoRepository countryRepository;
@@ -27,13 +27,13 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
     @Override
     public StateInfo convertToEntity(StateInfoDTO dto) {
 
-        return copyConvertToEntity(dto , new StateInfo());
+        return copyConvertToEntity(dto, new StateInfo());
     }
 
     @Override
     public StateInfoDTO convertToDto(StateInfo entity) {
 
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
 
@@ -41,7 +41,6 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
 
         dto.setCountryName(entity.getCountryInfo().getName());
         dto.setStateId(entity.getId());
-        //dto.setStateStatus(entity.getStatus());
         dto.setStateName(entity.getName());
 
         return dto;
@@ -50,12 +49,12 @@ public class StateInfoConverter implements IConvertable<StateInfo, StateInfoDTO>
     @Override
     public StateInfo copyConvertToEntity(StateInfoDTO dto, StateInfo entity) {
 
-        if (entity == null || dto == null){
+        if (entity == null || dto == null) {
             return null;
         }
 
         entity.setCountryInfo(countryRepository.findByIdAndStatus(dto.getCountryId(), Status.ACTIVE));
-        entity.setName(dto.getStateName());
+        entity.setName(dto.getStateName().trim());
         entity.setStatus(Status.ACTIVE);
 
         return entity;

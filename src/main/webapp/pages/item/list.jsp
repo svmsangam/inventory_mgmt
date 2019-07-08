@@ -1,151 +1,170 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/pages/parts/header.jsp" %>
+<%@include file="/pages/parts/sidebar.jsp" %>
 
-<%@include file="../common/businessOwnerSettings.jsp" %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">
-                <svg class="glyph stroked home">
-                    <use xlink:href="#stroked-home"></use>
-                </svg>
-            </a></li>
-            <li class="active">Item</li>
-            <li>
+    <section class="content">
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
+        </c:if>
 
-            </li>
-        </ol>
-    </div><!--/.row-->
-    <c:if test="${not empty message}">
-        <div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${message}</strong>
-        </div>
-    </c:if>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
+        </c:if>
 
-    <div class="container-wrapper">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Item List <a href="${pageContext.request.contextPath}/productInfo/add"
-                                                            style="float:right; margin-bottom:8px;">
-                        <button class="btn btn-primary btn-sm">Add New Item</button>
-                    </a>
+            <div class="col-xs-12">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Item List</h3>
+                        <div class="box-tools">
+                            <button type="button" class="btn btn-info btn-sm btn-flat pull-right" data-toggle="modal"
+                                    data-target="#modal-add"><span class="glyphicon glyphicon-plus-sign"></span> Add
+                            </button>
+                        </div>
                     </div>
-                    <div class="panel-body table-responsive">
-                        <table class="table table-hover">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                        <table id="table2" class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
-                                <th><c:choose><c:when test="${sort == 'id'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=id&direction=${direction}">s.n.</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=id&direction=desc">s.n.</a></c:otherwise></c:choose>
-                                </th>
-                                <th><c:choose><c:when test="${sort eq 'name'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=name&direction=${direction}">Item
-                                    Name</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=name&direction=desc">Item
-                                    Name</a></c:otherwise></c:choose></th>
-                                <th><c:choose><c:when test="${sort eq 'code'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=code&direction=${direction}">Item
-                                    Code</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=code&direction=desc">Item
-                                    Code</a></c:otherwise></c:choose></th>
-                                <th><c:choose><c:when test="${sort eq 'subCategoryInfo'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=subCategoryInfo&direction=${direction}">SubCategory</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=subCategoryInfo&direction=desc">SubCategory</a></c:otherwise></c:choose>
-                                </th>
-                                <th><c:choose><c:when test="${sort eq 'unitInfo'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=unitInfo&direction=${direction}">Unit</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=unitInfo&direction=desc">Unit</a></c:otherwise></c:choose>
-                                </th>
-                                <th><c:choose><c:when test="${sort eq 'tradition'}"><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=tradition&direction=${direction}">Tradition</a></c:when><c:otherwise><a
-                                        href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage}&sort=tradition&direction=desc">Tradition</a></c:otherwise></c:choose>
-                                </th>
-                                <th>Instock</th>
-                                <th>Total Stock</th>
+                                <th>SN</th>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="productInfo" items="${itemList}" varStatus="counter">
+                            <c:forEach var="country" items="${itemList}" varStatus="i">
                                 <tr>
-                                    <td>${counter.index + 1}</td>
+                                    <td>${i.index + 1}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.code}</td>
+                                    <td>${item.decription}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/productInfo/${productInfo.itemId}">${productInfo.name}</a>
-                                    </td>
-                                    <td>${productInfo.code}</td>
-                                    <td>${productInfo.subcategoryName}</td>
-                                    <td>${productInfo.unitName}</td>
-                                    <td>${productInfo.trendingLevel}</td>
-                                    <td>${productInfo.availabaleQuatity}</td>
-                                    <td>${productInfo.totalQuantity}</td>
-
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/productInfo/edit?itemId=${productInfo.itemId}"
-                                           class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
-                                            Edit </a> <a
-                                            href="${pageContext.request.contextPath}/productInfo/delete?itemId=${productInfo.itemId}"
-                                            class="btn btn-danger btn-xs"
-                                            onclick="return confirm('Are you sure, you want to DELETE?')">Delete</a>
+                                        <button type="button" class="btn btn-warning btn-sm  btn-flat"
+                                                data-toggle="modal" data-target="#modal-edit"><span
+                                                class="glyphicon glyphicon-edit"></span> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-flat"><span
+                                                class="glyphicon glyphicon-minus-sign"></span> Delete
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
-                    </div>
-
-
-                    <c:if test="${fn:length(pagelist) gt 1}">
-
-                        <style>
-                            .mypgactive {
-                                background: #a51234 !important;
-                                cursor: pointer !important;
-                                color: white !important;
-                            }
-                        </style>
-
-                        <div class="pagination-block col-md-10  pull-left">
-                            <ul class="pagination pagination-sm no-margin pagingclass col-md-10">
-                                <li>
-                                    <c:if test="${currentpage > 1}">
-                                        <a href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage-1}&sort=${sort}&direction=${directionPage}"
-                                           class="pn prev mypgactive">Prev</a>
-                                    </c:if></li>
-
-                                <c:forEach var="pagelist" items="${pagelist}">
-                                    <li><c:choose>
-
-                                        <c:when test="${pagelist == currentpage}">
-
-                                            <span class="active">${pagelist}</span>
-
-                                        </c:when>
-                                        <c:otherwise>
-
-                                            <a href="${pageContext.request.contextPath}/productInfo/list?pageNo=${pagelist}&sort=${sort}&direction=${directionPage}"
-                                               class="mypgactive">${pagelist}</a>
-
-                                        </c:otherwise>
-
-                                    </c:choose></li>
-                                </c:forEach>
-                                <li>
-                                    <c:if test="${currentpage + 1 <= lastpage}">
-                                        <a href="${pageContext.request.contextPath}/productInfo/list?pageNo=${currentpage+1}&sort=${sort}&direction=${directionPage}"
-                                           class="pn next mypgactive">Next</a>
-                                    </c:if></li>
-                            </ul>
                         </div>
-
-                    </c:if>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
+                <!-- /.box -->
             </div>
         </div>
+    </section>
+
+    <div class="modal fade" id="modal-add">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Item</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="Name">
+                                <p class="error">${error.name}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Code</label>
+                                <input type="text" class="form-control" name="code" placeholder="Code">
+                                <p class="error">${error.code}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Decription</label>
+                                <input type="text" class="form-control" name="decription" placeholder="decription">
+                                <p class="error">${error.decription}</p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" pagecontext="${pageContext.request.contextPath}"
+                            url="${pageContext.request.contextPath}/item/save"  class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit item</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/item/edit"
+                          modelAttribute="itemInfoDto">
+                        <input type="hidden" name="itemId" value="${itemInfo.itemId}"/>
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Name" value="" required>
+                                <p class="error">${error.name}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Code</label>
+                                <input type="text" class="form-control" name="code" value="" placeholder="Code">
+                                <p class="error">${error.code}</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Decription</label>
+                                <input type="text" class="form-control" name="decription" value="" placeholder="decription">
+                                <p class="error">${error.decription}</p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" url="${pageContext.request.contextPath}/item/update" class="btn btn-primary saveitem">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </div>
-<%@include file="../common/footer.jsp" %>
+
+<%@include file="/pages/parts/footer.jsp" %>

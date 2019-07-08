@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invaccount")
-public class AccountInfo extends AbstractEntity<Long>{
+public class AccountInfo extends AbstractEntity<Long> {
 
     private String acountNumber;
 

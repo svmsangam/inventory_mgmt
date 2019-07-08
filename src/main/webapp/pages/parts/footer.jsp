@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- Main Footer -->
 <footer class="main-footer">
     <!-- To the right -->
@@ -5,13 +6,13 @@
         Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="#">Company</a>.</strong> All rights reserved.
 </footer>
 
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+   <%-- <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
         <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
@@ -21,61 +22,72 @@
         <div class="tab-pane active" id="control-sidebar-home-tab">
             <h3 class="control-sidebar-heading">Recent Activity</h3>
             <ul class="control-sidebar-menu">
+
                 <li>
-                    <a href="javascript:;">
+                    <a href="javascript:void(0);">
                         <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
                         <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                            <h4 class="control-sidebar-subheading">ToDays Sale</h4>
 
-                            <p>Will be 23 on April 24th</p>
+                            <p>Rs 12,000,000</p>
                         </div>
                     </a>
                 </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">ToDays Collection</h4>
+
+                            <p>Rs 10,000,000</p>
+                        </div>
+                    </a>
+                </li>
+
             </ul>
             <!-- /.control-sidebar-menu -->
 
             <h3 class="control-sidebar-heading">Tasks Progress</h3>
             <ul class="control-sidebar-menu">
-                <li>
-                    <a href="javascript:;">
-                        <h4 class="control-sidebar-subheading">
-                            Custom Template Design
-                            <span class="pull-right-container">
-                    <span class="label label-danger pull-right">70%</span>
-                  </span>
-                        </h4>
 
-                        <div class="progress progress-xxs">
-                            <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                        </div>
-                    </a>
-                </li>
+                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
+
+                    <li class="active"><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i>
+                        <span>Sales Order Pending <span class="badge">26</span></span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Accepted <span
+                            class="badge">6</span></span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Packed <span
+                            class="badge">14</span></span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Shipped <span
+                            class="badge">10</span></span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Pending <span
+                            class="badge">3</span></span></a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Issued <span
+                            class="badge">1</span></span></a></li>
+                </sec:authorize>
             </ul>
             <!-- /.control-sidebar-menu -->
 
         </div>
         <!-- /.tab-pane -->
         <!-- Stats tab content -->
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        <%--
+                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        --%>
         <!-- /.tab-pane -->
         <!-- Settings tab content -->
-        <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-                <h3 class="control-sidebar-heading">General Settings</h3>
+    <div class="tab-pane" id="control-sidebar-settings-tab">
 
-                <div class="form-group">
-                    <label class="control-sidebar-subheading">
-                        Report panel usage
-                        <input type="checkbox" class="pull-right" checked>
-                    </label>
+        <%@include file="/pages/parts/setting.jsp" %>
 
-                    <p>
-                        Some information about this general settings option
-                    </p>
-                </div>
-                <!-- /.form-group -->
-            </form>
         </div>
         <!-- /.tab-pane -->
     </div>
@@ -87,17 +99,124 @@ immediately after the control sidebar -->
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
+<!-- REQUIAjaxD JS SCRIPTS -->
 
 <!-- jQuery 3 -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+<--select2 dropdown-->
+<script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
+<!-- DataTables -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
+
+<%--
+<script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
+--%>
+<!-- SlimScroll -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="${pageContext.request.contextPath}/resources/js/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/resources/js/adminlte.min.js"></script>
+<!-- ChartJS -->
+<script src="${pageContext.request.contextPath}/resources/js/Chart.js"></script>
+<%--notification--%>
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap-notify.min.js"></script>
+<%--js spinner--%>
+<script src="${pageContext.request.contextPath}/resources/js/spin.min.js"></script>
+<%--js pdf--%>
+<script src="${pageContext.request.contextPath}/resources/js/jspdf.min.js"></script>
+<%--js model--%>
+<script src="${pageContext.request.contextPath}/resources/js/asset/model/model.js"></script>
+<%--js service--%>
+<script src="${pageContext.request.contextPath}/resources/js/asset/service/service.js"></script>
+<%--js app--%>
+<script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-Both of these plugins are recommended to enhance the
-user experience. -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        });
+
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true
+        })
+    })
+</script>
+
+<!-- page script -->
+<script>
+    $(function () {
+        $('#table1').DataTable({
+            'paging': false,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+
+        $('#table2').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    })
+</script>
+
+<%--for sidebar active--%>
+<script>
+    /** add active class and stay opened when selected */
+    var url = window.location;
+
+    // for sidebar menu entirely but not cover treeview
+    $('ul.sidebar-menu a').filter(function() {
+        return this.href == url;
+    }).parent().siblings().removeClass('active').end().addClass('active');
+
+    // for treeview
+    $('ul.treeview-menu a').filter(function() {
+        return this.href == url;
+    }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active').end().addClass('active');
+
+</script>
+
+<sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
+    <%--<%@include file="/pages/notification/script/script.jsp" %>--%>
+    <%--js notification--%>
+    <script src="${pageContext.request.contextPath}/resources/js/asset/app/notification.js"></script>
+    <%--js socket--%>
+    <script src="${pageContext.request.contextPath}/resources/js/socket/sockjs.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/socket/stomp.min.js"></script>
+<input type="hidden" id="key" value="${pageContext.request.userPrincipal.name}">
+    <script>
+        $(document).ready(function () {
+
+            var key = $("#key").val();
+
+            try {
+                connectToSocket(key);
+            }catch (e){
+                console.log(e);
+            }
+        })
+    </script>
+</sec:authorize>
+
 </body>
 </html>

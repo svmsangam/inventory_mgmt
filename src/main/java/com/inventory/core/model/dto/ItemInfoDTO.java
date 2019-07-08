@@ -31,11 +31,45 @@ public class ItemInfoDTO {
 
     private int inStock;
 
-    private int quantity;
+    private Long quantity;
 
     private int threshold;
 
     private Status status;
+
+    private Integer version;
+
+    private double totalCost;
+
+    private double totalSale;
+
+    private Long vendorId;
+
+    private String vendorName;
+
+    public double getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(double totalSale) {
+        this.totalSale = totalSale;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Long getItemId() {
         return itemId;
@@ -125,11 +159,11 @@ public class ItemInfoDTO {
         this.inStock = inStock;
     }
 
-    public int getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
@@ -147,5 +181,21 @@ public class ItemInfoDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Long vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 }

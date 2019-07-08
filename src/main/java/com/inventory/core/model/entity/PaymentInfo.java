@@ -7,26 +7,32 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "paymentdetail_tables")
-public class PaymentInfo extends AbstractEntity<Long>{
+public class PaymentInfo extends AbstractEntity<Long> {
 
-    private static final long serialVersionUID = -6245833303340171164L;
-
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Payment receivedPayment;
 
-    @OneToOne
-    private Payment returnedPayment;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Payment refundPayment;
 
     private String remark;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private InvoiceInfo invoiceInfo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private StoreInfo storeInfo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User createdBy;
+
+    public Payment getRefundPayment() {
+        return refundPayment;
+    }
+
+    public void setRefundPayment(Payment refundPayment) {
+        this.refundPayment = refundPayment;
+    }
 
     public Payment getReceivedPayment() {
         return receivedPayment;
@@ -34,14 +40,6 @@ public class PaymentInfo extends AbstractEntity<Long>{
 
     public void setReceivedPayment(Payment receivedPayment) {
         this.receivedPayment = receivedPayment;
-    }
-
-    public Payment getReturnedPayment() {
-        return returnedPayment;
-    }
-
-    public void setReturnedPayment(Payment returnedPayment) {
-        this.returnedPayment = returnedPayment;
     }
 
     public String getRemark() {

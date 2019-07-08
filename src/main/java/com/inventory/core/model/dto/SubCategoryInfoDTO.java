@@ -23,9 +23,21 @@ public class SubCategoryInfoDTO {
 
     private Status status;
 
-    private CategoryInfoDTO categoryInfoDto;
+    private SubCategoryInfoDTO parent;
 
     private Long categoryId;
+
+    private Integer version;
+
+    private int depth;
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
 
     public Long getSubCategoryId() {
         return subCategoryId;
@@ -91,12 +103,12 @@ public class SubCategoryInfoDTO {
         this.status = status;
     }
 
-    public CategoryInfoDTO getCategoryInfoDto() {
-        return categoryInfoDto;
+    public SubCategoryInfoDTO getParent() {
+        return parent;
     }
 
-    public void setCategoryInfoDto(CategoryInfoDTO categoryInfoDto) {
-        this.categoryInfoDto = categoryInfoDto;
+    public void setParent(SubCategoryInfoDTO parent) {
+        this.parent = parent;
     }
 
     public Long getCategoryId() {
@@ -105,5 +117,13 @@ public class SubCategoryInfoDTO {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

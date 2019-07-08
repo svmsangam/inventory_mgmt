@@ -18,7 +18,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/inventory"/>
         <property name="username" value="root"/>
-        <property name="password" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
     <bean id="jpaVendorAdapter"
@@ -39,5 +39,12 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
     <bean id="passwordEncoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="queueCapacity" value="50" />
+        <property name="waitForTasksToCompleteOnShutdown" value="true"></property>
+    </bean>
 
 </beans>

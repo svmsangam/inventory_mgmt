@@ -1,6 +1,6 @@
 package com.inventory.core.model.entity;
 
-import com.inventory.core.model.enumconstant.permission;
+import com.inventory.core.model.enumconstant.Permission;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,27 +9,27 @@ import java.util.List;
 @Entity
 @Table(name = "userpermission")
 public class UserPermission extends AbstractEntity<Long> {
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	private User user;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="permissions" )
-	private List<permission> permissionList = new ArrayList<permission>();
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 
-	public User getUser() {
-		return user;
-	}
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "permissions")
+    private List<Permission> permissionList = new ArrayList<Permission>();
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<permission> getPermissionList() {
-		return permissionList;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setPermissionList(List<permission> permissionList) {
-		this.permissionList = permissionList;
-	}
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
 }
