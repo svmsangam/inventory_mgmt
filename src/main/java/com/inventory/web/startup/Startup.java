@@ -47,7 +47,7 @@ public class Startup {
 
     public void initialize() throws Exception {
 
-        String[] deviceMacAddr = new String[]{"54:e1:ad:53:17:06"};
+        String[] deviceMacAddr = new String[]{"NXGWNSG00480402DFD7600"};
         String[] resultMacAddr = new String[]{ParseUtls.getMacAddress()};
 
         if (!ParseUtls.isValidMacAddress( deviceMacAddr, resultMacAddr)){

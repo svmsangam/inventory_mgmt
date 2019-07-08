@@ -24,7 +24,7 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Product</h3>
+                        <h3 class="box-title">Add Main Dish</h3>
                     </div>
                     <!-- /.box-header -->
                     <form action="${pageContext.request.contextPath}/product/save" method="post" modelAttribute="product" >
