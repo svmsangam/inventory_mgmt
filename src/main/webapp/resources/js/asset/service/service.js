@@ -543,6 +543,7 @@ function OrderInfoService() {
                     if (data.status === 'Success') {
 
                         that.setItemResult(result , event);
+                        calculate(amountUpdate);
 
                         stopLoading(spinner);
 

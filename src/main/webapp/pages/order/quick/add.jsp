@@ -52,8 +52,15 @@
                     <div class="box-body">
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
+                                <label>QR Scanner :</label>
                                 <select class='choose2 form-control itemQrSearch' name='' url='${pageContext.request.contextPath}/item/show'></select>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group pull-right">
+                                    <label>Total Cost </label>
+                                    <span class="btn btn-default btn-flat">Rs.&nbsp;<h2 id="total">${mytotalamount + mytotalamount * tax /100}</h2></span>
+                                </div>
                             </div>
                         </div>
 

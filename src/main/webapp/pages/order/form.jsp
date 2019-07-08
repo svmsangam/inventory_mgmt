@@ -138,10 +138,6 @@
                    name="tax" required/>
 
         </div>
-        <div class="form-group">
-            <label>Total Cost </label>
-            <span>Rs.<strong id="total">${mytotalamount + mytotalamount * tax /100}</strong></span>
-        </div>
     </div>
 
 </div>

@@ -277,7 +277,7 @@
         row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'>" +
                 "<option selected value='"+itemModal.itemId+"'>" +itemModal.name + "</option>" +
             "</select></td>";
-        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' on onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' required/></td>";
+        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
         row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
         row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
         row += "<td class='text-right'>Rs.<span>0</span></div>";
@@ -289,6 +289,8 @@
         count++;
         max ++;
         updateName();
+        //todo calculate amount not working
+        calculate(amountUpdate);
         getRateOnQr(itemModal , self);
     }
 
