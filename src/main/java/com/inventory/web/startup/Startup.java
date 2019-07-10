@@ -47,14 +47,14 @@ public class Startup {
 
     public void initialize() throws Exception {
 
-        String[] deviceMacAddr = new String[]{"NXGWNSG00480402DFD7600"};
+        /*String[] deviceMacAddr = new String[]{"NXGWNSG00480402DFD7600"};
         String[] resultMacAddr = new String[]{ParseUtls.getMacAddress()};
 
         if (!ParseUtls.isValidMacAddress( deviceMacAddr, resultMacAddr)){
             //sendMailSSL.sendMail("inventory.sys.info@gmail.com" , "dhirajbadu50@gmail.com", "war provided to Dev Raj Three Monks" , "Alert : some one trying to install on unverified server" );
             throw new Exception("invalid mac Address");
         }
-
+*/
         createUser("system", UserType.SYSTEM, "123456", Status.ACTIVE);
 
         CountryStarter();

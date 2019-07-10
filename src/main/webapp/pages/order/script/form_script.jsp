@@ -7,13 +7,13 @@
 --%>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $(".choose1").select2({
             ajax: {
                 url: '${pageContext.request.contextPath}/client/customer/search',
                 dataType: 'json',
-                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
                 type: 'GET',
                 data: function (params) {
@@ -22,25 +22,24 @@
                         /* page: params.page*/
                     };
                 },
-                processResults: function (data , params) {
+                processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
                     $.each(data.detail, function (index, value) {
 
-                        if(value.companyName === null || "" === value.companyName) {
+                        if (value.companyName === null || "" === value.companyName) {
 
                             arr.push({
                                 id: value.clientId,
                                 text: value.name + ' - ' + value.mobileNumber
                             })
-                        }else {
+                        } else {
                             arr.push({
                                 id: value.clientId,
                                 text: value.companyName + ' - ' + value.mobileNumber
                             })
                         }
                     })
-
 
 
                     return {
@@ -52,7 +51,9 @@
                 },
                 cache: true
             },
-            escapeMarkup: function (markup) { return markup; },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
             minimumInputLength: 1,
             placeholder: "Search Customer by Name & Mobile No"
         });
@@ -78,7 +79,7 @@
         /*$(".item").select2();*/
         select2Item($(".item"));
         count++;
-        max ++;
+        max++;
         updateName();
     }
 
@@ -86,19 +87,19 @@
         calculate(amountUpdate);
         select2ORItem($(".itemQrSearch"));
 
-        $(document).on("change" , ".itemQrSearch" , function () {
-           addQrItem($(this));
+        $(document).on("change", ".itemQrSearch", function () {
+            addQrItem($(this));
         });
 
 
-        $(document).on("click" , ".calculation" , function () {
+        $(document).on("click", ".calculation", function () {
             calculate(amountUpdate);
         });
 
 // for dynamically add or remove row
         $("#add_row").click(function () {
             //alert(count);
-            if (max === 20){
+            if (max === 20) {
                 alert("max 10");
                 return;
             }
@@ -116,25 +117,25 @@
 
     function updateName() {
         $("tr").each(function (index) {
-            index = index -1;
-            $(this).find("td:eq(0) > select").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].itemInfoId");
-            $(this).find("td:eq(1) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].quantity");
-            $(this).find("td:eq(2) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].rate");
-            $(this).find("td:eq(3) > input").attr("name" , "").attr("name" , "orderItemInfoDTOList["+index+"].discount");
+            index = index - 1;
+            $(this).find("td:eq(0) > select").attr("name", "").attr("name", "orderItemInfoDTOList[" + index + "].itemInfoId");
+            $(this).find("td:eq(1) > input").attr("name", "").attr("name", "orderItemInfoDTOList[" + index + "].quantity");
+            $(this).find("td:eq(2) > input").attr("name", "").attr("name", "orderItemInfoDTOList[" + index + "].rate");
+            $(this).find("td:eq(3) > input").attr("name", "").attr("name", "orderItemInfoDTOList[" + index + "].discount");
         })
     }
 
-    (function( $ ) {
-        var $doc = $( document );
-        $doc.ready( function(){
-            $doc.on( 'keydown', function( e ){
-                if ( ! $( e.target ).is( ':input' ) ) {
+    (function ($) {
+        var $doc = $(document);
+        $doc.ready(function () {
+            $doc.on('keydown', function (e) {
+                if (!$(e.target).is(':input')) {
 
 // props rauchg for pointing out e.shiftKey
-                    if ( 90 === e.which && e.ctrlKey ) {
+                    if (90 === e.which && e.ctrlKey) {
 // `shift` and `w` are pressed. Do something.
 
-                        if (max === 10){
+                        if (max === 10) {
                             alert("max 10");
                             return;
                         }
@@ -143,13 +144,13 @@
                     }
                 }
 
-                else if ( $( e.target ).is( '.discount' ) ) {
+                else if ($(e.target).is('.discount')) {
 
 // props rauchg for pointing out e.shiftKey
-                    if ( 13 === e.which || e.which === 9) {
+                    if (13 === e.which || e.which === 9) {
 // `shift` and `w` are pressed. Do something.
 
-                        if (max === 10){
+                        if (max === 10) {
                             alert("max 10");
                             return;
                         }
@@ -161,7 +162,7 @@
             });
         });
 
-    })( jQuery );
+    })(jQuery);
 
 </script>
 
@@ -170,46 +171,47 @@
 
     function select2Item(that) {
 
-            $(that).select2({
-                ajax: {
-                    url: '${pageContext.request.contextPath}/item/search',
-                    dataType: 'json',
-                    headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    delay: 250,
-                    type: 'GET',
-                    data: function (params) {
-                        return {
-                            term: params.term, // search term
-                            /* page: params.page*/
-                        };
-                    },
-                    processResults: function (data , params) {
-                        params.page = params.page || 1;
-                        var arr = []
-                        $.each(data.detail, function (index, value) {
+        $(that).select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/item/search',
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
 
-                            arr.push({
-                                id: value.itemId,
-                                text: value.productName + ' - ' + value.itemName
-                            })
+                        arr.push({
+                            id: value.itemId,
+                            text: value.productName + ' - ' + value.itemName
                         })
+                    })
 
 
-
-                        return {
-                            results: arr/*,
+                    return {
+                        results: arr/*,
                          pagination: {
                          more: (params.page * 1) < 2
                          }*/
-                        };
-                    },
-                    cache: true
+                    };
                 },
-                escapeMarkup: function (markup) { return markup; },
-                minimumInputLength: 1,
-                placeholder: "Search item by Name & code"
-            });
-        }
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1,
+            placeholder: "Search item by Name & code"
+        });
+    }
 
     function select2ORItem(that) {
 
@@ -218,7 +220,7 @@
             ajax: {
                 url: '${pageContext.request.contextPath}/item/search',
                 dataType: 'json',
-                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
                 type: 'GET',
                 data: function (params) {
@@ -227,7 +229,7 @@
                         /* page: params.page*/
                     };
                 },
-                processResults: function (data , params) {
+                processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
                     $.each(data.detail, function (index, value) {
@@ -247,64 +249,93 @@
                 },
                 cache: true
             },
-            initSelection: function(element, callback) {
+            initSelection: function (element, callback) {
 
             },
-            escapeMarkup: function (markup) { return markup; },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
             minimumInputLength: 1,
             placeholder: "Search item by Name & code"
         });
     }
 
-        function addQrItem(self) {
+    function addQrItem(self) {
 
-            that = $(".itemQrSearch :selected");
-            addRowOnQrItem(new ItemDetails(that.val() , that.text() , "${pageContext.request.contextPath}/item/show"));
+        that = $(".itemQrSearch :selected");
+        addRowOnQrItem(new ItemDetails(that.val(), that.text(), "${pageContext.request.contextPath}/item/show"));
 
-        }
-
-        function getRateOnQr(itemModal , self) {
-        console.log($('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select").val());
-            var orderService = new OrderInfoService();
-            orderService.getItemById(itemModal.itemId, itemModal.showUrl , $('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select"));
-            //select2ORItem($(".itemQrSearch"));
-            clearSelect2($(".itemQrSearch"));
-        }
-
-        function clearSelect2(self) {
-            $(".select2-search__field").val("");
-            self.empty();
-            $(".select2-results__option").remove();
-        }
-
-    function addRowOnQrItem(itemModal) {
-
-        var row = "<tr class='border-bottom itemTable' >";
-        row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'>" +
-                "<option selected value='"+itemModal.itemId+"'>" +itemModal.name + "</option>" +
-            "</select></td>";
-        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
-        row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
-        row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
-        row += "<td class='text-right'>Rs.<span>0</span></div>";
-        row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
-        row += "</tr>";
-        $("#customFields").prepend(row);
-        /*$(".item").select2();*/
-        select2Item($(".item"));
-        count++;
-        max ++;
-        updateName();
-        //todo calculate amount not working
-        calculate(amountUpdate);
-        getRateOnQr(itemModal , self);
     }
 
-    function ItemDetails(itemId , name , showUrl) {
+    function getRateOnQr(itemModal) {
+        //console.log($('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select").val());
+        var orderService = new OrderInfoService();
+        orderService.getItemById(itemModal.itemId, itemModal.showUrl, $('.table').find("tbody > tr:eq(0)").find("td:eq(0)").find("select"));
+        //select2ORItem($(".itemQrSearch"));
+        clearSelect2($(".itemQrSearch"));
+    }
+
+    function clearSelect2(self) {
+        $(".select2-search__field").val("");
+        self.empty();
+        $(".select2-results__option").remove();
+    }
+
+    //we need call back here
+    function addRowOnQrItem(itemModal) {
+
+        var updateQuantityChecker = updateQuantityForSameItemId(itemModal.itemId );
+        console.log(updateQuantityChecker);
+        if (updateQuantityChecker === false) {
+            var row = "<tr class='border-bottom itemTable'>";
+            row += "<td><select class='choose2 form-control item' name='' url='${pageContext.request.contextPath}/item/show'>" +
+                "<option selected value='" + itemModal.itemId + "'>" + itemModal.name + "</option>" +
+                "</select></td>";
+            row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
+            row += "<td><input type='number' class='form-control form-control-sm' name='' required readonly/></td>";
+            row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+            row += "<td class='text-right'>Rs.<span>0</span></div>";
+            row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
+            row += "</tr>";
+            $("#customFields").prepend(row);
+            /*$(".item").select2();*/
+            select2Item($(".item"));
+            count++;
+            max++;
+            updateName();
+        }
+        calculate(amountUpdate);
+        getRateOnQr(itemModal);
+    }
+
+    function updateQuantityForSameItemId(itemId) {
+        $("#itemTable > tbody  > tr").each(function () {
+            var trItemId = $(this).find("td:eq(0)").find("select").find('option:selected').val();
+
+            console.log(trItemId);
+            if (trItemId === undefined){
+                trItemId = 0;
+            }
+
+            if (trItemId === null){
+                trItemId = 0;
+            }
+
+            if (trItemId === itemId) {
+                var prevQuantity = $(this).find("td:eq(1) > input").val();
+                $(this).find("td:eq(1) > input").val((parseInt(prevQuantity)) + 1);
+                return true;
+            }
+        });
+
+        return false;
+    }
+
+    function ItemDetails(itemId, name, showUrl) {
         return {
-            itemId : itemId,
-            name : name,
-            showUrl : showUrl
+            itemId: itemId,
+            name: name,
+            showUrl: showUrl
         }
     }
 

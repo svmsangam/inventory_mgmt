@@ -71,7 +71,7 @@
             </button>
         </div>
         <div>
-            <table class="table table-bordered table-hover table-striped">
+            <table class="table table-bordered table-hover table-striped" id="itemTable">
                 <thead>
                 <tr>
                     <th>item</th>
