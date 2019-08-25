@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <form action="${pageContext.request.contextPath}/order/sale/quick" method="post" modelAttribute="order">
+                        <form action="${pageContext.request.contextPath}/order/sale/quick" autocomplete="off" method="post" modelAttribute="order">
 
                             <div class="row">
                                 <div class="col-lg-12">

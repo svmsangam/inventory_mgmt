@@ -20,17 +20,17 @@
     <!-- Main content -->
     <section class="content">
         <c:if test="${not empty message}">
-        <div class="alert alert-success alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${message}</strong>
-        </div>
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${message}</strong>
+            </div>
         </c:if>
 
         <c:if test="${not empty error}">
-        <div class="alert alert-danger alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-            <strong>${error}</strong>
-        </div>
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>${error}</strong>
+            </div>
         </c:if>
 
         <c:if test="${not empty orderError.error}">
@@ -45,30 +45,46 @@
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Add Sales Order</h3>
-                        <div class="pull-right">Order No. #${orderNo}<p class="form-error">${orderError.orderNo}</p></div>
+                        <div class="pull-right">Order No. #${orderNo}<p class="form-error">${orderError.orderNo}</p>
+                        </div>
                     </div>
-                    <form action="${pageContext.request.contextPath}/order/sale/save" method="post" modelAttribute="order">
 
-                        <%@include file="/pages/order/form.jsp" %>
+                    <div class="box-body">
+                        <form action="${pageContext.request.contextPath}/order/sale/save" autocomplete="off" method="post"
+                              modelAttribute="order">
 
-                        <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <strong>shortcuts for  addItem</strong><br>
-                                    <small>
-                                        ctrl + 'z'<br>
-                                        enter or tab keydown on discount
-                                    </small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <button type="submit" class="btn btn-primary btn-flat btn-sm pull-right">save changes</button>
+                                <div class="col-lg-12">
+                                    <%@include file="/pages/order/form.jsp" %>
                                 </div>
                             </div>
-                    </form>
-                <!-- /.box -->
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong>shortcuts for addItem</strong><br>
+                                                <small>
+                                                    ctrl + 'z'<br>
+                                                    enter or tab keydown on discount
+                                                </small>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-flat btn-sm pull-right">
+                                                    save changes
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                        <!-- /.box -->
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     </section>
     <!-- /.content -->
