@@ -2,6 +2,7 @@ package com.inventory.core.model.repository;
 
 import com.inventory.core.model.entity.TagInfo;
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,9 @@ public interface TagInfoRepository extends JpaRepository<TagInfo, Long>, JpaSpec
     TagInfo findByIdAndStatusAndStoreInfo(long tagId, Status status, long storeId);
 
     TagInfo findByName(String tagName);
+
+    @Query("select t from TagInfo t where t.status = ?2 and (t.name like concat('%'  , ?1) or t.name like  concat( ?1 , '%') or t.name like  concat('%', ?1 , '%') or t.code like concat('%'  , ?1) or t.code like  concat( ?1 , '%') or t.code like  concat('%', ?1 , '%'))")
+    List<TagInfo> findAllBySearch(String query , Status status , Pageable pageable);
 
     //@Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select t from TagInfo t where t.name = ?1 and t.status = ?2 and t.storeInfo.id = ?3")

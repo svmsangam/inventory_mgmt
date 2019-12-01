@@ -30,6 +30,7 @@ var opts = {
 function startLoading() {
 
     document.getElementById("myNavSpinner").style.width = "100%";
+    document.getElementById("myNavSpinner").style.height = "100%";
 
     var target = document.getElementById('foo');
 
@@ -45,7 +46,9 @@ function stopLoading(spinner) {
     var target = document.getElementById('foo');
     spinner.stop(target);
     document.getElementById("myNavSpinner").style.width = "0%";
+    document.getElementById("myNavSpinner").style.height = "0%";
 }
+
 //spinner
 
 // user service start
@@ -68,7 +71,7 @@ function UserService() {
                 data: user,
                 dataType: 'json',
                 timeout: 100000,
-                beforeSend: function() {
+                beforeSend: function () {
                     // setting a timeout
                     if (userRequest !== undefined) {
                         userRequest.abort();
@@ -106,18 +109,18 @@ function UserService() {
 
         },
 
-        changeStore : function (storeId , url , that) {
+        changeStore: function (storeId, url, that) {
             var sppiner;
             userRequest = $.ajax({
                 type: "GET",
                 url: url,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                data: {storeId:storeId},
+                data: {storeId: storeId},
                 dataType: 'json',
                 timeout: 30000,
-                tryCount : 0,
-                retryLimit : 3,
-                beforeSend: function() {
+                tryCount: 0,
+                retryLimit: 3,
+                beforeSend: function () {
                     // setting a timeout
                     if (userRequest !== undefined) {
                         userRequest.abort();
@@ -133,13 +136,13 @@ function UserService() {
 
                     if (data.status === 'Success') {
 
-                        that.prop("disabled" , true);
+                        that.prop("disabled", true);
                         $('#table2 input[type=checkbox]').each(function () {
-                            console.log( $(this).val() + "-" + (this.checked ? "checked" : "not checked"));
+                            console.log($(this).val() + "-" + (this.checked ? "checked" : "not checked"));
 
-                            if((!!this.checked)){
-                                if (storeId !== $(this).val()){
-                                    $(this).prop("disabled" , false).click();
+                            if ((!!this.checked)) {
+                                if (storeId !== $(this).val()) {
+                                    $(this).prop("disabled", false).click();
 
                                 }
                             }
@@ -157,7 +160,7 @@ function UserService() {
                         window.location.reload();
                     }
                 },
-                error : function(xhr, textStatus, errorThrown ) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     console.log(xhr + " " + textStatus + " " + errorThrown);
 
@@ -182,7 +185,7 @@ function UserService() {
                     if (xhr.status == 500) {
                         //handle error
                         stopLoading(sppiner);
-                       window.location.reload();
+                        window.location.reload();
                     } else {
                         //handle error
                         stopLoading(sppiner);
@@ -214,8 +217,8 @@ function UserService() {
             $("#inventoryuser").val("");
             $("#userpassword").val("");
             $("#userrepassword").val("");
-            $("#userType").prop('selectedIndex',0);
-            $("#storeId").prop('selectedIndex',0);
+            $("#userType").prop('selectedIndex', 0);
+            $("#storeId").prop('selectedIndex', 0);
         },
 
         successMsg: function (msg) {
@@ -507,9 +510,9 @@ function OrderInfoService() {
 
     return {
 
-        getItemById : function (itemId, url , event) {
+        getItemById: function (itemId, url, event) {
 
-            if(itemId === undefined ){
+            if (itemId === undefined) {
                 return null;
             }
             var that = new OrderInfoService();
@@ -524,13 +527,13 @@ function OrderInfoService() {
                 type: "GET",
                 url: url,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                data: {itemId : itemId},
+                data: {itemId: itemId},
                 dataType: 'json',
                 timeout: 30000,
-                tryCount : 0,
-                retryLimit : 3,
-                beforeSend : function () {
-                    if(itemId === undefined ){
+                tryCount: 0,
+                retryLimit: 3,
+                beforeSend: function () {
+                    if (itemId === undefined) {
                         return null;
                     }
                 },
@@ -542,18 +545,18 @@ function OrderInfoService() {
 
                     if (data.status === 'Success') {
 
-                        that.setItemResult(result , event);
+                        that.setItemResult(result, event);
                         calculate(amountUpdate);
 
                         stopLoading(spinner);
 
-                    }else {
+                    } else {
 
                         alert(msg);
                     }
                 },
 
-                error : function(xhr, textStatus, errorThrown ) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     console.log(xhr + " " + textStatus + " " + errorThrown);
 
@@ -583,7 +586,7 @@ function OrderInfoService() {
             });
         },
 
-        cancelRequest : function (spinner) {
+        cancelRequest: function (spinner) {
             stopLoading(spinner);
             if (orderInfoRequest !== undefined) {
                 orderInfoRequest.abort();
@@ -591,13 +594,13 @@ function OrderInfoService() {
 
         },
 
-        setItemResult : function (result, event) {
+        setItemResult: function (result, event) {
             $(event).parents("tr").find("td:eq(2)").find("input").val("").val(result.sellingPrice.toFixed(3));
-            $(event).parents("tr").find("td:eq(1)").find("input").attr("max" , "").attr("max" , result.inStock);
+            $(event).parents("tr").find("td:eq(1)").find("input").attr("max", "").attr("max", result.inStock);
         },
 
 
-        changeSaleTrack : function (url , track , orderId) {
+        changeSaleTrack: function (url, track, orderId) {
 
             var that = new OrderInfoService();
 
@@ -611,12 +614,14 @@ function OrderInfoService() {
                 type: "GET",
                 url: url,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                data: {orderId : orderId,
-                track : track},
+                data: {
+                    orderId: orderId,
+                    track: track
+                },
                 dataType: 'json',
                 timeout: 30000,
-                tryCount : 0,
-                retryLimit : 3,
+                tryCount: 0,
+                retryLimit: 3,
                 success: function (data) {
 
                     var result = data.detail;
@@ -629,14 +634,14 @@ function OrderInfoService() {
                         stopLoading(spinner);
 
 
-                    }else {
+                    } else {
                         stopLoading(spinner);
                         alert(msg);
                         window.location.reload();
                     }
                 },
 
-                error : function(xhr, textStatus, errorThrown ) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     console.log(xhr + " " + textStatus + " " + errorThrown);
 
@@ -660,11 +665,11 @@ function OrderInfoService() {
                     if (xhr.status === 500) {
                         stopLoading(spinner);
                         alert("internal server error cantact for support");
-                    } else if(xhr.status === 404) {
+                    } else if (xhr.status === 404) {
                         //handle error
                         stopLoading(spinner);
                         alert("internal server error cantact for support");
-                    }else{
+                    } else {
                         //handle error
                         stopLoading(spinner);
                         alert("internal server error cantact for support");
@@ -675,7 +680,168 @@ function OrderInfoService() {
     };
 
 }
+
 // orderInfo service end
+
+//tag service start
+
+function TagService() {
+    var tagRequest;
+
+    return {
+        save: function (name, code, url) {
+            var spinner;
+            var self = new TagService();
+            if (self.validation(name , code)){
+                tagRequest = $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                    data: {"name" : name , "code" : code},
+                    dataType: 'json',
+                    timeout: 100000,
+                    beforeSend: function () {
+                        if (tagRequest !== undefined) {
+                            tagRequest.abort();
+                        }
+
+                        $(".addNewTag").prop( "disabled", true );
+                        spinner = startLoading();
+                        self.clearErrorData();
+
+                    },
+                    success: function (data) {
+
+                        stopLoading(spinner);
+                        $(".addNewTag").prop( "disabled", false );
+                        var result = data.detail;
+
+                        var msg = data.message;
+
+                        if (data.status === 'Success') {
+
+                            $(".closeAdd").click();
+                            //that.setDataToDOM(result, pagecontext);
+                            self.successMsg(msg);
+
+                        }
+
+                        if (data.status === 'Failure') {
+                            self.errorMsg(msg);
+                            $(".closeAdd").click();
+                        }
+
+                        if (data.status === 'Validation Failed') {
+                            that.setError(result.name , result.code);
+                        }
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                        if (textStatus == 'timeout') {
+
+                            this.tryCount++;
+
+                            if (this.tryCount <= this.retryLimit) {
+                                //try again
+                                $.ajax(this);
+                                return;
+                            } else {
+                                //cancel request
+                                that.cancelRequest(spinner);
+
+                                return;
+                            }
+
+                        }
+
+                        if (xhr.status === 500) {
+                            $(".addNewTag").prop( "disabled", false );
+                            $(".closeAdd").click();
+                            stopLoading(spinner);
+                            self.errorMsg("internal server error cantact for support");
+                        } else if (xhr.status === 404) {
+                            $(".addNewTag").prop( "disabled", false );
+                            //handle error
+                            $(".closeAdd").click();
+                            stopLoading(spinner);
+                            self.errorMsg("internal server error cantact for support");
+                        } else {
+                            //handle error
+                            $(".addNewTag").prop( "disabled", false );
+                            $(".closeAdd").click();
+                            stopLoading(spinner);
+                            self.errorMsg("internal server error cantact for support");
+                        }
+                    }
+                });
+            }
+
+        },
+
+        errorMsg: function (msg) {
+            $.notify({
+                title: '<strong>warnning!</strong>',
+                message: msg
+            }, {
+                type: 'danger'
+            });
+        },
+
+        successMsg: function (msg) {
+            $.notify({
+                icon: 'glyphicon glyphicon-ok',
+                title: '<strong>Success!</strong>',
+                message: msg
+            });
+        },
+
+        validation: function (name, code) {
+            var self = new TagService();
+
+            if (name === undefined) {
+                self.setError("please enter tag name", "");
+                return false;
+            } else if (name === null) {
+                self.setError("please enter tag name", "");
+                return false;
+            } else if (name.trim() === "") {
+                self.setError("please enter tag name", "");
+                return false;
+            } else {
+                if (code === undefined) {
+                    self.setError("", "please enter tag code");
+                    return false;
+                } else if (code === null) {
+                    self.setError("", "please enter tag code");
+                    return false;
+                } else if (code.trim() === "") {
+                    self.setError("", "please enter tag code");
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        setError: function (nameError, codeError) {
+            $("#tagNameError").text(nameError);
+            $("#tagCodeError").text(codeError);
+        },
+
+        clearInputFormData: function () {
+            $(".addTagFormClear").val("");
+        },
+
+        clearErrorData: function () {
+            $(".tagFormError").text("");
+        }
+    }
+}
+
+//tag service end
 
 //clientInfo service start
 
@@ -859,4 +1025,5 @@ function ClientInfoService() {
         }
     };
 }
+
 //clientInfo service end

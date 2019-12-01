@@ -1,6 +1,8 @@
 package com.inventory.core.api.iapi;
 
+import com.inventory.core.model.dto.ClientInfoDTO;
 import com.inventory.core.model.dto.TagInfoDTO;
+import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Status;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public interface ITagInfoApi {
     TagInfoDTO show(long tagId, long storeId, Status status);
 
     List<TagInfoDTO> list(Status status, long storeId);
+
+    List<TagInfoDTO> search(Status status , String q , int page , int size , long storeId);
 
     TagInfoDTO getTagByNameAndStoreAndStatus(String tagName, long storeId, Status status);
 

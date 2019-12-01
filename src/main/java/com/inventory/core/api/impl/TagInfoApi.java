@@ -2,11 +2,15 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.ITagInfoApi;
 import com.inventory.core.model.converter.TagInfoConverter;
+import com.inventory.core.model.dto.ClientInfoDTO;
 import com.inventory.core.model.dto.TagInfoDTO;
 import com.inventory.core.model.entity.TagInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.TagInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +69,18 @@ public class TagInfoApi implements ITagInfoApi {
     @Override
     public List<TagInfoDTO> list(Status status, long storeId) {
         return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllByStatusAndStoreInfo(status, storeId));
+    }
+
+    private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
+
+        return new PageRequest(page, size, new Sort(direction, properties));
+    }
+
+    @Override
+    public List<TagInfoDTO> search(Status status, String q, int page, int size, long storeId) {
+        Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
+
+        return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllBySearch(q , Status.ACTIVE , pageable));
     }
 
     @Override

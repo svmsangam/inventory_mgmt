@@ -65,19 +65,9 @@
 
                             <div class="form-group">
                                 <label class="control-label">Tag</label>
-                                <select name="tagId" class="form-control select2" id="tagId">
+                                <a href="#" class="pull-right" id="addNewTagBtn" data-toggle="modal" data-target="#modal-addtag">new tag</a>
+                                <select name="tagId" class="form-control chooseTag" id="tagId">
                                     <option value="">select tag</option>
-                                    <c:forEach items="${tagList}" var="tag">
-                                        <c:choose>
-                                            <c:when test="${tag.tagId eq item.tagId}">
-                                                <option value="${tag.tagId}" selected>${tag.name}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="${tag.tagId}">${tag.name}</option>
-                                            </c:otherwise>
-                                        </c:choose>
-
-                                    </c:forEach>
                                 </select>
                                 <p class="form-error">${itemError.tagId}</p>
                             </div>
@@ -160,6 +150,47 @@
 </div>
 <!-- /.content-wrapper -->
 
+<div class="modal fade" id="modal-addtag">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add New Tag</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <input type="text" id="tagName" class="form-control addTagFormClear" name="name" placeholder="Name">
+                        <p class="form-error tagFormError" id="tagNameError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Code</label>
+                        <input type="text" id="tagCode" class="form-control addTagFormClear" name="code" placeholder="code">
+                        <p class="form-error tagFormError" id="tagCodeError"></p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addNewTag" url="${pageContext.request.contextPath}/api/tag/save"><span class="glyphicon glyphicon-save"></span>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
 <%@include file="/pages/parts/footer.jsp" %>
 
 <script>
@@ -220,7 +251,86 @@
             minimumInputLength: 1,
             placeholder: "Search Vendor by Name & Mobile No"
         });
+        $(".chooseTag").select2({
+            ajax: {
+                url: '${pageContext.request.contextPath}/api/tag/search',
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                delay: 250,
+                type: 'GET',
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        /* page: params.page*/
+                    };
+                },
+                processResults: function (data , params) {
+                    params.page = params.page || 1;
+                    var arr = []
+                    $.each(data.detail, function (index, value) {
+
+                        if(value.companyName === null || "" === value.companyName) {
+
+                            arr.push({
+                                id: value.clientId,
+                                text: value.name + ' - ' + value.mobileNumber
+                            })
+                        }else {
+                            arr.push({
+                                id: value.clientId,
+                                text: value.companyName + ' - ' + value.mobileNumber
+                            })
+                        }
+                    })
+
+
+
+                    return {
+                        results: arr/*,
+                         pagination: {
+                         more: (params.page * 1) < 2
+                         }*/
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            placeholder: "Search tag by name and code"
+        });
+
+        /*add new tag start*/
+        //addNewTagBtn
+
+        $(document).on("click" , "#addNewTagBtn" , function () {
+            $(".addNewTag").prop( "disabled", false );
+            clearErrorData(".tagFormError");
+            clearInputFormData(".addTagFormClear");
+
+        });
+
+        $(document).on("click" , ".addNewTag" , function () {
+            var name = $("#tagName").val();
+            var code = $("#tagCode").val();
+
+            var url = $(this).attr("url");
+
+            var tagService = new TagService();
+            tagService.save(name , code , url);
+
+        });
+
+        /*add new tag end*/
     });
+
+    function clearInputFormData(cls) {
+        $(cls).val("");
+    }
+
+    function clearErrorData(cls) {
+        $(cls).text("");
+    }
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/asset/app/numberValidation.js"></script>
 

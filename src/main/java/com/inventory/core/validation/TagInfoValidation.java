@@ -33,23 +33,25 @@ public class TagInfoValidation extends GlobalValidation {
 
         valid = true;
 
-        if (result.hasErrors()) {
+        if (result != null) {
+            if (result.hasErrors()) {
 
-            valid = false;
+                valid = false;
 
-            List<FieldError> errors = result.getFieldErrors();
-            for (FieldError errorResult : errors) {
+                List<FieldError> errors = result.getFieldErrors();
+                for (FieldError errorResult : errors) {
 
-                if (errorResult.getField().equals("name")) {
-                    error.setName("invalid store name");
-                } else if (errorResult.getField().equals("code")) {
-                    error.setCode("invalid code");
+                    if (errorResult.getField().equals("name")) {
+                        error.setName("invalid store name");
+                    } else if (errorResult.getField().equals("code")) {
+                        error.setCode("invalid code");
+                    }
                 }
+
+                error.setValid(valid);
+
+                return error;
             }
-
-            error.setValid(valid);
-
-            return error;
         }
 
         error.setName(checkString(tagInfoDTO.getName(), 2, 50, "tagName", true));

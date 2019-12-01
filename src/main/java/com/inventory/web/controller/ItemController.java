@@ -97,11 +97,8 @@ public class ItemController {
         /*current user checking end*/
 
             if (productId == null) {
-                modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
-                modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-                modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
-
-                return "item/addItem";
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid product");
+                return "redirect:/product/list";
             }
 
             if (productId < 1) {
@@ -115,7 +112,6 @@ public class ItemController {
             }
 
             modelMap.put(StringConstants.PRODUCT, productId);
-            modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
             modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
 
         } catch (Exception e) {
@@ -170,7 +166,6 @@ public class ItemController {
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.PRODUCT, itemInfoDTO.getProductId());
-                    modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
                     modelMap.put(StringConstants.ITEM_ERROR, error);
                     modelMap.put(StringConstants.ITEM, itemInfoDTO);
@@ -234,7 +229,6 @@ public class ItemController {
 
                 if (!error.isValid()) {
                     modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
-                    modelMap.put(StringConstants.TAG_LIST, tagInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
                     modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
                     modelMap.put(StringConstants.ITEM_ERROR, error);
                     modelMap.put(StringConstants.ITEM, itemInfoDTO);
