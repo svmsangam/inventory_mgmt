@@ -41,7 +41,7 @@
                         <h3 class="box-title">Add Item</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form action="${pageContext.request.contextPath}/item/saveitem" method="post" modelAttribute="item" >
+                    <form action="${pageContext.request.contextPath}/item/saveitem" method="post" modelAttribute="item">
                         <div class="box-body">
 
                             <div class="form-group">
@@ -65,7 +65,8 @@
 
                             <div class="form-group">
                                 <label class="control-label">Tag</label>
-                                <a href="#" class="pull-right" id="addNewTagBtn" data-toggle="modal" data-target="#modal-addtag">new tag</a>
+                                <a href="#" class="pull-right" id="addNewTagBtn" data-toggle="modal"
+                                   data-target="#modal-addtag">new tag</a>
                                 <select name="tagId" class="form-control chooseTag" id="tagId">
                                     <option value="">select tag</option>
                                 </select>
@@ -93,32 +94,40 @@
 
                             <div class="form-group">
                                 <label class="control-label">Cost Price</label>
-                                <input type="number" class="form-control" value="${item.costPrice}" onkeypress="return validate(event);"  name="costPrice" placeholder="costPrice">
+                                <input type="number" class="form-control" value="${item.costPrice}"
+                                       onkeypress="return validate(event);" name="costPrice" placeholder="costPrice">
                                 <p class="form-error">${itemError.costPrice}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Selling Price</label>
-                                <input type="number" class="form-control" value="${item.sellingPrice}" onkeypress="return validate(event);"  name="sellingPrice" placeholder="sellingPrice">
+                                <input type="number" class="form-control" value="${item.sellingPrice}"
+                                       onkeypress="return validate(event);" name="sellingPrice"
+                                       placeholder="sellingPrice">
                                 <p class="form-error">${itemError.sellingPrice}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Quantity</label>
-                                <input type="number" class="form-control" onkeypress="return validate(event);"  value="${item.quantity}" name="quantity" placeholder="quantity">
+                                <input type="number" class="form-control" onkeypress="return validate(event);"
+                                       value="${item.quantity}" name="quantity" placeholder="quantity">
                                 <p class="form-error">${itemError.quantity}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Threshold</label>
-                                <input type="number" class="form-control" onkeypress="return validate(event);"  value="${item.threshold}" name="threshold" placeholder="threshold">
+                                <input type="number" class="form-control" onkeypress="return validate(event);"
+                                       value="${item.threshold}" name="threshold" placeholder="threshold">
                                 <p class="form-error">${itemError.threshold}</p>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Expiry Date</label>
                                 <div class='input-group date datepicker'>
-                                    <input type="text" class="datepicker form-control" onkeypress="return false;" onkeyup="return false;" value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>" name="expireDate" placeholder="expire on">
+                                    <input type="text" class="datepicker form-control" onkeypress="return false;"
+                                           onkeyup="return false;"
+                                           value="<fmt:formatDate pattern="MM/dd/yyyy" value="${item.expireDate}"/>"
+                                           name="expireDate" placeholder="expire on">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -163,13 +172,15 @@
 
                     <div class="form-group">
                         <label class="control-label">Name</label>
-                        <input type="text" id="tagName" class="form-control addTagFormClear" name="name" placeholder="Name">
+                        <input type="text" id="tagName" class="form-control addTagFormClear" name="name"
+                               placeholder="Name">
                         <p class="form-error tagFormError" id="tagNameError"></p>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Code</label>
-                        <input type="text" id="tagCode" class="form-control addTagFormClear" name="code" placeholder="code">
+                        <input type="text" id="tagCode" class="form-control addTagFormClear" name="code"
+                               placeholder="code">
                         <p class="form-error tagFormError" id="tagCodeError"></p>
                     </div>
 
@@ -178,7 +189,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addNewTag" url="${pageContext.request.contextPath}/api/tag/save"><span class="glyphicon glyphicon-save"></span>
+                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addNewTag"
+                            url="${pageContext.request.contextPath}/api/tag/save"><span
+                            class="glyphicon glyphicon-save"></span>
                         Save Changes
                     </button>
                 </div>
@@ -196,19 +209,18 @@
 <script>
     $(function () {
         $('.select2').select2();
-        $(".datepicker").datepicker({
-        });
+        $(".datepicker").datepicker({});
     })
 </script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $(".choose1").select2({
             ajax: {
                 url: '${pageContext.request.contextPath}/client/vendor/search',
                 dataType: 'json',
-                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
                 type: 'GET',
                 data: function (params) {
@@ -217,25 +229,24 @@
                         /* page: params.page*/
                     };
                 },
-                processResults: function (data , params) {
+                processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
                     $.each(data.detail, function (index, value) {
 
-                        if(value.companyName === null || "" === value.companyName) {
+                        if (value.companyName === null || "" === value.companyName) {
 
                             arr.push({
                                 id: value.clientId,
                                 text: value.name + ' - ' + value.mobileNumber
                             })
-                        }else {
+                        } else {
                             arr.push({
                                 id: value.clientId,
                                 text: value.companyName + ' - ' + value.mobileNumber
                             })
                         }
                     })
-
 
 
                     return {
@@ -247,7 +258,9 @@
                 },
                 cache: true
             },
-            escapeMarkup: function (markup) { return markup; },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
             minimumInputLength: 1,
             placeholder: "Search Vendor by Name & Mobile No"
         });
@@ -256,7 +269,7 @@
                 url: '${pageContext.request.contextPath}/api/tag/search',
                 dataType: 'json',
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 delay: 250,
                 type: 'GET',
                 data: function (params) {
@@ -265,25 +278,16 @@
                         /* page: params.page*/
                     };
                 },
-                processResults: function (data , params) {
+                processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
                     $.each(data.detail, function (index, value) {
 
-                        if(value.companyName === null || "" === value.companyName) {
-
-                            arr.push({
-                                id: value.clientId,
-                                text: value.name + ' - ' + value.mobileNumber
-                            })
-                        }else {
-                            arr.push({
-                                id: value.clientId,
-                                text: value.companyName + ' - ' + value.mobileNumber
-                            })
-                        }
+                        arr.push({
+                            id: value.tagId,
+                            text: value.name + ' - ' + value.code
+                        })
                     })
-
 
 
                     return {
@@ -295,7 +299,9 @@
                 },
                 cache: true
             },
-            escapeMarkup: function (markup) { return markup; },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
             minimumInputLength: 1,
             placeholder: "Search tag by name and code"
         });
@@ -303,21 +309,21 @@
         /*add new tag start*/
         //addNewTagBtn
 
-        $(document).on("click" , "#addNewTagBtn" , function () {
-            $(".addNewTag").prop( "disabled", false );
+        $(document).on("click", "#addNewTagBtn", function () {
+            $(".addNewTag").prop("disabled", false);
             clearErrorData(".tagFormError");
             clearInputFormData(".addTagFormClear");
 
         });
 
-        $(document).on("click" , ".addNewTag" , function () {
+        $(document).on("click", ".addNewTag", function () {
             var name = $("#tagName").val();
             var code = $("#tagCode").val();
 
             var url = $(this).attr("url");
 
             var tagService = new TagService();
-            tagService.save(name , code , url);
+            tagService.save(name, code, url);
 
         });
 

@@ -112,7 +112,7 @@ public class TagAjaxController {
 
     }
 
-    @GetMapping(value = "tag/search")
+    @GetMapping(value = "/search")
     @ResponseBody
     public ResponseEntity<RestResponseDTO> search(@RequestParam("term") String term, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
