@@ -706,13 +706,12 @@ function TagService() {
                         }
 
                         $(".addNewTag").prop( "disabled", true );
-                        spinner = startLoading();
-                        self.clearErrorData();
+                        blockUiZ(2001);
 
                     },
                     success: function (data) {
 
-                        stopLoading(spinner);
+                        $.unblockUI();
                         $(".addNewTag").prop( "disabled", false );
                         var result = data.detail;
 
@@ -750,7 +749,10 @@ function TagService() {
                                 return;
                             } else {
                                 //cancel request
-                                that.cancelRequest(spinner);
+                                if (tagRequest !== undefined){
+                                    tagRequest.abort();
+                                }
+                                $.unblockUI();
 
                                 return;
                             }
@@ -760,19 +762,19 @@ function TagService() {
                         if (xhr.status === 500) {
                             $(".addNewTag").prop( "disabled", false );
                             $(".closeAdd").click();
-                            stopLoading(spinner);
+                            $.unblockUI();
                             self.errorMsg("internal server error cantact for support");
                         } else if (xhr.status === 404) {
                             $(".addNewTag").prop( "disabled", false );
                             //handle error
                             $(".closeAdd").click();
-                            stopLoading(spinner);
+                            $.unblockUI();
                             self.errorMsg("internal server error cantact for support");
                         } else {
                             //handle error
                             $(".addNewTag").prop( "disabled", false );
                             $(".closeAdd").click();
-                            stopLoading(spinner);
+                            $.unblockUI();
                             self.errorMsg("internal server error cantact for support");
                         }
                     }

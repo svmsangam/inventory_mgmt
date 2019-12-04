@@ -137,8 +137,37 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/asset/service/service.js"></script>
 <%--js app--%>
 <script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
+<%--js bock ui loading spinner--%>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.blockUI.min.js"></script>
 
 <script>
+
+    function blockUi() {
+        blockUiZ(10001);
+    }
+
+    function blockUiZ(zindex) {
+        $.blockUI({
+            //theme: true,
+            baseZ: zindex,
+            css: {
+                border: 'none',
+                padding: '15px',
+                backgroundColor: '#000000',
+                '-webkit-border-radius': '5px',
+                '-moz-border-radius': '5px',
+                opacity: .4,
+                color: '#fff',
+                'font-size': 'large',
+                textAlign:	'center',
+                border:		'1px solid #0c0c0c',
+                cursor:		'wait'
+            },
+            message: 'loading...'
+
+        })
+    }
+
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();
