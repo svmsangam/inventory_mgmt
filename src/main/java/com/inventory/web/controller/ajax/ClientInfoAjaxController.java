@@ -222,5 +222,69 @@ public class ClientInfoAjaxController {
         return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value = "vendor/save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestResponseDTO> saveVendor(@RequestAttribute("vendor") ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
+        RestResponseDTO result = new RestResponseDTO();
+
+        try {
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("user authentication failed");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("access deniled");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            if (currentUser.getStoreId() == null) {
+                result.setStatus(ResponseStatus.FAILURE.getValue());
+                result.setMessage("store not assigned");
+                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+            }
+
+            /*current user checking end*/
+
+            synchronized (this.getClass()) {
+
+                clientInfoDTO.setClientType(ClientType.VENDOR);
+                clientInfoDTO.setCreatedById(currentUser.getUserId());
+                clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
+                ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
+
+                if (!error.isValid()) {
+                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+                    result.setMessage("supplier validation failur");
+                    result.setDetail(error);
+                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+                }
+
+                ClientInfoDTO saved = clientInfoApi.save(clientInfoDTO);
+
+                result.setStatus(ResponseStatus.SUCCESS.getValue());
+                result.setMessage("supplier saved successfully");
+                result.setDetail(saved);
+            }
+
+        } catch (Exception e) {
+            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            result.setStatus(ResponseStatus.FAILURE.getValue());
+            result.setMessage("internal server error");
+        }
+        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+    }
+
 
 }

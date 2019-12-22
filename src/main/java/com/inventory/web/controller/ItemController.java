@@ -37,7 +37,7 @@ public class ItemController {
     private IItemInfoApi itemInfoApi;
 
     @Autowired
-    private ITagInfoApi tagInfoApi;
+    private ICityInfoApi cityInfoApi;
 
     @Autowired
     private ILotInfoApi lotInfoApi;
@@ -99,6 +99,7 @@ public class ItemController {
             if (productId == null) {
                 modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.list(Status.ACTIVE , currentUser.getStoreId()));
                 modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
+                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
                 return "item/addItem";
             }
@@ -115,6 +116,7 @@ public class ItemController {
 
             modelMap.put(StringConstants.PRODUCT, productId);
             modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
+            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
             logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
@@ -171,6 +173,7 @@ public class ItemController {
                     modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
                     modelMap.put(StringConstants.ITEM_ERROR, error);
                     modelMap.put(StringConstants.ITEM, itemInfoDTO);
+                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
                     return "item/add";
                 }
 
@@ -234,6 +237,8 @@ public class ItemController {
                     modelMap.put(StringConstants.LOT_LIST, lotInfoApi.list(Status.ACTIVE));
                     modelMap.put(StringConstants.ITEM_ERROR, error);
                     modelMap.put(StringConstants.ITEM, itemInfoDTO);
+                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+
                     return "item/addItem";
                 }
 

@@ -1,6 +1,7 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.ClientInfoDTO;
+import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.ClientInfoRepository;
@@ -32,13 +33,13 @@ public class ClientInfoValidation extends GlobalValidation{
 
         boolean valid = true;
 
-        error.setName(checkString(clientInfoDTO.getName().trim() , 3 , 50 , "name" , true));
+        error.setName(checkString(clientInfoDTO.getName().trim() , 3 , 50 , "name" , ClientType.CUSTOMER.equals(clientInfoDTO.getClientType())));
 
         if (!"".equals(error.getName())){
             valid = false;
         }
 
-        error.setCompanyName(checkString(clientInfoDTO.getCompanyName() , 4 , 30 , "company name" , false));
+        error.setCompanyName(checkString(clientInfoDTO.getCompanyName() , 4 , 30 , "company name" , ClientType.VENDOR.equals(clientInfoDTO.getClientType())));
 
         if (!"".equals(error.getCompanyName())){
             valid = false;

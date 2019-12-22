@@ -690,7 +690,6 @@ function TagService() {
 
     return {
         save: function (name, code, url) {
-            var spinner;
             var self = new TagService();
             if (self.validation(name , code)){
                 tagRequest = $.ajax({
@@ -731,7 +730,7 @@ function TagService() {
                         }
 
                         if (data.status === 'Validation Failed') {
-                            that.setError(result.name , result.code);
+                            self.setError(result.name , result.code);
                         }
                     },
 
@@ -745,13 +744,18 @@ function TagService() {
 
                             if (this.tryCount <= this.retryLimit) {
                                 //try again
-                                $.ajax(this);
+                                if (tagRequest !== undefined){
+                                    tagRequest.abort();
+                                }
+                                $.unblockUI();
+                                self.errorMsg("Poor connection. Tag may be saved. Please check you internet");
                                 return;
                             } else {
                                 //cancel request
                                 if (tagRequest !== undefined){
                                     tagRequest.abort();
                                 }
+                                self.errorMsg("Poor connection. Tag may be saved. Please check you internet");
                                 $.unblockUI();
 
                                 return;
@@ -844,6 +848,170 @@ function TagService() {
 }
 
 //tag service end
+
+//Vendor service start
+
+function VendorService() {
+    var supplierRequest;
+
+    return {
+        save: function (companyName , name, contact , mobile , email , city , street, url) {
+            var self = new VendorService();
+            if (self.validation(companyName)){
+                supplierRequest = $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                    data: {
+                        "companyName" : companyName ,
+                        "name" : name,
+                        "contact" : contact ,
+                        "mobileNumber" : mobile ,
+                        "email" : email ,
+                        "cityId" : city ,
+                        "street" : street
+                    },
+                    dataType: 'json',
+                    timeout: 100000,
+                    beforeSend: function () {
+                        if (supplierRequest !== undefined) {
+                            supplierRequest.abort();
+                        }
+
+                        $(".addNewSupplier").prop( "disabled", true );
+                        blockUiZ(2001);
+
+                    },
+                    success: function (data) {
+
+                        $.unblockUI();
+                        $(".addNewSupplier").prop( "disabled", false );
+                        var result = data.detail;
+
+                        var msg = data.message;
+
+                        if (data.status === 'Success') {
+
+                            $(".closeSupplierAdd").click();
+                            self.successMsg(msg);
+
+                        }
+
+                        if (data.status === 'Failure') {
+                            self.errorMsg(msg);
+                            $(".closeAdd").click();
+                        }
+
+                        if (data.status === 'Validation Failed') {
+                            self.setError(result.companyName , result.name , result.contact, result.mobileNumber , result.email , result.cityId, result.street);
+                        }
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                        if (textStatus == 'timeout') {
+
+                            this.tryCount++;
+
+                            if (this.tryCount <= this.retryLimit) {
+                                //try again
+                                self.errorMsg("Poor connection. Supplier may be saved. Please check you internet.");
+                                $.unblockUI();
+                                return;
+                            } else {
+                                //cancel request
+                                if (tagRequest !== undefined){
+                                    tagRequest.abort();
+                                }
+                                self.errorMsg("Poor connection. Supplier may be saved. Please check you internet.");
+                                $.unblockUI();
+
+                                return;
+                            }
+
+                        }
+
+                        if (xhr.status === 500) {
+                            $(".addNewSupplier").prop( "disabled", false );
+                            $(".closeSupplierAdd").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error cantact for support");
+                        } else if (xhr.status === 404) {
+                            $(".addNewSupplier").prop( "disabled", false );
+                            //handle error
+                            $(".closeSupplierAdd").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error cantact for support");
+                        } else {
+                            //handle error
+                            $(".addNewSupplier").prop( "disabled", false );
+                            $(".closeSupplierAdd").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error cantact for support");
+                        }
+                    }
+                });
+            }
+
+        },
+
+        errorMsg: function (msg) {
+            $.notify({
+                title: '<strong>warnning!</strong>',
+                message: msg
+            }, {
+                type: 'danger'
+            });
+        },
+
+        successMsg: function (msg) {
+            $.notify({
+                icon: 'glyphicon glyphicon-ok',
+                title: '<strong>Success!</strong>',
+                message: msg
+            });
+        },
+
+        validation: function (companyName) {
+            var self = new VendorService();
+
+            if (companyName === undefined) {
+                self.setError("please enter company name", "" , "" , "" , "" , "" , "");
+                return false;
+            } else if (companyName === null) {
+                self.setError("please enter company name", "" , "" , "" , "" , "" , "");
+                return false;
+            } else if (companyName.trim() === "") {
+                self.setError("please enter company name", "" , "" , "" , "" , "" , "");
+                return false;
+            }
+
+            return true;
+        },
+
+        setError: function (companyNameError , nameError, contactError , mobileError , emailError , cityError , streetError) {
+            $(".supplierCompanyNameError").text(companyNameError);
+            $(".supplierNameError").text(nameError);
+            $(".supplierContactError").text(contactError);
+            $(".supplierMobileError").text(mobileError);
+            $(".supplierEmailError").text(emailError);
+            $(".supplierCityError").text(cityError);
+            $(".supplierStreetError").text(streetError);
+        },
+
+        clearInputFormData: function () {
+            $(".addSupplierFormClear").val("");
+        },
+
+        clearErrorData: function () {
+            $(".supplierFormError").text("");
+        }
+    }
+}
+
+//Vendor service end
 
 //clientInfo service start
 

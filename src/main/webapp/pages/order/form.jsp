@@ -64,83 +64,87 @@
         </div>
     </div>
 
-    <div class="col-md-12">
-        <div class="form-group">
-            <button class="btn btn-xs btn-flat btn-primary pull-right" type="button" id="add_row">
-                <span class="glyphicon glyphicon-plus"></span> Add Item
-            </button>
-        </div>
-        <div>
-            <table class="table table-bordered table-hover table-striped" id="itemTable">
-                <thead>
-                <tr>
-                    <th>item</th>
-                    <th>quantity</th>
-                    <th>rate</th>
-                    <th>discount(%)</th>
-                    <th>total</th>
-                    <th></th>
-                </tr>
-                </thead>
+    <div class="row">
 
-                <tbody id="customFields">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-xs btn-flat btn-primary pull-right" type="button" id="add_row">
+                    <span class="glyphicon glyphicon-plus"></span> Add Item
+                </button>
+            </div>
+            <div>
+                <table class="table table-bordered table-hover table-striped" id="itemTable">
+                    <thead>
+                    <tr>
+                        <th>item</th>
+                        <th>quantity</th>
+                        <th>rate</th>
+                        <th>discount(%)</th>
+                        <th>total</th>
+                        <th></th>
+                    </tr>
+                    </thead>
 
-                    <c:if test="${order.orderItemInfoDTOList ne null}">
-                        <c:set var="mytotalamount" value="0"></c:set>
-                        <c:forEach varStatus="i" var="orderItem" items="${order.orderItemInfoDTOList}">
-                            <c:set var="myamount" value="${orderItem.quantity * orderItem.rate}"></c:set>
-                            <c:set var="mydisamount" value="${myamount - myamount * discount / 100}"></c:set>
-                            <c:set var="mytotalamount" value="${mytotalamount + mydisamount}"></c:set>
-                            <c:set var="rate" value="0"></c:set>
-                            <tr class="border-bottom itemTable">
-                                <td>
-                                    <select class='form-control item' name="orderItemInfoDTOList[${i.index}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
-                                         <option value="${orderItem.itemInfoId}" selected>${orderItem.itemName}</option>
-                                        <c:set var="rate" value="${orderItem.rate}"></c:set>
-                                    </select>
-                                </td>
-                                <td><input onkeypress="return validate(event);" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>
-                                <td><input class="form-control form-control-sm" value="${rate}" name="orderItemInfoDTOList[${i.index}].rate" required="required" readonly="readonly" type="number"></td>
-                                <td><input step="any" onkeypress="return validate(event);" pattern="[0-9]{5}" value="${orderItem.discount}" class="form-control form-control-sm discount" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].discount" placeholder="enter discount percent" required="required" type="number"></td>
-                                <td class="text-right">Rs.<span>${mydisamount}</span></td>
-                                <td><a href="javascript:void(0);" class="remCF"><i class="glyphicon glyphicon-remove text-danger"></i></a></td>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-                </tbody>
-            </table>
+                    <tbody id="customFields">
+
+                        <c:if test="${order.orderItemInfoDTOList ne null}">
+                            <c:set var="mytotalamount" value="0"></c:set>
+                            <c:forEach varStatus="i" var="orderItem" items="${order.orderItemInfoDTOList}">
+                                <c:set var="myamount" value="${orderItem.quantity * orderItem.rate}"></c:set>
+                                <c:set var="mydisamount" value="${myamount - myamount * discount / 100}"></c:set>
+                                <c:set var="mytotalamount" value="${mytotalamount + mydisamount}"></c:set>
+                                <c:set var="rate" value="0"></c:set>
+                                <tr class="border-bottom itemTable">
+                                    <td>
+                                        <select class='form-control item' name="orderItemInfoDTOList[${i.index}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
+                                             <option value="${orderItem.itemInfoId}" selected>${orderItem.itemName}</option>
+                                            <c:set var="rate" value="${orderItem.rate}"></c:set>
+                                        </select>
+                                    </td>
+                                    <td><input onkeypress="return validate(event);" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>
+                                    <td><input class="form-control form-control-sm" value="${rate}" name="orderItemInfoDTOList[${i.index}].rate" required="required" readonly="readonly" type="number"></td>
+                                    <td><input step="any" onkeypress="return validate(event);" pattern="[0-9]{5}" value="${orderItem.discount}" class="form-control form-control-sm discount" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].discount" placeholder="enter discount percent" required="required" type="number"></td>
+                                    <td class="text-right">Rs.<span>${mydisamount}</span></td>
+                                    <td><a href="javascript:void(0);" class="remCF"><i class="glyphicon glyphicon-remove text-danger"></i></a></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="description">Description:</label><br/>
+                <textarea class="form-control" placeholder="write something.." name="description"
+                          id="description" rows="3" cols="30" required>${order.description}</textarea>
+                <p class="form-error">${orderError.description}</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">&nbsp;</div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="lable">Tax(%) </label>
+                <c:set var="tax" value="13.0"></c:set>
+                <c:choose>
+                    <c:when test="${order.tax ne null}">
+                        <c:set var="tax" value="${order.tax}"></c:set>
+                    </c:when>
+                </c:choose>
+
+                <input type="number" value="${tax}" id="tax" step="any"
+                       onkeypress="return validate(event);"
+                       class="form-control"
+                       onkeyup='calculate(amountUpdate);'
+                       name="tax" required/>
+
+            </div>
+        </div>
+
     </div>
-
-    <div class="col-md-4">
-        <div class="form-group">
-            <label for="description">Description:</label><br/>
-            <textarea class="form-control" placeholder="write something.." name="description"
-                      id="description" rows="3" cols="30" required>${order.description}</textarea>
-            <p class="form-error">${orderError.description}</p>
-        </div>
-    </div>
-    <div class="col-md-6">&nbsp;</div>
-    <div class="col-md-2">
-        <div class="form-group">
-            <label class="lable">Tax(%) </label>
-            <c:set var="tax" value="13.0"></c:set>
-            <c:choose>
-                <c:when test="${order.tax ne null}">
-                    <c:set var="tax" value="${order.tax}"></c:set>
-                </c:when>
-            </c:choose>
-
-            <input type="number" value="${tax}" id="tax" step="any"
-                   onkeypress="return validate(event);"
-                   class="form-control"
-                   onkeyup='calculate(amountUpdate);'
-                   name="tax" required/>
-
-        </div>
-    </div>
-
-</div>
 
 
 <!-- add customer Modal start -->
@@ -232,5 +236,5 @@
         </div>
 
     </div>
-
+</div>
 <!-- add customer Modal end -->
