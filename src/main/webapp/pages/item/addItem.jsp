@@ -45,7 +45,7 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label class="control-label">Product</label>
+                                <label class="control-label">Product *</label>
                                 <select name="productId" class="form-control select2">
                                     <option value="">select product</option>
                                     <c:forEach items="${productList}" var="product">
@@ -81,50 +81,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<div class="modal fade" id="modal-addtag">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add New Tag</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-
-                    <div class="form-group">
-                        <label class="control-label">Name</label>
-                        <input type="text" id="tagName" class="form-control addTagFormClear" name="name"
-                               placeholder="Name">
-                        <p class="form-error tagFormError" id="tagNameError"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label">Code</label>
-                        <input type="text" id="tagCode" class="form-control addTagFormClear" name="code"
-                               placeholder="code">
-                        <p class="form-error tagFormError" id="tagCodeError"></p>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addNewTag"
-                            url="${pageContext.request.contextPath}/api/tag/save"><span
-                            class="glyphicon glyphicon-save"></span>
-                        Save Changes
-                    </button>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
+<%@include file="/pages/item/modal.jsp" %>
 
 <%@include file="/pages/parts/footer.jsp" %>
 

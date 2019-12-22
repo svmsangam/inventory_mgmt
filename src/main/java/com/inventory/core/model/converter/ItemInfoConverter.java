@@ -75,6 +75,7 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setTagId(entity.getTagInfo().getId());
         dto.setThreshold(entity.getThreshold());
         dto.setVersion(entity.getVersion());
+        dto.setCode(entity.getCode());
 
         if (entity.getVendorInfo() != null){
             dto.setVendorId(entity.getVendorInfo().getId());
@@ -111,6 +112,7 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         dto.setVersion(entity.getVersion());
         dto.setTotalCost(entity.getCostPrice() * entity.getQuantity());
         dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfItem(entity.getId()));
+        dto.setCode(entity.getCode());
         if (entity.getVendorInfo() != null) {
             dto.setVendorId(entity.getVendorInfo().getId());
             if (entity.getVendorInfo().getCompanyName() != null && !entity.getVendorInfo().getCompanyName().isEmpty()){
@@ -139,6 +141,7 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         entity.setSellingPrice(dto.getSellingPrice());
         entity.setTagInfo(tagInfoRepository.findById(dto.getTagId()));
         entity.setThreshold(dto.getThreshold());
+        entity.setCode(dto.getCode());
 
         if (dto.getVendorId() != null){
             entity.setVendorInfo(clientInfoRepository.findById(dto.getVendorId()));

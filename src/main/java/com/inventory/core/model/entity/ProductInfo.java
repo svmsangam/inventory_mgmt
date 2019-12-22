@@ -19,8 +19,6 @@ public class ProductInfo extends AbstractEntity<Long> {
 
     private String name;
 
-    private String code;
-
     private String description;
 
     private TrendingLevel trendingLevel;
@@ -45,14 +43,6 @@ public class ProductInfo extends AbstractEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getDescription() {

@@ -24,7 +24,7 @@
             <div class="col-md-6">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Add Main Dish</h3>
+                        <h3 class="box-title">Add Product</h3>
                     </div>
                     <!-- /.box-header -->
                     <form action="${pageContext.request.contextPath}/product/save" method="post" modelAttribute="product" >
@@ -53,12 +53,6 @@
                                 <label class="control-label">Name</label>
                                 <input type="text" class="form-control" value="${product.name}" name="name" placeholder="Name">
                                 <p class="form-error">${productError.name}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" value="${product.code}" name="code" placeholder="code">
-                                <p class="form-error">${productError.code}</p>
                             </div>
 
                             <div class="form-group">

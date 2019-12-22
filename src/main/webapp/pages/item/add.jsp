@@ -62,7 +62,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-
+<%@include file="/pages/item/modal.jsp" %>
 
 <%@include file="/pages/parts/footer.jsp" %>
 <%@include file="/pages/item/script.jsp" %>

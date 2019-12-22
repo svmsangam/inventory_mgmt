@@ -55,6 +55,9 @@ public class ItemInfoValidation extends GlobalValidation{
                 if (errorResult.getField().equals("productId")) {
                     error.setProductId("invalid product");
                     valid = false;
+                }else if (errorResult.getField().equals("code")) {
+                    error.setCode("invalid code");
+                    valid = false;
                 } else if (errorResult.getField().equals("costPrice")) {
                     error.setCostPrice("invalid costPrice");
                     valid = false;
@@ -89,6 +92,8 @@ public class ItemInfoValidation extends GlobalValidation{
             }
         }
 
+        valid = valid && checkCode(itemInfoDTO.getCode(), storeId);
+
         valid = valid && checkProduct(itemInfoDTO.getProductId() , storeId);
 
         valid = valid && checkCostPrice(itemInfoDTO.getCostPrice() );
@@ -110,6 +115,31 @@ public class ItemInfoValidation extends GlobalValidation{
         error.setValid(valid);
 
         return error;
+    }
+
+    private boolean checkCode(String value, long storeId) {
+
+        try {
+
+            error.setCode(checkString(value, 1, 50, "code", true));
+
+            if (!("".equals(error.getCode()))) {
+
+                return false;
+
+            } else if (itemInfoRepository.findByCodeAndStatusAndStoreInfo(value.trim(), Status.ACTIVE, storeId) != null) {
+
+                error.setCode("this code already in use");
+
+                return false;
+            }
+        } catch (Exception e) {
+            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            error.setCode("invalid code");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean checkProduct(Long productId , long storeId){

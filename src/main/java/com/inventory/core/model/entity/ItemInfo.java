@@ -9,6 +9,8 @@ import java.util.Date;
 @Table(name = "item_table")
 public class ItemInfo extends AbstractEntity<Long> {
 
+    private String code;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private ProductInfo productInfo;
 
@@ -35,6 +37,14 @@ public class ItemInfo extends AbstractEntity<Long> {
     private int threshold;
 
     private Status status;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public ProductInfo getProductInfo() {
         return productInfo;

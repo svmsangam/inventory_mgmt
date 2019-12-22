@@ -62,14 +62,12 @@
                             <thead>
                             <tr>
                                 <th>Unit</th>
-                                <th>Code</th>
                                 <th>Trend</th>
                             </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>${product.unitInfo.name}</td>
-                                    <td>${product.code}</td>
                                     <td>${product.trendingLevel}</td>
                                 </tr>
                             </tbody>
@@ -85,6 +83,7 @@
                             <thead>
                             <tr>
                                 <th>SN</th>
+                                <th>Code</th>
                                 <th>Tag</th>
                                 <th>Lot</th>
                                 <th>Cost Price</th>
@@ -101,6 +100,7 @@
                             <c:forEach var="item" items="${itemList}" varStatus="i">
                                 <tr>
                                     <td>${i.index + 1}</td>
+                                    <td>${item.code}</td>
                                     <td>${item.tagInfo.name}</td>
                                     <td>${item.lotInfo.lot}</td>
                                     <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.costPrice}"/></td>
