@@ -70,8 +70,6 @@ public class ProductInfoValidation extends GlobalValidation {
 
         valid = valid && checkName(productInfoDTO.getName(), productInfoDTO.getStoreInfoId());
 
-        valid = valid && checkCode(productInfoDTO.getCode(), productInfoDTO.getStoreInfoId());
-
         valid = valid && checkDescription(productInfoDTO.getDescription());
 
         valid = valid && checkSubCategory(productInfoDTO.getSubCategoryId(), productInfoDTO.getStoreInfoId());
@@ -101,9 +99,7 @@ public class ProductInfoValidation extends GlobalValidation {
 
                 if (errorResult.getField().equals("name")) {
                     error.setName("invalid store name");
-                } else if (errorResult.getField().equals("code")) {
-                    error.setCode("invalid code");
-                } else if (errorResult.getField().equals("description")) {
+                }else if (errorResult.getField().equals("description")) {
                     error.setDescription("invalid description");
                 } else if (errorResult.getField().equals("trendingLevel")) {
                     error.setTrendingLevel("invalid trendingLevel");
@@ -124,8 +120,6 @@ public class ProductInfoValidation extends GlobalValidation {
         valid = valid && checkProduct(productInfoDTO.getProductId() , productInfoDTO.getStoreInfoId());
 
         valid = valid && checkNameOnUpdate(productInfoDTO.getName(), productInfoDTO.getStoreInfoId() , productInfoDTO.getProductId());
-
-        valid = valid && checkCodeOnUpdate(productInfoDTO.getCode(), productInfoDTO.getStoreInfoId() , productInfoDTO.getProductId());
 
         valid = valid && checkDescription(productInfoDTO.getDescription());
 
@@ -224,69 +218,11 @@ public class ProductInfoValidation extends GlobalValidation {
         return true;
     }
 
-
-    private boolean checkCode(String value, long storeId) {
-
-        try {
-
-            error.setCode(checkString(value, 1, 50, "code", true));
-
-            if (!("".equals(error.getCode()))) {
-
-                return false;
-
-            } else if (productInfoRepository.findByCodeAndStatusAndStoreInfo(value.trim(), Status.ACTIVE, storeId) != null) {
-
-                error.setName("this code already in use");
-
-                return false;
-            }
-        } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
-            error.setName("invalid code");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkCodeOnUpdate(String value, long storeId , long productId) {
-
-        try {
-
-            error.setCode(checkString(value, 1, 50, "code", true));
-
-            if (!("".equals(error.getCode()))) {
-
-                return false;
-
-            } else {
-
-                ProductInfo productInfo = productInfoRepository.findByCodeAndStatusAndStoreInfo(value.trim(), Status.ACTIVE, storeId);
-
-                if (productInfo != null){
-                    if (productInfo.getId() != productId){
-                        error.setName("this code already in use");
-
-                        return false;
-                    }
-                }
-
-            }
-        } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
-            error.setName("invalid code");
-            return false;
-        }
-
-        return true;
-    }
-
     private boolean checkDescription(String value) {
 
         error.setDescription(checkString(value, 1, 200, "description", false));
 
-        return "".equals(error.getCode());
+        return "".equals(error.getDescription());
     }
 
     private boolean checkSubCategory(Long subcategoryId, long storeId) {

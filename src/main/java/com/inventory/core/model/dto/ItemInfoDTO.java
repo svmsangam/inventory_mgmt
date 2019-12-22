@@ -11,6 +11,8 @@ public class ItemInfoDTO {
 
     private Long itemId;
 
+    private String code;
+
     private ProductInfoDTO productInfo;
 
     private Long productId;
@@ -46,6 +48,14 @@ public class ItemInfoDTO {
     private Long vendorId;
 
     private String vendorName;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public double getTotalSale() {
         return totalSale;

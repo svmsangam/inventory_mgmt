@@ -61,7 +61,6 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         ProductInfoDTO dto = new ProductInfoDTO();
 
         dto.setProductId(entity.getId());
-        dto.setCode(entity.getCode());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
         dto.setDescription(entity.getDescription());
@@ -88,7 +87,6 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         ProductInfoDTO dto = new ProductInfoDTO();
 
         dto.setProductId(entity.getId());
-        dto.setCode(entity.getCode());
         dto.setCreatedById(entity.getCreatedBy().getId());
         dto.setCreatedByName(entity.getCreatedBy().getUsername());
         dto.setDescription(entity.getDescription());
@@ -116,7 +114,6 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
             return null;
         }
 
-        entity.setCode(dto.getCode().trim());
         entity.setDescription(dto.getDescription().trim());
         entity.setName(dto.getName().trim());
         entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()));

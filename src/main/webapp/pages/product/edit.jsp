@@ -58,12 +58,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">Code</label>
-                                <input type="text" class="form-control" value="${product.code}" name="code" placeholder="code">
-                                <p class="form-error">${productError.code}</p>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="control-label">Trend</label>
                                 <select name="trendingLevel" class="form-control select2" id="trendingLevel">
                                     <option value="">select trend</option>

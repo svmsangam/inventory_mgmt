@@ -49,7 +49,6 @@
                                         <tr>
                                             <th>SN</th>
                                             <th>Name</th>
-                                            <th>Code</th>
                                             <th>Trend</th>
                                             <th>Category</th>
                                             <th>Instock</th>
@@ -61,7 +60,6 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
-                                                <td>${product.code}</td>
                                                 <td>${product.trendingLevel}</td>
                                                 <td>${product.subCategoryInfo.name}</td>
                                                 <td>${product.stockInfo.inStock}</td>

@@ -25,7 +25,17 @@ public class ItemInfoError {
 
     private String version;
 
+    private String code;
+
     private boolean valid;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getProductId() {
         return productId;
