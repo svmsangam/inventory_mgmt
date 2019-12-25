@@ -50,6 +50,19 @@
                     </div>
 
                     <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>QR Scanner :</label>
+                                <select class='choose2 form-control itemQrSearch' name='' url='${pageContext.request.contextPath}/item/show'></select>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group pull-right">
+                                    <label>Total Cost </label>
+                                    <span class="btn btn-default btn-flat calculation">Rs.&nbsp;<h2 id="total">${mytotalamount + mytotalamount * tax /100}</h2></span>
+                                </div>
+                            </div>
+                        </div>
+
                         <form action="${pageContext.request.contextPath}/order/sale/save" autocomplete="off" method="post"
                               modelAttribute="order">
 
@@ -63,18 +76,12 @@
                                 <div class="col-lg-12">
                                     <div class="box-footer">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <strong>shortcuts for addItem</strong><br>
-                                                <small>
-                                                    ctrl + 'z'<br>
-                                                    enter or tab keydown on discount
-                                                </small>
-                                            </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 pull-right">
                                                 <button type="submit"
                                                         class="btn btn-primary btn-flat btn-sm pull-right">
-                                                    save changes
+                                                     save changes &nbsp; &nbsp;
+                                                    <i class="fa fa-save fa-lg"></i>
                                                 </button>
                                             </div>
                                         </div>
