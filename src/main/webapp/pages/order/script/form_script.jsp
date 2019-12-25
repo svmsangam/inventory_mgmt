@@ -119,15 +119,18 @@
                 processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
-                    $.each(data.detail, function (index, value) {
+                    if(data.detail.length === 1){
+                        addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show" , data.detail[0].sellingPrice));
+                    }else {
+                        $.each(data.detail, function (index, value) {
 
-                        arr.push({
-                            id: value.itemId + "|" + value.sellingPrice,
-                            text: value.productName + ' - ' + value.itemName + "<input type='hidden' class='qr_item_rate' value='"+value.sellingPrice+"'/>",
-                            rate : value.sellingPrice
+                            arr.push({
+                                id: value.itemId + "|" + value.sellingPrice,
+                                text: value.productName + ' - ' + value.itemName + "<input type='hidden' class='qr_item_rate' value='" + value.sellingPrice + "'/>",
+                                rate: value.sellingPrice
+                            })
                         })
-                    })
-
+                    }
                     return {
                         results: arr/*,
                          pagination: {
