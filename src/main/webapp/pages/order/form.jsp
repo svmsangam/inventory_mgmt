@@ -67,11 +67,6 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div class="form-group">
-                <button class="btn btn-xs btn-flat btn-primary pull-right" type="button" id="add_row">
-                    <span class="glyphicon glyphicon-plus"></span> Add Item
-                </button>
-            </div>
             <div>
                 <table class="table table-bordered table-hover table-striped" id="itemTable">
                     <thead>
