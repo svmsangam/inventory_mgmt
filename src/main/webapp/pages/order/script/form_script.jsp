@@ -122,7 +122,7 @@
                     $.each(data.detail, function (index, value) {
 
                         arr.push({
-                            id: value.itemId,
+                            id: value.itemId + "|" + value.sellingPrice,
                             text: value.productName + ' - ' + value.itemName + "<input type='hidden' class='qr_item_rate' value='"+value.sellingPrice+"'/>",
                             rate : value.sellingPrice
                         })
@@ -154,9 +154,8 @@
     function addQrItem(self) {
 
         that = $(".itemQrSearch :selected");
-        var rate = that.attr("rate");
-        console.log(rate);
-        addRowOnQrItem(new ItemDetails(that.val(), that.text(), "${pageContext.request.contextPath}/item/show" , rate));
+        var itemIdRateArr = that.val().split("|");
+        addRowOnQrItem(new ItemDetails(itemIdRateArr[0], that.text(), "${pageContext.request.contextPath}/item/show" , itemIdRateArr[1]));
 
     }
 
