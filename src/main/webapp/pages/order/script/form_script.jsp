@@ -121,6 +121,14 @@
                     var arr = []
                     if(data.detail.length === 1){
                         addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show" , data.detail[0].sellingPrice));
+                        $.notify({
+                            icon: 'glyphicon glyphicon-ok',
+                            title: '&nbsp;<strong>Product Added Successfully!</strong><br>',
+                            message: "<strong>" +data.detail[0].productName + ' - ' + data.detail[0].itemName + "</strong> <br> <strong>Rate : </strong>" + data.detail[0].sellingPrice + "<br><strong>In Stock : </strong>" + data.detail[0].instock
+                        },{
+                            type: 'success',
+                            delay: 1
+                        });
                     }else {
                         $.each(data.detail, function (index, value) {
 
