@@ -182,7 +182,7 @@
         console.log(itemModal);
         var updateQuantityChecker = updateQuantityForSameItemId(itemModal.itemId );
         console.log(updateQuantityChecker);
-        if (updateQuantityChecker === false) {
+        if (updateQuantityChecker == false) {
             var row = "<tr class='border-bottom itemTable'>";
             row += "<td><p>"+itemModal.name +"</p><input type='hidden' class='itemId' name='' value='"+itemModal.itemId+"'/></td>";
             row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
@@ -201,7 +201,9 @@
     }
 
     function updateQuantityForSameItemId(itemId) {
+    	counter =0;
         $("#itemTable > tbody  > tr").each(function () {
+        	counter++;
             var trItemId = $(this).find("td:eq(0)").find("input").val();
 
             console.log(trItemId);
@@ -213,14 +215,16 @@
                 trItemId = 0;
             }
 
-            if (trItemId === itemId) {
+            if (trItemId == itemId) {
                 var prevQuantity = $(this).find("td:eq(1) > input").val();
                 $(this).find("td:eq(1) > input").val((parseInt(prevQuantity)) + 1);
                 return true;
             }
         });
+        if(counter==0){
 
-        return false;
+        	return false;
+        }
     }
 
     function ItemDetails(itemId, name, showUrl , rate) {
