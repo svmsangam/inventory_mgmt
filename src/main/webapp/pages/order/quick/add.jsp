@@ -53,8 +53,8 @@
 
                         <div class="row">
                             <div class="col-lg-6">
-                                <label>QR Scanner :</label>
-                                <select class='choose2 form-control itemQrSearch' name='' url='${pageContext.request.contextPath}/item/show'></select>
+                                <label title="search product">QR Code Scanner :</label>
+                                <select title="click here to search product" class='choose2 form-control itemQrSearch' name='' url='${pageContext.request.contextPath}/item/show'></select>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group pull-right">
@@ -78,7 +78,8 @@
                                     <div class="box-footer">
                                         <div class="row">
                                             <div class="col-md-6 pull-right">
-                                                <button type="submit" class="btn btn-primary btn-flat btn-lg pull-right">Continue&nbsp;&nbsp;<i class="fa fa-arrow-circle-right fa-lg" aria-hidden="true"></i></button>
+                                                <button type="submit" class="btn btn-primary btn-flat btn-lg pull-right margin-r-5">Next&nbsp;&nbsp;<i class="fa fa-arrow-circle-right fa-lg" aria-hidden="true"></i></button>
+                                                <a class="btn btn-danger btn-flat btn-lg pull-right margin-r-5" href="${pageContext.request.contextPath}/order/sale/quick">Cancel&nbsp;&nbsp;<i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
                                     </div>
