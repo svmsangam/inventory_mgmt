@@ -68,9 +68,9 @@
     $(document).ready(function () {
         select2ORItem($(".itemQrSearch"));
 
-      /*  $(document).on("change", ".itemQrSearch", function () {
-            addQrItem($(this));
-        });*/
+        /*  $(document).on("change", ".itemQrSearch", function () {
+              addQrItem($(this));
+          });*/
 
 
         $(document).on("click", ".calculation", function () {
@@ -119,17 +119,17 @@
                 processResults: function (data, params) {
                     params.page = params.page || 1;
                     var arr = []
-                    if(data.detail.length === 1){
-                        addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show" , data.detail[0].sellingPrice));
+                    if (data.detail.length === 1) {
+                        addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show", data.detail[0].sellingPrice));
                         $.notify({
                             icon: 'glyphicon glyphicon-ok',
                             title: '&nbsp;<strong>Product Added Successfully!</strong><br>',
-                            message: "<strong>" +data.detail[0].productName + ' - ' + data.detail[0].itemName + "</strong> <br> <strong>Rate : </strong>" + data.detail[0].sellingPrice + "<br><strong>In Stock : </strong>" + data.detail[0].instock
-                        },{
+                            message: "<strong>" + data.detail[0].productName + ' - ' + data.detail[0].itemName + "</strong> <br> <strong>Rate : </strong>" + data.detail[0].sellingPrice + "<br><strong>In Stock : </strong>" + data.detail[0].instock
+                        }, {
                             type: 'success',
                             delay: 1
                         });
-                    }else {
+                    } else {
                         $.each(data.detail, function (index, value) {
 
                             arr.push({
@@ -156,7 +156,7 @@
             },
             minimumInputLength: 1,
             placeholder: "Search item by Name & code"
-        }).on('change', function() {
+        }).on('change', function () {
             addQrItem($(this));
 
         });
@@ -166,7 +166,7 @@
 
         that = $(".itemQrSearch :selected");
         var itemIdRateArr = that.val().split("|");
-        addRowOnQrItem(new ItemDetails(itemIdRateArr[0], that.text(), "${pageContext.request.contextPath}/item/show" , itemIdRateArr[1]));
+        addRowOnQrItem(new ItemDetails(itemIdRateArr[0], that.text(), "${pageContext.request.contextPath}/item/show", itemIdRateArr[1]));
 
     }
 
@@ -180,59 +180,49 @@
     function addRowOnQrItem(itemModal) {
 
         console.log(itemModal);
-        var updateQuantityChecker = updateQuantityForSameItemId(itemModal.itemId );
-        console.log(updateQuantityChecker);
-        if (updateQuantityChecker == false) {
-            var row = "<tr class='border-bottom itemTable'>";
-            row += "<td><p>"+itemModal.name +"</p><input type='hidden' class='itemId' name='' value='"+itemModal.itemId+"'/></td>";
-            row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
-            row += "<td><input type='number' class='form-control form-control-sm' name='' value='"+itemModal.rate+"' required readonly/></td>";
-            row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
-            row += "<td class='text-right'>Rs.<span>0</span></div>";
-            row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
-            row += "</tr>";
-            $("#customFields").prepend(row);
-            count++;
-            max++;
-            updateName();
-        }
+        updateQuantityForSameItemId(itemModal);
+    }
+
+    function addRowItem(itemModal) {
+
+        var row = "<tr class='border-bottom itemTable' id='" + itemModal.itemId + "'>";
+        row += "<td><p>" + itemModal.name + "</p><input type='hidden' class='itemId' name='' value='" + itemModal.itemId + "'/></td>";
+        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
+        row += "<td><input type='number' class='form-control form-control-sm' name='' value='" + itemModal.rate + "' required readonly/></td>";
+        row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+        row += "<td class='text-right'>Rs.<span>0</span></div>";
+        row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
+        row += "</tr>";
+
+        $("#customFields").prepend(row);
+
+        updateName();
         calculate(amountUpdate);
         clearSelect2($(".itemQrSearch"));
     }
 
-    function updateQuantityForSameItemId(itemId) {
-    	counter =0;
-        $("#itemTable > tbody  > tr").each(function () {
-        	counter++;
-            var trItemId = $(this).find("td:eq(0)").find("input").val();
+    function updateQuantityForSameItemId(itemModal) {
+        var itemId = itemModal.itemId;
+        var previousItem = $("#itemTable > tbody  > tr#" + itemId);
+        console.log(previousItem);
 
-            console.log(trItemId);
-            if (trItemId === undefined){
-                trItemId = 0;
-            }
+        if (previousItem.length === 0) {
+            addRowItem(itemModal);
+        } else {
+            var prevQuantity = previousItem.find("td:eq(1) > input").val();
+            previousItem.find("td:eq(1) > input").val((parseInt(prevQuantity)) + 1);
 
-            if (trItemId === null){
-                trItemId = 0;
-            }
-
-            if (trItemId == itemId) {
-                var prevQuantity = $(this).find("td:eq(1) > input").val();
-                $(this).find("td:eq(1) > input").val((parseInt(prevQuantity)) + 1);
-                return true;
-            }
-        });
-        if(counter==0){
-
-        	return false;
+            calculate(amountUpdate);
+            clearSelect2($(".itemQrSearch"));
         }
     }
 
-    function ItemDetails(itemId, name, showUrl , rate) {
+    function ItemDetails(itemId, name, showUrl, rate) {
         return {
             itemId: itemId,
             name: name,
             showUrl: showUrl,
-            rate : rate
+            rate: rate
         }
     }
 
