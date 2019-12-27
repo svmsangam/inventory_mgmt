@@ -5,8 +5,10 @@ import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -51,9 +54,11 @@ public class StoreController {
 
             if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
 
+                List<StoreInfoDTO> storeInfoDTOList = storeUserInfoApi.getAllStoreByUser(currentUser.getUserId());
+                LoggerUtil.logMessage(this.getClass() , "total store size ===>> " + storeInfoDTOList.size());
                 modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-                modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(currentUser.getUserId()));
+                modelMap.put(StringConstants.STORE_LIST, storeInfoDTOList);
 
                 if (currentUser.getStoreId() == null){
                     modelMap.put(StringConstants.SUPERADMINSELECTSTORE , 0);

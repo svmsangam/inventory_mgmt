@@ -25,6 +25,8 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long>, Jpa
     @Query("select s from StoreInfo s where s.status=?1")
     List<StoreInfo> findAllByStatus(Status status);
 
+    List<StoreInfo> findAllByStatusInAndIdIn(Status status,  List<Long> storeId);
+
     StoreInfo findByName(String storeName);
 
     @Query("select s from StoreInfo s where s.name = ?1 and s.status = ?2")

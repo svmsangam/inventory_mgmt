@@ -7,8 +7,8 @@ import com.inventory.core.model.converter.UserConverter;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.dto.StoreUserInfoDTO;
+import com.inventory.core.model.entity.StoreInfo;
 import com.inventory.core.model.entity.StoreUserInfo;
-import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.StoreUserInfoRepository;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,7 +64,12 @@ public class StoreUserInfoApi implements IStoreUserInfoApi {
 
     @Override
     public List<StoreInfoDTO> getAllStoreByUser(long userId) {
-        return storeInfoConverter.convertToDtoList(storeUserInfoRepository.findAllByUserAndStatus(userId, Status.ACTIVE));
+        List<StoreUserInfo> storeUserInfoList = storeUserInfoRepository.findAllStoreUserInfoByUserAndStatus(userId , Status.ACTIVE);
+        List<StoreInfo> storeInfoList = new ArrayList<>();
+        for (StoreUserInfo storeUserInfo : storeUserInfoList){
+            storeInfoList.add(storeUserInfo.getStoreInfo());
+        }
+        return storeInfoConverter.convertToDtoList(storeInfoList);
     }
 
     @Override
