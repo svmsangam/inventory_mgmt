@@ -81,6 +81,7 @@
             $(this).parent().parent().remove();
             max--;
             updateName();
+            calculate(amountUpdate);
         });
     });
 
