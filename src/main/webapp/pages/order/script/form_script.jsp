@@ -117,9 +117,10 @@
                     };
                 },
                 processResults: function (data, params) {
+                    console.log(params.term);
                     params.page = params.page || 1;
                     var arr = []
-                    if (data.detail.length === 1) {
+                    if (data.detail.length === 1 && params.term === data.detail[0].productCode) {
                         addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show", data.detail[0].sellingPrice));
                         $.notify({
                             icon: 'glyphicon glyphicon-ok',
