@@ -82,28 +82,7 @@
 
                     <tbody id="customFields">
 
-                        <c:if test="${order.orderItemInfoDTOList ne null}">
-                            <c:set var="mytotalamount" value="0"></c:set>
-                            <c:forEach varStatus="i" var="orderItem" items="${order.orderItemInfoDTOList}">
-                                <c:set var="myamount" value="${orderItem.quantity * orderItem.rate}"></c:set>
-                                <c:set var="mydisamount" value="${myamount - myamount * discount / 100}"></c:set>
-                                <c:set var="mytotalamount" value="${mytotalamount + mydisamount}"></c:set>
-                                <c:set var="rate" value="0"></c:set>
-                                <tr class="border-bottom itemTable">
-                                    <td>
-                                        <select class='form-control item' name="orderItemInfoDTOList[${i.index}].itemInfoId" url="${pageContext.request.contextPath}/item/show">
-                                             <option value="${orderItem.itemInfoId}" selected>${orderItem.itemName}</option>
-                                            <c:set var="rate" value="${orderItem.rate}"></c:set>
-                                        </select>
-                                    </td>
-                                    <td><input onkeypress="return validate(event);" class="form-control form-control-sm quantity" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].quantity" value="${orderItem.quantity}" placeholder="enter quantity" required="" type="number"></td>
-                                    <td><input class="form-control form-control-sm" value="${rate}" name="orderItemInfoDTOList[${i.index}].rate" required="required" readonly="readonly" type="number"></td>
-                                    <td><input step="any" onkeypress="return validate(event);" pattern="[0-9]{5}" value="${orderItem.discount}" class="form-control form-control-sm discount" onkeyup="calculate(amountUpdate);" name="orderItemInfoDTOList[${i.index}].discount" placeholder="enter discount percent" required="required" type="number"></td>
-                                    <td class="text-right">Rs.<span>${mydisamount}</span></td>
-                                    <td><a href="javascript:void(0);" class="remCF"><i class="glyphicon glyphicon-remove text-danger"></i></a></td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
+
                     </tbody>
                 </table>
             </div>

@@ -6,8 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <script>
     $(document).ready(function () {
+        <c:if test="${order.orderItemInfoDTOList ne null}">
+            <c:forEach varStatus="i" var="orderItem" items="${order.orderItemInfoDTOList}">
+                addRowOnQrItem(new ItemDetails(${orderItem.itemInfoId} , "${orderItem.itemName}" , ${orderItem.quantity} , "" , ${orderItem.rate}  , ${orderItem.discount}));
+            </c:forEach>
+        </c:if>
+
 
         $(".choose1").select2({
             ajax: {
@@ -122,7 +134,7 @@
                     params.page = params.page || 1;
                     var arr = []
                     if (data.detail.length === 1 && params.term === data.detail[0].productCode) {
-                        addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, "${pageContext.request.contextPath}/item/show", data.detail[0].sellingPrice));
+                        addRowOnQrItem(new ItemDetails(data.detail[0].itemId, data.detail[0].productName + ' - ' + data.detail[0].itemName, 1, "${pageContext.request.contextPath}/item/show", data.detail[0].sellingPrice , 0));
                         $.notify({
                             icon: 'glyphicon glyphicon-ok',
                             title: '&nbsp;<strong>Product Added Successfully!</strong><br>',
@@ -168,7 +180,7 @@
 
         that = $(".itemQrSearch :selected");
         var itemIdRateArr = that.val().split("|");
-        addRowOnQrItem(new ItemDetails(itemIdRateArr[0], that.text(), "${pageContext.request.contextPath}/item/show", itemIdRateArr[1]));
+        addRowOnQrItem(new ItemDetails(itemIdRateArr[0], that.text(),1, "${pageContext.request.contextPath}/item/show", itemIdRateArr[1],  0));
 
     }
 
@@ -189,9 +201,9 @@
 
         var row = "<tr class='border-bottom itemTable' id='" + itemModal.itemId + "'>";
         row += "<td><p>" + itemModal.name + "</p><input type='hidden' class='itemId' name='' value='" + itemModal.itemId + "'/></td>";
-        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='1' required/></td>";
+        row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='"+itemModal.quantity+"' required/></td>";
         row += "<td><input type='number' class='form-control form-control-sm' name='' value='" + itemModal.rate + "' required readonly/></td>";
-        row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='0' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
+        row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='"+itemModal.discount+"' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
         row += "<td class='text-right'>Rs.<span>0</span></div>";
         row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
         row += "</tr>";
@@ -219,12 +231,14 @@
         }
     }
 
-    function ItemDetails(itemId, name, showUrl, rate) {
+    function ItemDetails(itemId, name, quantity , showUrl, rate , discount) {
         return {
             itemId: itemId,
             name: name,
+            quantity: quantity,
             showUrl: showUrl,
-            rate: rate
+            rate: rate,
+            discount:discount
         }
     }
 
