@@ -67,8 +67,8 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div>
-                <table class="table table-bordered table-hover table-striped" id="itemTable">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="itemTable" style="overflow-x: scroll">
                     <thead>
                     <tr>
                         <th>item</th>

@@ -202,7 +202,7 @@
         var row = "<tr class='border-bottom itemTable' id='" + itemModal.itemId + "'>";
         row += "<td><p>" + itemModal.name + "</p><input type='hidden' class='itemId' name='' value='" + itemModal.itemId + "'/></td>";
         row += "<td><input type='number' onkeypress='return validate(event);' pattern='[0-9]{5}' class='form-control form-control-sm quantity' onkeyup='calculate(amountUpdate);'  name='' placeholder='enter quantity' value='"+itemModal.quantity+"' required/></td>";
-        row += "<td><input type='number' class='form-control form-control-sm' name='' value='" + itemModal.rate + "' required readonly/></td>";
+        row += "<td><input type='number' class='form-control' style='min-width: 70px;' name='' value='" + itemModal.rate + "' required readonly/></td>";
         row += "<td><input type='number' step='any' onkeypress='return validate(event);' pattern='[0-9]{5}' value='"+itemModal.discount+"' class='form-control form-control-sm discount' onkeyup='calculate(amountUpdate);' name='' placeholder='enter discount percent'  required /></td>";
         row += "<td class='text-right'>Rs.<span>0</span></div>";
         row += "<td><a href='javascript:void(0);' class='remCF'><i class='glyphicon glyphicon-remove text-danger'></i></a></td>";
