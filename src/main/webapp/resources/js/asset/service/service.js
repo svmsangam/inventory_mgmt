@@ -109,6 +109,7 @@ function UserService() {
                     if (userRequest !== undefined) {
                         userRequest.abort();
                     }
+                    blockUiZ(2000)
                 },
                 success: function (data) {
 
@@ -133,6 +134,8 @@ function UserService() {
                         that.errorOnForm(msg);
                         that.setError(result);
                     }
+
+                    $.unblockUI();
                 }
             });
 
@@ -143,7 +146,6 @@ function UserService() {
         },
 
         changeStore: function (storeId, url, that) {
-            var sppiner;
             userRequest = $.ajax({
                 type: "GET",
                 url: url,
@@ -159,7 +161,7 @@ function UserService() {
                         userRequest.abort();
                     }
 
-                    sppiner = startLoading();
+                    blockUi();
                 },
                 success: function (data) {
 
@@ -180,16 +182,16 @@ function UserService() {
                                 }
                             }
                         });
-                        stopLoading(sppiner);
+                        $.unblockUI();
                     }
 
                     if (data.status === 'Failure') {
-                        stopLoading(sppiner);
+                        $.unblockUI();
                         window.location.reload();
                     }
 
                     if (data.status === 'Validation Failed') {
-                        stopLoading(sppiner);
+                        $.unblockUI();
                         window.location.reload();
                     }
                 },
@@ -207,7 +209,7 @@ function UserService() {
                             return;
                         } else {
                             //cancel request
-                            stopLoading(sppiner);
+                            $.unblockUI();
                             window.location.reload();
 
                             return;
@@ -217,11 +219,11 @@ function UserService() {
 
                     if (xhr.status == 500) {
                         //handle error
-                        stopLoading(sppiner);
+                        $.unblockUI();
                         window.location.reload();
                     } else {
                         //handle error
-                        stopLoading(sppiner);
+                        $.unblockUI();
                         window.location.reload();
                     }
                 }
