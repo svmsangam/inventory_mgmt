@@ -3,10 +3,11 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        Anything you want
+        Contact Us:
+        9849019834/9841891093
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%> <a href="#">Company</a>.</strong> All rights reserved.
 </footer>
 
 <!-- Control Sidebar -->
