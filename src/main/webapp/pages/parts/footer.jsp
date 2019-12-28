@@ -195,7 +195,8 @@ immediately after the control sidebar -->
             'searching': false,
             'ordering': true,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'cache': false
         });
 
         $('#table2').DataTable({
@@ -204,7 +205,8 @@ immediately after the control sidebar -->
             'searching': true,
             'ordering': true,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'cache': false
         })
     })
 </script>
