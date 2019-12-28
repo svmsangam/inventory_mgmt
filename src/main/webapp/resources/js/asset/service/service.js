@@ -2,6 +2,39 @@
  * Created by dhiraj on 8/12/17.
  */
 
+function successNotify(messege) {
+    $.notify({
+        icon: 'glyphicon glyphicon-ok',
+        title: '&nbsp;<strong>Success!</strong><br>',
+        message: messege
+    }, {
+        type: 'success',
+        delay: 1
+    });
+}
+
+function dangerNotify(messege) {
+    $.notify({
+        icon: 'glyphicon glyphicon-warning-sign',
+        title: '&nbsp;<strong>Alert!</strong><br>',
+        message: messege
+    }, {
+        type: 'danger',
+        delay: 1
+    });
+}
+
+function infoNotify(messege) {
+    $.notify({
+        icon: 'glyphicon glyphicon-info-sign',
+        title: '&nbsp;<strong>Product Added Successfully!</strong><br>',
+        message: messege
+    }, {
+        type: 'info',
+        delay: 10
+
+    });
+}
 
 var opts = {
     lines: 13 // The number of lines to draw
@@ -222,20 +255,11 @@ function UserService() {
         },
 
         successMsg: function (msg) {
-            $.notify({
-                icon: 'glyphicon glyphicon-ok',
-                title: '<strong>Success!</strong>',
-                message: msg
-            });
+            successNotify(msg)
         },
 
         errorMsg: function (msg) {
-            $.notify({
-                title: '<strong>warnning!</strong>',
-                message: msg
-            }, {
-                type: 'danger'
-            });
+            dangerNotify(msg)
         },
 
         errorOnForm: function (error) {
@@ -311,6 +335,12 @@ function StoreService() {
                 data: store,
                 dataType: 'json',
                 timeout: 100000,
+                beforeSend : function () {
+                  if (storeRequest !== undefined){
+                      storeRequest.abort();
+                      blockUiZ(2000);
+                  }
+                },
                 success: function (data) {
 
                     var result = data.detail;
@@ -327,17 +357,21 @@ function StoreService() {
                             that.successMsg(msg);
                             window.location.reload();
                         }
+
+                        $.unblockUI();
                     }
 
                     if (data.status === 'Failure') {
                         that.errorMsg(msg);
                         $(".closeAdd").click();
+                        $.unblockUI();
                     }
 
                     if (data.status === 'Validation Failed') {
 
                         that.errorOnForm(msg);
                         that.setError(result);
+                        $.unblockUI();
                     }
                 }
             });
@@ -360,6 +394,12 @@ function StoreService() {
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
                 dataType: 'json',
                 timeout: 100000,
+                beforeSend : function () {
+                  if(storeRequest !== undefined){
+                      storeRequest.abort();
+                      blockUiZ(2000)
+                  }
+                },
                 success: function (data) {
 
                     var result = data.detail;
@@ -375,6 +415,8 @@ function StoreService() {
                         that.errorMsg(msg);
                         $(".closeShow").click();
                     }
+
+                    $.unblockUI();
                 }
             });
         },
@@ -456,20 +498,11 @@ function StoreService() {
         },
 
         successMsg: function (msg) {
-            $.notify({
-                icon: 'glyphicon glyphicon-ok',
-                title: '<strong>Success!</strong>',
-                message: msg
-            });
+            successNotify(msg)
         },
 
         errorMsg: function (msg) {
-            $.notify({
-                title: '<strong>warnning!</strong>',
-                message: msg
-            }, {
-                type: 'danger'
-            });
+            dangerNotify(msg)
         },
 
         errorOnForm: function (error) {
@@ -797,11 +830,7 @@ function TagService() {
         },
 
         successMsg: function (msg) {
-            $.notify({
-                icon: 'glyphicon glyphicon-ok',
-                title: '<strong>Success!</strong>',
-                message: msg
-            });
+            successNotify(msg)
         },
 
         validation: function (name, code) {
@@ -967,11 +996,7 @@ function VendorService() {
         },
 
         successMsg: function (msg) {
-            $.notify({
-                icon: 'glyphicon glyphicon-ok',
-                title: '<strong>Success!</strong>',
-                message: msg
-            });
+            successNotify(msg)
         },
 
         validation: function (companyName) {
@@ -1169,20 +1194,11 @@ function ClientInfoService() {
         },
 
         successMsg: function (msg) {
-            $.notify({
-                icon: 'glyphicon glyphicon-ok',
-                title: '<strong>Success!</strong>',
-                message: msg
-            });
+            successNotify(msg)
         },
 
         errorMsg: function (msg) {
-            $.notify({
-                title: '<strong>warnning!</strong>',
-                message: msg
-            }, {
-                type: 'danger'
-            });
+            dangerNotify(msg)
         },
 
         errorOnForm: function (error) {
