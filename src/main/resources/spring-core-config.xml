@@ -13,12 +13,36 @@
 
     <tx:annotation-driven/>
 
-    <bean id="dataSource"
+    <!--<bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/inventory"/>
-        <property name="username" value="root"/>
-        <property name="password" value="RoshanKhm$11"/>
+        <property name="username" value="dhiraj"/>
+        <property name="password" value=""/>
+    </bean>-->
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+          destroy-method="close">
+        <property name="dataSourceClassName"
+                  value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
+        <property name="maximumPoolSize" value="20"/>
+        <property name="maxLifetime" value="30000"/>
+        <property name="idleTimeout" value="30000"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">jdbc:mysql://localhost:3306/inventory?verifyServerCertificate=false&amp;useSSL=true</prop>
+                <prop key="user">root</prop>
+                <prop key="password">RoshanKhm$11</prop>
+                <!--<prop key="user">dhiraj</prop>
+                <prop key="password"></prop>-->
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="useServerPrepStmts">true</prop>
+
+            </props>
+        </property>
+
     </bean>
 
     <bean id="jpaVendorAdapter"
