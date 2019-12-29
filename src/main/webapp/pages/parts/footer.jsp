@@ -106,16 +106,12 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<--select2 dropdown-->
+
 <script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
 <!-- DataTables -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
-
-<%--
-<script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
---%>
 <!-- SlimScroll -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->

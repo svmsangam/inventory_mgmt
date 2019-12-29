@@ -21,6 +21,7 @@
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
+                <h3 class="box-title text-center">Order Details</h3>
                 <h2 class="page-header">
 
                     <c:if test="${invoice ne null}"><span>Order No. <b>#${order.orderNo}</b></span>
@@ -144,9 +145,9 @@
             </div>
         </div>
         <!-- /.row -->
-        <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
+            <div class="col-lg-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -175,9 +176,8 @@
 
                     </tbody>
                 </table>
-            <!-- /.col -->
+            </div>
         </div>
-        <!-- /.row -->
 
         <div class="row">
             <!-- accepted payments column -->
@@ -209,7 +209,6 @@
             </div>
             <!-- /.col -->
         </div>
-        <!-- /.row -->
 
     </section>
     <!-- /.content -->
