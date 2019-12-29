@@ -47,44 +47,61 @@
             </div>
         </div>
         <!-- /.row -->
-        <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>SN</th>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Rate</th>
-                    <th>Discount(%)</th>
-                    <th>Subtotal</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <c:set var="netTotal" value="${0}"></c:set>
-                <c:forEach items="${orderReturnItemList}" var="orderItem" varStatus="i">
-                    <c:set var="netTotal" value="${netTotal + orderItem.totalAmount}"></c:set>
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                        <td>${i.index + 1}</td>
-                        <td>${orderItem.itemName}</td>
-                        <td>${orderItem.quantity}</td>
-                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.rate}"/></td>
-                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.discount}"/></td>
-                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.totalAmount}"/></td>
+                        <th>SN</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Discount(%)</th>
+                        <th>Subtotal</th>
                     </tr>
-                </c:forEach>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table>
+                    <c:set var="netTotal" value="${0}"></c:set>
+                    <c:forEach items="${orderReturnItemList}" var="orderItem" varStatus="i">
+                        <c:set var="netTotal" value="${netTotal + orderItem.totalAmount}"></c:set>
+                        <tr>
+                            <td>${i.index + 1}</td>
+                            <td>${orderItem.itemName}</td>
+                            <td>${orderItem.quantity}</td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.rate}"/></td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.discount}"/></td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderItem.totalAmount}"/></td>
+                        </tr>
+                    </c:forEach>
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="5"><p class="pull-right">Net Total</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal}"/></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5"><p class="pull-right">Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.tax}"/>%)</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal * orderReturn.tax / 100}"/></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5"><p class="pull-right">Grand Total:</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.totalAmount}"/></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
             <!-- /.col -->
         </div>
         <!-- /.row -->
 
         <div class="row">
             <!-- accepted payments column -->
-            <div class="col-xs-4">
+            <div class="col-xs-12">
 
                 <c:if test="${orderReturn.description ne null}">
                     <div class="panel panel-color panel-primary">
@@ -96,26 +113,6 @@
                         </div>
                     </div>
                 </c:if>
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-4">&nbsp;</div>
-            <div class="col-lg-4">
-                <table class="table">
-                    <tr>
-                        <th>Net Total</th>
-                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal}"/></td>
-                    </tr>
-
-                    <tr>
-                        <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.tax}"/>%)</th>
-                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${netTotal * orderReturn.tax / 100}"/></td>
-                    </tr>
-
-                    <tr>
-                        <th>Grand Total:</th>
-                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${orderReturn.totalAmount}"/></td>
-                    </tr>
-                </table>
             </div>
             <!-- /.col -->
         </div>

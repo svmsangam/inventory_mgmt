@@ -29,7 +29,7 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Invoice List</h3>
+                        <h3 class="box-title">Receipt List</h3>
                         <div class="box-tools">
                             <button class="btn btn-success btn-sm btn-flat pull-right filter" data-toggle="collapse" data-target="#filter"><span class="glyphicon glyphicon-filter"></span> filter</button>
                         </div>

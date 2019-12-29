@@ -41,7 +41,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Invoice</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Receipt</span></a></li>
 
             <!-- Optionally, you can add icons to the links -->
             <li><a href="${pageContext.request.contextPath}/user/list"><i class="fa fa-users"></i> <span>User</span></a></li>
@@ -49,7 +49,7 @@
             <li><a href="${pageContext.request.contextPath}/store/list"><i class="fa fa-suitcase"></i>
                 <span>Store</span></a></li>
 
-            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar-check-o"></i> <span>Invoice</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar-check-o"></i> <span>Receipts</span></a></li>
 
             <li><a href="${pageContext.request.contextPath}/ledger/list"><i class="fa fa-columns"></i> <span>Ledger</span></a></li>
 
