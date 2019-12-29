@@ -36,7 +36,7 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Invoice Filter</h3>
+                        <h3 class="box-title">Receipt Filter</h3>
                         <small style="color: #f47342;">total results : &nbsp;${totalResult}</small>
                          <div class="box-tools">
                              <div class="row">
@@ -61,81 +61,87 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Invoice No</th>
-                                    <th>Fiscal Year</th>
-                                    <th>Customer Name</th>
-                                    <th>Total Amount</th>
-                                    <th>Amount Recievable</th>
-                                    <th>Invoice Date</th>
-                                </tr>
-                                </thead>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Invoice No</th>
+                                            <th>Fiscal Year</th>
+                                            <th>Customer Name</th>
+                                            <th>Total Amount</th>
+                                            <th>Amount Recievable</th>
+                                            <th>Invoice Date</th>
+                                        </tr>
+                                        </thead>
 
-                                <tbody>
-                                <c:forEach items="${invoiceList}" var="invoice">
+                                        <tbody>
+                                        <c:forEach items="${invoiceList}" var="invoice">
 
-                                    <tr>
-                                        <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
-                                        <td><c:if test="${invoice.fiscalYearInfo ne null}">${invoice.fiscalYearInfo.title}</c:if></td>
-                                        <td>${invoice.orderInfo.clientInfo.name}</td>
-                                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
-                                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
-                                    </tr>
+                                            <tr>
+                                                <td><a href="${pageContext.request.contextPath}/invoice/${invoice.invoiceId}">#${invoice.invoiceNo}</a></td>
+                                                <td><c:if test="${invoice.fiscalYearInfo ne null}">${invoice.fiscalYearInfo.title}</c:if></td>
+                                                <td>${invoice.orderInfo.clientInfo.name}</td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.receivableAmount}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></td>
+                                            </tr>
 
-                                </c:forEach>
+                                        </c:forEach>
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <c:if test="${fn:length(pagelist) gt 1}">
 
-                        <div class="col-xs-12">
-                            <nav class="pull-right">
-                                <ul class="pagination">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <nav class="pull-right">
+                                    <ul class="pagination">
 
-                                    <c:if test="${currentpage > 1}">
-                                        <li class="page-item">
+                                        <c:if test="${currentpage > 1}">
+                                            <li class="page-item">
 
-                                            <a href="${pageContext.request.contextPath}/invoice/filter?pageNo=${currentpage-1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>" class="page-link">Prev</a>
-                                        </li>
-                                    </c:if>
+                                                <a href="${pageContext.request.contextPath}/invoice/filter?pageNo=${currentpage-1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>" class="page-link">Prev</a>
+                                            </li>
+                                        </c:if>
 
-                                    <c:forEach var="pagelist" items="${pagelist}">
-                                        <c:choose>
-                                            <c:when test="${pagelist == currentpage}">
+                                        <c:forEach var="pagelist" items="${pagelist}">
+                                            <c:choose>
+                                                <c:when test="${pagelist == currentpage}">
 
-                                                <li class="page-item active">
+                                                    <li class="page-item active">
                                                   <span class="page-link">
                                                     ${pagelist}
                                                     <span class="sr-only">(current)</span>
                                                   </span>
-                                                </li>
+                                                    </li>
 
-                                            </c:when>
-                                            <c:otherwise>
+                                                </c:when>
+                                                <c:otherwise>
 
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/invoice/filter?pageNo=${pagelist}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>">${pagelist}</a>
-                                                </li>
+                                                    <li class="page-item"><a class="page-link"
+                                                                             href="${pageContext.request.contextPath}/invoice/filter?pageNo=${pagelist}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>">${pagelist}</a>
+                                                    </li>
 
-                                            </c:otherwise>
+                                                </c:otherwise>
 
-                                        </c:choose>
-                                    </c:forEach>
+                                            </c:choose>
+                                        </c:forEach>
 
-                                    <c:if test="${currentpage + 1 <= lastpage}">
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageContext.request.contextPath}/invoice/filter?pageNo=${currentpage+1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>">Next</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </nav>
+                                        <c:if test="${currentpage + 1 <= lastpage}">
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="${pageContext.request.contextPath}/invoice/filter?pageNo=${currentpage+1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&fiscalYearId=${filterDTO.fiscalYearId}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&receivableGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableGt}"/>&receivableLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.receivableLt}"/>">Next</a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
 
                     </c:if>

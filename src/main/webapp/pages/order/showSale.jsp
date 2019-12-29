@@ -21,6 +21,7 @@
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
+                <h3 class="box-title text-center">Order Details</h3>
                 <h2 class="page-header">
 
                     <c:if test="${invoice ne null}"><span>Order No. <b>#${order.orderNo}</b></span>
@@ -144,9 +145,9 @@
             </div>
         </div>
         <!-- /.row -->
-        <div class="col-sm-12">&nbsp;</div>
         <!-- Table row -->
         <div class="row">
+            <div class="col-lg-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -174,42 +175,35 @@
                     </c:forEach>
 
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="6"><p class="pull-right">Net Total</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount}"/></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="6"><p class="pull-right">Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.tax}"/>%)</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount * order.tax / 100}"/></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="6"><p class="pull-right">Grand Total:</p></th>
+                        <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
+                    </tr>
+                    </tfoot>
                 </table>
-            <!-- /.col -->
+            </div>
         </div>
-        <!-- /.row -->
 
         <div class="row">
             <!-- accepted payments column -->
-            <div class="col-xs-4">
+            <div class="col-lg-6 pull-left">
                 <p class="lead">Description</p>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     ${order.description}
                 </p>
             </div>
-            <!-- /.col -->
-            <div class="col-xs-4">&nbsp;</div>
-            <div class="col-lg-4">
-                    <table class="table">
-                        <tr>
-                            <th>Net Total</th>
-                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount}"/></td>
-                        </tr>
-
-                        <tr>
-                            <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.tax}"/>%)</th>
-                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.totalAmount * order.tax / 100}"/></td>
-                        </tr>
-
-                        <tr>
-                            <th>Grand Total:</th>
-                            <td>Rs. <fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
-                        </tr>
-                    </table>
-            </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
 
     </section>
     <!-- /.content -->

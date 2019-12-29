@@ -44,12 +44,12 @@
 
             <sec:authorize ifAnyGranted=" ROLE_USER , INVOICE_CREATE">
                 <!-- Optionally, you can add icons to the links -->
-                <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Invoice</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/order/sale/quick"><i class="glyphicon glyphicon-fast-forward"></i><span>Quick Receipt</span></a></li>
 
             </sec:authorize>
 
             <sec:authorize ifAnyGranted=" ROLE_USER , INVOICE_VIEW">
-                <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>Invoice</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/invoice/list"><i class="fa fa-calendar"></i> <span>ReceiptS</span></a></li>
             </sec:authorize>
 
             <sec:authorize ifAnyGranted=" ROLE_USER , REPORT_VIEW">

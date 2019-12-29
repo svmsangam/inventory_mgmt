@@ -13,7 +13,7 @@
 
 <html>
 <head>
-    <title>print invoice</title>
+    <title>print receipt</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        <%--<i class="fa fa-globe"></i>--%> Invoice <span id="inv">#${invoice.invoiceNo}</span>
+                        <%--<i class="fa fa-globe"></i>--%> Receipt <span id="inv">#${invoice.invoiceNo}</span>
                         <small class="pull-right">Date: <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></small>
                     </h2>
                 </div>
@@ -46,7 +46,6 @@
                         ${invoice.storeInfoDTO.cityName},${invoice.storeInfoDTO.stateName},${invoice.storeInfoDTO.countryName}<br>
                         ${invoice.storeInfoDTO.street}<br>
                         Phone: ${invoice.storeInfoDTO.contact},${invoice.storeInfoDTO.mobileNumber}<br>
-                        Pan No.:${invoice.storeInfoDTO.panNumber}<br>
                         Email: ${invoice.storeInfoDTO.email}
                     </address>
                 </div>
@@ -77,11 +76,6 @@
                         <c:if test="${invoice.orderInfo.clientInfo.street ne null and not empty invoice.orderInfo.clientInfo.street}">
                             ${invoice.orderInfo.clientInfo.street}<br>
                         </c:if>
-
-                        <c:if test="${invoice.orderInfo.clientInfo.pan ne null and not empty invoice.orderInfo.clientInfo.pan}">
-                            Pan Number : ${invoice.orderInfo.clientInfo.pan}<br>
-                        </c:if>
-
 
                         Phone:<c:if test="${invoice.orderInfo.clientInfo.contact ne null and not empty invoice.orderInfo.clientInfo.contact}">${invoice.orderInfo.clientInfo.contact}</c:if>
                         <c:if test="${invoice.orderInfo.clientInfo.mobileNumber ne null and not empty invoice.orderInfo.clientInfo.mobileNumber}">,${invoice.orderInfo.clientInfo.mobileNumber}</c:if><br>
@@ -121,6 +115,24 @@
                         </c:forEach>
 
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colspan="5"><p class="pull-right">Net Total:</p></th>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/></td>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><p class="pull-right">Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.tax}"/>%)</p></th>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/></td>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><p class="pull-right">Grand Total:</p></th>
+                            <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"><p class="pull-right">Entered By :</p></td>
+                            <td>${invoice.createdByName}</td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <!-- /.col -->
@@ -139,32 +151,6 @@
                         </p>
                     </div>
                 </c:if>
-                <!-- /.col -->
-                <div class="col-lg-3 pull-right">
-                    <%--<p class="lead">Amount Due 2/22/2014</p>--%>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr>
-                                <th style="width:50%">Net Total:</th>
-                                <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount}"/></td>
-                            </tr>
-                            <tr>
-                                <th>Tax (<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.tax}"/>%)</th>
-                                <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.orderInfo.totalAmount * invoice.orderInfo.tax /100}"/></td>
-                            </tr>
-                            <tr>
-                                <th>Grand Total:</th>
-                                <td>Rs.<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${invoice.totalAmount}"/></td>
-                            </tr>
-                            <tr>
-                                <td>Entered By :</td>
-                                <td>${invoice.createdByName}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <!-- /.col -->
             </div>
             <!-- /.row -->
         </div>

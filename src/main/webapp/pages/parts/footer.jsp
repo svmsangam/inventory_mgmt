@@ -3,10 +3,11 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        Anything you want
+        Contact Us:
+        9849019834/9841891093
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%> <a href="#">Company</a>.</strong> All rights reserved.
 </footer>
 
 <!-- Control Sidebar -->
@@ -105,16 +106,12 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<--select2 dropdown-->
+
 <script src="${pageContext.request.contextPath}/resources/js/select2.full.min.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
 <!-- DataTables -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
-
-<%--
-<script src="${pageContext.request.contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
---%>
 <!-- SlimScroll -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -194,7 +191,8 @@ immediately after the control sidebar -->
             'searching': false,
             'ordering': true,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'cache': false
         });
 
         $('#table2').DataTable({
@@ -203,7 +201,8 @@ immediately after the control sidebar -->
             'searching': true,
             'ordering': true,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'cache': false
         })
     })
 </script>

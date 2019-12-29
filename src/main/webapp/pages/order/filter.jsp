@@ -49,106 +49,112 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Order No</th>
-                                    <th>Customer Name</th>
-                                    <th>Total Cost</th>
-                                    <th>Order Date</th>
-                                    <th>Delivery Date</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Order No</th>
+                                            <th>Customer Name</th>
+                                            <th>Total Cost</th>
+                                            <th>Order Date</th>
+                                            <th>Delivery Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
 
-                                <tbody>
-                                <c:forEach items="${orderList}" var="order">
+                                        <tbody>
+                                        <c:forEach items="${orderList}" var="order">
 
-                                    <tr>
-                                        <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
-                                        <td>${order.clientInfo.name}</td>
-                                        <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
-                                        <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
-                                        <td>
-                                            <c:if test="${order.saleTrack eq 'PENDDING'}">
-                                                <span class="label label-primary">Pending</span>
-                                            </c:if>
+                                            <tr>
+                                                <td><a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a></td>
+                                                <td>${order.clientInfo.name}</td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="true" value="${order.grandTotal}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.orderDate}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy" value="${order.deliveryDate}"/></td>
+                                                <td>
+                                                    <c:if test="${order.saleTrack eq 'PENDDING'}">
+                                                        <span class="label label-primary">Pending</span>
+                                                    </c:if>
 
-                                            <c:if test="${order.saleTrack eq 'ACCEPTED'}">
-                                                <span class="label label-default">Accepted</span>
-                                            </c:if>
+                                                    <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                                                        <span class="label label-default">Accepted</span>
+                                                    </c:if>
 
-                                            <c:if test="${order.saleTrack eq 'PACKED'}">
-                                                <span class="label label-warning">Packed</span>
-                                            </c:if>
+                                                    <c:if test="${order.saleTrack eq 'PACKED'}">
+                                                        <span class="label label-warning">Packed</span>
+                                                    </c:if>
 
-                                            <c:if test="${order.saleTrack eq 'SHIPPED'}">
-                                                <span class="label label-info">Shipped</span>
-                                            </c:if>
+                                                    <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                                                        <span class="label label-info">Shipped</span>
+                                                    </c:if>
 
-                                            <c:if test="${order.saleTrack eq 'DELIVERED'}">
-                                                <span class="label label-success">Delivered</span>
-                                            </c:if>
+                                                    <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                                                        <span class="label label-success">Delivered</span>
+                                                    </c:if>
 
-                                            <c:if test="${order.saleTrack eq 'CANCEL'}">
-                                                <span class="label label-danger">Canceled</span>
-                                            </c:if>
+                                                    <c:if test="${order.saleTrack eq 'CANCEL'}">
+                                                        <span class="label label-danger">Canceled</span>
+                                                    </c:if>
 
-                                        </td>
-                                    </tr>
+                                                </td>
+                                            </tr>
 
-                                </c:forEach>
+                                        </c:forEach>
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <c:if test="${fn:length(pagelist) gt 1}">
 
-                        <div class="col-xs-12">
-                            <nav class="pull-right">
-                                <ul class="pagination">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <nav class="pull-right">
+                                    <ul class="pagination">
 
-                                    <c:if test="${currentpage > 1}">
-                                        <li class="page-item">
-                                            <a href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${currentpage-1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>" class="page-link">Prev</a>
-                                        </li>
-                                    </c:if>
+                                        <c:if test="${currentpage > 1}">
+                                            <li class="page-item">
+                                                <a href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${currentpage-1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>" class="page-link">Prev</a>
+                                            </li>
+                                        </c:if>
 
-                                    <c:forEach var="pagelist" items="${pagelist}">
-                                        <c:choose>
-                                            <c:when test="${pagelist == currentpage}">
+                                        <c:forEach var="pagelist" items="${pagelist}">
+                                            <c:choose>
+                                                <c:when test="${pagelist == currentpage}">
 
-                                                <li class="page-item active">
+                                                    <li class="page-item active">
                                                   <span class="page-link">
                                                     ${pagelist}
                                                     <span class="sr-only">(current)</span>
                                                   </span>
-                                                </li>
+                                                    </li>
 
-                                            </c:when>
-                                            <c:otherwise>
+                                                </c:when>
+                                                <c:otherwise>
 
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${pagelist}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>">${pagelist}</a>
-                                                </li>
+                                                    <li class="page-item"><a class="page-link"
+                                                                             href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${pagelist}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>">${pagelist}</a>
+                                                    </li>
 
-                                            </c:otherwise>
+                                                </c:otherwise>
 
-                                        </c:choose>
-                                    </c:forEach>
+                                            </c:choose>
+                                        </c:forEach>
 
-                                    <c:if test="${currentpage + 1 <= lastpage}">
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${currentpage+1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>">Next</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </nav>
+                                        <c:if test="${currentpage + 1 <= lastpage}">
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="${pageContext.request.contextPath}/order/sale/filter?pageNo=${currentpage+1}&from=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.from}"/>&to=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.to}"/>&track=${filterDTO.track}&clientId=${filterDTO.clientId}&amountGt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountGt}"/>&amountLt=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.amountLt}"/>&dlfrom=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlfrom}"/>&dlto=<fmt:formatDate pattern="MM/dd/yyyy" value="${filterDTO.dlto}"/>">Next</a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
 
                     </c:if>
