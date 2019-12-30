@@ -35,8 +35,12 @@
                     <div class="box-header">
                         <h3 class="box-title">Product List</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/item/add" class="btn btn-primary btn-sm btn-flat margin-r-5"><span class="glyphicon glyphicon-plus-sign"></span> Add Item</a>
-                            <a href="${pageContext.request.contextPath}/product/add" class="btn btn-info btn-sm btn-flat pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add Product</a>
+                            <a href="${pageContext.request.contextPath}/item/add"
+                               class="btn btn-primary btn-sm btn-flat margin-r-5"><span
+                                    class="glyphicon glyphicon-plus-sign"></span> Add Item</a>
+                            <a href="${pageContext.request.contextPath}/product/add"
+                               class="btn btn-info btn-sm btn-flat pull-right"><span
+                                    class="glyphicon glyphicon-plus-sign"></span> Add Product</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -59,11 +63,15 @@
                                         <c:forEach var="product" items="${productList}" varStatus="i">
                                             <tr>
                                                 <td>${i.index + 1}</td>
-                                                <td><a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a></td>
+                                                <td>
+                                                    <a href="${pageContext.request.contextPath}/product/${product.productId}">${product.name}</a>
+                                                </td>
                                                 <td>${product.trendingLevel}</td>
                                                 <td>${product.subCategoryInfo.name}</td>
                                                 <td>${product.stockInfo.inStock}</td>
-                                                <td><a href="${pageContext.request.contextPath}/product/edit?productId=${product.productId}" class="btn btn-danger"><i class="fa fa-edit"></i> edit </a></td>
+                                                <td>
+                                                    <a href="${pageContext.request.contextPath}/product/edit?productId=${product.productId}"
+                                                       class="btn btn-danger"><i class="fa fa-edit"></i> edit </a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -75,52 +83,48 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <c:if test="${fn:length(pagelist) gt 1}">
+                                    <nav class="pull-right">
+                                        <ul class="pagination">
 
-                                    <div class="col-xs-12">
-                                        <nav class="pull-right">
-                                            <ul class="pagination">
+                                            <c:if test="${currentpage > 1}">
+                                                <li class="page-item">
 
-                                                <c:if test="${currentpage > 1}">
-                                                    <li class="page-item">
+                                                    <a href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage-1}"
+                                                       class="page-link">Prev</a>
+                                                </li>
+                                            </c:if>
 
-                                                        <a href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage-1}"
-                                                           class="page-link">Prev</a>
-                                                    </li>
-                                                </c:if>
+                                            <c:forEach var="pagelist" items="${pagelist}">
+                                                <c:choose>
+                                                    <c:when test="${pagelist == currentpage}">
 
-                                                <c:forEach var="pagelist" items="${pagelist}">
-                                                    <c:choose>
-                                                        <c:when test="${pagelist == currentpage}">
-
-                                                            <li class="page-item active">
+                                                        <li class="page-item active">
                                                   <span class="page-link">
                                                     ${pagelist}
                                                     <span class="sr-only">(current)</span>
                                                   </span>
-                                                            </li>
+                                                        </li>
 
-                                                        </c:when>
-                                                        <c:otherwise>
+                                                    </c:when>
+                                                    <c:otherwise>
 
-                                                            <li class="page-item"><a class="page-link"
-                                                                                     href="${pageContext.request.contextPath}/product/list?pageNo=${pagelist}">${pagelist}</a>
-                                                            </li>
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="${pageContext.request.contextPath}/product/list?pageNo=${pagelist}">${pagelist}</a>
+                                                        </li>
 
-                                                        </c:otherwise>
+                                                    </c:otherwise>
 
-                                                    </c:choose>
-                                                </c:forEach>
+                                                </c:choose>
+                                            </c:forEach>
 
-                                                <c:if test="${currentpage + 1 <= lastpage}">
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage+1}">Next</a>
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </nav>
-                                    </div>
-
+                                            <c:if test="${currentpage + 1 <= lastpage}">
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       href="${pageContext.request.contextPath}/product/list?pageNo=${currentpage+1}">Next</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
                                 </c:if>
                             </div>
                         </div>
