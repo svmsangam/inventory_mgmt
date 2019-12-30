@@ -10,10 +10,10 @@
 <ul class="sidebar-menu tree" data-widget="tree">
     <li class="header">Extra Settings</li>
     <!-- Optionally, you can add icons to the links -->
-<sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
+    <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR')">
 
-    <%@include file="/pages/parts/setting/super-admin.jsp" %>
-</sec:authorize>
+        <%@include file="/pages/parts/setting/super-admin.jsp" %>
+    </sec:authorize>
 
     <sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
 

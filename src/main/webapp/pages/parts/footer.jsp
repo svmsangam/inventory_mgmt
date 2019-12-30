@@ -13,84 +13,11 @@
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
-   <%-- <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <!-- Home tab content -->
-        <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
-            <ul class="control-sidebar-menu">
-
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-                        <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">ToDays Sale</h4>
-
-                            <p>Rs 12,000,000</p>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-                        <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">ToDays Collection</h4>
-
-                            <p>Rs 10,000,000</p>
-                        </div>
-                    </a>
-                </li>
-
-            </ul>
-            <!-- /.control-sidebar-menu -->
-
-            <h3 class="control-sidebar-heading">Tasks Progress</h3>
-            <ul class="control-sidebar-menu">
-
-                <sec:authorize access="hasRole('ROLE_SUPERADMINISTRATOR,ROLE_AUTHENTICATED')">
-
-                    <li class="active"><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i>
-                        <span>Sales Order Pending <span class="badge">26</span></span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Accepted <span
-                            class="badge">6</span></span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Packed <span
-                            class="badge">14</span></span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Sales Order Shipped <span
-                            class="badge">10</span></span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Pending <span
-                            class="badge">3</span></span></a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/user/listSale"><i class="fa fa-link"></i> <span>Purchase Order Issued <span
-                            class="badge">1</span></span></a></li>
-                </sec:authorize>
-            </ul>
-            <!-- /.control-sidebar-menu -->
-
-        </div>
-        <!-- /.tab-pane -->
-        <!-- Stats tab content -->
-        <%--
-                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-        --%>
-        <!-- /.tab-pane -->
         <!-- Settings tab content -->
     <div class="tab-pane" id="control-sidebar-settings-tab">
 
         <%@include file="/pages/parts/setting.jsp" %>
 
-        </div>
-        <!-- /.tab-pane -->
     </div>
 </aside>
 <!-- /.control-sidebar -->
@@ -115,7 +42,7 @@ immediately after the control sidebar -->
 <!-- SlimScroll -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>
+<%--<script src="${pageContext.request.contextPath}/resources/js/fastclick.js"></script>--%>
 <!-- iCheck 1.0.1 -->
 <script src="${pageContext.request.contextPath}/resources/js/icheck.min.js"></script>
 <!-- AdminLTE App -->
