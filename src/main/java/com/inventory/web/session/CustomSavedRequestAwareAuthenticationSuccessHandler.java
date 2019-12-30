@@ -27,6 +27,10 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
         requestCache = RequestCacheUtil.get();
 
         String defaultURL = request.getContextPath()  + "/dashboard";
+        //https://nrestro.com/stock/stock/dashboard
+        if (defaultURL.contains("/stock/stock/")){
+            defaultURL = defaultURL.replaceAll("/stock/stock/" , "/stock/");
+        }
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
