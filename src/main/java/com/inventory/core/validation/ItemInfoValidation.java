@@ -1,6 +1,7 @@
 package com.inventory.core.validation;
 
 import com.inventory.core.model.dto.ItemInfoDTO;
+import com.inventory.core.model.entity.ItemInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ItemInfoRepository;
 import com.inventory.core.model.repository.LotInfoRepository;
@@ -115,6 +116,57 @@ public class ItemInfoValidation extends GlobalValidation{
         error.setValid(valid);
 
         return error;
+    }
+
+    public ItemInfoError onAddUpQuantity(Long[] itemIdList , long storeId) {
+
+        error = new ItemInfoError();
+
+        boolean valid = true;
+
+        long productId = 0;
+
+        if (itemIdList.length > 50){
+            error.setValid(false);
+            error.setProductId("please select the items less than 50");
+
+            return error;
+        }
+
+        for (Long itemId : itemIdList){
+
+            String errorStr = checkLong(itemId,  1,  "item", true);
+
+            if (!"".equals(errorStr)){
+                error.setValid(false);
+                error.setProductId("please select the item properly");
+
+                return error;
+            }
+
+            ItemInfo itemInfo = itemInfoRepository.findByIdAndStatusAndStoreInfo(itemId , Status.ACTIVE , storeId);
+
+            if (itemInfo == null){
+                error.setValid(false);
+                error.setProductId("please provide the valid item");
+
+                return error;
+            }
+
+            if (productId == 0){
+                productId = itemInfo.getProductInfo().getId();
+            }else if (itemInfo.getProductInfo().getId() != productId){
+                error.setValid(false);
+                error.setProductId("please provide the items from same product");
+
+                return error;
+            }
+        }
+
+        error.setValid(valid);
+
+        return error;
+
     }
 
     private boolean checkCode(String value, long storeId) {
