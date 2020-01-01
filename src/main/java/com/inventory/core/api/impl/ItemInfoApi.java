@@ -100,7 +100,7 @@ public class ItemInfoApi implements IItemInfoApi{
 
         }
 
-        stockInfoApi.updateOnItemSave(productId , quantity);
+        stockInfoApi.updateOnItemSave(productId , totalQuantity);
 
     }
 

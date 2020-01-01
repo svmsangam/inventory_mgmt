@@ -148,13 +148,7 @@
                                       </tbody>
                                       <tfoot>
                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td><strong>Total</strong></td>
+                                          <td colspan="8"><p class="pull-right"><strong>Total</strong></p></td>
                                           <td><strong>${product.stockInfo.inStock}</strong></td>
                                           <td><strong>${product.stockInfo.quantity}</strong></td>
                                           <td><strong><fmt:formatNumber type="number" maxFractionDigits="3"
