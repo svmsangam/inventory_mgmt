@@ -85,7 +85,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box-tools">
-                                    <button class="btn btn-primary btn-sm btn-flat pull-left" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm btn-flat pull-left" id="addUpQuantityBtn" data-toggle="modal"
                                             data-target="#modal-addUpQuantity" title="add up quantity for selected item">
                                         <span class="glyphicon glyphicon-upload"></span> Add Up Quantity
                                     </button>
@@ -199,7 +199,7 @@
 
                     <div class="form-group">
                         <label class="control-label">Quantity *</label>
-                        <input type="number" min="1" id="addUpQuantity" class="form-control addUpQuantityFormClear"
+                        <input type="number" min="1" id="addUpQuantityQty" class="form-control addUpQuantityFormClear"
                                placeholder="Quantity">
                         <p class="form-error addUpQuantityFormError" id="addUpQuantityError"></p>
                     </div>
@@ -210,8 +210,8 @@
                     <button type="button" class="btn btn-danger pull-left closeAddUpQuantity" data-dismiss="modal">
                         <span class="glyphicon glyphicon-remove"></span> Close
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addUpQuantity"
-                            url="${pageContext.request.contextPath}/api/item/addUpQuantity"><span
+                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addUpQuantityUpdatebtn"
+                            url="${pageContext.request.contextPath}/item/addUpQuantity"><span
                             class="glyphicon glyphicon-save"></span>
                         Save Changes
                     </button>
@@ -254,4 +254,24 @@
             checkAll.iCheck('update');
         });
     });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var itemService = new ItemService();
+        $(document).on("click", ".closeAddUpQuantity" , function () {
+            itemService.clearInputFormData();
+            itemService.clearErrorData();
+        });
+
+        $(document).on("click", ".addUpQuantityUpdatebtn" , function () {
+            var url = $(this).attr("url");
+            var quantity = $("#addUpQuantityQty").val();
+            var itemIdArr = $(".icheckbox_square-blue.checked .updateQuantityItemId:input:checkbox").map(function(){
+                return $(this).val();
+            }).toArray();
+            console.log(itemIdArr);
+            itemService.addUpQuantity(itemIdArr, quantity, url);
+        })
+    })
 </script>

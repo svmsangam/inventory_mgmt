@@ -18,7 +18,7 @@ public interface IItemInfoApi {
 
     void delete(long itemInfoId);
 
-    void addUpQuantity(Long[] itemIdArr , int quantity);
+    void addUpQuantity(List<Long> itemIdArr , int quantity);
 
     ItemInfoDTO getByIdAndStoreAndStatus(long itemInfoId, long storeId, Status status);
 

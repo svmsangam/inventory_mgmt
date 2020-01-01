@@ -118,7 +118,7 @@ public class ItemInfoValidation extends GlobalValidation{
         return error;
     }
 
-    public ItemInfoError onAddUpQuantity(Long[] itemIdList , long storeId) {
+    public ItemInfoError onAddUpQuantity(List<Long> itemIdList , long storeId) {
 
         error = new ItemInfoError();
 
@@ -126,7 +126,7 @@ public class ItemInfoValidation extends GlobalValidation{
 
         long productId = 0;
 
-        if (itemIdList.length > 50){
+        if (itemIdList.size() > 50){
             error.setValid(false);
             error.setProductId("please select the items less than 50");
 

@@ -20,10 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by dhiraj on 9/11/17.
@@ -132,7 +134,7 @@ public class ItemAjaxController {
     }
 
     @GetMapping(value = "addUpQuantity", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> addUpQuantity(@RequestParam("itemIdList") Long[] itemIdList , @RequestParam("quantity")Integer quantity, HttpServletRequest request) {
+    public ResponseEntity<RestResponseDTO> addUpQuantity(@RequestParam("itemIdList") List<Long> itemIdList , @RequestParam("quantity")Integer quantity, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {

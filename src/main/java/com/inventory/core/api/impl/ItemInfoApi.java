@@ -81,7 +81,7 @@ public class ItemInfoApi implements IItemInfoApi{
 
     @Override
     @Transactional
-    public void addUpQuantity(Long[] itemIdArr, int quantity) {
+    public void addUpQuantity(List<Long> itemIdArr, int quantity) {
         int totalQuantity = 0;
         long productId = 0;
         for (long itemId : itemIdArr){
