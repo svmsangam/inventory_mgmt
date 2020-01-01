@@ -12,6 +12,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="/pages/parts/header.jsp" %>
+<!-- iCheck -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/square/blue.css">
+
 <%@include file="/pages/parts/sidebar.jsp" %>
 
 <!-- Content Wrapper. Contains page content -->
@@ -51,9 +54,9 @@
                             ${product.name}
                         </h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/product/add"
-                               class="btn btn-info btn-sm btn-flat pull-right"><span
-                                    class="glyphicon glyphicon-plus-sign"></span> Add New Product
+                            <a href="${pageContext.request.contextPath}/item/add?productId=${product.productId}"
+                               class="btn btn-primary btn-sm btn-flat pull-left" title="add new item in this product"><span
+                                    class="glyphicon glyphicon-plus-sign"></span> Add New Item
                             </a>
                         </div>
                     </div>
@@ -82,10 +85,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box-tools">
-                                    <a href="${pageContext.request.contextPath}/item/add?productId=${product.productId}"
-                                       class="btn btn-info btn-sm btn-flat pull-left"><span
-                                            class="glyphicon glyphicon-plus-sign"></span> Add New Item
-                                    </a>
+                                    <button class="btn btn-primary btn-sm btn-flat pull-left" data-toggle="modal"
+                                            data-target="#modal-addUpQuantity" title="add up quantity for selected item">
+                                        <span class="glyphicon glyphicon-upload"></span> Add Up Quantity
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -93,9 +96,10 @@
                       <div class="row">
                           <div class="col-md-12">
                               <div class="table-responsive">
-                                  <table id="table1" class="table table-bordered table-hover table-striped">
+                                  <table class="table table-bordered table-hover table-striped">
                                       <thead>
                                       <tr>
+                                          <th><input type="checkbox" class="all" title="select all items"/></th>
                                           <th>SN</th>
                                           <th>Code</th>
                                           <th>Tag</th>
@@ -113,6 +117,13 @@
                                       <tbody>
                                       <c:forEach var="item" items="${itemList}" varStatus="i">
                                           <tr>
+                                              <td>
+                                             <div class="checkbox icheck">
+                                                 <label>
+                                                     <input type="checkbox" name="itemIdList" value="${item.itemId}" class="updateQuantityItemId"/>
+                                                 </label>
+                                              </div>
+                                              </td>
                                               <td>${i.index + 1}</td>
                                               <td>${item.code}</td>
                                               <td>${item.tagInfo.name}</td>
@@ -174,4 +185,73 @@
 
 <%@include file="/pages/parts/footer.jsp" %>
 
+<%--add up quantity modal start--%>
+<div class="modal fade" id="modal-addUpQuantity">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Up Quanitity</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
 
+                    <div class="form-group">
+                        <label class="control-label">Quantity *</label>
+                        <input type="number" min="1" id="addUpQuantity" class="form-control addUpQuantityFormClear"
+                               placeholder="Quantity">
+                        <p class="form-error addUpQuantityFormError" id="addUpQuantityError"></p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left closeAddUpQuantity" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span> Close
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm  btn-flat pull-right addUpQuantity"
+                            url="${pageContext.request.contextPath}/api/item/addUpQuantity"><span
+                            class="glyphicon glyphicon-save"></span>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<%--add up quantity modal end--%>
+
+<script>
+
+    $(function () {
+        var checkAll = $('input.all');
+        var checkboxes = $('input.updateQuantityItemId');
+
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%'
+        });
+
+        checkAll.on('ifChecked ifUnchecked', function(event) {
+            if (event.type == 'ifChecked') {
+                checkboxes.iCheck('check');
+            } else {
+                checkboxes.iCheck('uncheck');
+            }
+        });
+
+        checkboxes.on('ifChanged', function(event){
+            if(checkboxes.filter(':checked').length == checkboxes.length) {
+                checkAll.prop('checked', 'checked');
+            } else {
+                checkAll.removeProp('checked');
+            }
+            checkAll.iCheck('update');
+        });
+    });
+</script>
