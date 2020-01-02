@@ -11,9 +11,8 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,8 +29,6 @@ import java.util.List;
 @Controller
 @RequestMapping("profile")
 public class EmployeeProfileController {
-
-
 
     @Autowired
     private IUserApi userApi;
@@ -97,7 +94,7 @@ public class EmployeeProfileController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -144,7 +141,7 @@ public class EmployeeProfileController {
             modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, employeeProfileDTOList);
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -222,7 +219,7 @@ public class EmployeeProfileController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Exception on profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             redirectAttributes.addFlashAttribute(StringConstants.ERROR, "internal server error");
             return "redirect:/500";//store not assigned page
         }
@@ -265,7 +262,7 @@ public class EmployeeProfileController {
             modelMap.put(StringConstants.EMPLOYEE_PROFILE, employeeProfileDTO);
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 

@@ -10,9 +10,8 @@ import com.inventory.core.validation.CountryValidation;
 import com.inventory.web.error.CountryError;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,8 +27,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/country")
 public class CountryController {
-
-    private Logger logger = LoggerFactory.getLogger(CountryController.class);
 
     @Autowired
     private ICountryInfoApi countryService;
@@ -56,7 +53,7 @@ public class CountryController {
             return "country/addCountry";
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
 
@@ -132,7 +129,7 @@ public class CountryController {
                 CountryLock.release(responseDTO.getKey());
             }
 
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
 
@@ -155,7 +152,7 @@ public class CountryController {
             return "country/countryList";
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
