@@ -35,11 +35,8 @@
                     <div class="box-header">
                         <h3 class="box-title">Product List</h3>
                         <div class="box-tools">
-                            <a href="${pageContext.request.contextPath}/item/add"
-                               class="btn btn-primary btn-sm btn-flat margin-r-5"><span
-                                    class="glyphicon glyphicon-plus-sign"></span> Add Item</a>
                             <a href="${pageContext.request.contextPath}/product/add"
-                               class="btn btn-info btn-sm btn-flat pull-right"><span
+                               class="btn btn-primary btn-sm btn-flat pull-right"><span
                                     class="glyphicon glyphicon-plus-sign"></span> Add Product</a>
                         </div>
                     </div>

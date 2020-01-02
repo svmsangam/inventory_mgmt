@@ -880,6 +880,162 @@ function TagService() {
 
 //tag service end
 
+//item service start
+function ItemService() {
+    var itemRequest;
+
+    return {
+        addUpQuantity: function (itemIdArr, quantity, url) {
+            var self = new ItemService();
+            if (self.validation(itemIdArr , quantity)){
+                tagRequest = $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                    data: {"itemIdList" : itemIdArr , "quantity" : quantity},
+                    dataType: 'json',
+                    timeout: 100000,
+                    traditional : true,
+                    beforeSend: function () {
+                        if (itemRequest !== undefined) {
+                            itemRequest.abort();
+                        }
+
+                        $("#addUpQuantityBtn").prop( "disabled", true );
+                        blockUiZ(2001);
+
+                    },
+                    success: function (data) {
+
+                        $.unblockUI();
+                        $("#addUpQuantityBtn").prop( "disabled", false );
+
+                        var msg = data.message;
+
+                        if (data.status === 'Success') {
+                            $(".closeAddUpQuantity").click();
+                            self.successMsg(msg);
+                            location.reload();
+
+                        }
+
+                        if (data.status === 'Failure') {
+                            self.errorMsg(msg);
+                            self.clearInputFormData();
+                            $(".closeAddUpQuantity").click();
+                        }
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        self.clearInputFormData();
+                        console.log(xhr + " " + textStatus + " " + errorThrown);
+
+                        if (textStatus == 'timeout') {
+
+                            this.tryCount++;
+
+                            if (this.tryCount <= this.retryLimit) {
+                                //try again
+                                if (itemRequest !== undefined){
+                                    itemRequest.abort();
+                                }
+                                $.unblockUI();
+                                self.errorMsg("Poor Internet connection. Quantity may be updated. Please check your internet");
+                                return;
+                            } else {
+                                //cancel request
+                                if (itemRequest !== undefined){
+                                    itemRequest.abort();
+                                }
+                                self.errorMsg("Poor Internet connection. Quantity may be updated. Please check your internet");
+                                $.unblockUI();
+
+                                return;
+                            }
+
+                        }
+
+                        if (xhr.status === 500) {
+                            $("#addUpQuantityBtn").prop( "disabled", false );
+                            $(".closeAddUpQuantity").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error contact for support");
+                        } else if (xhr.status === 404) {
+                            $("#addUpQuantityBtn").prop( "disabled", false );
+                            $(".closeAddUpQuantity").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error contact for support");
+                        } else {
+                            //handle error
+                            $("#addUpQuantityBtn").prop( "disabled", false );
+                            $(".closeAddUpQuantity").click();
+                            $.unblockUI();
+                            self.errorMsg("internal server error contact for support");
+                        }
+                    }
+                });
+            }
+
+        },
+
+        errorMsg: function (msg) {
+            $.notify({
+                title: '<strong>warnning!</strong>',
+                message: msg
+            }, {
+                type: 'danger'
+            });
+        },
+
+        successMsg: function (msg) {
+            successNotify(msg)
+        },
+
+        validation: function (itemArr, quantity) {
+            var self = new ItemService();
+
+            if (itemArr === undefined) {
+                self.setError("please select at least any one item");
+                return false;
+            } else if (itemArr === null) {
+                self.setError("please select at least any one item");
+                return false;
+            } else if (itemArr.length === 0) {
+                self.setError("please select at least any one item");
+                return false;
+            } else {
+                if (quantity === undefined) {
+                    self.setError("please enter quantity");
+                    return false;
+                } else if (quantity === null) {
+                    self.setError("please enter quantity");
+                    return false;
+                } else if (quantity <= 0) {
+                    self.setError("quantity must be greater than 0");
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        setError: function (error) {
+            $("#addUpQuantityError").text(error);
+        },
+
+        clearInputFormData: function () {
+            $(".addUpQuantityFormClear").val("");
+            $('input.all').iCheck('uncheck');
+            /*$('input.updateQuantityItemId').iCheck('uncheck');*/
+        },
+
+        clearErrorData: function () {
+            $(".addUpQuantityFormError").text("");
+        }
+    }
+}
+//item service end
+
 //Vendor service start
 
 function VendorService() {

@@ -80,6 +80,31 @@ public class ItemInfoApi implements IItemInfoApi{
     }
 
     @Override
+    @Transactional
+    public void addUpQuantity(List<Long> itemIdArr, int quantity) {
+        int totalQuantity = 0;
+        long productId = 0;
+        for (long itemId : itemIdArr){
+            ItemInfo itemInfo = itemInfoRepository.findById(itemId);
+
+            itemInfo.setQuantity(quantity + itemInfo.getQuantity());
+            itemInfo.setInStock(quantity + itemInfo.getInStock());
+
+            itemInfoRepository.save(itemInfo);
+
+            totalQuantity = totalQuantity + quantity;
+
+            if (productId ==0){
+                productId = itemInfo.getProductInfo().getId();
+            }
+
+        }
+
+        stockInfoApi.updateOnItemSave(productId , totalQuantity);
+
+    }
+
+    @Override
     public ItemInfoDTO getByIdAndStoreAndStatus(long itemInfoId, long storeId, Status status) {
         return itemInfoConverter.convertToDto(itemInfoRepository.findByIdAndStatusAndStoreInfo(itemInfoId , status , storeId));
     }
