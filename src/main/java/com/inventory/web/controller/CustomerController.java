@@ -38,7 +38,7 @@ import java.util.List;
 @Controller
 public class CustomerController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IClientInfoApi clientInfoApi;
@@ -114,7 +114,7 @@ public class CustomerController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -182,7 +182,7 @@ public class CustomerController {
             modelMap.put("query" , q);
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -224,7 +224,7 @@ public class CustomerController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "customer/add";
@@ -277,7 +277,7 @@ public class CustomerController {
         }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "redirect:/customer/list";
@@ -343,7 +343,7 @@ public class CustomerController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -384,7 +384,7 @@ public class CustomerController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "vendor/add";
@@ -438,7 +438,7 @@ public class CustomerController {
         }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "redirect:/vendor/list";
@@ -519,7 +519,7 @@ public class CustomerController {
 
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "customer/invoice";

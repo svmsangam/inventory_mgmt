@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class TagInfoValidation extends GlobalValidation {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private TagInfoRepository tagInfoRepository;

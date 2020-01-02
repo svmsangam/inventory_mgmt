@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientInfoValidation extends GlobalValidation{
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private CityInfoRepository cityInfoRepository;

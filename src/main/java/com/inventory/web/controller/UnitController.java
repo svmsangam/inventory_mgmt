@@ -35,7 +35,7 @@ import java.util.Arrays;
 @RequestMapping("/unit")
 public class UnitController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -83,7 +83,7 @@ public class UnitController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -121,7 +121,7 @@ public class UnitController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -181,7 +181,7 @@ public class UnitController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -224,7 +224,7 @@ public class UnitController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -287,7 +287,7 @@ public class UnitController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on unit controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "redirect:/unit/list";

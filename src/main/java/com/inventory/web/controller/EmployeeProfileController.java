@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("profile")
 public class EmployeeProfileController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -97,7 +97,7 @@ public class EmployeeProfileController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -144,7 +144,7 @@ public class EmployeeProfileController {
             modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, employeeProfileDTOList);
 
         } catch (Exception e) {
-            logger.error("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -222,7 +222,7 @@ public class EmployeeProfileController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on profile controller : " + Arrays.toString(e.getStackTrace()));
             redirectAttributes.addFlashAttribute(StringConstants.ERROR, "internal server error");
             return "redirect:/500";//store not assigned page
         }
@@ -265,7 +265,7 @@ public class EmployeeProfileController {
             modelMap.put(StringConstants.EMPLOYEE_PROFILE, employeeProfileDTO);
 
         } catch (Exception e) {
-            logger.error("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on employee profile controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

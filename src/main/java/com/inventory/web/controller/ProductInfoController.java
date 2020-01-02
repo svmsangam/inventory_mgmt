@@ -33,7 +33,7 @@ import java.util.List;
 @RequestMapping("product")
 public class ProductInfoController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -110,7 +110,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -154,7 +154,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -219,7 +219,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -280,7 +280,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -339,7 +339,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -403,7 +403,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

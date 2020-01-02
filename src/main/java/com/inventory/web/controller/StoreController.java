@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("store")
 public class StoreController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IStoreInfoApi storeInfoApi;
@@ -74,7 +74,7 @@ public class StoreController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on store controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on store controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/";
         }
     }

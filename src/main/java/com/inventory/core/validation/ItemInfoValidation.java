@@ -8,6 +8,7 @@ import com.inventory.core.model.repository.LotInfoRepository;
 import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.TagInfoRepository;
 import com.inventory.web.error.ItemInfoError;
+import com.inventory.web.util.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,6 @@ import java.util.List;
  */
 @Service
 public class ItemInfoValidation extends GlobalValidation{
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ItemInfoRepository itemInfoRepository;
@@ -186,7 +185,7 @@ public class ItemInfoValidation extends GlobalValidation{
                 return false;
             }
         } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setCode("invalid code");
             return false;
         }
@@ -251,7 +250,7 @@ public class ItemInfoValidation extends GlobalValidation{
                 return false;
             }
         }catch (Exception e){
-            logger.error("exception on item valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setTagId("invalid tag");
             return false;
         }
@@ -273,7 +272,7 @@ public class ItemInfoValidation extends GlobalValidation{
                 return false;
             }
         }catch (Exception e){
-            logger.error("exception on item valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setTagId("invalid lot");
             return false;
         }

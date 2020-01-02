@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RequestMapping("fiscalyear")
 public class FiscalYearInfoController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -77,7 +77,7 @@ public class FiscalYearInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }
@@ -114,7 +114,7 @@ public class FiscalYearInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }
@@ -165,7 +165,7 @@ public class FiscalYearInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on fiscal year controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }

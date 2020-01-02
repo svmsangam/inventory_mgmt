@@ -34,7 +34,7 @@ import java.util.List;
 @Controller
 @RequestMapping("user")
 public class UserController {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -83,7 +83,7 @@ public class UserController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
             return "redirect:/";
         }
 
@@ -115,7 +115,7 @@ public class UserController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
             return "redirect:/";
         }
 
@@ -179,7 +179,7 @@ public class UserController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Stack trace: " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
             return "redirect:/";
         }
     }
@@ -229,7 +229,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
     }
@@ -276,7 +276,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
     }
@@ -318,7 +318,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
     }
@@ -350,7 +350,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user activated successfully");
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/500";
         }
 

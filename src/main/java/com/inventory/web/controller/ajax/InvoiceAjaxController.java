@@ -37,7 +37,7 @@ import java.util.Map;
 @RequestMapping("invoice/ajax")
 public class InvoiceAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
@@ -104,7 +104,7 @@ public class InvoiceAjaxController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
             result.setLength(0);

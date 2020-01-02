@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("order")
 public class OrderInfoAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IOrderInfoApi orderInfoApi;
@@ -101,7 +101,7 @@ public class OrderInfoAjaxController {
 
             }
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

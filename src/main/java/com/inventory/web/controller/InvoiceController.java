@@ -36,7 +36,7 @@ import java.util.List;
 @RequestMapping("/invoice")
 public class InvoiceController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -152,7 +152,7 @@ public class InvoiceController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -224,7 +224,7 @@ public class InvoiceController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -300,7 +300,7 @@ public class InvoiceController {
             modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
 
         } catch (Exception e) {
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }
@@ -381,7 +381,7 @@ public class InvoiceController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }
@@ -473,7 +473,7 @@ public class InvoiceController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/500";
         }

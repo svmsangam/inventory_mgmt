@@ -30,7 +30,7 @@ import java.util.Arrays;
 @RequestMapping("/tag")
 public class TagController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private ITagInfoApi tagInfoApi;
@@ -77,7 +77,7 @@ public class TagController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -115,7 +115,7 @@ public class TagController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -178,7 +178,7 @@ public class TagController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -222,7 +222,7 @@ public class TagController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -287,7 +287,7 @@ public class TagController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
         return "redirect:/tag/list";

@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RequestMapping("/category")
 public class SubcategoryController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -84,7 +84,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -124,7 +124,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -186,7 +186,7 @@ public class SubcategoryController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -236,7 +236,7 @@ public class SubcategoryController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -295,7 +295,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subCategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subCategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

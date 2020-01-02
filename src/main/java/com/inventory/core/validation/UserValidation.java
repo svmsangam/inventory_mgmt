@@ -36,7 +36,7 @@ public class UserValidation extends GlobalValidation {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     UserError error = new UserError();
 
@@ -173,7 +173,7 @@ public class UserValidation extends GlobalValidation {
                 }
 
             } catch (Exception e) {
-                logger.error("user validation store " + Arrays.toString(e.getStackTrace()));
+                LoggerUtil.logException(this.getClass() , e);("user validation store " + Arrays.toString(e.getStackTrace()));
             }
         }
 

@@ -25,7 +25,7 @@ import java.util.Arrays;
 @RequestMapping("/item")
 public class ItemController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -119,7 +119,7 @@ public class ItemController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -181,7 +181,7 @@ public class ItemController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -246,7 +246,7 @@ public class ItemController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

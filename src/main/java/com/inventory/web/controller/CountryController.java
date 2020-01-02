@@ -56,7 +56,7 @@ public class CountryController {
             return "country/addCountry";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
 
@@ -132,7 +132,7 @@ public class CountryController {
                 CountryLock.release(responseDTO.getKey());
             }
 
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
 
@@ -155,7 +155,7 @@ public class CountryController {
             return "country/countryList";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
     }

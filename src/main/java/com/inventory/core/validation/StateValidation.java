@@ -38,7 +38,7 @@ public class StateValidation extends GlobalValidation {
                 error.setName("State name already exists");
             }
         } catch (Exception e) {
-            logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
             error.setName("invalid StateName");
             error.setValid(false);
 
@@ -47,7 +47,7 @@ public class StateValidation extends GlobalValidation {
             try {
 
                 if (countryInfoRepository.findByIdAndStatus(stateDto.getCountryId(), Status.ACTIVE) == null) {
-                    logger.error("@ Validation Trace : 'invalid country Id on save state' ");
+                    LoggerUtil.logException(this.getClass() , e);("@ Validation Trace : 'invalid country Id on save state' ");
                     error.setCountry("invalid Country");
 
                     error.setValid(false);
@@ -56,7 +56,7 @@ public class StateValidation extends GlobalValidation {
                 }
 
             } catch (Exception e) {
-                logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+                LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
                 error.setCountry("invalid Country");
                 error.setValid(false);
 

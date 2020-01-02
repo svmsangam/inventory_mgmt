@@ -13,7 +13,7 @@ import java.util.List;
 public class PersistingConcurrentSessionControlStrategy extends ConcurrentSessionControlStrategy {
 
 	private ISessionApi sessionApi;
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 	public PersistingConcurrentSessionControlStrategy(SessionRegistry sessionRegistry, ISessionApi sessionApi) {
 		super(sessionRegistry);

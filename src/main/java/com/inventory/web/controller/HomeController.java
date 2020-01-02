@@ -48,7 +48,7 @@ public class HomeController {
     @Autowired
     private ISendMailSSL sendMailSSL;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

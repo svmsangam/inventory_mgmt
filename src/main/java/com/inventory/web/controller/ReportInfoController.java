@@ -37,7 +37,7 @@ import java.util.List;
 @RequestMapping("report")
 public class ReportInfoController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -130,7 +130,7 @@ public class ReportInfoController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
             throw e;
         }
 
@@ -215,7 +215,7 @@ public class ReportInfoController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return;
         }

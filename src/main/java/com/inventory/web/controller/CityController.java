@@ -53,7 +53,7 @@ public class CityController {
             return "city/listCities";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             return "redirect:/";
         }
     }

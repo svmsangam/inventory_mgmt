@@ -8,6 +8,7 @@ import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +29,6 @@ import java.util.Arrays;
 @Controller
 @RequestMapping("service")
 public class ServiceInfoController {
-
-    private Logger logger = LoggerFactory.getLogger(StateController.class);
 
     @Autowired
     private IUserApi userApi;
@@ -62,7 +61,7 @@ public class ServiceInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -92,7 +91,7 @@ public class ServiceInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -127,7 +126,7 @@ public class ServiceInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 

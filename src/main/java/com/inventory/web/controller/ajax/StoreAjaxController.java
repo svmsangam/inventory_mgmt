@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 @ResponseBody
 public class StoreAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IStoreInfoApi storeInfoApi;
@@ -94,7 +94,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             e.getStackTrace();
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
@@ -147,7 +147,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -200,7 +200,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -255,7 +255,7 @@ public class StoreAjaxController {
 
         } catch (Exception e) {
             e.getStackTrace();
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

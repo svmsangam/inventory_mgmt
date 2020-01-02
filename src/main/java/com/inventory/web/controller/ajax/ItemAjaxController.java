@@ -34,7 +34,7 @@ import java.util.List;
 @RequestMapping("item")
 public class ItemAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IItemInfoApi itemInfoApi;
@@ -87,7 +87,7 @@ public class ItemAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -125,7 +125,7 @@ public class ItemAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -183,7 +183,7 @@ public class ItemAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

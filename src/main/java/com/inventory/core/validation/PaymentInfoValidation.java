@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class PaymentInfoValidation extends GlobalValidation{
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private InvoiceInfoRepository invoiceInfoRepository;

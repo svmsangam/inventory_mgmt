@@ -36,7 +36,7 @@ import java.util.List;
 @RequestMapping("orderreturn")
 public class OrderReturnInfoController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -133,7 +133,7 @@ public class OrderReturnInfoController {
 
 
         } catch (Exception e) {
-            logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
 
             e.printStackTrace();
             return "redirect:/";
@@ -231,7 +231,7 @@ public class OrderReturnInfoController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             e.printStackTrace();
             return "redirect:/";
@@ -304,7 +304,7 @@ public class OrderReturnInfoController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
 
             e.printStackTrace();
             return "redirect:/";
@@ -364,7 +364,7 @@ public class OrderReturnInfoController {
             modelMap.put(StringConstants.ORDER_RETURN_ITEM_LIST, returnItemInfoApi.list(Status.ACTIVE, orderReturnId));
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }

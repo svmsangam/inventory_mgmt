@@ -34,7 +34,7 @@ import java.util.List;
 @RequestMapping("order")
 public class OrderInfoController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -136,7 +136,7 @@ public class OrderInfoController {
 
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -230,7 +230,7 @@ public class OrderInfoController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -303,7 +303,7 @@ public class OrderInfoController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -354,7 +354,7 @@ public class OrderInfoController {
 
             return "order/addSale";
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -426,7 +426,7 @@ public class OrderInfoController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             e.printStackTrace();
             return "redirect:/";
@@ -490,7 +490,7 @@ public class OrderInfoController {
             return "order/quick/add";
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -550,7 +550,7 @@ public class OrderInfoController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -610,7 +610,7 @@ public class OrderInfoController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -677,7 +677,7 @@ public class OrderInfoController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             e.printStackTrace();
             return "redirect:/";
@@ -745,7 +745,7 @@ public class OrderInfoController {
             modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }
@@ -829,7 +829,7 @@ public class OrderInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on payment controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on payment controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -890,7 +890,7 @@ public class OrderInfoController {
 
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
 
             return "redirect:/";
         }

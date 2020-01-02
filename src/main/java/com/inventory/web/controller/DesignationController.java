@@ -29,7 +29,7 @@ import java.util.Arrays;
 @RequestMapping("designation")
 public class DesignationController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -71,7 +71,7 @@ public class DesignationController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -110,7 +110,7 @@ public class DesignationController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -162,7 +162,7 @@ public class DesignationController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on qualification controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

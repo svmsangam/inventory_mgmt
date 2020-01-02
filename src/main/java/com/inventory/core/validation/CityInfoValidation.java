@@ -21,7 +21,7 @@ public class CityInfoValidation extends GlobalValidation {
     @Autowired
     private StateInfoRepository stateInfoRepository;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     public CityError cityValidationOnSave(CityInfoDTO cityDto) {
 
@@ -38,7 +38,7 @@ public class CityInfoValidation extends GlobalValidation {
                 error.setName("City name already exists");
             }
         } catch (Exception e) {
-            logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
             error.setName("invalid CityName");
             error.setValid(false);
 
@@ -47,7 +47,7 @@ public class CityInfoValidation extends GlobalValidation {
             try {
 
                 if (stateInfoRepository.findByIdAndStatus(cityDto.getStateId(), Status.ACTIVE) == null) {
-                    logger.error("@ Validation Trace : 'invalid sate Id on save city' ");
+                    LoggerUtil.logException(this.getClass() , e);("@ Validation Trace : 'invalid sate Id on save city' ");
                     error.setState("invalid State");
 
                     error.setValid(false);
@@ -56,7 +56,7 @@ public class CityInfoValidation extends GlobalValidation {
                 }
 
             } catch (Exception e) {
-                logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+                LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
                 error.setState("invalid State");
                 error.setValid(false);
 

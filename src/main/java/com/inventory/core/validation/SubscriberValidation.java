@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 @Service
 public class SubscriberValidation extends GlobalValidation{
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private UserRepository userRepository;

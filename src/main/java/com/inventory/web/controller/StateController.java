@@ -7,9 +7,8 @@ import com.inventory.core.model.dto.StateInfoDTO;
 import com.inventory.core.validation.StateValidation;
 import com.inventory.web.error.StateError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,7 +35,7 @@ public class StateController {
     @Autowired
     private StateValidation stateValidation;
 
-    private Logger logger = LoggerFactory.getLogger(StateController.class);
+   
 
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public String listStates(ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -51,7 +50,7 @@ public class StateController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -70,7 +69,7 @@ public class StateController {
             return "redirect:/state/list";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -88,7 +87,7 @@ public class StateController {
             return "state/addState";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -115,7 +114,7 @@ public class StateController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -134,7 +133,7 @@ public class StateController {
             return "state/editState";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -161,7 +160,7 @@ public class StateController {
             }
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }

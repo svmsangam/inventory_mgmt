@@ -33,7 +33,7 @@ import java.util.Arrays;
 @ResponseBody
 public class ClientInfoAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -74,7 +74,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -111,7 +111,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -150,7 +150,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -215,7 +215,7 @@ public class ClientInfoAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -279,7 +279,7 @@ public class ClientInfoAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

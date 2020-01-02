@@ -38,7 +38,7 @@ import java.util.Map;
 @RequestMapping("subscriber")
 public class SubscriberController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private RecaptchaService captchaService;
@@ -91,7 +91,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -123,7 +123,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -157,7 +157,7 @@ public class SubscriberController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -202,7 +202,7 @@ public class SubscriberController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -236,7 +236,7 @@ public class SubscriberController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -293,7 +293,7 @@ public class SubscriberController {
         } catch (Exception e) {
 
             e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 
@@ -318,7 +318,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
             return "redirect:/500";
         }
 

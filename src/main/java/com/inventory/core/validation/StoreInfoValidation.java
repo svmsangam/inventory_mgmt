@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class StoreInfoValidation extends GlobalValidation {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private StoreInfoRepository storeInfoRepository;
@@ -101,7 +101,7 @@ public class StoreInfoValidation extends GlobalValidation {
                 error.setCityName("invalid city");
             }
         } catch (Exception e) {
-            logger.error(e.getClass() + " error on store validation for city id : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);(e.getClass() + " error on store validation for city id : " + Arrays.toString(e.getStackTrace()));
 
             valid = false;
             error.setCityName("invalid city");
@@ -214,7 +214,7 @@ public class StoreInfoValidation extends GlobalValidation {
                 error.setCityName("invalid city");
             }
         }catch (Exception e){
-            logger.error(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
 
             valid = false;
             error.setCityName("invalid city");

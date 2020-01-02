@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class RecaptchaService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Value("${google.recaptcha.secret}")
 

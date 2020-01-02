@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("notification")
 public class NotificationAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -80,7 +80,7 @@ public class NotificationAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -116,7 +116,7 @@ public class NotificationAjaxController {
             result.setMessage("" + notificationApi.countAllByStatusAndTo_IdAndSeenAndSent(Status.ACTIVE , currentUser.getUserId() , false , true));
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
