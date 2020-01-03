@@ -12,9 +12,8 @@ import com.inventory.core.validation.SubCategoryInfoValidation;
 import com.inventory.web.error.SubCategoryInfoError;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,14 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 
 @Controller
 @RequestMapping("/category")
 public class SubcategoryController {
-
-
 
     @Autowired
     private IUserApi userApi;
@@ -84,7 +80,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -124,7 +120,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -184,9 +180,7 @@ public class SubcategoryController {
             }
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -236,7 +230,7 @@ public class SubcategoryController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            LoggerUtil.logException(this.getClass() , e);("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -295,7 +289,7 @@ public class SubcategoryController {
 
         } catch (Exception e) {
 
-            LoggerUtil.logException(this.getClass() , e);("Exception on subCategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -305,12 +299,6 @@ public class SubcategoryController {
 
     @GetMapping(value = "/show")
     public String show(@ModelAttribute("subCategory")SubCategoryInfoDTO subCategoryInfoDTO, ModelMap modelMap,BindingResult bindingResult,RedirectAttributes redirectAttributes) {
-
-        return "redirect:/category/list";
-    }
-
-    @GetMapping(value = "/delete")
-    public String delete(@RequestParam("subcategory") long subcategoryId, RedirectAttributes redirectAttributes) {
 
         return "redirect:/category/list";
     }

@@ -13,9 +13,8 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.PaymentInfoValidation;
 import com.inventory.web.error.PaymentInfoError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -108,7 +106,7 @@ public class PaymentInfoController {
 
         } catch (Exception e) {
 
-            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -183,9 +181,7 @@ public class PaymentInfoController {
             }
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Exception on payment controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -261,9 +257,7 @@ public class PaymentInfoController {
             }
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 

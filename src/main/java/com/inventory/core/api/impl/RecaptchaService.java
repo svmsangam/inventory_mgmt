@@ -1,10 +1,8 @@
 package com.inventory.core.api.impl;
 
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.RecaptchaUtil;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,12 +39,12 @@ public class RecaptchaService {
 
         body.put("remoteip", ip);
 
-        logger.debug("Request body for recaptcha: {}", body);
+        LoggerUtil.logMessage(this.getClass() , "Request body for recaptcha: "+body);
 
         ResponseEntity<Map> recaptchaResponseEntity = new RestTemplate()
                 .postForEntity(GOOGLE_RECAPTCHA_VERIFY_URL+ "?secret={secret}&response={response}&remoteip={remoteip}", body, Map.class, body);
 
-        logger.debug("Response from recaptcha: {}", recaptchaResponseEntity);
+        LoggerUtil.logMessage(this.getClass() ,"Response from recaptcha: " + recaptchaResponseEntity);
 
         Map<String, Object> responseBody = recaptchaResponseEntity.getBody();
 

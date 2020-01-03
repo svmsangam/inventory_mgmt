@@ -14,10 +14,8 @@ import com.inventory.core.validation.UserValidation;
 import com.inventory.web.error.PasswordError;
 import com.inventory.web.error.UserManageError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.apache.poi.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -34,7 +32,6 @@ import java.util.List;
 @Controller
 @RequestMapping("user")
 public class UserController {
-
 
     @Autowired
     private IUserApi userApi;
@@ -82,9 +79,8 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
 
         return "user/changePassword";
@@ -114,9 +110,8 @@ public class UserController {
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "password changed successfully");
 
         } catch (Exception e) {
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
 
         return "redirect:/dashboard";
@@ -178,9 +173,8 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + Arrays.toString(e.getStackTrace()));
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
     }
 
@@ -229,8 +223,8 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
     }
 
@@ -276,7 +270,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);;
             return "redirect:/";
         }
     }
@@ -318,7 +312,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }
@@ -350,7 +344,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user activated successfully");
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 

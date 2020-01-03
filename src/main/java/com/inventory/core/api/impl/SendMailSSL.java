@@ -2,8 +2,6 @@ package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.ISendMailSSL;
 import com.inventory.web.util.LoggerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,6 @@ import java.util.Properties;
  */
 @Service
 public class SendMailSSL implements ISendMailSSL {
-
-
 
     @Autowired
     private TaskExecutor taskExecutor;
@@ -89,16 +85,15 @@ public class SendMailSSL implements ISendMailSSL {
                 Transport.send(message);
             } catch (Exception e) {
                 e.printStackTrace();
-                LoggerUtil.logException(this.getClass() , e);("Failed to send email to: " + to + " reason: "+e.getMessage());
+                LoggerUtil.logException(this.getClass() , e);
             }
 
             System.out.println("Done");
 
         } catch (AddressException e) {
-            e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
 
-            LoggerUtil.logException(this.getClass() , e);("error on mail send : " + e.getMessage());
+            LoggerUtil.logException(this.getClass() , e);
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);

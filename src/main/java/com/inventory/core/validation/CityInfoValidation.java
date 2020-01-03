@@ -5,12 +5,9 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.StateInfoRepository;
 import com.inventory.web.error.CityError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 public class CityInfoValidation extends GlobalValidation {
@@ -38,7 +35,7 @@ public class CityInfoValidation extends GlobalValidation {
                 error.setName("City name already exists");
             }
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setName("invalid CityName");
             error.setValid(false);
 
@@ -47,7 +44,6 @@ public class CityInfoValidation extends GlobalValidation {
             try {
 
                 if (stateInfoRepository.findByIdAndStatus(cityDto.getStateId(), Status.ACTIVE) == null) {
-                    LoggerUtil.logException(this.getClass() , e);("@ Validation Trace : 'invalid sate Id on save city' ");
                     error.setState("invalid State");
 
                     error.setValid(false);
@@ -56,7 +52,7 @@ public class CityInfoValidation extends GlobalValidation {
                 }
 
             } catch (Exception e) {
-                LoggerUtil.logException(this.getClass() , e);("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+                LoggerUtil.logException(this.getClass() , e);
                 error.setState("invalid State");
                 error.setValid(false);
 
