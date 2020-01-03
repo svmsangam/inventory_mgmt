@@ -13,8 +13,7 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.StoreInfoValidation;
 import com.inventory.web.error.StoreInfoError;
 import com.inventory.web.util.AuthenticationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("store")
 @ResponseBody
 public class StoreAjaxController {
-
-
 
     @Autowired
     private IStoreInfoApi storeInfoApi;
@@ -94,7 +91,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             e.getStackTrace();
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
@@ -147,7 +144,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -200,7 +197,7 @@ public class StoreAjaxController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -255,7 +252,7 @@ public class StoreAjaxController {
 
         } catch (Exception e) {
             e.getStackTrace();
-            LoggerUtil.logException(this.getClass() , e);("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
