@@ -24,15 +24,17 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
         requestCache = RequestCacheUtil.get();
 
         String defaultURL = request.getContextPath()  + "/dashboard";
+        LoggerUtil.logDebug("before defaultURL ==>> " +defaultURL);
         //https://nrestro.com/stock/stock/dashboard
         if (defaultURL.contains("/stock/stock/")){
             defaultURL = defaultURL.replaceAll("/stock/stock/" , "/stock/");
         }
+        LoggerUtil.logDebug("after defaultURL ==>> " +defaultURL);
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest == null) {
-
+            LoggerUtil.logDebug("inside savedRequest == null");
             clearAuthenticationAttributes(request);
 
             LoggerUtil.logMessage(this.getClass() , "success handler redirects defaulturl " + defaultURL);

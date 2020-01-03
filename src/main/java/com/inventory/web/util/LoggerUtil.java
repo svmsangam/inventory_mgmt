@@ -39,6 +39,14 @@ public class LoggerUtil {
         LOGGER.debug("Message " + message);
     }
 
+    public static void logInfo(String msg){
+        LOGGER.debug(msg);
+    }
+
+    public static void logDebug(String msg){
+        LOGGER.debug(msg);
+    }
+
     public static void changeMailSubject(){
         Properties props = new Properties();
         try {
