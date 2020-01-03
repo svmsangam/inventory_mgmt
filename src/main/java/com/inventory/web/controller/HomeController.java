@@ -10,11 +10,9 @@ import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.ParameterConstants;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -165,6 +163,14 @@ public class HomeController {
     @RequestMapping(value = "/500", method = RequestMethod.GET)
     public String errorpage(HttpServletRequest request) {
 
+        return "static/500";
+    }
+
+    @RequestMapping(value = "/testException", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
+    public String testExcetion(HttpServletRequest request) {
+
+        LoggerUtil.logException(this.getClass(),  new Exception("test Excetion"));
         return "static/500";
     }
 
