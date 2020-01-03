@@ -9,9 +9,8 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.ItemInfoValidation;
 import com.inventory.web.error.ItemInfoError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,13 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-
 @Controller
 @RequestMapping("/item")
 public class ItemController {
-
-
 
     @Autowired
     private IUserApi userApi;
@@ -119,7 +114,7 @@ public class ItemController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -181,7 +176,7 @@ public class ItemController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -246,51 +241,12 @@ public class ItemController {
             }
 
         } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
         redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "item successfully saved");
         return "redirect:/product/" + itemInfoDTO.getProductId();
-    }
-
-    @GetMapping(value = "/edit")
-    public String edit(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
-
-        return "redirect:/item/list";
-    }
-
-    @PostMapping(value = "/update")
-    public String update() {
-
-        return "redirect:/item/list";
-    }
-
-    @GetMapping(value = "/{itemId}")
-    public String show(@PathVariable("itemId") Integer itemId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-        return "/item/show";
-    }
-
-    @GetMapping(value = "/delete")
-    public String delete(@RequestParam("itemId") Integer itemId, RedirectAttributes redirectAttributes) {
-
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
-        return "redirect:/item/listSale";
     }
 
 }
