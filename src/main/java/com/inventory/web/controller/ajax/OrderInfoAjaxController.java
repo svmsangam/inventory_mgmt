@@ -10,8 +10,7 @@ import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("order")
 public class OrderInfoAjaxController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IOrderInfoApi orderInfoApi;
@@ -101,7 +98,7 @@ public class OrderInfoAjaxController {
 
             }
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

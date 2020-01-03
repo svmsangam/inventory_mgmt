@@ -3,7 +3,6 @@ package com.inventory.web.controller;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.ProductInfoDTO;
-import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.TrendingLevel;
@@ -11,10 +10,9 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.ProductInfoValidation;
 import com.inventory.web.error.ProductInfoError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,8 +29,6 @@ import java.util.List;
 @Controller
 @RequestMapping("product")
 public class ProductInfoController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -110,7 +105,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -154,7 +149,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -219,7 +214,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -280,7 +275,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -339,7 +334,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -403,7 +398,7 @@ public class ProductInfoController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on product controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 

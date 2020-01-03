@@ -1,7 +1,6 @@
 package com.inventory.web.session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -16,14 +15,12 @@ import java.io.IOException;
 public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
         SimpleUrlAuthenticationSuccessHandler {
 
-    protected final Log logger = LogFactory.getLog(this.getClass());
-
     private RequestCache requestCache = null;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
-        logger.debug("success handler");
+        LoggerUtil.logMessage(this.getClass() , "success handler");
         requestCache = RequestCacheUtil.get();
 
         String defaultURL = request.getContextPath()  + "/dashboard";
@@ -38,7 +35,7 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
 
             clearAuthenticationAttributes(request);
 
-            logger.debug("success handler redirects defaulturl " + defaultURL);
+            LoggerUtil.logMessage(this.getClass() , "success handler redirects defaulturl " + defaultURL);
 
             getRedirectStrategy().sendRedirect(request, response, defaultURL);
 
@@ -64,7 +61,7 @@ public class CustomSavedRequestAwareAuthenticationSuccessHandler extends
 
         RequestCacheUtil.removeRequest(request, response);
 
-        logger.debug("success handler redirects cached url  " + targetUrl);
+        LoggerUtil.logMessage(this.getClass() , "success handler redirects cached url  " + targetUrl);
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

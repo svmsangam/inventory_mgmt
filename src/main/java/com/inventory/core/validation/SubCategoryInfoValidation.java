@@ -21,7 +21,7 @@ import java.util.Objects;
 @Service
 public class SubCategoryInfoValidation extends GlobalValidation {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private SubCategoryInfoRepository subCategoryInfoRepository;

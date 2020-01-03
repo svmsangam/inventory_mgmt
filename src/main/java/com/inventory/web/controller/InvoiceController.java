@@ -12,11 +12,10 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
 import com.itextpdf.text.DocumentException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,15 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/invoice")
 public class InvoiceController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -150,9 +145,7 @@ public class InvoiceController {
             modelMap.put("totalResult" , totalList);
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             return "redirect:/";
         }
@@ -224,7 +217,7 @@ public class InvoiceController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             return "redirect:/";
         }
@@ -300,7 +293,7 @@ public class InvoiceController {
             modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
 
         } catch (Exception e) {
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             return "redirect:/500";
         }
@@ -379,9 +372,7 @@ public class InvoiceController {
 
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             return "redirect:/500";
         }
@@ -471,10 +462,7 @@ public class InvoiceController {
             redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice canceled successfully");
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
-
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -562,11 +550,11 @@ public class InvoiceController {
 
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
         } catch (DocumentException e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
         }
     }
 
@@ -622,7 +610,7 @@ public class InvoiceController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
         }
     }
 }

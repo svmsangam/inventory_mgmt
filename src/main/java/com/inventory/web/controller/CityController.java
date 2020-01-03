@@ -6,6 +6,7 @@ import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.validation.CityInfoValidation;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class CityController {
             return "city/listCities";
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/";
         }
     }

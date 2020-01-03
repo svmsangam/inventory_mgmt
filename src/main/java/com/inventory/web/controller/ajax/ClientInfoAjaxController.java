@@ -13,8 +13,7 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.ClientInfoValidation;
 import com.inventory.web.error.ClientInfoError;
 import com.inventory.web.util.AuthenticationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 /**
  * Created by dhiraj on 9/10/17.
@@ -33,7 +31,7 @@ import java.util.Arrays;
 @ResponseBody
 public class ClientInfoAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IUserApi userApi;
@@ -74,7 +72,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -111,7 +109,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -150,7 +148,7 @@ public class ClientInfoAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -215,7 +213,7 @@ public class ClientInfoAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }
@@ -279,7 +277,7 @@ public class ClientInfoAjaxController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

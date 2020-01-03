@@ -7,12 +7,10 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.util.ReportGeneratorUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.PageInfo;
-import com.inventory.web.util.StringConstants;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,13 +18,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -36,8 +32,6 @@ import java.util.List;
 @Controller
 @RequestMapping("report")
 public class ReportInfoController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -129,8 +123,7 @@ public class ReportInfoController {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             throw e;
         }
 
@@ -213,9 +206,7 @@ public class ReportInfoController {
 
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on invoice controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             return;
         }
@@ -305,7 +296,7 @@ public class ReportInfoController {
             reportServiceApi.writePdfReport(jp, response, "Ledger Report " + new Date().toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
             throw e;
         }
     }
@@ -391,7 +382,7 @@ public class ReportInfoController {
             reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + new Date().toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
             throw e;
         }
     }

@@ -8,8 +8,7 @@ import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.UserValidation;
 import com.inventory.web.error.UserError;
 import com.inventory.web.util.AuthenticationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,8 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("user")
 @ResponseBody
 public class UserAjaxController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -122,7 +119,7 @@ public class UserAjaxController {
 
 
         } catch (Exception e) {
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
         }

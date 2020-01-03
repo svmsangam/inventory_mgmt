@@ -5,20 +5,17 @@ import com.inventory.core.model.dto.FiscalYearInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.dto.OrderReturnInfoDTO;
-import com.inventory.core.model.entity.OrderReturnInfo;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.liteentity.OrderReturnInfoDomain;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.OrderReturnValidation;
-import com.inventory.web.error.OrderError;
 import com.inventory.web.error.OrderReturnError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,8 +31,6 @@ import java.util.List;
 @Controller
 @RequestMapping("orderreturn")
 public class OrderReturnInfoController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IUserApi userApi;
@@ -133,10 +127,8 @@ public class OrderReturnInfoController {
 
 
         } catch (Exception e) {
-            logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
-
-            e.printStackTrace();
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
 
         return "orderReturn/add";
@@ -231,10 +223,8 @@ public class OrderReturnInfoController {
             }
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
-
-            e.printStackTrace();
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
         return "redirect:/orderreturn/list";
     }
@@ -304,10 +294,8 @@ public class OrderReturnInfoController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on order return controller : " + Arrays.toString(e.getStackTrace()));
-
-            e.printStackTrace();
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
 
         return "orderReturn/list";
@@ -364,9 +352,8 @@ public class OrderReturnInfoController {
             modelMap.put(StringConstants.ORDER_RETURN_ITEM_LIST, returnItemInfoApi.list(Status.ACTIVE, orderReturnId));
 
         } catch (Exception e) {
-            logger.error("Exception on order controller : " + Arrays.toString(e.getStackTrace()));
-
-            return "redirect:/";
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
         return "orderReturn/show";
     }

@@ -14,10 +14,9 @@ import com.inventory.core.validation.ClientInfoValidation;
 import com.inventory.web.error.ClientInfoError;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.PageInfo;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,8 +36,6 @@ import java.util.List;
  */
 @Controller
 public class CustomerController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IClientInfoApi clientInfoApi;
@@ -114,7 +111,7 @@ public class CustomerController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -182,7 +179,7 @@ public class CustomerController {
             modelMap.put("query" , q);
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -224,7 +221,7 @@ public class CustomerController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
         return "customer/add";
@@ -277,7 +274,7 @@ public class CustomerController {
         }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
         return "redirect:/customer/list";
@@ -343,7 +340,7 @@ public class CustomerController {
             modelMap.put("pagelist", pagesnumbers);
 
         } catch (Exception e) {
-            logger.error("Exception on category controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -384,7 +381,7 @@ public class CustomerController {
             modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
         return "vendor/add";
@@ -438,90 +435,9 @@ public class CustomerController {
         }
 
         } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
         return "redirect:/vendor/list";
     }
-
-
-    /*@GetMapping(value = "/customer/incoice")
-    public String invoice(@RequestParam(value = "pageNo" , required = false)Integer page , @RequestParam("clientId")Long clientId , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
-
-        try {
-        *//*current user checking start*//*
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-
-                RequestCacheUtil.save(request , response);
-
-                return "redirect:/login";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        *//*current user checking end*//*
-
-
-            if (clientId == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Client required");
-
-                return "redirect:/customer/list";
-            }
-
-            if (clientId < 0){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Client required");
-
-                return "redirect:/customer/list";
-            }
-
-            if (page == null) {
-                page = 1;
-            }
-
-            if (page < 1) {
-                page = 1;
-            }
-
-            int currentpage = page - 1;
-
-            long totalList = invoiceInfoApi.countAllByStatusAndBuyerAndStoreInfo(Status.ACTIVE , clientId , currentUser.getStoreId());
-
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
-
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
-
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
-
-            modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.getAllByStatusAndBuyerAndStoreInfo(Status.ACTIVE , clientId , currentUser.getStoreId() , currentpage , (int) PageInfo.pageList));
-
-            modelMap.put(StringConstants.PAGE_LAST, totalpage);
-            modelMap.put(StringConstants.PAGE_CURRENT, page);
-            modelMap.put(StringConstants.PAGE_LIST, pagesnumbers);
-            modelMap.put(StringConstants.CUSTOMER, clientId);
-
-
-        } catch (Exception e) {
-            logger.error("Exception on client controller : " + Arrays.toString(e.getStackTrace()));
-            return "redirect:/500";
-        }
-        return "customer/invoice";
-    }*/
 }

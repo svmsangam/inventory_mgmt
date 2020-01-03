@@ -11,9 +11,8 @@ import com.inventory.core.validation.TagInfoValidation;
 import com.inventory.web.error.TagInfoError;
 import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,14 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 
 @Controller
 @RequestMapping("/tag")
 public class TagController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ITagInfoApi tagInfoApi;
@@ -77,7 +73,7 @@ public class TagController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -115,7 +111,7 @@ public class TagController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -177,8 +173,7 @@ public class TagController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -222,7 +217,7 @@ public class TagController {
         /*current user checking end*/
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -287,29 +282,10 @@ public class TagController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on tag controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
         return "redirect:/tag/list";
-    }
-
-    @GetMapping(value = "/{tagId}")
-    public String show(@PathVariable("tagId") Long tagId) {
-
-        return "redirect:/tag/list";
-    }
-
-    @GetMapping(value = "/delete")
-    public String delete(@RequestParam("tag") long tagId, RedirectAttributes redirectAttributes) {
-
-        try {
-
-            return "redirect:/tag/list";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
-
     }
 }
 

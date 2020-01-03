@@ -9,15 +9,13 @@ import com.inventory.core.model.repository.UserRepository;
 import com.inventory.web.error.PasswordError;
 import com.inventory.web.error.UserError;
 import com.inventory.web.error.UserManageError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -36,7 +34,7 @@ public class UserValidation extends GlobalValidation {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     UserError error = new UserError();
 
@@ -173,7 +171,7 @@ public class UserValidation extends GlobalValidation {
                 }
 
             } catch (Exception e) {
-                logger.error("user validation store " + Arrays.toString(e.getStackTrace()));
+                LoggerUtil.logException(this.getClass() , e);
             }
         }
 
@@ -253,8 +251,6 @@ public class UserValidation extends GlobalValidation {
 
         if (userRepository.findByUsername(username.trim()) != null) {
 
-            logger.debug("username already created");
-
             valid = false;
 
             return "username already exist";
@@ -266,8 +262,6 @@ public class UserValidation extends GlobalValidation {
 
         if (repassword != null && password != null)
             if (!repassword.equals(password)) {
-
-                logger.debug("password not matched");
 
                 valid = false;
 

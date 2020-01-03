@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class OrderReturnValidation extends GlobalValidation {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     OrderReturnError error;
 

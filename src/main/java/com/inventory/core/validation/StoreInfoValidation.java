@@ -8,14 +8,12 @@ import com.inventory.core.model.repository.CityInfoRepository;
 import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.StoreUserInfoRepository;
 import com.inventory.web.error.StoreInfoError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +21,6 @@ import java.util.List;
  */
 @Service
 public class StoreInfoValidation extends GlobalValidation {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private StoreInfoRepository storeInfoRepository;
@@ -101,7 +97,7 @@ public class StoreInfoValidation extends GlobalValidation {
                 error.setCityName("invalid city");
             }
         } catch (Exception e) {
-            logger.error(e.getClass() + " error on store validation for city id : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
 
             valid = false;
             error.setCityName("invalid city");
@@ -214,7 +210,7 @@ public class StoreInfoValidation extends GlobalValidation {
                 error.setCityName("invalid city");
             }
         }catch (Exception e){
-            logger.error(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);(e.getClass() + " error on store validation for city id : "+ Arrays.toString(e.getStackTrace()));
 
             valid = false;
             error.setCityName("invalid city");

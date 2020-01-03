@@ -3,6 +3,7 @@ package com.inventory.core.validation;
 import com.inventory.core.model.dto.CountryInfoDTO;
 import com.inventory.core.model.repository.CountryInfoRepository;
 import com.inventory.web.error.CountryError;
+import com.inventory.web.util.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class CountryValidation extends GlobalValidation {
 
     private boolean valid = true;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     public CountryError countryValidateOnSave(CountryInfoDTO countryDto) {
 
@@ -39,7 +40,7 @@ public class CountryValidation extends GlobalValidation {
                 error.setName("Country name already exists");
             }
         } catch (Exception e) {
-            logger.error("# Stack Trace : 'class' -" + e.getClass() + " exception : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setName("invalid CountryName");
             error.setValid(false);
 

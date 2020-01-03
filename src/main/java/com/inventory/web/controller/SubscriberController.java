@@ -5,19 +5,16 @@ import com.inventory.core.api.impl.RecaptchaService;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
-import com.inventory.core.model.entity.Subscriber;
-import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.SubscriberValidation;
 import com.inventory.web.error.RenewError;
 import com.inventory.web.error.SubscriberError;
 import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.RequestUtils;
 import com.inventory.web.util.StringConstants;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,10 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dhiraj on 1/25/18.
@@ -37,8 +31,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("subscriber")
 public class SubscriberController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RecaptchaService captchaService;
@@ -91,7 +83,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -123,7 +115,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -155,9 +147,7 @@ public class SubscriberController {
             subscriberDTO = subscriberApi.save(subscriberDTO);
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -200,9 +190,7 @@ public class SubscriberController {
             modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -234,9 +222,7 @@ public class SubscriberController {
 
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -291,9 +277,7 @@ public class SubscriberController {
             }
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -318,7 +302,7 @@ public class SubscriberController {
 
         } catch (Exception e) {
 
-            logger.error("Exception on subcategory controller : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             return "redirect:/500";
         }
 
@@ -373,7 +357,8 @@ public class SubscriberController {
 
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
         }
 
 

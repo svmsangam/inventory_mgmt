@@ -1,8 +1,7 @@
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.iapi.ISendMailSSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,6 @@ import java.util.Properties;
  */
 @Service
 public class SendMailSSL implements ISendMailSSL {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private TaskExecutor taskExecutor;
@@ -38,14 +35,20 @@ public class SendMailSSL implements ISendMailSSL {
 
     private Session getSesseion(Properties props) {
 
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("inventory.sys.info@gmail.com", "deamon50");
-                    }
-                });
+        try {
 
-        return session;
+            Session session = Session.getDefaultInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication("inventory.sys.info@gmail.com", "deamon50");
+                        }
+                    });
+            return session;
+        }catch (Exception e){
+            LoggerUtil.logMessage(this.getClass() ,e.getLocalizedMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -67,6 +70,10 @@ public class SendMailSSL implements ISendMailSSL {
 
             Session session = getSesseion(properties);
 
+            if (session == null){
+                LoggerUtil.logMessage(this.getClass() , "Authentication fail");
+            }
+
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO,
@@ -78,16 +85,15 @@ public class SendMailSSL implements ISendMailSSL {
                 Transport.send(message);
             } catch (Exception e) {
                 e.printStackTrace();
-                logger.error("Failed to send email to: " + to + " reason: "+e.getMessage());
+                LoggerUtil.logException(this.getClass() , e);
             }
 
             System.out.println("Done");
 
         } catch (AddressException e) {
-            e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
 
-            logger.error("error on mail send : " + e.getMessage());
+            LoggerUtil.logException(this.getClass() , e);
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -109,9 +115,14 @@ public class SendMailSSL implements ISendMailSSL {
 
         try {
 
+            LoggerUtil.logMessage(this.getClass() , "email send start");
             Properties properties = getProperty();
 
             Session session = getSesseion(properties);
+
+            if (session == null){
+                LoggerUtil.logMessage(this.getClass() , "Authentication fail");
+            }
 
             Message message = new MimeMessage(session);
             Multipart multiPart = new MimeMultipart("alternative");
@@ -150,23 +161,23 @@ public class SendMailSSL implements ISendMailSSL {
         } catch (AddressException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
-            logger.error("error on address exception mail send : " + e.getMessage());
+            LoggerUtil.logMessage(this.getClass() , "error on address exception mail send : " + e.getMessage());
 
         } catch (AuthenticationFailedException e){
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
 
-            logger.error("email address password miss matched : " + e.getMessage());
+            LoggerUtil.logMessage(this.getClass() , "email address password miss matched : " + e.getMessage());
 
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
-            logger.error("error on MessagingException mail send : " + e.getMessage());
+            LoggerUtil.logMessage(this.getClass() , "error on MessagingException mail send : " + e.getMessage());
 
         }
 
         System.out.println("Email sent! to : " + to + " : by : " + from);
-            logger.info("Email sent! to : " + to + " : by : " + from);
+        LoggerUtil.logMessage(this.getClass() , "Email sent! to : " + to + " : by : " + from);
 
     }
 

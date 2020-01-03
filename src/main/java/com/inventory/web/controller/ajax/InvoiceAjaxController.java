@@ -1,28 +1,25 @@
 package com.inventory.web.controller.ajax;
 
-import com.inventory.core.api.iapi.*;
+import com.inventory.core.api.iapi.IAuthenticationService;
+import com.inventory.core.api.iapi.IFiscalYearInfoApi;
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
-import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.InvoiceListDTO;
 import com.inventory.core.model.dto.RestResponseDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.web.util.AuthenticationUtil;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +34,7 @@ import java.util.Map;
 @RequestMapping("invoice/ajax")
 public class InvoiceAjaxController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
@@ -103,8 +100,7 @@ public class InvoiceAjaxController {
             return new ResponseEntity<Map<String, List<InvoiceListDTO>>>( json, headers, HttpStatus.OK);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Stack trace: " + e.getStackTrace());
+            LoggerUtil.logException(this.getClass() , e);
             result.setStatus(ResponseStatus.FAILURE.getValue());
             result.setMessage("internal server error");
             result.setLength(0);

@@ -7,8 +7,7 @@ import com.inventory.core.model.repository.ProductInfoRepository;
 import com.inventory.core.model.repository.SubCategoryInfoRepository;
 import com.inventory.core.model.repository.UnitInfoRepository;
 import com.inventory.web.error.ProductInfoError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -22,8 +21,6 @@ import java.util.List;
  */
 @Service
 public class ProductInfoValidation extends GlobalValidation {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ProductInfoRepository productInfoRepository;
@@ -152,7 +149,7 @@ public class ProductInfoValidation extends GlobalValidation {
                 return false;
             }
         }catch (Exception e){
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setName("invalid product");
             return false;
         }
@@ -178,7 +175,7 @@ public class ProductInfoValidation extends GlobalValidation {
                 return false;
             }
         } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setName("invalid name");
             return false;
         }
@@ -210,7 +207,7 @@ public class ProductInfoValidation extends GlobalValidation {
 
             }
         } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setName("invalid name");
             return false;
         }
@@ -248,7 +245,7 @@ public class ProductInfoValidation extends GlobalValidation {
             }
 
         } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setSubCategoryId("invalid category");
             return false;
         }
@@ -280,7 +277,7 @@ public class ProductInfoValidation extends GlobalValidation {
             }
 
         } catch (Exception e) {
-            logger.error("exception on product valivation : " + Arrays.toString(e.getStackTrace()));
+            LoggerUtil.logException(this.getClass() , e);
             error.setSubCategoryId("invalid unit");
             return false;
         }
