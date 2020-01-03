@@ -167,7 +167,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/testException", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('System')")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String testExcetion(HttpServletRequest request) {
 
         LoggerUtil.logException(this.getClass(),  new Exception("test Excetion"));
