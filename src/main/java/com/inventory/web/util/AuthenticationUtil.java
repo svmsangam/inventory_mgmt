@@ -2,6 +2,7 @@ package com.inventory.web.util;
 
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
@@ -30,6 +31,39 @@ public class AuthenticationUtil {
             UserDetailsWrapper user = (UserDetailsWrapper) principal;
 
             return user;
+
+        }
+
+        return null;
+    }
+
+    public static final User getCurrentUserInfo() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return null;
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetailsWrapper) {
+
+            UserDetailsWrapper user = (UserDetailsWrapper) principal;
+
+            if (user == null){
+                return null;
+            }
+
+            if (user.getUser() == null){
+                return null;
+            }
+
+            return user.getUser();
 
         }
 
