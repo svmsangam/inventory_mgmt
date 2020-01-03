@@ -42,7 +42,7 @@ public class LoggerUtil {
     public static void changeMailSubject(){
         Properties props = new Properties();
         try {
-            InputStream configStream = Thread.class.getResourceAsStream("/log4j.properties");
+            InputStream configStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/log4j.properties");
             if (configStream == null) {
                 throw new RuntimeException();
             }
