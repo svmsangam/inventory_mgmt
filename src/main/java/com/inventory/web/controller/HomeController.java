@@ -68,7 +68,7 @@ public class HomeController {
 
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-            return "redirect:/logout";
+            return "redirect:/";
         }
 
         if (!currentUser.getUserType().equals(UserType.SYSTEM) && currentUser.getStoreId() == null) {
