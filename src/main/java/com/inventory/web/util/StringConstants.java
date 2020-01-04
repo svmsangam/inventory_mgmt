@@ -39,6 +39,7 @@ public class StringConstants {
     public static String CITY_ERROR = "cityError";
 
     public static String ERROR = "error";
+    public static String INFO = "info";
     public static String MSG = "msg";
     public static String MESSAGE = "message";
 
