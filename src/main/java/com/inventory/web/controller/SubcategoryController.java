@@ -14,6 +14,7 @@ import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.UIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -70,8 +71,8 @@ public class SubcategoryController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
         /*current user checking end*/
@@ -111,8 +112,8 @@ public class SubcategoryController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
         /*current user checking end*/
 
@@ -152,8 +153,8 @@ public class SubcategoryController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
         /*current user checking end*/
@@ -214,8 +215,8 @@ public class SubcategoryController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
             CategoryDomain subCategoryInfoDTO = subcategoryInfoApi.showLite(subcategoryId,currentUser.getStoreId(),Status.ACTIVE);
@@ -261,8 +262,8 @@ public class SubcategoryController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
         /*current user checking end*/

@@ -34,6 +34,13 @@
             </div>
         </c:if>
 
+        <c:if test="${not empty info}">
+            <div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp;${info}</strong>
+            </div>
+        </c:if>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="box box-info">

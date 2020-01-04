@@ -129,8 +129,6 @@ public class UserController {
                 return "redirect:/logout";
             }
 
-            currentUser.setStoreId(null);
-
             if (currentUser.getStoreId() == null && !(currentUser.getUserauthority().contains(Authorities.SYSTEM))) {
                 redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
                 return "redirect:/store/list";//store not assigned page

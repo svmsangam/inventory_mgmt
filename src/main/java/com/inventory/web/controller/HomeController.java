@@ -6,10 +6,7 @@ import com.inventory.core.model.enumconstant.SalesOrderStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.util.Authorities;
-import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.LoggerUtil;
-import com.inventory.web.util.ParameterConstants;
-import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -74,9 +71,9 @@ public class HomeController {
             return "redirect:/logout";
         }
 
-        if (!currentUser.getUserType().equals(UserType.SYSTEM) & currentUser.getStoreId() == null) {
-            modelMap.put(StringConstants.ERROR , "no store found please add store first");
-            return "dashboard/index";//store not assigned page
+        if (!currentUser.getUserType().equals(UserType.SYSTEM) && currentUser.getStoreId() == null) {
+            redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+            return "redirect:/store/list";//store not assigned page
         }
 
         if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) | (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
