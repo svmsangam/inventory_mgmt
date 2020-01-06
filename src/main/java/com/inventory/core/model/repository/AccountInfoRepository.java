@@ -23,7 +23,7 @@ public interface AccountInfoRepository extends CrudRepository<AccountInfo, Long>
 
     AccountInfo findByAssociateIdAndAssociateType(long associateId, AccountAssociateType associateType);
 
-    @Query("select sum (a.creditAmount) from AccountInfo as a where a.associateType =?1 and a.associateId in (select c.id from ClientInfo as c where c.storeInfo.id =?2 and c.status = ?3)")
+    @Query("select sum (nullif(a.creditAmount, 0) ) from AccountInfo as a where a.associateType =?1 and a.associateId in (select c.id from ClientInfo as c where c.storeInfo.id =?2 and c.status = ?3)")
     BigDecimal findTotalCrAmountByAssociateIdAndAssociateType(AccountAssociateType associateType , long storeId , Status status);
 
     List<AccountInfo> findAllByAssociateType(AccountAssociateType accountAssociateType);

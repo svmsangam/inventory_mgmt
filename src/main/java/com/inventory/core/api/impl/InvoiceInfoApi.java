@@ -172,8 +172,8 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         paymentInfoApi.save(paymentInfoDTO);
 
-        accountInfoApi.addCreditAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(invoiceInfo.getTotalAmount()));
-        accountInfoApi.addDebitAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(paymentInfoDTO.getReceivedPayment().getAmount()));
+        //accountInfoApi.addCreditAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(invoiceInfo.getTotalAmount()));
+        //accountInfoApi.addDebitAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(paymentInfoDTO.getReceivedPayment().getAmount()));
 
         return invoiceInfo;
     }

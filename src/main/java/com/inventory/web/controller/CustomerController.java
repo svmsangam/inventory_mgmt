@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -170,11 +171,15 @@ public class CustomerController {
 
             BigDecimal customerCreditAmount = (accountInfoDTO != null ? accountInfoDTO.getCreditAmount() : BigDecimal.valueOf(0));
 
+            customerCreditAmount = (customerCreditAmount == null ? BigDecimal.valueOf(0) : customerCreditAmount);
             BigDecimal crPercentage = BigDecimal.valueOf(0.0);
 
-            if (!totalCredit.equals(BigDecimal.valueOf(0))){
-                crPercentage = customerCreditAmount.divide(totalCredit);
-                crPercentage = crPercentage.multiply(BigDecimal.valueOf(100));
+            totalCredit = ParseUtls.formatter(totalCredit);
+            customerCreditAmount = ParseUtls.formatter(customerCreditAmount);
+
+            if (!totalCredit.equals(BigDecimal.valueOf(0.0))){
+                crPercentage = customerCreditAmount.divide(totalCredit , 2, RoundingMode.HALF_UP);
+                crPercentage = crPercentage.multiply(BigDecimal.valueOf(100.00));
             }
 
             crPercentage = ParseUtls.formatter(crPercentage);
@@ -184,7 +189,7 @@ public class CustomerController {
             modelMap.put(StringConstants.CRPERCENTAGE , crPercentage);
             modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
             modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
-            modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
+            modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  clientId , currentUser.getStoreId(), 0,  500));
 
         } catch (Exception e) {
             LoggerUtil.logException(this.getClass() , e);
