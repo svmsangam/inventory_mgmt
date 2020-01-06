@@ -15,6 +15,7 @@ import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import com.inventory.web.util.UIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ public class TagController {
     private TagInfoValidation tagInfoValidation;
 
     @GetMapping(value = "/list")
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR') or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_USER')")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
 
         try {
@@ -52,11 +54,14 @@ public class TagController {
                 request.getSession().invalidate();
                 return "dashboard/login";
             }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/*
+			 * if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) |
+			 * currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) |
+			 * currentUser.getUserauthority().contains(Authorities.USER)) &&
+			 * currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+			 * redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+			 * "Athentication failed"); return "redirect:/logout"; }
+			 */
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -82,6 +87,7 @@ public class TagController {
     }
 
     @GetMapping(value = "/add")
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR') or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_USER')")
     public String add(RedirectAttributes redirectAttributes) {
 
         try {
@@ -93,11 +99,14 @@ public class TagController {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
                 return "redirect:/logout";
             }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/*
+			 * if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) |
+			 * currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) |
+			 * currentUser.getUserauthority().contains(Authorities.USER)) &&
+			 * currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+			 * redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+			 * "Athentication failed"); return "redirect:/logout"; }
+			 */
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -120,6 +129,7 @@ public class TagController {
     }
 
     @PostMapping(value = "/save")
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR') or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_USER')")
     public String save(@ModelAttribute("tag") TagInfoDTO tagInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
@@ -132,11 +142,14 @@ public class TagController {
                 return "redirect:/logout";
             }
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
+			/*
+			 * if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) |
+			 * currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) |
+			 * currentUser.getUserauthority().contains(Authorities.USER)) &&
+			 * currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+			 * redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+			 * "Athentication failed"); return "redirect:/logout"; }
+			 */
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.TAG_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
                 return "redirect:/";//access deniled page
@@ -183,6 +196,7 @@ public class TagController {
 
 
     @GetMapping(value = "/edit")
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR') or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_USER')")
     public String edit(@RequestParam("tagId") Long tagId, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
@@ -198,10 +212,14 @@ public class TagController {
                 return "redirect:/login";
             }
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/*
+			 * if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) |
+			 * currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) |
+			 * currentUser.getUserauthority().contains(Authorities.USER)) &&
+			 * currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+			 * redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+			 * "Athentication failed"); return "redirect:/logout"; }
+			 */
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -228,6 +246,7 @@ public class TagController {
     }
 
     @PostMapping(value = "/update")
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR') or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_USER')")
     public String update(@ModelAttribute("tag")TagInfoDTO tagInfoDTO , BindingResult bindingResult , ModelMap modelMap , RedirectAttributes redirectAttributes) {
 
         try {
@@ -240,10 +259,14 @@ public class TagController {
                 return "redirect:/logout";
             }
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/*
+			 * if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) |
+			 * currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) |
+			 * currentUser.getUserauthority().contains(Authorities.USER)) &&
+			 * currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
+			 * redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+			 * "Athentication failed"); return "redirect:/logout"; }
+			 */
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
