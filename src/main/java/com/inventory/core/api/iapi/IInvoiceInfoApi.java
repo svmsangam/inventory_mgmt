@@ -51,6 +51,8 @@ public interface IInvoiceInfoApi {
 
     List<InvoiceInfoDTO> getAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId , int page , int size);
 
+    List<InvoiceInfoDTO> getAllReceivableByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId , int page , int size);
+
     long countAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId);
 
     List<InvoiceInfoDTO> getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status , long storeId , Date from , Date to , int page , int size);

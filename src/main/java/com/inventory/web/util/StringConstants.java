@@ -172,4 +172,7 @@ public class StringConstants {
     public static String EMPLOYEE_STATUS_LIST = "employeeStatusList";
 
     public static String SALE_TRACK_LIST = "saleTrackList";
+
+    public static String ACCOUNT = "account";
+    public static String CRPERCENTAGE = "crPercentage";
 }

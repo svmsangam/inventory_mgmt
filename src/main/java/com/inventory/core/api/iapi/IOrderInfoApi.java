@@ -22,6 +22,8 @@ public interface IOrderInfoApi {
 
     List<OrderInfoDTO> listSale(Status status , long storeId , int page , int size);
 
+    List<OrderInfoDTO> getAllOrderListOfCustomer(Status status , long storeId , long customerId , int page , int size);
+
     List<OrderInfoDTO> listTopSale(Status status , long storeId , int page , int size);
 
     long countListSale(Status status , long storeId);
