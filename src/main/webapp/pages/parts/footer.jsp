@@ -63,6 +63,7 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
 <%--js bock ui loading spinner--%>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.blockUI.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.knob.js"></script>
 
 <script>
 

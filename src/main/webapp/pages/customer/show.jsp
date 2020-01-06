@@ -152,17 +152,31 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-6">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Sale and Receivable Chart</h3>
+                                </div>
                                 <div class="well well-sm">
                                     <canvas id="pieChart1" style="height:250px"></canvas>
                                     <div class="row">
                                         <div class="col-xs-6"><span class="label-success label">&nbsp;&nbsp;</span>&nbsp;Total Sale Amount </div>
+                                        <div class="col-xs-6"></div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-xs-6"><span class="label-danger label">&nbsp;&nbsp;</span>&nbsp;Total Due Amount </div>
+                                        <div class="col-xs-6"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
-                                chart2
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Overall Sales Percentage Chart</h3>
+                                </div>
+                                <div class="well well-sm text-center">
+                                    <input type="text" class="knob pull-right" value="${crPercentage}" data-width="267" data-height="267" data-fgColor="#932ab6" data-readonly="true">
+
+                                    <div class="knob-label">Sales Percentage = "${crPercentage}%"</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,12 +207,12 @@
                                     <table class="table datatable2 table-bordered table-hover table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Invoice No</th>
+                                            <th>Receipt No</th>
                                             <th>Fiscal Year</th>
                                             <th>Customer Name</th>
                                             <th>Total Amount</th>
                                             <th>Amount Recievable</th>
-                                            <th>Invoice Date</th>
+                                            <th>Receipt Date</th>
                                         </tr>
                                         </thead>
 
@@ -348,7 +362,8 @@
             crAmount = 0;
         }
 
-        initPieChart1(drAmount , crAmount)
+        initPieChart1(drAmount , crAmount);
+        initPieChart2();
     });
 
     function initPieChart1(drAmount , crAmount) {
@@ -394,5 +409,69 @@
         };
 
         pieChart1.Doughnut(PieData1, pieOptions1)
+    }
+
+    function initPieChart2() {
+        $(".knob").knob({
+            change : function (value) {
+             //console.log("change : " + value);
+             },
+             release : function (value) {
+             console.log("release : " + value);
+             },
+             cancel : function () {
+             console.log("cancel : " + this.value);
+             },
+            draw: function () {
+
+                // "tron" case
+                if (this.$.data('skin') == 'tron') {
+
+                    var a = this.angle(this.cv)  // Angle
+                        , sa = this.startAngle          // Previous start angle
+                        , sat = this.startAngle         // Start angle
+                        , ea                            // Previous end angle
+                        , eat = sat + a                 // End angle
+                        , r = true;
+
+                    this.g.lineWidth = this.lineWidth;
+
+                    this.o.cursor
+                    && (sat = eat - 0.3)
+                    && (eat = eat + 0.3);
+
+                    if (this.o.displayPrevious) {
+                        ea = this.startAngle + this.angle(this.value);
+                        this.o.cursor
+                        && (sa = ea - 0.3)
+                        && (ea = ea + 0.3);
+                        this.g.beginPath();
+                        this.g.strokeStyle = this.previousColor;
+                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+                        this.g.stroke();
+                    }
+
+                    this.g.beginPath();
+                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+                    this.g.stroke();
+
+                    this.g.lineWidth = 2;
+                    this.g.beginPath();
+                    this.g.strokeStyle = this.o.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+                    this.g.stroke();
+
+                    return false;
+                }
+            }
+        });
+        /* END JQUERY KNOB */
+
+        //INITIALIZE SPARKLINE CHARTS
+        $(".sparkline").each(function () {
+            var $this = $(this);
+            $this.sparkline('html', $this.data());
+        });
     }
 </script>

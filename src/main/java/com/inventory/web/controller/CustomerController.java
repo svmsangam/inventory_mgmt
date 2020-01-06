@@ -9,6 +9,7 @@ import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.util.ParseUtls;
 import com.inventory.core.validation.ClientInfoValidation;
 import com.inventory.web.error.ClientInfoError;
 import com.inventory.web.session.RequestCacheUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -162,8 +164,25 @@ public class CustomerController {
                 return "redirect:/customer/list";
             }
 
+            BigDecimal totalCredit = accountInfoApi.totalCreditAmountOfStore(AccountAssociateType.CUSTOMER , currentUser.getStoreId());
+
+            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER);
+
+            BigDecimal customerCreditAmount = (accountInfoDTO != null ? accountInfoDTO.getCreditAmount() : BigDecimal.valueOf(0));
+
+            BigDecimal crPercentage = BigDecimal.valueOf(0.0);
+
+            if (!totalCredit.equals(BigDecimal.valueOf(0))){
+                crPercentage = customerCreditAmount.divide(totalCredit);
+                crPercentage = crPercentage.multiply(BigDecimal.valueOf(100));
+            }
+
+            crPercentage = ParseUtls.formatter(crPercentage);
+
+
             modelMap.put(StringConstants.CUSTOMER , clientInfoDTO);
-            modelMap.put(StringConstants.ACCOUNT , accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER));
+            modelMap.put(StringConstants.CRPERCENTAGE , crPercentage);
+            modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
             modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
             modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
 

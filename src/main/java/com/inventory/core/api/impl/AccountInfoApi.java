@@ -115,4 +115,13 @@ public class AccountInfoApi implements IAccountInfoApi {
     public List<AccountInfoDTO> list(Status status, long storeId) {
         return null;
     }
+
+    @Override
+    public BigDecimal totalCreditAmountOfStore(AccountAssociateType associateType, long storeId){
+        BigDecimal totalCreditAmount = accountInfoRepository.findTotalCrAmountByAssociateIdAndAssociateType(associateType , storeId , Status.ACTIVE);
+        if (totalCreditAmount == null){
+            totalCreditAmount = BigDecimal.valueOf(0);
+        }
+        return totalCreditAmount;
+    }
 }
