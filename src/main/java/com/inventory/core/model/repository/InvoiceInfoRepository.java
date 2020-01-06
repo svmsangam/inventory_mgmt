@@ -48,6 +48,9 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
     @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2 and i.receivableAmount > 0")
     List<InvoiceInfo> findAllTopReceivableByStatusAndStoreInfo(Status status , long storeInfoId , Pageable pageable);
 
+    @Query("select i from InvoiceInfo i where i.status = ?1 and i.storeInfo.id = ?2 and i.orderInfo.clientInfo.id = ?3 and i.receivableAmount > 0")
+    List<InvoiceInfo> findAllReceivableByStatusAndStoreInfoAndCustomer(Status status , long storeInfoId , long customerId , Pageable pageable);
+
     @Query("select sum (i.receivableAmount) from InvoiceInfo i where i.storeInfo.id = ?1 and i.status = ?2")
     Double findTotalReceivableByStoreInfoAndStatus(long storeInfoId , Status status);
 

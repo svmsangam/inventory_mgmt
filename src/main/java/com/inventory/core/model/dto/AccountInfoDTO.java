@@ -2,6 +2,8 @@ package com.inventory.core.model.dto;
 
 import com.inventory.core.model.enumconstant.AccountAssociateType;
 
+import java.math.BigDecimal;
+
 /**
  * Created by dhiraj on 8/6/17.
  */
@@ -15,7 +17,47 @@ public class AccountInfoDTO {
 
     private AccountAssociateType associateType;
 
+    private BigDecimal debitAmount;
+
+    private BigDecimal creditAmount;
+
+    private BigDecimal formattedDebitAmount;
+
+    private BigDecimal formattedCreditAmount;
+
     private Integer version;
+
+    public BigDecimal getDebitAmount() {
+        return debitAmount;
+    }
+
+    public void setDebitAmount(BigDecimal debitAmount) {
+        this.debitAmount = debitAmount;
+    }
+
+    public BigDecimal getCreditAmount() {
+        return creditAmount;
+    }
+
+    public void setCreditAmount(BigDecimal creditAmount) {
+        this.creditAmount = creditAmount;
+    }
+
+    public BigDecimal getFormattedDebitAmount() {
+        return formattedDebitAmount;
+    }
+
+    public void setFormattedDebitAmount(BigDecimal formattedDebitAmount) {
+        this.formattedDebitAmount = formattedDebitAmount;
+    }
+
+    public BigDecimal getFormattedCreditAmount() {
+        return formattedCreditAmount;
+    }
+
+    public void setFormattedCreditAmount(BigDecimal formattedCreditAmount) {
+        this.formattedCreditAmount = formattedCreditAmount;
+    }
 
     public Long getAccountId() {
         return accountId;

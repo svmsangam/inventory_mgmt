@@ -80,7 +80,7 @@
                             </thead>
                             <tbody>
                             <c:forEach var="customer" items="${customerList}" varStatus="i">
-                                <tr>
+                                <tr onclick="location.replace('${pageContext.request.contextPath}/customer/show?customerId=${customer.clientId}')" style="cursor: pointer">
                                     <td>${i.index + 1}</td>
                                     <td>${customer.accountNo}</td>
                                     <td>${customer.pan}</td>
@@ -92,7 +92,7 @@
                                     <td>${customer.cityInfoDTO.cityName}</td>
                                     <td>${customer.street}</td>
                                     <td>
-                                        <a class="btn btn-success" href="${pageContext.request.contextPath}/customer/incoice?clientId=${customer.clientId}"><i class="fa fa-calendar-check-o"></i>&nbsp;invoice</a>
+                                        <a class="btn btn-default" href="${pageContext.request.contextPath}/customer/show?customerId=${customer.clientId}"><i class="fa fa-eye-slash"></i>&nbsp;show</a>
                                     </td>
                                 </tr>
                             </c:forEach>

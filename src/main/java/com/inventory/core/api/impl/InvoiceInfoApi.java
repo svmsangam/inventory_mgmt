@@ -4,12 +4,14 @@ import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.*;
 import com.inventory.core.model.entity.*;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.LogType;
 import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.model.specification.InvoiceSpecification;
 import com.inventory.core.model.specification.LedgerSpecification;
+import com.inventory.web.util.LoggerUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,12 +64,15 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Autowired
     private ILoggerApi loggerApi;
 
+    @Autowired
+    private IAccountInfoApi accountInfoApi;
+
     @Override
     public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId , status);
+        Double amount = invoiceInfoRepository.findTotalAmountByStoreAndStatus(storeInfoId, status);
 
-        if (amount == null){
+        if (amount == null) {
             return 0;
         }
 
@@ -76,7 +82,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public double getToDayTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = invoiceInfoRepository.findToDayTotalAmountByStoreAndStatus(storeInfoId , status);
+        Double amount = invoiceInfoRepository.findToDayTotalAmountByStoreAndStatus(storeInfoId, status);
 
         if (amount == null) {
             return 0;
@@ -88,16 +94,16 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public String generatInvoiceNumber(long storeId) {
 
-        FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE , storeId , true);
+        FiscalYearInfo fiscalYearInfo = fiscalYearInfoRepository.findByStatusAndStoreInfoAndSelected(Status.ACTIVE, storeId, true);
 
-        long count = codeGeneratorRepository.findByStoreAndNumberStatusAndFiscalYearInfo(storeId , NumberStatus.Invoice , fiscalYearInfo.getId());
+        long count = codeGeneratorRepository.findByStoreAndNumberStatusAndFiscalYearInfo(storeId, NumberStatus.Invoice, fiscalYearInfo.getId());
 
-        if (0 == count){
+        if (0 == count) {
             CodeGenerator codeGenerator = new CodeGenerator();
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
 
-            String prefix = "I" + store.getName().substring(0 , 2).toUpperCase();
+            String prefix = "I" + store.getName().substring(0, 2).toUpperCase();
 
             codeGenerator.setStoreInfo(store);
             codeGenerator.setNumber(100001);
@@ -113,12 +119,12 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
             StoreInfo store = storeInfoRepository.findOne(storeId);
 
-            long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Invoice , fiscalYearInfo.getId()).getNumber();
+            long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Invoice, fiscalYearInfo.getId()).getNumber();
 
             CodeGenerator codeGenerator = new CodeGenerator();
 
 
-            String prefix = "I" + store.getName().substring(0 , 2).toUpperCase();
+            String prefix = "I" + store.getName().substring(0, 2).toUpperCase();
 
             codeGenerator.setStoreInfo(store);
             codeGenerator.setNumber(number + 1);
@@ -135,13 +141,15 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     @Transactional
-    public InvoiceInfoDTO save(long orderInfoId , long createdById) {
+    public InvoiceInfoDTO save(long orderInfoId, long createdById) {
 
-        InvoiceInfo invoiceInfo = invoiceInfoConverter.convertToEntity(orderInfoId , createdById);
+        InvoiceInfo invoiceInfo = invoiceInfoConverter.convertToEntity(orderInfoId, createdById);
 
         invoiceInfo.setInvoiceNo(generatInvoiceNumber(invoiceInfo.getStoreInfo().getId()));
 
         invoiceInfo = invoiceInfoRepository.save(invoiceInfo);
+
+        accountInfoApi.addCreditAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(invoiceInfo.getTotalAmount()));
 
         ledgerInfoApi.save(invoiceInfo.getId());
 
@@ -158,11 +166,14 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         orderInfoRepository.save(orderInfo);
 
-        InvoiceInfoDTO invoiceInfo = save(paymentInfoDTO.getOrderInfoId() , paymentInfoDTO.getCreatedById());
+        InvoiceInfoDTO invoiceInfo = save(paymentInfoDTO.getOrderInfoId(), paymentInfoDTO.getCreatedById());
 
         paymentInfoDTO.setInvoiceInfoId(invoiceInfo.getInvoiceId());
 
         paymentInfoApi.save(paymentInfoDTO);
+
+        accountInfoApi.addCreditAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(invoiceInfo.getTotalAmount()));
+        accountInfoApi.addDebitAmount(orderInfo.getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(paymentInfoDTO.getReceivedPayment().getAmount()));
 
         return invoiceInfo;
     }
@@ -171,15 +182,21 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Transactional
     public void updateOnPayment(long paymentInfoId) {
 
-        PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
+        try {
 
-        if (paymentInfo != null) {
+            PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
 
             InvoiceInfo invoiceInfo = paymentInfo.getInvoiceInfo();
 
             invoiceInfo.setReceivableAmount(invoiceInfo.getReceivableAmount() - paymentInfo.getReceivedPayment().getAmount());
 
             invoiceInfoRepository.save(invoiceInfo);
+
+            accountInfoApi.addDebitAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(paymentInfo.getReceivedPayment().getAmount()));
+
+        }catch (Exception e){
+            LoggerUtil.logException(this.getClass() , e);
+            throw e;
         }
 
     }
@@ -200,9 +217,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         InvoiceSpecification specification = new InvoiceSpecification(filterDTO);
 
-        Pageable pageable = createPageRequest(filterDTO.getPageNo(),filterDTO.getSize() ,"id" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(filterDTO.getPageNo(), filterDTO.getSize(), "id", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertPageToDtoList(invoiceInfoRepository.findAll(specification , pageable));
+        return invoiceInfoConverter.convertPageToDtoList(invoiceInfoRepository.findAll(specification, pageable));
     }
 
     @Override
@@ -210,9 +227,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         InvoiceSpecification specification = new InvoiceSpecification(filterDTO);
 
-        Long count = invoiceInfoRepository.count(specification );
+        Long count = invoiceInfoRepository.count(specification);
 
-        if (count == null){
+        if (count == null) {
             return 0;
         }
 
@@ -221,15 +238,15 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     public InvoiceInfoDTO show(long invoiceId, long storeId, Status status) {
-        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId , status , storeId));
+        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByIdAndStatusAndStoreInfo(invoiceId, status, storeId));
     }
 
     @Override
-    public InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId, Status status , long storeId) {
-        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByStatusAndStoreInfoAndOrderInfo(status , storeId , orderId));
+    public InvoiceInfoDTO getByOrderIdAndStatusAndStoreId(long orderId, Status status, long storeId) {
+        return invoiceInfoConverter.convertToDto(invoiceInfoRepository.findByStatusAndStoreInfoAndOrderInfo(status, storeId, orderId));
     }
 
-    private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
+    private Pageable createPageRequest(int page, int size, String properties, Sort.Direction direction) {
 
         return new PageRequest(page, size, new Sort(direction, properties));
     }
@@ -237,38 +254,38 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public List<InvoiceInfoDTO> list(Status status, long storeId, int page, int size) {
 
-        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(page, size, "id", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status, storeId, pageable));
     }
 
     @Override
     public List<InvoiceListDTO> listToJson(Status status, long storeId, int page, int size) {
 
-        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(page, size, "id", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertToJsonList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status , storeId , pageable));
+        return invoiceInfoConverter.convertToJsonList(invoiceInfoRepository.findAllByStatusAndStoreInfo(status, storeId, pageable));
     }
 
     @Override
     public List<InvoiceInfoDTO> listTopReceivable(Status status, long storeId, int page, int size) {
 
-        Pageable pageable = createPageRequest(page,size ,"receivableAmount" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(page, size, "receivableAmount", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllTopReceivableByStatusAndStoreInfo(status , storeId , pageable));
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllTopReceivableByStatusAndStoreInfo(status, storeId, pageable));
     }
 
     @Override
     public long countlist(Status status, long storeId) {
-        return invoiceInfoRepository.countAllByStatusAndStoreInfo(status , storeId);
+        return invoiceInfoRepository.countAllByStatusAndStoreInfo(status, storeId);
     }
 
     @Override
     public double getTotalReceivableByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = invoiceInfoRepository.findTotalReceivableByStoreInfoAndStatus(storeInfoId , status);
+        Double amount = invoiceInfoRepository.findTotalReceivableByStoreInfoAndStatus(storeInfoId, status);
 
-        if (amount == null){
+        if (amount == null) {
             return 0;
         }
         return amount;
@@ -278,20 +295,20 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         List<Double> totalSales = new ArrayList<Double>();
 
-        for(int i= 0 ; i<12 ; i++){
+        for (int i = 0; i < 12; i++) {
             totalSales.add(0.0);
         }
 
-        List<Object[]> objectList = invoiceInfoRepository.findTotalSellOfYearByStore(storeId , year);
+        List<Object[]> objectList = invoiceInfoRepository.findTotalSellOfYearByStore(storeId, year);
 
-        for(Object[] object : objectList){
+        for (Object[] object : objectList) {
 
             System.out.println("month " + (String) object[1]);
 
-            if ((Double) object[0] == null){
+            if ((Double) object[0] == null) {
                 totalSales.add(Integer.parseInt((String) object[1]) - 1, 0.0);
-            }else {
-                totalSales.add(Integer.parseInt((String) object[1]) - 1, limitPrecision((Double) object[0] , 2));
+            } else {
+                totalSales.add(Integer.parseInt((String) object[1]) - 1, limitPrecision((Double) object[0], 2));
             }
         }
 
@@ -301,30 +318,36 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Override
     public List<InvoiceInfoDTO> getAllByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId, int page, int size) {
 
-        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(page, size, "id", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndBuyerAndStoreInfo(status , clientId , storeId , pageable));
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndBuyerAndStoreInfo(status, clientId, storeId, pageable));
+    }
+
+    @Override
+    public List<InvoiceInfoDTO> getAllReceivableByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId, int page, int size) {
+        Pageable pageable = createPageRequest(page, size, "id", Sort.Direction.DESC);
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllReceivableByStatusAndStoreInfoAndCustomer(status , storeId , clientId , pageable));
     }
 
     @Override
     public long countAllByStatusAndBuyerAndStoreInfo(Status status, long clientId, long storeId) {
-        return invoiceInfoRepository.countAllByStatusAndBuyerAndStoreInfo(status , clientId , storeId);
+        return invoiceInfoRepository.countAllByStatusAndBuyerAndStoreInfo(status, clientId, storeId);
     }
 
     @Override
     public List<InvoiceInfoDTO> getAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status, long storeId, Date from, Date to, int page, int size) {
 
-        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        Pageable pageable = createPageRequest(page, size, "id", Sort.Direction.DESC);
 
-        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfoAndInvoiceDateBetween(status , storeId , from , to , pageable));
+        return invoiceInfoConverter.convertToDtoList(invoiceInfoRepository.findAllByStatusAndStoreInfoAndInvoiceDateBetween(status, storeId, from, to, pageable));
     }
 
     @Override
     public long countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status status, long storeId, Date from, Date to) {
 
-        Long count = invoiceInfoRepository.countAllByStatusAndStoreInfoAndInvoiceDateBetween(status , storeId , from , to);
+        Long count = invoiceInfoRepository.countAllByStatusAndStoreInfoAndInvoiceDateBetween(status, storeId, from, to);
 
-        if (count == null){
+        if (count == null) {
             return 0;
         }
 
@@ -333,7 +356,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     @Override
     @Transactional
-    public void cancel(long invoiceId, String note , long createdById){
+    public void cancel(long invoiceId, String note, long createdById) {
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
 
@@ -342,9 +365,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         invoiceInfo = invoiceInfoRepository.save(invoiceInfo);
 
-        loggerApi.save(invoiceId , LogType.Invoice_Print , invoiceInfo.getStoreInfo().getId() , createdById , "invoice canceled");
+        loggerApi.save(invoiceId, LogType.Invoice_Print, invoiceInfo.getStoreInfo().getId(), createdById, "invoice canceled");
 
-        orderReturnInfoApi.cancelInvoice(invoiceId , createdById);
+        orderReturnInfoApi.cancelInvoice(invoiceId, createdById);
 
         invoiceInfo.setReceivableAmount(0.0);
 
@@ -352,7 +375,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         invoiceInfoRepository.save(invoiceInfo);
 
-        paymentInfoApi.refundOnInvoiceCancel(invoiceId , createdById);
+        paymentInfoApi.refundOnInvoiceCancel(invoiceId, createdById);
     }
 
     private double limitPrecision(Double dblAsString, int maxDigitsAfterDecimal) {

@@ -4,6 +4,7 @@ import com.inventory.core.model.enumconstant.AccountAssociateType;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * Created by manohar-td-003 on 6/26/17.
@@ -16,7 +17,27 @@ public class AccountInfo extends AbstractEntity<Long> {
 
     private long associateId;
 
+    private BigDecimal debitAmount;
+
+    private BigDecimal creditAmount;
+
     private AccountAssociateType associateType;
+
+    public BigDecimal getDebitAmount() {
+        return debitAmount;
+    }
+
+    public void setDebitAmount(BigDecimal debitAmount) {
+        this.debitAmount = debitAmount;
+    }
+
+    public BigDecimal getCreditAmount() {
+        return creditAmount;
+    }
+
+    public void setCreditAmount(BigDecimal creditAmount) {
+        this.creditAmount = creditAmount;
+    }
 
     public String getAcountNumber() {
         return acountNumber;
