@@ -11,6 +11,7 @@ import com.inventory.core.validation.ProductInfoValidation;
 import com.inventory.web.error.ProductInfoError;
 import com.inventory.web.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -46,22 +47,13 @@ public class ProductInfoController {
     private ProductInfoValidation productInfoValidation;
 
     @GetMapping(value = "/list")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER')")
     public String list(@RequestParam(value = "pageNo", required = false) Integer page , ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
         /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -110,22 +102,13 @@ public class ProductInfoController {
     }
 
     @GetMapping(value = "/add")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER')")
     public String add(RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
 
                 /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -155,22 +138,13 @@ public class ProductInfoController {
     }
 
     @PostMapping(value = "/save")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER')")
     public String save(@ModelAttribute("product") ProductInfoDTO productInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
                 /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -219,22 +193,13 @@ public class ProductInfoController {
     }
 
     @GetMapping(value = "/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER')")
     public String show(@PathVariable("productId") Long productId, RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
 
                 /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -281,22 +246,13 @@ public class ProductInfoController {
     }
 
     @GetMapping(value = "/edit")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER')")
     public String edit(@RequestParam("productId")long productId , RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_UPDATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
@@ -346,16 +302,6 @@ public class ProductInfoController {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_CREATE)) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
