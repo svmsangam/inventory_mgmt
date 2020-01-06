@@ -137,6 +137,12 @@ public class OrderInfoApi implements IOrderInfoApi {
     }
 
     @Override
+    public List<OrderInfoDTO> getAllOrderListOfCustomer(Status status, long storeId, long customerId, int page, int size) {
+        Pageable pageable = createPageRequest(page,size ,"id" , Sort.Direction.DESC);
+        return orderInfoConverter.convertToDtoList(orderInfoRepository.findAllByStatusAndStoreInfoAndOrderTypeAndAndClientInfo(status , storeId , OrderType.Sale,  customerId , pageable));
+    }
+
+    @Override
     public List<OrderInfoDTO> listTopSale(Status status, long storeId, int page, int size) {
 
         Pageable pageable = createPageRequest(page,size ,"grandTotal" , Sort.Direction.DESC);
