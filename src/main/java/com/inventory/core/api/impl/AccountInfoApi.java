@@ -89,7 +89,7 @@ public class AccountInfoApi implements IAccountInfoApi {
 
             BigDecimal prevCreditAmount = accountInfo.getCreditAmount() == null ? BigDecimal.valueOf(0) : accountInfo.getCreditAmount();
 
-            accountInfo.setDebitAmount(prevCreditAmount.add(creditAmount));
+            accountInfo.setCreditAmount(prevCreditAmount.add(creditAmount));
 
             accountInfoRepository.save(accountInfo);
         }catch (Exception e){

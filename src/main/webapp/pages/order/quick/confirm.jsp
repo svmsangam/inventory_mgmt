@@ -155,7 +155,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="${pageContext.request.contextPath}/order/sale/quick/comfirm" method="post" modelAttribute="payment" >
+                        <form action="${pageContext.request.contextPath}/order/sale/quick/confirm" method="post" modelAttribute="payment" >
 
                             <input type="hidden" name="orderInfoId" value="${order.orderId}"/>
 

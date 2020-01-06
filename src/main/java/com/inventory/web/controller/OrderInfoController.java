@@ -734,7 +734,7 @@ public class OrderInfoController {
         return "order/quick/confirm";
     }
 
-    @PostMapping(value = "sale/quick/comfirm")
+    @PostMapping(value = "sale/quick/confirm")
     public String confirmQuick(@ModelAttribute("paymentInfo") PaymentInfoDTO paymentInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
