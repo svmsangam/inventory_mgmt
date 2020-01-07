@@ -39,6 +39,7 @@ public class StringConstants {
     public static String CITY_ERROR = "cityError";
 
     public static String ERROR = "error";
+    public static String INFO = "info";
     public static String MSG = "msg";
     public static String MESSAGE = "message";
 
@@ -171,4 +172,7 @@ public class StringConstants {
     public static String EMPLOYEE_STATUS_LIST = "employeeStatusList";
 
     public static String SALE_TRACK_LIST = "saleTrackList";
+
+    public static String ACCOUNT = "account";
+    public static String CRPERCENTAGE = "crPercentage";
 }

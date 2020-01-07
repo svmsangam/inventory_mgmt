@@ -228,3 +228,17 @@ input[type=number]::-webkit-outer-spin-button {
 
 /*number plus minus spiner hide end*/
 
+.alert-info{
+    background-color: #258ba5 !important;
+    color: #ffffff !important;
+    #background-color: #d9edf7 !important;
+    border-color: #bce8f1 !important;
+}
+
+.darkGray {
+    color: #89898c !important;
+}
+
+.darkBlue {
+    background-color: #317a8f !important;
+}

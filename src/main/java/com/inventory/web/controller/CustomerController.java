@@ -1,23 +1,21 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.ICityInfoApi;
-import com.inventory.core.api.iapi.IClientInfoApi;
-import com.inventory.core.api.iapi.IInvoiceInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.api.iapi.*;
+import com.inventory.core.model.dto.AccountInfoDTO;
 import com.inventory.core.model.dto.ClientInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
+import com.inventory.core.util.ParseUtls;
 import com.inventory.core.validation.ClientInfoValidation;
 import com.inventory.web.error.ClientInfoError;
 import com.inventory.web.session.RequestCacheUtil;
-import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.LoggerUtil;
-import com.inventory.web.util.PageInfo;
-import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,6 +51,12 @@ public class CustomerController {
 
     @Autowired
     private IInvoiceInfoApi invoiceInfoApi;
+
+    @Autowired
+    private IAccountInfoApi accountInfoApi;
+
+    @Autowired
+    private IOrderInfoApi orderInfoApi;
 
     @GetMapping(value = "/customer/list")
     public String listCustomer(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
@@ -118,6 +124,81 @@ public class CustomerController {
         return "customer/list";
     }
 
+    @GetMapping(value = "/customer/show")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR' , 'ROLE_SUPERADMINISTRATOR' , 'CLIENT_VIEW')")
+    public String showCustomer(@RequestParam("customerId") Long clientId, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+
+        try {
+
+            /*current user checking start*/
+            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+            if (currentUser == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+
+                RequestCacheUtil.save(request , response);
+
+                return "redirect:/login";
+            }
+
+            if (currentUser.getStoreId() == null) {
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
+            }
+
+            /*current user checking end*/
+
+            if (clientId == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/customer/list";
+            }
+
+            if (clientId <= 0){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+                return "redirect:/customer/list";
+            }
+
+            ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE , clientId , currentUser.getStoreId());
+
+            if (clientInfoDTO == null){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "provided customer not found");
+                return "redirect:/customer/list";
+            }
+
+            BigDecimal totalCredit = accountInfoApi.totalCreditAmountOfStore(AccountAssociateType.CUSTOMER , currentUser.getStoreId());
+
+            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER);
+
+            BigDecimal customerCreditAmount = (accountInfoDTO != null ? accountInfoDTO.getCreditAmount() : BigDecimal.valueOf(0));
+
+            customerCreditAmount = (customerCreditAmount == null ? BigDecimal.valueOf(0) : customerCreditAmount);
+            BigDecimal crPercentage = BigDecimal.valueOf(0.0);
+
+            totalCredit = ParseUtls.formatter(totalCredit);
+            customerCreditAmount = ParseUtls.formatter(customerCreditAmount);
+
+            if (!totalCredit.equals(BigDecimal.valueOf(0.0))){
+                crPercentage = customerCreditAmount.divide(totalCredit , 2, RoundingMode.HALF_UP);
+                crPercentage = crPercentage.multiply(BigDecimal.valueOf(100.00));
+            }
+
+            crPercentage = ParseUtls.formatter(crPercentage);
+
+
+            modelMap.put(StringConstants.CUSTOMER , clientInfoDTO);
+            modelMap.put(StringConstants.CRPERCENTAGE , crPercentage);
+            modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
+            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
+            modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  clientId , currentUser.getStoreId(), 0,  500));
+
+        } catch (Exception e) {
+            LoggerUtil.logException(this.getClass() , e);
+            return "redirect:/500";
+        }
+
+        return "customer/show";
+    }
+
     @GetMapping(value = "/customer/search")
     public String searchCustomer(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam("q")String q , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
 
@@ -128,8 +209,6 @@ public class CustomerController {
 
             if (currentUser == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-
-                RequestCacheUtil.save(request , response);
 
                 return "redirect:/login";
             }
@@ -145,8 +224,8 @@ public class CustomerController {
             }
 
             if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
         /*current user checking end*/

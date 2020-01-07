@@ -2,8 +2,10 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.AccountInfoDTO;
 import com.inventory.core.model.entity.AccountInfo;
+import com.inventory.core.util.ConvertUtil;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
+import com.inventory.core.util.ParseUtls;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +38,10 @@ public class AccountInfoConverter implements IConvertable<AccountInfo, AccountIn
         dto.setAssociateId(entity.getAssociateId());
         dto.setAssociateType(entity.getAssociateType());
         dto.setVersion(entity.getVersion());
+        dto.setDebitAmount(entity.getDebitAmount());
+        dto.setCreditAmount(entity.getCreditAmount());
+        dto.setFormattedDebitAmount(ParseUtls.formatter(entity.getDebitAmount()));
+        dto.setFormattedCreditAmount(ParseUtls.formatter(entity.getCreditAmount()));
 
         return dto;
     }

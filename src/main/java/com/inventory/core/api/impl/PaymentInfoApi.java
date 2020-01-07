@@ -1,9 +1,6 @@
 package com.inventory.core.api.impl;
 
-import com.inventory.core.api.iapi.IInvoiceInfoApi;
-import com.inventory.core.api.iapi.ILedgerInfoApi;
-import com.inventory.core.api.iapi.IPaymentApi;
-import com.inventory.core.api.iapi.IPaymentInfoApi;
+import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.PaymentInfoConverter;
 import com.inventory.core.model.dto.PaymentDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
@@ -11,18 +8,21 @@ import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.Payment;
 import com.inventory.core.model.entity.PaymentInfo;
 import com.inventory.core.model.entity.User;
+import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.PaymentInfoRepository;
 import com.inventory.core.model.repository.PaymentRepository;
 import com.inventory.core.model.repository.UserRepository;
+import com.inventory.web.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PaymentInfoApi implements IPaymentInfoApi{
+public class PaymentInfoApi implements IPaymentInfoApi {
 
     @Autowired
     private PaymentInfoRepository paymentInfoRepository;
@@ -59,6 +59,9 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private IAccountInfoApi accountInfoApi;
+
     @Override
     @Lock(LockModeType.OPTIMISTIC)
     public PaymentInfoDTO save(PaymentInfoDTO paymentInfoDTO) {
@@ -71,10 +74,10 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         paymentInfo = paymentInfoRepository.save(paymentInfo);
 
-        if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
+        if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())) {
             ledgerInfoApi.saveOnPayment(paymentInfo.getId());
             invoiceInfoApi.updateOnPayment(paymentInfo.getId());
-        } else if (PaymentMethod.CHEQUE.equals(paymentInfo.getReceivedPayment().getPaymentMethod())){
+        } else if (PaymentMethod.CHEQUE.equals(paymentInfo.getReceivedPayment().getPaymentMethod())) {
             invoiceInfoApi.updateVersion(paymentInfoDTO.getInvoiceInfoId());
         }
 
@@ -82,32 +85,43 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     }
 
     @Override
-    public void refundOnInvoiceCancel(long invoiceId, long createdById){
+    public void refundOnInvoiceCancel(long invoiceId, long createdById) {
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
 
-        Double amount = paymentInfoRepository.findReceivedAmountByStatusAndInvoiceInfo(Status.ACTIVE , invoiceId);
+        Double paidAmount = paymentInfoRepository.findReceivedAmountByStatusAndInvoiceInfo(Status.ACTIVE, invoiceId);
+        Double refundAmount = paymentInfoRepository.findRefundAmountByStatusAndInvoiceInfo(Status.ACTIVE, invoiceId);
 
-        if (amount != null) {
+        Double amount = (paidAmount == null ? 0 : paidAmount)  - (refundAmount == null ? 0 : refundAmount);
 
-            Payment payment = paymentApi.save(amount);
-
-            PaymentInfo paymentInfo = new PaymentInfo();
-
-            paymentInfo.setCreatedBy(userRepository.findById(createdById));
-            paymentInfo.setInvoiceInfo(invoiceInfo);
-            paymentInfo.setRefundPayment(payment);
-            paymentInfo.setStoreInfo(invoiceInfo.getStoreInfo());
-            paymentInfo.setRemark("cash returned due to of cancel invoice");
-
-            paymentInfoRepository.save(paymentInfo);
+        if (amount == 0) {
+            return;
         }
+
+        if (amount < 0) {
+            LoggerUtil.logException(this.getClass(), new Exception("paidAmount is less than refundAmount for invoice " + invoiceId));
+        }
+
+
+        Payment payment = paymentApi.save(amount);
+
+        PaymentInfo paymentInfo = new PaymentInfo();
+
+        paymentInfo.setCreatedBy(userRepository.findById(createdById));
+        paymentInfo.setInvoiceInfo(invoiceInfo);
+        paymentInfo.setRefundPayment(payment);
+        paymentInfo.setStoreInfo(invoiceInfo.getStoreInfo());
+        paymentInfo.setRemark("cash returned due to of cancel invoice");
+        accountInfoApi.addDebitAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(-amount));
+        accountInfoApi.addDebitAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(-amount));
+
+        paymentInfoRepository.save(paymentInfo);
 
 
     }
 
     @Override
-    public void refundOnSalesReturn(long invoiceId, long createdById , double amount){
+    public void refundOnSalesReturn(long invoiceId, long createdById, double amount) {
 
         InvoiceInfo invoiceInfo = invoiceInfoRepository.findById(invoiceId);
 
@@ -122,6 +136,9 @@ public class PaymentInfoApi implements IPaymentInfoApi{
         paymentInfo.setRemark("cash returned due to of sales return");
 
         paymentInfoRepository.save(paymentInfo);
+
+        accountInfoApi.addDebitAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(-amount));
+        accountInfoApi.addDebitAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(-amount));
 
 
     }
@@ -146,6 +163,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         return paymentInfo.getInvoiceInfo().getId();
     }
+
     @Override
     public PaymentInfoDTO getById(long paymentInfoId) {
         return paymentInfoConverter.convertToDto(paymentInfoRepository.findById(paymentInfoId));
@@ -153,17 +171,17 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
     @Override
     public PaymentInfoDTO getByIdAndStatus(long paymentInfoId, Status status) {
-        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatus(paymentInfoId , status));
+        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatus(paymentInfoId, status));
     }
 
     @Override
     public PaymentInfoDTO show(long paymentInfoId, Status status, long storeId) {
-        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatusAndStore(paymentInfoId , status , storeId));
+        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatusAndStore(paymentInfoId, status, storeId));
     }
 
     @Override
     public PaymentInfoDTO getByIdAndStatusAndStoreAndInvoiceInfo(long paymentInfoId, Status status, long storeId, long invoiceInfoId) {
-        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatusAndStoreAndInvoiceInfo(paymentInfoId , status , storeId , invoiceInfoId));
+        return paymentInfoConverter.convertToDto(paymentInfoRepository.findByIdAndStatusAndStoreAndInvoiceInfo(paymentInfoId, status, storeId, invoiceInfoId));
     }
 
     @Override
@@ -171,11 +189,11 @@ public class PaymentInfoApi implements IPaymentInfoApi{
 
         List<PaymentInfoDTO> paymentInfoDTOList = new ArrayList<>();
 
-        paymentInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusInAndStoreAndInvoiceInfo(status , storeId , invoiceInfoId));
+        paymentInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findByStatusInAndStoreAndInvoiceInfo(status, storeId, invoiceInfoId));
 
         List<PaymentInfoDTO> refundInfoDTOList = new ArrayList<>();
 
-        refundInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findRefundByStatusAndStoreAndInvoiceInfo(Status.ACTIVE , storeId , invoiceInfoId));
+        refundInfoDTOList = paymentInfoConverter.convertToDtoList(paymentInfoRepository.findRefundByStatusAndStoreAndInvoiceInfo(Status.ACTIVE, storeId, invoiceInfoId));
 
         if (refundInfoDTOList != null) {
             paymentInfoDTOList.addAll(refundInfoDTOList);
@@ -187,7 +205,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Override
     public double getTotalPaymentByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = paymentInfoRepository.findTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
+        Double amount = paymentInfoRepository.findTotalPaymentByStoreInfoAndStatus(storeInfoId, status);
 
         if (amount == null) {
             return 0;
@@ -199,7 +217,7 @@ public class PaymentInfoApi implements IPaymentInfoApi{
     @Override
     public double getToDayTotalPaymentByStoreInfoAndStatus(long storeInfoId, Status status) {
 
-        Double amount = paymentInfoRepository.findToDayTotalPaymentByStoreInfoAndStatus(storeInfoId , status);
+        Double amount = paymentInfoRepository.findToDayTotalPaymentByStoreInfoAndStatus(storeInfoId, status);
 
         if (amount == null) {
             return 0;

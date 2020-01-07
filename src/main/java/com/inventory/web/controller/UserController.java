@@ -16,6 +16,7 @@ import com.inventory.web.error.UserManageError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.UIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -126,6 +127,11 @@ public class UserController {
             if (currentUser == null) {
                 redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
                 return "redirect:/logout";
+            }
+
+            if (currentUser.getStoreId() == null && !(currentUser.getUserauthority().contains(Authorities.SYSTEM))) {
+                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+                return "redirect:/store/list";//store not assigned page
             }
 
             if (currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
