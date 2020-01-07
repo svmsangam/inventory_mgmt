@@ -9,3 +9,4 @@ as total sale and receivable (hichart)
 5. percentage of total dr amount and toal cr amount 
 among all account of that store (hichart)
 6. payment for if receivable and with selection of invoice
+7. add storeInfo in accountinfo

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <%--select 2--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fancy.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
     <!-- iCheck -->

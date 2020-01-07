@@ -1,9 +1,11 @@
 package com.inventory.web.controller;
 
+import com.google.gson.Gson;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.AccountInfoDTO;
 import com.inventory.core.model.dto.ClientInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.enumconstant.AccountAssociateType;
 import com.inventory.core.model.enumconstant.ClientType;
 import com.inventory.core.model.enumconstant.Permission;
@@ -27,8 +29,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -169,10 +169,15 @@ public class CustomerController {
 
             AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER);
 
+            List<OrderInfoDTO> orderInfoDTOList = orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500);
+            Gson gson = new Gson();
+
+            String orderListJson = gson.toJson(orderInfoDTOList);
+
             modelMap.put(StringConstants.CUSTOMER , clientInfoDTO);
             modelMap.put(StringConstants.CRPERCENTAGE , ParseUtls.formatter(totalCredit));
             modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
-            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
+            modelMap.put(StringConstants.ORDER_LIST , orderListJson);
             modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  clientId , currentUser.getStoreId(), 0,  500));
 
         } catch (Exception e) {
