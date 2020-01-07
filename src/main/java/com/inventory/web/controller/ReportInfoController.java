@@ -12,6 +12,7 @@ import com.inventory.web.util.PageInfo;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -49,21 +50,13 @@ public class ReportInfoController {
     private ILedgerInfoApi ledgerInfoApi;
 
     @GetMapping(value = "invoice/filter/pdf" , produces = "application/pdf")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
                      /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                return;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                request.getSession().invalidate();
-                return;
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
                 return;//access deniled page
@@ -132,21 +125,13 @@ public class ReportInfoController {
     }
 
     @GetMapping(value = "invoice/filter/xls", produces = "application/xls")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public void filterXLS(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
                      /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                return;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                request.getSession().invalidate();
-                return;
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
                 return;//access deniled page
@@ -216,23 +201,14 @@ public class ReportInfoController {
     }
 
     @GetMapping(value = "/ledger/filter/pdf" , produces = "application/pdf")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public void filterLedgerPdf(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
              /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                return;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                request.getSession().invalidate();
-                return;
-            }
-
+            
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
                 request.getSession().invalidate();
                 return;
@@ -302,22 +278,13 @@ public class ReportInfoController {
     }
 
     @GetMapping(value = "/ledger/filter/xls", produces = "application/xls")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public void filterLedgerXls(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
         try {
 
              /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                return;
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                request.getSession().invalidate();
-                return;
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
                 request.getSession().invalidate();

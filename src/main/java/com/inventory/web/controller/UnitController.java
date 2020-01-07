@@ -1,5 +1,20 @@
 package com.inventory.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.inventory.core.api.iapi.INotificationApi;
 import com.inventory.core.api.iapi.IUnitInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
@@ -10,20 +25,10 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.UnitInfoValidation;
 import com.inventory.web.error.UnitInfoError;
-import com.inventory.web.session.RequestCacheUtil;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import com.inventory.web.util.UIUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /*
  * Created by dhiraj on 6/26/17.
@@ -34,259 +39,220 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/unit")
 public class UnitController {
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IUnitInfoApi unitInfoApi;
+	@Autowired
+	private IUnitInfoApi unitInfoApi;
 
-    @Autowired
-    private UnitInfoValidation unitInfoValidation;
+	@Autowired
+	private UnitInfoValidation unitInfoValidation;
 
-    @Autowired
-    private INotificationApi notificationApi;
+	@Autowired
+	private INotificationApi notificationApi;
 
-    @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	@GetMapping(value = "/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-        try {
+		try {
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			/* current user checking end */
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-        /*current user checking end*/
+		} catch (Exception e) {
 
-            modelMap.put(StringConstants.UNIT_LIST, unitInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-        } catch (Exception e) {
+		return "unit/list";
+	}
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String add(RedirectAttributes redirectAttributes) {
 
-        return "unit/list";
-    }
+		try {
 
-    @GetMapping(value = "/add")
-    public String add(RedirectAttributes redirectAttributes) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        try {
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/* current user checking end */
+		} catch (Exception e) {
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		return "unit/add";
+	}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String save(@ModelAttribute("unit") UnitInfoDTO unitInfoDTO, BindingResult bindingResult, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-        /*current user checking end*/
-        } catch (Exception e) {
+		try {
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        return "unit/add";
-    }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-    @PostMapping(value = "/save")
-    public String save(@ModelAttribute("unit") UnitInfoDTO unitInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-        try {
+			/* current user checking end */
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (unitInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/unit/add";
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			synchronized (this.getClass()) {
+				unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				unitInfoDTO.setCreatedById(currentUser.getUserId());
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.UNIT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.UNIT_ERROR, error);
+					modelMap.put(StringConstants.UNIT, unitInfoDTO);
+					return "unit/add";
+				}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+				unitInfoApi.save(unitInfoDTO);
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit saved successfully");
+			}
 
-        /*current user checking end*/
+		} catch (Exception e) {
 
-            if (unitInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/unit/add";
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            synchronized (this.getClass()) {
-                unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                unitInfoDTO.setCreatedById(currentUser.getUserId());
+		return "redirect:/unit/list";
+	}
 
-                UnitInfoError error = unitInfoValidation.onSave(unitInfoDTO, bindingResult);
+	@GetMapping(value = "/edit")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String edit(@RequestParam("unitId") long unitId, ModelMap modelMap, RedirectAttributes redirectAttributes,
+			HttpServletRequest request, HttpServletResponse response) {
 
-                if (!error.isValid()) {
-                    modelMap.put(StringConstants.UNIT_ERROR, error);
-                    modelMap.put(StringConstants.UNIT, unitInfoDTO);
-                    return "unit/add";
-                }
+		try {
 
-                unitInfoApi.save(unitInfoDTO);
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit saved successfully");
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        } catch (Exception e) {
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-        return "redirect:/unit/list";
-    }
+			UnitInfoDTO unitInfoDTO = unitInfoApi.getByIdAndStoreAndStatus(unitId, currentUser.getStoreId(),
+					Status.ACTIVE);
+			modelMap.put("unit", unitInfoDTO);
+			/* current user checking end */
+		} catch (Exception e) {
 
-    @GetMapping(value = "/edit")
-    public String edit(@RequestParam("unitId") long unitId, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-        try {
+		return "/unit/edit";
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+	}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+	@PostMapping(value = "/update")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String update(@ModelAttribute("unit") UnitInfoDTO unitInfoDTO, ModelMap modelMap,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-                RequestCacheUtil.save(request , response);
+		try {
 
-                return "redirect:/login";
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			/* current user checking end */
 
-            UnitInfoDTO unitInfoDTO = unitInfoApi.getByIdAndStoreAndStatus(unitId,currentUser.getStoreId(),Status.ACTIVE);
-            modelMap.put("unit", unitInfoDTO);
-        /*current user checking end*/
-        } catch (Exception e) {
+			if (unitInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/unit/add";
+			}
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			synchronized (this.getClass()) {
 
-        return "/unit/edit";
+				unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				unitInfoDTO.setCreatedById(currentUser.getUserId());
 
-    }
+				UnitInfoError error = unitInfoValidation.onUpdate(unitInfoDTO, bindingResult);
 
-    @PostMapping(value = "/update")
-    public String update(@ModelAttribute("unit")UnitInfoDTO unitInfoDTO,ModelMap modelMap,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.UNIT_ERROR, error);
+					modelMap.put(StringConstants.UNIT, unitInfoDTO);
+					return "unit/add";
+				}
 
-        try {
+				unitInfoApi.update(unitInfoDTO);
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit updated successfully");
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		} catch (Exception e) {
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.CATEGORY_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            if (unitInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/unit/add";
-            }
-
-            synchronized (this.getClass()) {
-
-                unitInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                unitInfoDTO.setCreatedById(currentUser.getUserId());
-
-                UnitInfoError error = unitInfoValidation.onUpdate(unitInfoDTO, bindingResult);
-
-                if (!error.isValid()) {
-                    modelMap.put(StringConstants.UNIT_ERROR, error);
-                    modelMap.put(StringConstants.UNIT, unitInfoDTO);
-                    return "unit/add";
-                }
-
-                unitInfoApi.update(unitInfoDTO);
-
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "unit updated successfully");
-            }
-
-        } catch (Exception e) {
-
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-        return "redirect:/unit/list";
-    }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+		return "redirect:/unit/list";
+	}
 }

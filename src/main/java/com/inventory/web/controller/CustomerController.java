@@ -1,6 +1,27 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.inventory.core.api.iapi.IAccountInfoApi;
+import com.inventory.core.api.iapi.ICityInfoApi;
+import com.inventory.core.api.iapi.IClientInfoApi;
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.IOrderInfoApi;
+import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.AccountInfoDTO;
 import com.inventory.core.model.dto.ClientInfoDTO;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -13,22 +34,11 @@ import com.inventory.core.util.ParseUtls;
 import com.inventory.core.validation.ClientInfoValidation;
 import com.inventory.web.error.ClientInfoError;
 import com.inventory.web.session.RequestCacheUtil;
-import com.inventory.web.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
+import com.inventory.web.util.PageInfo;
+import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.UIUtil;
 
 /**
  * @author dhiraj
@@ -36,482 +46,432 @@ import java.util.List;
 @Controller
 public class CustomerController {
 
-    @Autowired
-    private IClientInfoApi clientInfoApi;
+	@Autowired
+	private IClientInfoApi clientInfoApi;
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private ICityInfoApi cityInfoApi;
+	@Autowired
+	private ICityInfoApi cityInfoApi;
 
-    @Autowired
-    private ClientInfoValidation clientInfoValidation;
+	@Autowired
+	private ClientInfoValidation clientInfoValidation;
 
-    @Autowired
-    private IInvoiceInfoApi invoiceInfoApi;
+	@Autowired
+	private IInvoiceInfoApi invoiceInfoApi;
 
-    @Autowired
-    private IAccountInfoApi accountInfoApi;
+	@Autowired
+	private IAccountInfoApi accountInfoApi;
 
-    @Autowired
-    private IOrderInfoApi orderInfoApi;
+	@Autowired
+	private IOrderInfoApi orderInfoApi;
 
-    @GetMapping(value = "/customer/list")
-    public String listCustomer(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+	@GetMapping(value = "/customer/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String listCustomer(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
-        try {
+		try {
 
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-                RequestCacheUtil.save(request , response);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-                return "redirect:/login";
-            }
+			/* current user checking end */
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (page == null) {
+				page = 1;
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (page < 1) {
+				page = 1;
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			int currentpage = page - 1;
 
-        /*current user checking end*/
+			long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER,
+					currentUser.getStoreId());
 
-            if (page == null) {
-                page = 1;
-            }
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
-            if (page < 1) {
-                page = 1;
-            }
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
 
-            int currentpage = page - 1;
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.CUSTOMER , currentUser.getStoreId());
+			modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER,
+					currentpage, (int) PageInfo.pageList, currentUser.getStoreId()));
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+		return "customer/list";
+	}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+	@GetMapping(value = "/customer/show")
+	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR' , 'ROLE_SUPERADMINISTRATOR' , 'CLIENT_VIEW')")
+	public String showCustomer(@RequestParam("customerId") Long clientId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
-            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.CUSTOMER, currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
+		try {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        return "customer/list";
-    }
+			if (currentUser == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
 
-    @GetMapping(value = "/customer/show")
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR' , 'ROLE_SUPERADMINISTRATOR' , 'CLIENT_VIEW')")
-    public String showCustomer(@RequestParam("customerId") Long clientId, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+				RequestCacheUtil.save(request, response);
 
-        try {
+				return "redirect:/login";
+			}
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			/* current user checking end */
 
-                RequestCacheUtil.save(request , response);
+			if (clientId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/customer/list";
+			}
 
-                return "redirect:/login";
-            }
+			if (clientId <= 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/customer/list";
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE, clientId, currentUser.getStoreId());
 
-            /*current user checking end*/
+			if (clientInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "provided customer not found");
+				return "redirect:/customer/list";
+			}
 
-            if (clientId == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/customer/list";
-            }
+			BigDecimal totalCredit = accountInfoApi.totalCreditAmountOfStore(AccountAssociateType.CUSTOMER,
+					currentUser.getStoreId());
 
-            if (clientId <= 0){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/customer/list";
-            }
+			AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId,
+					AccountAssociateType.CUSTOMER);
 
-            ClientInfoDTO clientInfoDTO = clientInfoApi.show(Status.ACTIVE , clientId , currentUser.getStoreId());
+			BigDecimal customerCreditAmount = (accountInfoDTO != null ? accountInfoDTO.getCreditAmount()
+					: BigDecimal.valueOf(0));
 
-            if (clientInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "provided customer not found");
-                return "redirect:/customer/list";
-            }
+			BigDecimal crPercentage = BigDecimal.valueOf(0.0);
 
-            BigDecimal totalCredit = accountInfoApi.totalCreditAmountOfStore(AccountAssociateType.CUSTOMER , currentUser.getStoreId());
+			if (!totalCredit.equals(BigDecimal.valueOf(0))) {
+				crPercentage = customerCreditAmount.divide(totalCredit);
+				crPercentage = crPercentage.multiply(BigDecimal.valueOf(100));
+			}
 
-            AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER);
+			crPercentage = ParseUtls.formatter(crPercentage);
 
-            BigDecimal customerCreditAmount = (accountInfoDTO != null ? accountInfoDTO.getCreditAmount() : BigDecimal.valueOf(0));
+			modelMap.put(StringConstants.CUSTOMER, clientInfoDTO);
+			modelMap.put(StringConstants.CRPERCENTAGE, crPercentage);
+			modelMap.put(StringConstants.ACCOUNT, accountInfoDTO);
+			modelMap.put(StringConstants.ORDER_LIST,
+					orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE, currentUser.getStoreId(), clientId, 0, 500));
+			modelMap.put(StringConstants.INVOICE_LIST, invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(
+					Status.ACTIVE, currentUser.getStoreId(), clientId, 0, 500));
 
-            BigDecimal crPercentage = BigDecimal.valueOf(0.0);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (!totalCredit.equals(BigDecimal.valueOf(0))){
-                crPercentage = customerCreditAmount.divide(totalCredit);
-                crPercentage = crPercentage.multiply(BigDecimal.valueOf(100));
-            }
+		return "customer/show";
+	}
 
-            crPercentage = ParseUtls.formatter(crPercentage);
+	@GetMapping(value = "/customer/search")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String searchCustomer(@RequestParam(value = "pageNo", required = false) Integer page,
+			@RequestParam("q") String q, ModelMap modelMap, RedirectAttributes redirectAttributes,
+			HttpServletRequest request, HttpServletResponse response) {
 
+		try {
 
-            modelMap.put(StringConstants.CUSTOMER , clientInfoDTO);
-            modelMap.put(StringConstants.CRPERCENTAGE , crPercentage);
-            modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
-            modelMap.put(StringConstants.ORDER_LIST , orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
-            modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500));
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        return "customer/show";
-    }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-    @GetMapping(value = "/customer/search")
-    public String searchCustomer(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam("q")String q , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+			/* current user checking end */
 
-        try {
+			if (page == null) {
+				page = 1;
+			}
 
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (page < 1) {
+				page = 1;
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			int currentpage = page - 1;
 
-                return "redirect:/login";
-            }
+			long totalList = clientInfoApi.searchCount(Status.ACTIVE, ClientType.CUSTOMER, q, currentUser.getStoreId());
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+			modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.search(Status.ACTIVE, ClientType.CUSTOMER, q,
+					currentpage, (int) PageInfo.pageList, currentUser.getStoreId()));
 
-        /*current user checking end*/
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
+			modelMap.put("query", q);
 
-            if (page == null) {
-                page = 1;
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (page < 1) {
-                page = 1;
-            }
+		return "customer/search";
+	}
+
+	@GetMapping(value = "/customer/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String addCustomer(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
 
-            int currentpage = page - 1;
+		try {
 
-            long totalList = clientInfoApi.searchCount(Status.ACTIVE, ClientType.CUSTOMER , q , currentUser.getStoreId());
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+			/* current user checking end */
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-            modelMap.put(StringConstants.CUSTOMER_LIST, clientInfoApi.search(Status.ACTIVE, ClientType.CUSTOMER, q , currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+		return "customer/add";
+	}
 
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
-            modelMap.put("query" , q);
+	@PostMapping(value = "/customer/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String saveCustomer(@RequestAttribute("customer") ClientInfoDTO clientInfoDTO, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        return "customer/search";
-    }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-    @GetMapping(value = "/customer/add")
-    public String addCustomer(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-        try {
+			/* current user checking end */
 
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			synchronized (this.getClass()) {
+				clientInfoDTO.setClientType(ClientType.CUSTOMER);
+				clientInfoDTO.setCreatedById(currentUser.getUserId());
+				clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+				ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
 
-                RequestCacheUtil.save(request , response);
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+					modelMap.put(StringConstants.CUSTOMER, clientInfoDTO);
+					modelMap.put(StringConstants.CUSTOMER_ERROR, error);
+					return "customer/add";
+				}
+
+				clientInfoApi.save(clientInfoDTO);
+			}
 
-                return "redirect:/login";
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+		return "redirect:/customer/list";
+	}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+	@GetMapping(value = "/vendor/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String listVendor(@RequestParam(value = "pageNo", required = false) Integer page,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "direction", required = false) String direction, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+
+		try {
+
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
+
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			/* current user checking end */
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			if (page == null) {
+				page = 1;
+			}
 
-        /*current user checking end*/
-            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+			if (page < 1) {
+				page = 1;
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-        return "customer/add";
-    }
-
-    @PostMapping(value = "/customer/save")
-    public String saveCustomer(@RequestAttribute("customer") ClientInfoDTO clientInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request , HttpServletResponse response) {
-
-        try {
-       /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-        synchronized (this.getClass()) {
-            clientInfoDTO.setClientType(ClientType.CUSTOMER);
-            clientInfoDTO.setCreatedById(currentUser.getUserId());
-            clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
-
-            ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
-
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                modelMap.put(StringConstants.CUSTOMER, clientInfoDTO);
-                modelMap.put(StringConstants.CUSTOMER_ERROR, error);
-                return "customer/add";
-            }
-
-            clientInfoApi.save(clientInfoDTO);
-        }
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-        return "redirect:/customer/list";
-    }
-
-
-    @GetMapping(value = "/vendor/list")
-    public String listVendor(@RequestParam(value = "pageNo", required = false) Integer page, @RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "direction", required = false) String direction, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
-
-        try {
-
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-
-                RequestCacheUtil.save(request , response);
-
-                return "redirect:/login";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            if (page == null) {
-                page = 1;
-            }
-
-            if (page < 1) {
-                page = 1;
-            }
-
-            int currentpage = page - 1;
-
-            long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.VENDOR , currentUser.getStoreId());
-
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
-
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
-
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
-
-            modelMap.put(StringConstants.VENDOR_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.VENDOR, currentpage, (int) PageInfo.pageList , currentUser.getStoreId()));
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-        return "vendor/list";
-    }
-
-    @GetMapping(value = "/vendor/add")
-    public String addVendor(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) {
-
-        try {
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-
-                RequestCacheUtil.save(request , response);
-
-                return "redirect:/login";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-        return "vendor/add";
-    }
-
-    @PostMapping(value = "/vendor/save")
-    public String saveVendor(@RequestAttribute("customer") ClientInfoDTO clientInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-       /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-        synchronized (this.getClass()) {
-
-            clientInfoDTO.setClientType(ClientType.VENDOR);
-            clientInfoDTO.setCreatedById(currentUser.getUserId());
-            clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
-
-            ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
-
-            if (!error.isValid()) {
-                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                modelMap.put(StringConstants.VENDOR, clientInfoDTO);
-                modelMap.put(StringConstants.VENDOR_ERROR, error);
-                return "vendor/add";
-            }
-
-            clientInfoApi.save(clientInfoDTO);
-        }
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-        return "redirect:/vendor/list";
-    }
+			int currentpage = page - 1;
+
+			long totalList = clientInfoApi.countByStatusAndClientType(Status.ACTIVE, ClientType.VENDOR,
+					currentUser.getStoreId());
+
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
+
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+			modelMap.put(StringConstants.VENDOR_LIST, clientInfoApi.list(Status.ACTIVE, ClientType.VENDOR, currentpage,
+					(int) PageInfo.pageList, currentUser.getStoreId()));
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
+
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+
+		return "vendor/list";
+	}
+
+	@GetMapping(value = "/vendor/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String addVendor(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
+
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
+
+			/* current user checking end */
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+		return "vendor/add";
+	}
+
+	@PostMapping(value = "/vendor/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String saveVendor(@RequestAttribute("customer") ClientInfoDTO clientInfoDTO, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
+
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
+
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
+
+			/* current user checking end */
+
+			synchronized (this.getClass()) {
+
+				clientInfoDTO.setClientType(ClientType.VENDOR);
+				clientInfoDTO.setCreatedById(currentUser.getUserId());
+				clientInfoDTO.setStoreInfoId(currentUser.getStoreId());
+
+				ClientInfoError error = clientInfoValidation.onSave(clientInfoDTO);
+
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+					modelMap.put(StringConstants.VENDOR, clientInfoDTO);
+					modelMap.put(StringConstants.VENDOR_ERROR, error);
+					return "vendor/add";
+				}
+
+				clientInfoApi.save(clientInfoDTO);
+			}
+
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
+		return "redirect:/vendor/list";
+	}
 }

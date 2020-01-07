@@ -16,6 +16,7 @@ import com.inventory.web.util.RequestUtils;
 import com.inventory.web.util.StringConstants;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -60,22 +61,13 @@ public class SubscriberController {
     private ISubscriberServiceApi subscriberServiceApi;
 
     @GetMapping(value = "/list")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             modelMap.put(StringConstants.SUBSCRIBER_LIST, subscriberApi.list(Status.ACTIVE));
 
@@ -91,22 +83,13 @@ public class SubscriberController {
     }
 
     @GetMapping(value = "/add")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             /*current user checking end*/
 
@@ -123,22 +106,13 @@ public class SubscriberController {
     }
 
     @PostMapping(value = "/save")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String save(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
 
             /*current user checking end*/
 
@@ -155,23 +129,13 @@ public class SubscriberController {
     }
 
     @GetMapping(value = "/show")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String show(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
 
             /*current user checking end*/
 
@@ -198,23 +162,13 @@ public class SubscriberController {
     }
     
     @GetMapping(value = "/activate")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String activate(@RequestParam("subid") long subscriberId, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
 
             /*current user checking end*/
 
@@ -230,23 +184,13 @@ public class SubscriberController {
     }
 
     @GetMapping(value = "/service/renew")
+    @PreAuthorize("hasRole('ROLE_SYSTEM')")
     public String renew(@RequestParam("subscriberId") long subscriberId, @RequestParam("serviceId") long serviceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
 
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
 
             /*current user checking end*/
 

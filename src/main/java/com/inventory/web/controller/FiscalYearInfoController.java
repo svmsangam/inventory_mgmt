@@ -1,17 +1,10 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.IFiscalYearInfoApi;
-import com.inventory.core.api.iapi.IUserApi;
-import com.inventory.core.model.dto.FiscalYearInfoDTO;
-import com.inventory.core.model.dto.InvUserDTO;
-import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.util.Authorities;
-import com.inventory.web.session.RequestCacheUtil;
-import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.LoggerUtil;
-import com.inventory.web.util.StringConstants;
-import com.inventory.web.util.UIUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.inventory.core.api.iapi.IFiscalYearInfoApi;
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
+import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.UIUtil;
 
 /**
  * Created by dhiraj on 12/24/17.
@@ -30,142 +30,110 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("fiscalyear")
 public class FiscalYearInfoController {
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IFiscalYearInfoApi fiscalYearInfoApi;
+	@Autowired
+	private IFiscalYearInfoApi fiscalYearInfoApi;
 
-    @GetMapping(value = "/")
-    public String index() {
+	@GetMapping(value = "/")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String index() {
 
+		return "redirect:/fiscalyear/list";
+	}
 
-        return "redirect:/fiscalyear/list";
-    }
+	@GetMapping(value = "/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String list(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
 
-    @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        try {
-                  /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			/* current user checking end */
 
-                RequestCacheUtil.save(request, response);
+			modelMap.put(StringConstants.FISCAL_YEAR_LIST,
+					fiscalYearInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), 0, 100));
 
-                return "redirect:/login";
-            }
+		} catch (Exception e) {
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+		return "fiscalyear/list";
+	}
 
-        /*current user checking end*/
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String add(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
 
-            modelMap.put(StringConstants.FISCAL_YEAR_LIST, fiscalYearInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), 0, 100));
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        } catch (Exception e) {
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking end */
 
-        return "fiscalyear/list";
-    }
+		} catch (Exception e) {
 
-    @GetMapping(value = "/add")
-    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-        try {
-                  /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		return "fiscalyear/add";
+	}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String save(@RequestAttribute("fiscalYearInfo") FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
-                RequestCacheUtil.save(request, response);
+		try {
 
-                return "redirect:/login";
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			/* current user checking end */
 
-        /*current user checking end*/
+			if (fiscalYearInfoDTO == null) {
 
-        } catch (Exception e) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+				return "redirect:/fiscalyear/add";
+			}
 
-        return "fiscalyear/add";
-    }
+			fiscalYearInfoDTO.setStoreInfoId(currentUser.getStoreId());
 
-    @PostMapping(value = "/save")
-    public String save(@RequestAttribute("fiscalYearInfo") FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+			fiscalYearInfoApi.save(fiscalYearInfoDTO);
 
-        try {
+			redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "fiscal year successfully saved");
 
-                  /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		} catch (Exception e) {
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			LoggerUtil.logException(this.getClass(), e);
 
-                RequestCacheUtil.save(request, response);
+			return "redirect:/500";
+		}
 
-                return "redirect:/login";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            if (fiscalYearInfoDTO == null) {
-
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-
-                return "redirect:/fiscalyear/add";
-            }
-
-            fiscalYearInfoDTO.setStoreInfoId(currentUser.getStoreId());
-
-            fiscalYearInfoApi.save(fiscalYearInfoDTO);
-
-            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "fiscal year successfully saved");
-
-        } catch (Exception e) {
-
-            LoggerUtil.logException(this.getClass() , e);
-
-            return "redirect:/500";
-        }
-
-        return "redirect:/fiscalyear/list";
-    }
+		return "redirect:/fiscalyear/list";
+	}
 
 }
