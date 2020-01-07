@@ -412,7 +412,7 @@
                 }
             },
             title: {
-                text: 'Sale and Receivable Chart'
+                text: 'Paid and Receivable Ratio (' + crAmount + ')'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
@@ -432,7 +432,7 @@
                 colorByPoint: true,
                 data: [{
                     name: 'Sale',
-                    y: saleAmount,
+                    y: saleAmount - dueAmount,
                     selected: true,
                     color: '#28a745'
                 }, {
@@ -495,7 +495,7 @@
                 }
             },
             title: {
-                text: "Customer's sale in Overall Sales"
+                text: "Sales ratio with other customer"
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -514,12 +514,12 @@
                 name: 'Sale',
                 colorByPoint: true,
                 data: [{
-                    name: 'Overall',
+                    name: 'Other Customer',
                     y: totalSaleAmount,
                     selected: true,
                     color: '#327da8'
                 }, {
-                    name: 'Customer',
+                    name: 'This Customer',
                     y: clientSaleAmount,
                     color: '#dbbf32'
                 }]
