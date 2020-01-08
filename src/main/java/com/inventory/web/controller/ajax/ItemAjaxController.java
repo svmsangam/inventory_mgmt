@@ -49,21 +49,6 @@ public class ItemAjaxController {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
             if (itemId == null){
                 result.setStatus(ResponseStatus.FAILURE.getValue());
                 result.setMessage("Item validation failed");
@@ -92,28 +77,13 @@ public class ItemAjaxController {
 
 
     @GetMapping(value = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("term") String term, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
             result.setDetail(itemInfoApi.search(Status.ACTIVE , term , 0 , 50 , currentUser.getStoreId()));
@@ -129,27 +99,13 @@ public class ItemAjaxController {
     }
 
     @GetMapping(value = "addUpQuantity", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> addUpQuantity(@RequestParam("itemIdList") List<Long> itemIdList , @RequestParam("quantity")Integer quantity, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
 
             synchronized (this.getClass()) {
                 if (itemIdList == null) {

@@ -1,5 +1,22 @@
 package com.inventory.web.controller.ajax;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.inventory.core.api.iapi.IStoreInfoApi;
 import com.inventory.core.api.iapi.IStoreUserInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
@@ -9,20 +26,10 @@ import com.inventory.core.model.dto.StoreInfoDTO;
 import com.inventory.core.model.dto.StoreUserInfoDTO;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.StoreInfoValidation;
 import com.inventory.web.error.StoreInfoError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by dhiraj on 8/14/17.
@@ -32,233 +39,184 @@ import javax.servlet.http.HttpServletRequest;
 @ResponseBody
 public class StoreAjaxController {
 
-    @Autowired
-    private IStoreInfoApi storeInfoApi;
+	@Autowired
+	private IStoreInfoApi storeInfoApi;
 
-    @Autowired
-    private StoreInfoValidation storeInfoValidation;
+	@Autowired
+	private StoreInfoValidation storeInfoValidation;
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IStoreUserInfoApi storeUserInfoApi;
+	@Autowired
+	private IStoreUserInfoApi storeUserInfoApi;
 
-    @PostMapping(value = "save", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store") StoreInfoDTO storeInfoDTO, BindingResult bindingResult, HttpServletRequest request) {
-        RestResponseDTO result = new RestResponseDTO();
+	@PostMapping(value = "save", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
+	public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store") StoreInfoDTO storeInfoDTO,
+			BindingResult bindingResult, HttpServletRequest request) {
+		RestResponseDTO result = new RestResponseDTO();
 
-        try {
+		try {
 
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
+			synchronized (this.getClass()) {
+				StoreInfoError error = new StoreInfoError();
 
-            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+				error = storeInfoValidation.onSave(storeInfoDTO, bindingResult, currentUser.getUserId());
 
-                synchronized (this.getClass()) {
-                    StoreInfoError error = new StoreInfoError();
+				if (error.isValid()) {
 
-                    error = storeInfoValidation.onSave(storeInfoDTO, bindingResult , currentUser.getUserId());
+					storeInfoDTO = storeInfoApi.save(storeInfoDTO, currentUser.getUserId());
 
-                    if (error.isValid()) {
+					if (currentUser.getStoreId() == null) {
+						userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
+					}
 
-                        storeInfoDTO = storeInfoApi.save(storeInfoDTO, currentUser.getUserId());
+					result.setStatus(ResponseStatus.SUCCESS.getValue());
+					result.setMessage("store successfully saved");
+					result.setDetail(storeInfoDTO);
 
-                        if (currentUser.getStoreId() == null) {
-                            userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
-                        }
+				} else {
+					result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+					result.setMessage("store validation failed");
+					result.setDetail(error);
+				}
+			}
 
-                        result.setStatus(ResponseStatus.SUCCESS.getValue());
-                        result.setMessage("store successfully saved");
-                        result.setDetail(storeInfoDTO);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			e.getStackTrace();
+			result.setStatus(ResponseStatus.FAILURE.getValue());
+			result.setMessage("internal server error");
+		}
 
-                    } else {
-                        result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                        result.setMessage("store validation failed");
-                        result.setDetail(error);
-                    }
-                }
+		return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+	}
 
-            } else {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("unauthorized user");
-            }
+	@GetMapping(value = "/show/{storeId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public ResponseEntity<RestResponseDTO> save(@PathVariable("storeId") Long storeId, HttpServletRequest request) {
+		RestResponseDTO result = new RestResponseDTO();
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            e.getStackTrace();
-            result.setStatus(ResponseStatus.FAILURE.getValue());
-            result.setMessage("internal server error");
-        }
+		try {
 
-        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-    }
+			if (storeId == null) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-    @GetMapping(value = "/show/{storeId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> save(@PathVariable("storeId") Long storeId, HttpServletRequest request) {
-        RestResponseDTO result = new RestResponseDTO();
+			if (storeId < 0) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-        try {
+			StoreInfoDTO storeInfoDTO = storeInfoApi.show(storeId, Status.ACTIVE);
 
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (storeInfoDTO == null) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
+			result.setStatus(ResponseStatus.SUCCESS.getValue());
+			result.setMessage("store successfully saved");
+			result.setDetail(storeInfoDTO);
 
-            if (storeId == null) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("store not found");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			result.setStatus(ResponseStatus.FAILURE.getValue());
+			result.setMessage("internal server error");
+		}
 
-            if (storeId < 0) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("store not found");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
+		return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+	}
 
-            if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) || currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+	@PostMapping(value = "update", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
+	public ResponseEntity<RestResponseDTO> update(@RequestAttribute("store") StoreInfoDTO storeInfoDTO,
+			BindingResult bindingResult, HttpServletRequest request) {
+		RestResponseDTO result = new RestResponseDTO();
 
-                StoreInfoDTO storeInfoDTO = storeInfoApi.show(storeId, Status.ACTIVE);
+		try {
 
-                if (storeInfoDTO == null) {
-                    result.setStatus(ResponseStatus.FAILURE.getValue());
-                    result.setMessage("store not found");
-                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-                }
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                result.setStatus(ResponseStatus.SUCCESS.getValue());
-                result.setMessage("store successfully saved");
-                result.setDetail(storeInfoDTO);
+			StoreInfoError error = new StoreInfoError();
 
-            }
+			error = storeInfoValidation.onUpdate(storeInfoDTO, bindingResult);
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            result.setStatus(ResponseStatus.FAILURE.getValue());
-            result.setMessage("internal server error");
-        }
+			if (error.isValid()) {
 
-        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-    }
+				storeInfoDTO = storeInfoApi.update(storeInfoDTO);
 
-    @PostMapping(value = "update", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> update(@RequestAttribute("store") StoreInfoDTO storeInfoDTO, BindingResult bindingResult, HttpServletRequest request) {
-        RestResponseDTO result = new RestResponseDTO();
+				if (currentUser.getStoreId() == null) {
+					userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
+				}
 
-        try {
+				result.setStatus(ResponseStatus.SUCCESS.getValue());
+				result.setMessage("store successfully updated");
+				result.setDetail(storeInfoDTO);
 
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			} else {
+				result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
+				result.setMessage("store validation failed");
+				result.setDetail(error);
+			}
 
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			result.setStatus(ResponseStatus.FAILURE.getValue());
+			result.setMessage("internal server error");
+		}
 
-            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
+		return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+	}
 
-                StoreInfoError error = new StoreInfoError();
+	@GetMapping(value = "/select", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
+	public ResponseEntity<RestResponseDTO> select(@RequestParam("storeId") Long storeId, HttpServletRequest request) {
+		RestResponseDTO result = new RestResponseDTO();
 
-                error = storeInfoValidation.onUpdate(storeInfoDTO, bindingResult);
+		try {
 
-                if (error.isValid()) {
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (storeId == null) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-                    storeInfoDTO = storeInfoApi.update(storeInfoDTO);
+			if (storeId < 0) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-                    if (currentUser.getStoreId() == null) {
-                        userApi.changeStore(currentUser.getUserId(), storeInfoDTO.getStoreId());
-                    }
+			StoreUserInfoDTO storeUserInfoDTO = storeUserInfoApi.getByUserAndStore(currentUser.getUserId(), storeId);
 
-                    result.setStatus(ResponseStatus.SUCCESS.getValue());
-                    result.setMessage("store successfully updated");
-                    result.setDetail(storeInfoDTO);
+			if (storeUserInfoDTO == null) {
+				result.setStatus(ResponseStatus.FAILURE.getValue());
+				result.setMessage("store not found");
+				return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+			}
 
-                } else {
-                    result.setStatus(ResponseStatus.VALIDATION_FAILED.getValue());
-                    result.setMessage("store validation failed");
-                    result.setDetail(error);
-                }
+			result.setStatus(ResponseStatus.SUCCESS.getValue());
+			result.setMessage("store successfully saved");
 
-            } else {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("unauthorized user");
-            }
+			userApi.changeStore(currentUser.getUserId(), storeId);
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            result.setStatus(ResponseStatus.FAILURE.getValue());
-            result.setMessage("internal server error");
-        }
+		} catch (Exception e) {
+			e.getStackTrace();
+			LoggerUtil.logException(this.getClass(), e);
+			result.setStatus(ResponseStatus.FAILURE.getValue());
+			result.setMessage("internal server error");
+		}
 
-        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-    }
-
-
-    @GetMapping(value = "/select", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RestResponseDTO> select(@RequestParam("storeId") Long storeId, HttpServletRequest request) {
-        RestResponseDTO result = new RestResponseDTO();
-
-        try {
-
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (storeId == null) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("store not found");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (storeId < 0) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("store not found");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.SUPERADMIN) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) {
-
-                StoreUserInfoDTO storeUserInfoDTO = storeUserInfoApi.getByUserAndStore(currentUser.getUserId() , storeId);
-
-                if (storeUserInfoDTO == null) {
-                    result.setStatus(ResponseStatus.FAILURE.getValue());
-                    result.setMessage("store not found");
-                    return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-                }
-
-                result.setStatus(ResponseStatus.SUCCESS.getValue());
-                result.setMessage("store successfully saved");
-
-                userApi.changeStore(currentUser.getUserId() , storeId);
-
-            }
-
-        } catch (Exception e) {
-            e.getStackTrace();
-            LoggerUtil.logException(this.getClass() , e);
-            result.setStatus(ResponseStatus.FAILURE.getValue());
-            result.setMessage("internal server error");
-        }
-
-        return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-    }
-
+		return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
+	}
 
 }

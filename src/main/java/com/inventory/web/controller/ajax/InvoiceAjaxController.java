@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,7 @@ public class InvoiceAjaxController {
     private IFiscalYearInfoApi fiscalYearInfoApi;
     
     @GetMapping(value = "list")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<Map<String, List<InvoiceListDTO>>> list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "length", required = false) int length, @RequestParam(value = "direction", required = false) String direction , HttpServletRequest request , HttpServletResponse response) {
 
         RestResponseDTO result = new RestResponseDTO();

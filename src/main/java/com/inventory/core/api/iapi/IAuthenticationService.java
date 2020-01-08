@@ -9,7 +9,7 @@ import com.inventory.core.model.enumconstant.Permission;
  */
 public interface IAuthenticationService {
 
-    RestResponseDTO auth_Rest_Controller(InvUserDTO currentUser, RestResponseDTO responseDTO);
+   // RestResponseDTO auth_Rest_Controller(InvUserDTO currentUser, RestResponseDTO responseDTO);
 
     RestResponseDTO auth_Rest_Controller_Store_All_User(InvUserDTO currentUser, RestResponseDTO responseDTO);
 

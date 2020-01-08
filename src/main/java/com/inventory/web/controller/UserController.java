@@ -74,26 +74,13 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/changepassword")
+	@PreAuthorize("isAuthenticated()")
 	public String changePassword(RedirectAttributes redirectAttributes) {
-
-		try {
-
-			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-			if (currentUser == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
-
-		} catch (Exception e) {
-			LoggerUtil.logException(this.getClass(), e);
-			return "redirect:/500";
-		}
-
 		return "user/changePassword";
 	}
 
 	@PostMapping(value = "/changepassword")
+	@PreAuthorize("isAuthenticated()")
 	public String updatePassword(@RequestParam("oldpassword") String oldPassword,
 			@RequestParam("newpassword") String newPassword, @RequestParam("confirmpassword") String confirmPassword,
 			RedirectAttributes redirectAttributes) {
@@ -101,11 +88,6 @@ public class UserController {
 		try {
 
 			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-			if (currentUser == null) {
-				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-				return "redirect:/logout";
-			}
 
 			PasswordError error = userValidation.change(oldPassword, newPassword, confirmPassword,
 					currentUser.getUserId());
@@ -238,27 +220,27 @@ public class UserController {
 	public String manage(@RequestAttribute("userpermission") UserPermissionDTO userPermissionDTO, ModelMap modelMap,
 			RedirectAttributes redirectAttributes) {
 		try {
-				synchronized (this.getClass()) {
-					UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
+			synchronized (this.getClass()) {
+				UserManageError error = userValidation.onManage(userPermissionDTO.getUserId());
 
-					if (!error.isValid()) {
-						redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-						return "redirect:/user/list";
-					}
-
-					UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
-
-					if (userPermissionDTO1 == null) {
-						userPermissionApi.save(userPermissionDTO);
-					} else {
-						userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
-						userPermissionApi.update(userPermissionDTO);
-					}
-
-					redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user managed successfully");
-
-					return "redirect:/user/manage?userId=" + userPermissionDTO.getUserId();
+				if (!error.isValid()) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+					return "redirect:/user/list";
 				}
+
+				UserPermissionDTO userPermissionDTO1 = userPermissionApi.getByUserId(userPermissionDTO.getUserId());
+
+				if (userPermissionDTO1 == null) {
+					userPermissionApi.save(userPermissionDTO);
+				} else {
+					userPermissionDTO.setUserPermissionId(userPermissionDTO1.getUserPermissionId());
+					userPermissionApi.update(userPermissionDTO);
+				}
+
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user managed successfully");
+
+				return "redirect:/user/manage?userId=" + userPermissionDTO.getUserId();
+			}
 
 		} catch (Exception e) {
 			LoggerUtil.logException(this.getClass(), e);
@@ -272,24 +254,24 @@ public class UserController {
 	public String updateEnable(@RequestParam("userId") long userId, ModelMap modelMap,
 			RedirectAttributes redirectAttributes) {
 		try {
-				synchronized (this.getClass()) {
-					UserManageError error = userValidation.onUpadteEnable(userId);
+			synchronized (this.getClass()) {
+				UserManageError error = userValidation.onUpadteEnable(userId);
 
-					if (!error.isValid()) {
-						redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
-						return "redirect:/user/list";
-					}
-
-					InvUserDTO userDTO = userApi.updateEnable(userId);
+				if (!error.isValid()) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+					return "redirect:/user/list";
 				}
 
-				/*
-				 * if (!userDTO.getEnable()){ sessionInfo.listSale(userDTO.getInventoryuser());
-				 * }
-				 */
+				InvUserDTO userDTO = userApi.updateEnable(userId);
+			}
 
-				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user updated successfully");
-				return "redirect:/user/list";
+			/*
+			 * if (!userDTO.getEnable()){ sessionInfo.listSale(userDTO.getInventoryuser());
+			 * }
+			 */
+
+			redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "user updated successfully");
+			return "redirect:/user/list";
 
 		} catch (Exception e) {
 			LoggerUtil.logException(this.getClass(), e);
