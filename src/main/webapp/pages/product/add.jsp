@@ -31,9 +31,9 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label class="control-label">SubCategory</label>
+                                <label class="control-label">Category</label>
                                 <select name="subCategoryId" class="form-control select2" id="subcategoryId">
-                                    <option value="">select subcategory</option>
+                                    <option value="">select category</option>
                                     <c:forEach items="${subcategoryList}" var="subcategory">
                                         <c:choose>
                                             <c:when test="${subcategory.categoryId eq product.subCategoryId}">
