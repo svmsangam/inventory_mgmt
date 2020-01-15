@@ -1,5 +1,20 @@
 package com.inventory.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.inventory.core.api.iapi.IInvoiceInfoApi;
 import com.inventory.core.api.iapi.IPaymentInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
@@ -15,15 +30,6 @@ import com.inventory.web.error.PaymentInfoError;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dhiraj on 10/10/17.
@@ -32,234 +38,215 @@ import java.util.List;
 @RequestMapping("paymentinfo")
 public class PaymentInfoController {
 
+	@Autowired
+	private IUserApi userApi;
 
+	@Autowired
+	private IPaymentInfoApi paymentInfoApi;
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IInvoiceInfoApi invoiceInfoApi;
 
-    @Autowired
-    private IPaymentInfoApi paymentInfoApi;
+	@Autowired
+	private PaymentInfoValidation paymentInfoValidation;
 
-    @Autowired
-    private IInvoiceInfoApi invoiceInfoApi;
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String add(@RequestParam("invoiceId") Long invoiceId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-    @Autowired
-    private PaymentInfoValidation paymentInfoValidation;
+		try {
 
-    @GetMapping(value = "/add")
-    public String add(@RequestParam("invoiceId") Long invoiceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        try {
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/* current user checking end */
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (invoiceId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
+				return "redirect:/invoice/listSale";// store not assigned page
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (invoiceId <= 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
+				return "redirect:/invoice/listSale";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
 
-        /*current user checking end*/
+			if (invoiceInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice not found");
+				return "redirect:/invoice/listSale";// store not assigned page
+			}
 
-            if (invoiceId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
-                return "redirect:/invoice/listSale";//store not assigned page
-            }
+			modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
 
-            if (invoiceId <= 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice required");
-                return "redirect:/invoice/listSale";//store not assigned page
-            }
+			List<Status> statusList = new ArrayList<>();
 
-            InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(invoiceId, currentUser.getStoreId(), Status.ACTIVE);
+			statusList.add(Status.ACTIVE);
+			statusList.add(Status.INACTIVE);
 
-            if (invoiceInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invoice not found");
-                return "redirect:/invoice/listSale";//store not assigned page
-            }
+			modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList,
+					currentUser.getStoreId(), invoiceId));
 
-            modelMap.put(StringConstants.INVOICE, invoiceInfoDTO);
+			modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
 
-            List<Status> statusList = new ArrayList<>();
+		} catch (Exception e) {
 
-            statusList.add(Status.ACTIVE);
-            statusList.add(Status.INACTIVE);
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            modelMap.put(StringConstants.PAYMENTLIST , paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList , currentUser.getStoreId() , invoiceId));
+		return "payment/add";
+	}
 
-            modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String save(@ModelAttribute("paymentInfo") PaymentInfoDTO paymentInfoDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-        } catch (Exception e) {
+		try {
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        return "payment/add";
-    }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-    @PostMapping(value = "/save")
-    public String save(@ModelAttribute("paymentInfo") PaymentInfoDTO paymentInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-        try {
+			/* current user checking end */
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (paymentInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/invoice/list";
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (paymentInfoDTO.getInvoiceInfoId() <= 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/invoice/list";
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			synchronized (this.getClass()) {
+				paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				paymentInfoDTO.setCreatedById(currentUser.getUserId());
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+				PaymentInfoError error = paymentInfoValidation.onSave(paymentInfoDTO, currentUser.getStoreId(),
+						paymentInfoDTO.getInvoiceInfoId(), bindingResult);
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.PAYMENTERROR, error);
+					modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
+					modelMap.put(StringConstants.INVOICE, invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(),
+							currentUser.getStoreId(), Status.ACTIVE));
 
-        /*current user checking end*/
+					modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
 
-            if (paymentInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/list";
-            }
+					List<Status> statusList = new ArrayList<>();
 
-            if (paymentInfoDTO.getInvoiceInfoId() <= 0){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/invoice/list";
-            }
+					statusList.add(Status.ACTIVE);
+					statusList.add(Status.INACTIVE);
 
-            synchronized (this.getClass()) {
-                paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                paymentInfoDTO.setCreatedById(currentUser.getUserId());
+					modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(
+							statusList, currentUser.getStoreId(), paymentInfoDTO.getInvoiceInfoId()));
 
-                PaymentInfoError error = paymentInfoValidation.onSave(paymentInfoDTO, currentUser.getStoreId(), paymentInfoDTO.getInvoiceInfoId(), bindingResult);
+					return "payment/add";
+				}
 
-                if (!error.isValid()) {
-                    modelMap.put(StringConstants.PAYMENTERROR, error);
-                    modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
-                    modelMap.put(StringConstants.INVOICE, invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(), currentUser.getStoreId(), Status.ACTIVE));
+				paymentInfoApi.save(paymentInfoDTO);
+			}
 
-                    modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-                    List<Status> statusList = new ArrayList<>();
+		redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "payment made successfully");
+		return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
+	}
 
-                    statusList.add(Status.ACTIVE);
-                    statusList.add(Status.INACTIVE);
+	@GetMapping(value = "chuque/collect")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String collectChuque(@RequestParam("paymentId") Long paymentId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-                    modelMap.put(StringConstants.PAYMENTLIST, paymentInfoApi.getAllByStatusInAndStoreAndInvoiceInfo(statusList, currentUser.getStoreId(), paymentInfoDTO.getInvoiceInfoId()));
+		try {
 
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                    return "payment/add";
-                }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_UPDATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-                paymentInfoApi.save(paymentInfoDTO);
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking end */
 
-        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "payment made successfully");
-        return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
-    }
+			if (paymentId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
+				return "redirect:/invoice/list";// store not assigned page
+			}
 
-    @GetMapping(value = "chuque/collect")
-    public String collectChuque(@RequestParam("paymentId") Long paymentId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			if (paymentId <= 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
+				return "redirect:/invoice/list";// store not assigned page
+			}
 
-        try {
+			synchronized (this.getClass()) {
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+				PaymentInfoDTO paymentInfoDTO = paymentInfoApi.getByIdAndStatus(paymentId, Status.INACTIVE);
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				if (paymentInfoDTO == null) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+					return "redirect:/invoice/list";// store not assigned page
+				}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(),
+						currentUser.getStoreId(), Status.ACTIVE);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.PAYMENT_UPDATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+				if (invoiceInfoDTO == null) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
+					return "redirect:/invoice/list";// store not assigned page
+				}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+				if (invoiceInfoDTO.getReceivableAmount() < paymentInfoDTO.getReceivedPayment().getAmount()) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+							"amount greater than receivable amount");
+					return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
+				}
 
-        /*current user checking end*/
+				long invoiceId = paymentInfoApi.collectChuque(paymentId);
 
-            if (paymentId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/list";//store not assigned page
-            }
+				return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
+			}
 
-            if (paymentId <= 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment required");
-                return "redirect:/invoice/list";//store not assigned page
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            synchronized (this.getClass()) {
-
-                PaymentInfoDTO paymentInfoDTO = paymentInfoApi.getByIdAndStatus(paymentId, Status.INACTIVE);
-
-                if (paymentInfoDTO == null) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                    return "redirect:/invoice/list";//store not assigned page
-                }
-
-                InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.show(paymentInfoDTO.getInvoiceInfoId(), currentUser.getStoreId(), Status.ACTIVE);
-
-                if (invoiceInfoDTO == null) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "payment not found");
-                    return "redirect:/invoice/list";//store not assigned page
-                }
-
-                if (invoiceInfoDTO.getReceivableAmount() < paymentInfoDTO.getReceivedPayment().getAmount()) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "amount greater than receivable amount");
-                    return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
-                }
-
-                long invoiceId = paymentInfoApi.collectChuque(paymentId);
-
-
-                return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
-            }
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-    }
+	}
 }

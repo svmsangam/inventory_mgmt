@@ -1,5 +1,15 @@
 package com.inventory.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.inventory.core.api.iapi.IQualificationApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
@@ -10,14 +20,6 @@ import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Created by dhiraj on 2/3/18.
@@ -26,142 +28,117 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("qualification")
 public class QualificationLevelController {
 
+	@Autowired
+	private IUserApi userApi;
 
+	@Autowired
+	private IQualificationApi qualificationApi;
 
-    @Autowired
-    private IUserApi userApi;
+	@GetMapping(value = "/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-    @Autowired
-    private IQualificationApi qualificationApi;
+		try {
 
-    @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        try {
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/* current user checking end */
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			modelMap.put(StringConstants.QUALIFICATION_LIST,
+					qualificationApi.list(Status.ACTIVE, currentUser.getStoreId()));
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		} catch (Exception e) {
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-        /*current user checking end*/
+		return "qualification/list";
+	}
 
-            modelMap.put(StringConstants.QUALIFICATION_LIST, qualificationApi.list(Status.ACTIVE, currentUser.getStoreId()));
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
+		try {
 
-        } catch (Exception e) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        return "qualification/list";
-    }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-    @GetMapping(value = "/add")
-    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			/* current user checking end */
 
-        try {
+		} catch (Exception e) {
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		return "qualification/add";
+	}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String save(@ModelAttribute("qualification") QualificationLevelDTO qualificationLevelDTO, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		try {
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        /*current user checking end*/
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        } catch (Exception e) {
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking end */
 
-        return "qualification/add";
-    }
+			if (qualificationLevelDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please fill the form");
 
-    @PostMapping(value = "/save")
-    public String save(@ModelAttribute("qualification") QualificationLevelDTO qualificationLevelDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				return "redirect:/qualification/add";
+			}
 
-        try {
+			synchronized (this) {
+				qualificationLevelDTO.setOwnerId(currentUser.getStoreId());
+				qualificationApi.save(qualificationLevelDTO);
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "qualification saved successfully");
+			}
+		} catch (Exception e) {
 
-        /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.QUALIFICATION_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            if (qualificationLevelDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "please fill the form");
-
-                return "redirect:/qualification/add";
-            }
-
-            synchronized (this) {
-                qualificationLevelDTO.setOwnerId(currentUser.getStoreId());
-                qualificationApi.save(qualificationLevelDTO);
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "qualification saved successfully");
-            }
-        } catch (Exception e) {
-
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-        return "redirect:/qualification/list";
-    }
+		return "redirect:/qualification/list";
+	}
 }

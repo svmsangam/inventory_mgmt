@@ -1,12 +1,34 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.*;
+import java.text.ParseException;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.inventory.core.api.iapi.ICityInfoApi;
+import com.inventory.core.api.iapi.ISendMailSSL;
+import com.inventory.core.api.iapi.IServiceInfoApi;
+import com.inventory.core.api.iapi.IStoreUserInfoApi;
+import com.inventory.core.api.iapi.ISubscriberApi;
+import com.inventory.core.api.iapi.ISubscriberServiceApi;
+import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.api.impl.RecaptchaService;
 import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.dto.SubscriberDTO;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.util.Authorities;
 import com.inventory.core.validation.SubscriberValidation;
 import com.inventory.web.error.RenewError;
 import com.inventory.web.error.SubscriberError;
@@ -14,16 +36,6 @@ import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.RequestUtils;
 import com.inventory.web.util.StringConstants;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Created by dhiraj on 1/25/18.
@@ -32,349 +44,299 @@ import java.util.Date;
 @RequestMapping("subscriber")
 public class SubscriberController {
 
-    @Autowired
-    private RecaptchaService captchaService;
+	@Autowired
+	private RecaptchaService captchaService;
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private ISubscriberApi subscriberApi;
+	@Autowired
+	private ISubscriberApi subscriberApi;
 
-    @Autowired
-    private IServiceInfoApi serviceInfoApi;
+	@Autowired
+	private IServiceInfoApi serviceInfoApi;
 
-    @Autowired
-    private ICityInfoApi cityInfoApi;
+	@Autowired
+	private ICityInfoApi cityInfoApi;
 
-    @Autowired
-    private IStoreUserInfoApi storeUserInfoApi;
+	@Autowired
+	private IStoreUserInfoApi storeUserInfoApi;
 
-    @Autowired
-    private SubscriberValidation subscriberValidation;
+	@Autowired
+	private SubscriberValidation subscriberValidation;
 
-    @Autowired
-    private ISendMailSSL mailApi;
+	@Autowired
+	private ISendMailSSL mailApi;
 
-    @Autowired
-    private ISubscriberServiceApi subscriberServiceApi;
+	@Autowired
+	private ISubscriberServiceApi subscriberServiceApi;
 
-    @GetMapping(value = "/list")
-    public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	@GetMapping(value = "/list")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String list(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-        try {
+		try {
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			modelMap.put(StringConstants.SUBSCRIBER_LIST, subscriberApi.list(Status.ACTIVE));
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/* current user checking end */
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		} catch (Exception e) {
 
-            modelMap.put(StringConstants.SUBSCRIBER_LIST, subscriberApi.list(Status.ACTIVE));
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            /*current user checking end*/
+		return "subscriber/list";
+	}
 
-        } catch (Exception e) {
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+		try {
 
-        return "subscriber/list";
-    }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-    @GetMapping(value = "/add")
-    public String add(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			/* current user checking end */
 
-        try {
+			modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		} catch (Exception e) {
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		return "subscriber/add";
+	}
 
-            /*current user checking end*/
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String save(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
-            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+		try {
 
-        } catch (Exception e) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			/* current user checking end */
 
-        return "subscriber/add";
-    }
+			subscriberDTO.setCreatedById(currentUser.getUserId());
 
-    @PostMapping(value = "/save")
-    public String save(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			subscriberDTO = subscriberApi.save(subscriberDTO);
 
-        try {
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		return "redirect:/subscriber/show?subscriberId=" + subscriberDTO.getSubscriberId();
+	}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+	@GetMapping(value = "/show")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String show(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		try {
 
-            /*current user checking end*/
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            subscriberDTO.setCreatedById(currentUser.getUserId());
+			/* current user checking end */
 
-            subscriberDTO = subscriberApi.save(subscriberDTO);
+			SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			if (subscriberDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
 
-        return "redirect:/subscriber/show?subscriberId=" + subscriberDTO.getSubscriberId();
-    }
+				return "redirect:/subscriber/list";
+			}
 
-    @GetMapping(value = "/show")
-    public String show(@RequestParam("subscriberId") long subscriberId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+			modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
+			modelMap.put(StringConstants.USER_LIST, storeUserInfoApi.getAllUserBySuperAdmin(subscriberDTO.getUserId()));
+			modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST,
+					subscriberServiceApi.list(Status.ACTIVE, subscriberId));
+			modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
 
-        try {
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		return "subscriber/show";
+	}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+	@GetMapping(value = "/activate")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String activate(@RequestParam("subid") long subscriberId, RedirectAttributes redirectAttributes) {
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		try {
 
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            /*current user checking end*/
+			/* current user checking end */
 
-            SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
+			subscriberApi.activate(subscriberId);
 
-            if (subscriberDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-                return "redirect:/subscriber/list";
-            }
+		return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+	}
 
-            modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
-            modelMap.put(StringConstants.STORE_LIST, storeUserInfoApi.getAllStoreByUser(subscriberDTO.getUserId()));
-            modelMap.put(StringConstants.USER_LIST, storeUserInfoApi.getAllUserBySuperAdmin(subscriberDTO.getUserId()));
-            modelMap.put(StringConstants.SUBSCRIBER_SERVICE_LIST, subscriberServiceApi.list(Status.ACTIVE, subscriberId));
-            modelMap.put(StringConstants.SERVICE_LIST, serviceInfoApi.list(Status.ACTIVE));
+	@GetMapping(value = "/service/renew")
+	@PreAuthorize("hasRole('ROLE_SYSTEM')")
+	public String renew(@RequestParam("subscriberId") long subscriberId, @RequestParam("serviceId") long serviceId,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+		try {
 
-        return "subscriber/show";
-    }
-    
-    @GetMapping(value = "/activate")
-    public String activate(@RequestParam("subid") long subscriberId, RedirectAttributes redirectAttributes) {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        try {
+			/* current user checking end */
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			synchronized (this) {
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				if (subscriberDTO == null) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
 
+					return "redirect:/subscriber/list";
+				}
 
-            /*current user checking end*/
+				RenewError error = subscriberValidation.onRenew(subscriberDTO.getUserId(), serviceId);
 
-            subscriberApi.activate(subscriberId);
+				if (!error.isValid()) {
 
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+					return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+				}
 
-        return "redirect:/subscriber/show?subscriberId="+subscriberId;
-    }
+				SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.save(serviceId, subscriberId);
 
-    @GetMapping(value = "/service/renew")
-    public String renew(@RequestParam("subscriberId") long subscriberId, @RequestParam("serviceId") long serviceId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(),
+						getRenewMsg(subscriberServiceDTO.getServiceInfo().getTitle(),
+								subscriberServiceDTO.getExpireOn(), subscriberDTO.getFullName(),
+								subscriberServiceDTO.getServiceInfo().getTotalStore()),
+						"account renew");
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully renewed");
 
-        try {
+			}
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		return "redirect:/subscriber/show?subscriberId=" + subscriberId;
+	}
 
-            if (!(currentUser.getUserauthority().contains(Authorities.SYSTEM) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+	private String getRenewMsg(String serviceName, Date expireOn, String subscribername, int totalStore) {
 
+		String msg = "";
 
-            /*current user checking end*/
+		msg = "dear " + subscribername + " " + serviceName + " service is successfull renewed and will be expire on "
+				+ expireOn + " now your are able to manage " + totalStore + " stores thank you";
 
-            synchronized (this) {
+		return msg;
+	}
 
-                SubscriberDTO subscriberDTO = subscriberApi.show(Status.ACTIVE, subscriberId);
+	@GetMapping(value = "/register")
+	public String register(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-                if (subscriberDTO == null) {
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "subscriber not found");
+		try {
 
-                    return "redirect:/subscriber/list";
-                }
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-                RenewError error = subscriberValidation.onRenew(subscriberDTO.getUserId(), serviceId);
+		} catch (Exception e) {
 
-                if (!error.isValid()) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, error.getError());
+		return "subscriber/register";
+	}
 
-                    return "redirect:/subscriber/show?subscriberId=" + subscriberId;
-                }
+	@PostMapping("/register")
+	public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO,
+			@RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request,
+			RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
-                SubscriberServiceDTO subscriberServiceDTO = subscriberServiceApi.save(serviceId, subscriberId);
+		try {
 
-                mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(), getRenewMsg(subscriberServiceDTO.getServiceInfo().getTitle(), subscriberServiceDTO.getExpireOn(), subscriberDTO.getFullName(), subscriberServiceDTO.getServiceInfo().getTotalStore()), "account renew");
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully renewed");
+			if (recaptchaResponse == null) {
+				modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+				modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+				modelMap.put(StringConstants.ERROR, "please verify captcha");
 
-            }
+				return "subscriber/register";
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+			synchronized (this) {
 
-        return "redirect:/subscriber/show?subscriberId=" + subscriberId;
-    }
+				SubscriberError error = subscriberValidation.onRegister(subscriberDTO);
 
-    private String getRenewMsg(String serviceName, Date expireOn, String subscribername, int totalStore) {
+				if (!error.isValid()) {
 
-        String msg = "";
+					modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+					modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
+					modelMap.put(StringConstants.SUBSCRIBER_ERROR, error);
 
-        msg = "dear " + subscribername + " " + serviceName + " service is successfull renewed and will be expire on " + expireOn + " now your are able to manage " + totalStore + " stores thank you";
+					return "subscriber/register";
 
-        return msg;
-    }
+				}
 
-    @GetMapping(value = "/register")
-    public String register(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				String ip = request.getRemoteAddr();
 
-        try {
+				String captchaVerifyMessage = captchaService.verifyRecaptcha(ip, recaptchaResponse);
 
-            modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+				if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
 
-        } catch (Exception e) {
+					redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid captcha ");
 
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+					return "redirect:/subscriber/register";
 
-        return "subscriber/register";
-    }
+				}
 
-    @PostMapping("/register")
-    public String signupDemo(@ModelAttribute("subscriber") SubscriberDTO subscriberDTO, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request, RedirectAttributes redirectAttributes, ModelMap modelMap) {
+				String token = subscriberApi.register(subscriberDTO);
 
-        try {
+				mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(),
+						getVerificationMsg(token, RequestUtils.getServerUlr(request)), "email verification request");
 
-            if (recaptchaResponse == null) {
-                modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
-                modelMap.put(StringConstants.ERROR, "please verify captcha");
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE,
+						"successfully registered please check your email to activate account");
 
-                return "subscriber/register";
-            }
+			}
+		} catch (ParseException e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            synchronized (this) {
+		return "redirect:/login";
+	}
 
-                SubscriberError error = subscriberValidation.onRegister(subscriberDTO);
+	private String getVerificationMsg(String token, String url) {
 
-                if (!error.isValid()) {
+		String msg = "";
 
-                    modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
-                    modelMap.put(StringConstants.SUBSCRIBER, subscriberDTO);
-                    modelMap.put(StringConstants.SUBSCRIBER_ERROR, error);
+		url = url + "/user/activate?token=" + token;
 
-                    return "subscriber/register";
+		msg = "to activate your account <a href='" + url
+				+ "' style='border-color: #367fa9; border-radius: 3px;'>click here</a>";
 
-                }
-
-                String ip = request.getRemoteAddr();
-
-                String captchaVerifyMessage = captchaService.verifyRecaptcha(ip, recaptchaResponse);
-
-                if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
-
-                    redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid captcha ");
-
-                    return "redirect:/subscriber/register";
-
-                }
-
-
-                String token = subscriberApi.register(subscriberDTO);
-
-                mailApi.sendHtmlMail(StringConstants.VerificationMainSender, subscriberDTO.getEmail(), getVerificationMsg(token, RequestUtils.getServerUlr(request)), "email verification request");
-
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "successfully registered please check your email to activate account");
-
-            }
-        } catch (ParseException e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-
-        return "redirect:/login";
-    }
-
-    private String getVerificationMsg(String token, String url) {
-
-        String msg = "";
-
-        url = url + "/user/activate?token=" + token;
-
-        msg = "to activate your account <a href='" + url + "' style='border-color: #367fa9; border-radius: 3px;'>click here</a>";
-
-        return msg;
-    }
+		return msg;
+	}
 
 }
-

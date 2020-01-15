@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,27 +36,13 @@ public class NotificationAjaxController {
     private INotificationApi notificationApi;
 
     @PostMapping(value = "/updateToken", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
     public ResponseEntity<RestResponseDTO> updateToken(@RequestParam("token") String token, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
 
             if (token == null){
                 result.setStatus(ResponseStatus.FAILURE.getValue());
@@ -86,28 +73,13 @@ public class NotificationAjaxController {
     }
 
     @GetMapping(value = "/count", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
     public ResponseEntity<RestResponseDTO> count(HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setDetail(notificationApi.findAllByStatusAndTo_Id(Status.ACTIVE , currentUser.getUserId() , 0 , 10));
             result.setMessage("" + notificationApi.countAllByStatusAndTo_IdAndSeenAndSent(Status.ACTIVE , currentUser.getUserId() , false , true));
