@@ -342,7 +342,9 @@
         var crAmount = 0;
 
         <c:if test="${account ne null}">
-            drAmount = ${account.formattedDebitAmount};
+            drAmount = <fmt:formatNumber type="number" maxFractionDigits="2"
+                                                                      groupingUsed="false"
+                                                                      value="${account.formattedCreditAmount - account.formattedDebitAmount}"/>;
             crAmount = ${account.formattedCreditAmount};
         </c:if>
 
