@@ -22,6 +22,7 @@ import com.inventory.core.api.iapi.ISubcategoryInfoApi;
 import com.inventory.core.api.iapi.IUnitInfoApi;
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.ProductFilterDTO;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
@@ -102,7 +103,9 @@ public class ProductInfoController {
 			}
 
 			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
-
+			modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
+			modelMap.put(StringConstants.SUBCATEGORY_LIST,
+					subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
 			modelMap.put("lastpage", totalpage);
 			modelMap.put("currentpage", page);
 			modelMap.put("pagelist", pagesnumbers);
@@ -378,6 +381,89 @@ public class ProductInfoController {
 		}
 
 		return "redirect:/product/" + productInfoDTO.getProductId();
+	}
+
+	@GetMapping(value = "/filter")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String filter(@ModelAttribute("terms") ProductFilterDTO filterTerms, BindingResult result, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
+
+		try {
+
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
+
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
+
+			/* current user checking end */
+
+			if (filterTerms == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
+				return "redirect:/product/list";
+
+			}
+
+			if (filterTerms.getName() == null & filterTerms.getSubCategoryId() < 1
+					&& filterTerms.getTrendingLevel() == null
+					&& (filterTerms.getGreaterThanInStock() < 1 || filterTerms.getLessThanInStock() < 1)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid filter terms");
+				return "redirect:/product/list";
+
+			}
+
+			Integer page = filterTerms.getPage();
+
+			if (page == null) {
+				page = 1;
+			}
+
+			if (page < 1) {
+				page = 1;
+			}
+
+			int currentpage = page - 1;
+
+			filterTerms.setStatus(Status.ACTIVE);
+			filterTerms.setStoreInfoId(currentUser.getStoreId());
+
+			long totalList = productInfoApi.filterCount(filterTerms);
+
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
+
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+
+			filterTerms.setPage(currentpage);
+			filterTerms.setSize((int) PageInfo.pageList);
+
+			modelMap.put(StringConstants.PRODUCT_LIST, productInfoApi.filter(filterTerms));
+			modelMap.put(StringConstants.TRENDING_LIST, TrendingLevel.values());
+			modelMap.put("filterDTO", filterTerms);
+			modelMap.put(StringConstants.SUBCATEGORY_LIST,
+					subcategoryInfoApi.getTree(Status.ACTIVE, currentUser.getStoreId()));
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
+			modelMap.put("totalResult", totalList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/";
+		}
+
+		return "product/filter";
 	}
 
 }
