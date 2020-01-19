@@ -43,7 +43,11 @@
                                  <div class="dropdown pull-right">
                                      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
                                          <span class="caret"></span></button>
-                                    
+                                    <ul class="dropdown-menu">
+                                         <li><a href="${pageContext.request.contextPath}/report/product/filter/pdf?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                         <li class="divider"></li>
+                                         <li><a href="${pageContext.request.contextPath}/report/product/filter/xls?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                                     </ul>
                                  </div>
                              </div>
                          </div>
