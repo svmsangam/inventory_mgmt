@@ -149,7 +149,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div id="container"
-                                     style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; border: 1px #9cc2cb"></div>
+                                     style="height: 400px; max-width: 600px; margin: 0 auto; border: 1px #9cc2cb"></div>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div id="container1"
-                                     style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; border: 1px #9cc2cb"></div>
+                                     style="height: 400px; max-width: 600px; margin: 0 auto; border: 1px #9cc2cb"></div>
                             </div>
                         </div>
                     </div>
@@ -242,11 +242,73 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12"><h3 class="box-title">Sales Order List</h3></div>
+                        </div>
+                    </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div id="orderListTable">
+                                <div class="table-responsive">
+                                    <table class="table datatable2 table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Order No</th>
+                                            <th>Customer Name</th>
+                                            <th>Total Cost</th>
+                                            <th>Order Date</th>
+                                            <th>Delivery Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <c:forEach items="${orderList}" var="order">
+                                            <tr>
+                                                <td>
+                                                    <a href="${pageContext.request.contextPath}/order/sale/${order.orderId}">#${order.orderNo}</a>
+                                                </td>
+                                                <td>${order.clientInfo.name}</td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                      groupingUsed="true"
+                                                                      value="${order.grandTotal}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${order.orderDate}"/></td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${order.deliveryDate}"/></td>
+                                                <td>
+                                                    <c:if test="${order.saleTrack eq 'PENDDING'}">
+                                                        <span class="label label-primary">Pending</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'ACCEPTED'}">
+                                                        <span class="label label-default">Accepted</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'PACKED'}">
+                                                        <span class="label label-warning">Packed</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'SHIPPED'}">
+                                                        <span class="label label-info">Shipped</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'DELIVERED'}">
+                                                        <span class="label label-success">Delivered</span>
+                                                    </c:if>
+
+                                                    <c:if test="${order.saleTrack eq 'CANCEL'}">
+                                                        <span class="label label-danger">Canceled</span>
+                                                    </c:if>
+
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -463,117 +525,4 @@
             }]
         });
     }
-</script>
-
-<script>
-    $(function () {
-        new FancyGrid({
-            renderTo: 'orderListTable',
-            title: 'Order List',
-            width: '100%',
-            height: 'fit',
-            theme: 'blue',
-            trackOver: true,
-            selModel: 'rows',
-            paging: true,
-            data: ${orderList},
-          /*  paging: {
-                pageSize: 10,
-                pageSizeData: [10 , 50, 100, 250, 500],
-                width: "50%"
-            },*/
-            exporter: true,
-            tbar: [
-                {
-                    type: 'search',
-                    width: 350,
-                    emptyText: 'Search',
-                    paramsMenu: true,
-                    paramsText: 'Parameters'
-                },
-                {
-                    text: 'Export to Excel',
-                    handler: function () {
-                        this.exportToExcel({
-                            fileName: 'order list',
-                            header: true
-                        });
-                    }
-                }, {
-                    text: 'Export to CSV',
-                    handler: function () {
-                        this.exportToCSV({
-                            fileName: 'order list',
-                            header: true
-                        });
-                    }
-                }
-            ],
-            defaults: {
-                type: 'text',
-                width: 200,
-                editable: false,
-                sortable: true,
-                searchable: true,
-                resizable: true,
-                ellipsis: true,
-                draggable: true,
-                'font-size': 'small'
-            },
-            clicksToEdit: 1,
-            columns: [{
-                index: 'orderNo',
-                locked: true,
-                title: 'Order No',
-                width: 200,
-                render: function (o) {
-                    o.value = "<a href ='${pageContext.request.contextPath}/order/sale/" + o.data.orderId + "'>"+o.data.orderNo+"</a>";
-                    return o;
-                }
-            }, {
-                index: 'orderDate',
-                locked: true,
-                title: 'Order Date',
-                width: 200
-            }, {
-                index: 'deliveryDate',
-                sortable: true,
-                searchable: true,
-                title: 'Delivery Date',
-                width: 250
-            },{
-                index: 'grandTotal',
-                sortable: true,
-                searchable: true,
-                title: 'Amount',
-                width: 250
-            },{
-                index: 'saleTrack',
-                sortable: true,
-                searchable: true,
-                title: 'Status',
-                width: 200,
-                'font-size': 'larger',
-                render: function (o) {
-                    if (o.data.saleTrack === 'PENDDING'){
-                        o.value =  '<span class="label label-primary">Pending</span>';
-                    }else if (o.data.saleTrack === 'ACCEPTED'){
-                        o.value =  '<span class="label label-default">Accepted</span>';
-                    }else if (o.data.saleTrack === 'PACKED'){
-                        o.value =  '<span class="label label-warning">Packed</span>';
-                    }else if (o.data.saleTrack === 'SHIPPED'){
-                        o.value =  '<span class="label label-info">Shipped</span>';
-                    }else if (o.data.saleTrack === 'DELIVERED'){
-                        o.value =  '<span class="label label-success">Delivered</span>';
-                    }else if (o.data.saleTrack === 'CANCEL'){
-                        o.value =  '<span class="label label-danger">Canceled</span>';
-                    }else {
-                        o.value = 'N/A';
-                    }
-                    return o;
-                }
-            }
-            ]
-        })
-    })
 </script>

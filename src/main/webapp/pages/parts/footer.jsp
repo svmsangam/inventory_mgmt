@@ -63,7 +63,7 @@ immediately after the control sidebar -->
 <script src="${pageContext.request.contextPath}/resources/js/asset/app/app.js"></script>
 <%--js bock ui loading spinner--%>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.blockUI.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/fancy.full.min.js"></script>
+
 
 <script>
 
@@ -142,6 +142,8 @@ immediately after the control sidebar -->
             'autoWidth': false,
             'cache': false
         })
+
+        $(".dataTables_filter label input").attr("placeholder" , "search");
     })
 </script>
 

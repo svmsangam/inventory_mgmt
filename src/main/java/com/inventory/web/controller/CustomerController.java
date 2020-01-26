@@ -170,14 +170,14 @@ public class CustomerController {
             AccountInfoDTO accountInfoDTO = accountInfoApi.getByAssociateIdAndAccountAssociateType(clientId , AccountAssociateType.CUSTOMER);
 
             List<OrderInfoDTO> orderInfoDTOList = orderInfoApi.getAllOrderListOfCustomer(Status.ACTIVE,  currentUser.getStoreId(), clientId, 0,  500);
-            Gson gson = new Gson();
+            /*Gson gson = new Gson();
 
-            String orderListJson = gson.toJson(orderInfoDTOList);
+            String orderListJson = gson.toJson(orderInfoDTOList);*/
 
             modelMap.put(StringConstants.CUSTOMER , clientInfoDTO);
             modelMap.put(StringConstants.CRPERCENTAGE , ParseUtls.formatter(totalCredit));
             modelMap.put(StringConstants.ACCOUNT , accountInfoDTO);
-            modelMap.put(StringConstants.ORDER_LIST , orderListJson);
+            modelMap.put(StringConstants.ORDER_LIST , orderInfoDTOList);
             modelMap.put(StringConstants.INVOICE_LIST , invoiceInfoApi.getAllReceivableByStatusAndBuyerAndStoreInfo(Status.ACTIVE,  clientId , currentUser.getStoreId(), 0,  500));
 
         } catch (Exception e) {

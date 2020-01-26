@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <%--select 2--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/select2.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fancy.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/AdminLTE.css">
     <!-- iCheck -->
@@ -33,6 +32,35 @@
     <style>
         .darkGray{
             color: #89898c !important;
+        }
+
+        .dataTables_length label{
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 400 !important;
+        }
+
+        .dataTables_filter label{
+            font-weight: 400 !important;
+        }
+
+        .dataTables_filter label input {
+            display: inline-block;
+            height: 34px;
+            padding: 6px 12px;
+            line-height: 1.42857143;
+            color: #333;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            font: initial !important;
         }
     </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
