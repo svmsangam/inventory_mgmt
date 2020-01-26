@@ -1,5 +1,19 @@
 package com.inventory.web.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.inventory.core.api.iapi.ICityInfoApi;
 import com.inventory.core.api.iapi.IDesignationInfoApi;
 import com.inventory.core.api.iapi.IEmployeeProfileApi;
@@ -9,19 +23,9 @@ import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.EmployeeStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
-import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by dhiraj on 12/19/17.
@@ -30,242 +34,199 @@ import java.util.List;
 @RequestMapping("profile")
 public class EmployeeProfileController {
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IEmployeeProfileApi profileApi;
+	@Autowired
+	private IEmployeeProfileApi profileApi;
 
-    @Autowired
-    private ICityInfoApi cityInfoApi;
+	@Autowired
+	private ICityInfoApi cityInfoApi;
 
-    @Autowired
-    private IDesignationInfoApi designationInfoApi;
+	@Autowired
+	private IDesignationInfoApi designationInfoApi;
 
-    @GetMapping(value = "/")
-    public String index(RedirectAttributes redirectAttributes) {
+	@GetMapping(value = "/")
+	public String index(RedirectAttributes redirectAttributes) {
 
+		return "redirect:/profile/list";
+	}
 
-        return "redirect:/profile/list";
-    }
+	@GetMapping(value = "/image/upload/{profileId}")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String imageUpload(@PathVariable("profileId") Long profileId, RedirectAttributes redirectAttributes,
+			ModelMap modelMap) {
 
-    @GetMapping(value = "/image/upload/{profileId}")
-    public String imageUpload(@PathVariable("profileId") Long profileId, RedirectAttributes redirectAttributes, ModelMap modelMap) {
+		try {
 
-        try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-         /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			/* current user checking end */
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (profileId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+				return "redirect:/profile/list";
+			}
 
-        /*current user checking end*/
+			if (profileId < 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
 
-            if (profileId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
+				return "redirect:/profile/list";
+			}
 
-                return "redirect:/profile/list";
-            }
+			EmployeeProfileDTO employeeProfileDTO = profileApi.show(profileId, Status.ACTIVE, currentUser.getStoreId());
 
-            if (profileId < 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid request");
+			if (employeeProfileDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "employee record not found");
+				return "redirect:/profile/list";
+			}
 
-                return "redirect:/profile/list";
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            EmployeeProfileDTO employeeProfileDTO = profileApi.show(profileId, Status.ACTIVE, currentUser.getStoreId());
+		modelMap.put(StringConstants.EMPLOYEE_PROFILE, profileId);
 
-            if (employeeProfileDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "employee record not found");
-                return "redirect:/profile/list";
-            }
+		return "employee/upload";
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+	}
 
-        modelMap.put(StringConstants.EMPLOYEE_PROFILE, profileId);
+	@GetMapping(value = "/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String list(RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
-        return "employee/upload";
+		try {
 
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-    }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-    @GetMapping(value = "/list")
-    public String list(RedirectAttributes redirectAttributes, ModelMap modelMap) {
+			/* current user checking end */
 
-        try {
+			List<EmployeeProfileDTO> employeeProfileDTOList = null;
 
-         /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getUserType().equals(UserType.SUPERADMIN)) {
+				employeeProfileDTOList = profileApi.listForSuperAdmin(Status.ACTIVE, currentUser.getUserId());
+			} else {
+				employeeProfileDTOList = profileApi.list(Status.ACTIVE, currentUser.getStoreId());
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, employeeProfileDTOList);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+		return "employee/list";
+	}
 
-        /*current user checking end*/
+	@GetMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String add(RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
-            List<EmployeeProfileDTO> employeeProfileDTOList = null;
+		/* current user checking start */
+		InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser.getUserType().equals(UserType.SUPERADMIN)){
-                employeeProfileDTOList = profileApi.listForSuperAdmin(Status.ACTIVE , currentUser.getUserId());
-            } else {
-                employeeProfileDTOList = profileApi.list(Status.ACTIVE , currentUser.getStoreId());
-            }
+		if (currentUser.getStoreId() == null) {
+			redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+			return "redirect:/";// store not assigned page
+		}
 
-            modelMap.put(StringConstants.EMPLOYEE_PROFILE_LIST, employeeProfileDTOList);
+		/* current user checking end */
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
+		modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-        return "employee/list";
-    }
+		modelMap.put(StringConstants.DESIGNATION_LIST,
+				designationInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
+		modelMap.put(StringConstants.EMPLOYEE_STATUS_LIST, EmployeeStatus.values());
 
-    @GetMapping(value = "/add")
-    public String add(RedirectAttributes redirectAttributes, ModelMap modelMap) {
+		return "employee/add";
+	}
 
-          /*current user checking start*/
-        InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+	@PostMapping(value = "/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String save(@ModelAttribute("employee") EmployeeProfileDTO profileDTO, BindingResult result,
+			RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
-        if (currentUser == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-            return "redirect:/logout";
-        }
+		try {
 
-        if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-            return "redirect:/logout";
-        }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        if (currentUser.getStoreId() == null) {
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-            return "redirect:/";//store not assigned page
-        }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-        /*current user checking end*/
+			/* current user checking end */
 
-        modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+			if (profileDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/profile/add";// store not assigned page
+			}
 
-        modelMap.put(StringConstants.DESIGNATION_LIST, designationInfoApi.list(Status.ACTIVE, currentUser.getStoreId()));
-        modelMap.put(StringConstants.EMPLOYEE_STATUS_LIST, EmployeeStatus.values());
+			profileDTO.setCreatedById(currentUser.getUserId());
+			profileDTO.setOwnerId(currentUser.getStoreId());
 
-        return "employee/add";
-    }
+			profileDTO = profileApi.save(profileDTO);
 
+			redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "employee successfully saved");
 
-    @PostMapping(value = "/save")
-    public String save(@ModelAttribute("employee") EmployeeProfileDTO profileDTO, BindingResult result , RedirectAttributes redirectAttributes, ModelMap modelMap) {
+		} catch (Exception e) {
+			e.printStackTrace();
+			LoggerUtil.logException(this.getClass(), e);
+			redirectAttributes.addFlashAttribute(StringConstants.ERROR, "internal server error");
+			return "redirect:/500";// store not assigned page
+		}
 
-        try {
+		return "redirect:/profile/list";// store not assigned page
+	}
 
-          /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+	@GetMapping(value = "/show/{employeeProfileId}")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
+	public String show(@PathVariable("employeeProfileId") Long employeeProfileId, RedirectAttributes redirectAttributes,
+			ModelMap modelMap) {
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return "redirect:/";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
+			/* current user checking end */
 
-        /*current user checking end*/
+			EmployeeProfileDTO employeeProfileDTO = null;
 
-            if (profileDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/profile/add";//store not assigned page
-            }
+			if (currentUser.getUserType().equals(UserType.SUPERADMIN)) {
+				employeeProfileDTO = profileApi.showForSuperAdmin(employeeProfileId, Status.ACTIVE,
+						currentUser.getUserId());
+			} else {
 
-            profileDTO.setCreatedById(currentUser.getUserId());
-            profileDTO.setOwnerId(currentUser.getStoreId());
+				employeeProfileDTO = profileApi.show(employeeProfileId, Status.ACTIVE, currentUser.getStoreId());
+			}
+			modelMap.put(StringConstants.EMPLOYEE_PROFILE, employeeProfileDTO);
 
-            profileDTO = profileApi.save(profileDTO);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "employee successfully saved");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            LoggerUtil.logException(this.getClass() , e);
-            redirectAttributes.addFlashAttribute(StringConstants.ERROR, "internal server error");
-            return "redirect:/500";//store not assigned page
-        }
-
-        return "redirect:/profile/list";//store not assigned page
-    }
-
-    @GetMapping(value = "/show/{employeeProfileId}")
-    public String show(@PathVariable("employeeProfileId") Long employeeProfileId, RedirectAttributes redirectAttributes, ModelMap modelMap) {
-
-        try {
-         /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
-                return "redirect:/";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            EmployeeProfileDTO employeeProfileDTO = null;
-
-            if (currentUser.getUserType().equals(UserType.SUPERADMIN)) {
-                employeeProfileDTO = profileApi.showForSuperAdmin(employeeProfileId, Status.ACTIVE, currentUser.getUserId());
-            } else {
-
-                employeeProfileDTO = profileApi.show(employeeProfileId, Status.ACTIVE, currentUser.getStoreId());
-            }
-            modelMap.put(StringConstants.EMPLOYEE_PROFILE, employeeProfileDTO);
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-        return "employee/show";
-    }
+		return "employee/show";
+	}
 }

@@ -13,6 +13,7 @@ import com.inventory.web.util.AuthenticationUtil;
 import com.inventory.web.util.LoggerUtil;
 import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,17 +40,9 @@ public class CountryController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
     public String add(RedirectAttributes redirectAttributes, HttpServletRequest request , HttpServletResponse response) throws IOException {
         try {
-
-            if (AuthenticationUtil.getCurrentUser(userApi) == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-
-                RequestCacheUtil.save(request , response);
-
-                return "redirect:/logout";
-            }
-
             return "country/addCountry";
 
         } catch (Exception e) {

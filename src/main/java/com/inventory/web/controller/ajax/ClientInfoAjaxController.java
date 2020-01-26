@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("client")
 @ResponseBody
 public class ClientInfoAjaxController {
-
-
-
+	
     @Autowired
     private IUserApi userApi;
 
@@ -43,29 +42,12 @@ public class ClientInfoAjaxController {
     private ClientInfoValidation clientInfoValidation;
 
     @GetMapping(value = "customer/search", produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("term") String term, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
-
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
             result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.CUSTOMER , term , 0 , 50 , currentUser.getStoreId()));
@@ -81,28 +63,13 @@ public class ClientInfoAjaxController {
     }
 
     @GetMapping(value = "vendor/search", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> searchVendor(@RequestParam("term") String term, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
             result.setDetail(clientInfoApi.search(Status.ACTIVE , ClientType.VENDOR , term , 0 , 50 , currentUser.getStoreId()));
@@ -119,28 +86,13 @@ public class ClientInfoAjaxController {
 
 
     @GetMapping(value = "search", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> search(@RequestParam("term") String term, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
 
             result.setStatus(ResponseStatus.SUCCESS.getValue());
             result.setMessage("store successfully saved");
@@ -157,24 +109,13 @@ public class ClientInfoAjaxController {
     }
 
     @PostMapping(value = "customer/save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> saveCustomer(@RequestAttribute("client") ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
        /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
                 result.setStatus(ResponseStatus.FAILURE.getValue());
@@ -221,24 +162,13 @@ public class ClientInfoAjaxController {
     }
 
     @PostMapping(value = "vendor/save", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> saveVendor(@RequestAttribute("vendor") ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
             /*current user checking start*/
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
 
             if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.CLIENT_CREATE)) {
                 result.setStatus(ResponseStatus.FAILURE.getValue());

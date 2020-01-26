@@ -24,36 +24,11 @@ public class AuthenticationService implements IAuthenticationService {
     @Autowired
     private IFiscalYearInfoApi fiscalYearInfoApi;
 
-    @Override
-    public RestResponseDTO auth_Rest_Controller(InvUserDTO currentUser, RestResponseDTO responseDTO) {
-
-        if (currentUser == null) {
-
-            responseDTO.setStatus(ResponseStatus.FAILURE.getValue());
-            responseDTO.setMessage("user authentication failed");
-
-            return responseDTO;
-        }
-
-        responseDTO.setStatus(ResponseStatus.SUCCESS.getValue());
-
-        return responseDTO;
-    }
 
     @Override
     public RestResponseDTO auth_Rest_Controller_Store_All_User(InvUserDTO currentUser, RestResponseDTO responseDTO){
 
-        responseDTO = auth_Rest_Controller(currentUser , responseDTO);
-
         if (!responseDTO.getStatus().equals(ResponseStatus.SUCCESS.getValue())){
-
-            return responseDTO;
-        }
-
-        if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-            responseDTO.setStatus(ResponseStatus.FAILURE.getValue());
-            responseDTO.setMessage("user authentication failed");
 
             return responseDTO;
         }

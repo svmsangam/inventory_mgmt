@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,27 +37,13 @@ public class OrderInfoAjaxController {
     private IUserApi userApi;
 
     @GetMapping(value = "sale/track/update", produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
     public ResponseEntity<RestResponseDTO> searchCustomer(@RequestParam("orderId") Long orderId, @RequestParam("track")SalesOrderStatus track, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {
 
             InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
-                request.getSession().invalidate();
-                result.setStatus(ResponseStatus.FAILURE.getValue());
-                result.setMessage("user authentication failed");
-                return new ResponseEntity<RestResponseDTO>(result, HttpStatus.OK);
-            }
 
             if (orderId == null){
                 result.setStatus(ResponseStatus.FAILURE.getValue());
