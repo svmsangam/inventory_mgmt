@@ -36,21 +36,29 @@
             <div class="col-xs-12">
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">Product Filter</h3>
-                        <small style="color: #f47342;">total results : &nbsp;${totalResult}</small>
-                         <div class="box-tools">
-                             <div class="row">
-                                 <div class="dropdown pull-right">
-                                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
-                                         <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                         <li><a href="${pageContext.request.contextPath}/report/product/filter/pdf?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-                                         <li class="divider"></li>
-                                         <li><a href="${pageContext.request.contextPath}/report/product/filter/xls?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-excel-o"></i> XLS</a></li>
-                                     </ul>
-                                 </div>
-                             </div>
-                         </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title">Product Filter</h3>
+                            </div>
+
+                            <div class="col-md-4">
+                                <small style="color: #f47342;">total results : &nbsp;${totalResult}</small>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="box-tools">
+                                    <div class="dropdown pull-right">
+                                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> Download Report
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="${pageContext.request.contextPath}/report/product/filter/pdf?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="${pageContext.request.contextPath}/report/product/filter/xls?page=${currentpage}&name=${filterDTO.name}&trendingLevel=${filterDTO.trendingLevel}&subCategoryId=${filterDTO.subCategoryId}&greaterThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.greaterThanInStock}"/>&lessThanInStock=<fmt:formatNumber type="number" maxFractionDigits="3" groupingUsed="false" value="${filterDTO.lessThanInStock}"/>" target="_blank"><i class="fa fa-file-excel-o"></i> XLS</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
