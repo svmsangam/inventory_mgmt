@@ -1,6 +1,5 @@
 package com.inventory.web.controller;
 
-import com.google.gson.Gson;
 import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.dto.AccountInfoDTO;
 import com.inventory.core.model.dto.ClientInfoDTO;

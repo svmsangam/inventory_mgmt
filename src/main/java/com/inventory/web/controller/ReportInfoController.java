@@ -1,16 +1,12 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.*;
-import com.inventory.core.model.dto.*;
-import com.inventory.core.model.enumconstant.Permission;
-import com.inventory.core.model.enumconstant.Status;
-import com.inventory.core.util.Authorities;
-import com.inventory.core.util.ReportGeneratorUtil;
-import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.LoggerUtil;
-import com.inventory.web.util.PageInfo;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrint;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,11 +17,31 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import com.inventory.core.api.iapi.IFiscalYearInfoApi;
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.ILedgerInfoApi;
+import com.inventory.core.api.iapi.IProductInfoApi;
+import com.inventory.core.api.iapi.IReportServiceApi;
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.InvoiceFilterDTO;
+import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.dto.LedgerFilterDTO;
+import com.inventory.core.model.dto.LedgerInfoDTO;
+import com.inventory.core.model.dto.ProductFilterDTO;
+import com.inventory.core.model.dto.ProductInfoDTO;
+import com.inventory.core.model.enumconstant.Permission;
+import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.util.Authorities;
+import com.inventory.core.util.ReportGeneratorUtil;
+import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
+import com.inventory.web.util.PageInfo;
+import com.inventory.web.util.StringConstants;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
 
 /**
  * Created by dhiraj on 10/9/17.
@@ -34,323 +50,487 @@ import java.util.List;
 @RequestMapping("report")
 public class ReportInfoController {
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IFiscalYearInfoApi fiscalYearInfoApi;
+	@Autowired
+	private IFiscalYearInfoApi fiscalYearInfoApi;
 
-    @Autowired
-    private IReportServiceApi reportServiceApi;
+	@Autowired
+	private IReportServiceApi reportServiceApi;
 
-    @Autowired
-    private IInvoiceInfoApi invoiceInfoApi;
+	@Autowired
+	private IInvoiceInfoApi invoiceInfoApi;
 
-    @Autowired
-    private ILedgerInfoApi ledgerInfoApi;
+	@Autowired
+	private ILedgerInfoApi ledgerInfoApi;
 
-    @GetMapping(value = "invoice/filter/pdf" , produces = "application/pdf")
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public void filterPDF(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
+	@Autowired
+	private IProductInfoApi productInfoApi;
 
-        try {
+	@GetMapping(value = "invoice/filter/pdf", produces = "application/pdf")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterPDF(@ModelAttribute("filter") InvoiceFilterDTO filterDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+		try {
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
-                return;//access deniled page
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (currentUser.getStoreId() == null) {
-                return;//store not assigned page
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+				return;// access deniled page
+			}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			if (currentUser.getStoreId() == null) {
+				return;// store not assigned page
+			}
 
-            if (currentFiscalYear == null){
-                return;//store not assigned page
-            }
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
+			if (currentFiscalYear == null) {
+				return;// store not assigned page
+			}
 
-        /*current user checking end*/
+			/* current user checking end */
 
-            if (filterDTO == null) {
-                return;
-            }
+			if (filterDTO == null) {
+				return;
+			}
 
-            Integer page = filterDTO.getPageNo();
+			Integer page = filterDTO.getPageNo();
 
-            filterDTO.setStatus(Status.ACTIVE);
-            filterDTO.setStoreInfoId(currentUser.getStoreId());
+			filterDTO.setStatus(Status.ACTIVE);
+			filterDTO.setStoreInfoId(currentUser.getStoreId());
 
-            if (page == null) {
-                page = 1;
-            }
+			if (page == null) {
+				page = 1;
+			}
 
-            if (page < 1) {
-                page = 1;
-            }
+			if (page < 1) {
+				page = 1;
+			}
 
-            int currentpage = page - 1;
+			int currentpage = page - 1;
 
-            /*long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+			/*
+			 * long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.
+			 * countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE,
+			 * currentUser.getStoreId(), from, to);
+			 * 
+			 * int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			 * 
+			 * if (currentpage > totalpage || currentpage < 0) { currentpage = 0; }
+			 * 
+			 * List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage,
+			 * PageInfo.numberOfPage);
+			 */
+			filterDTO.setPageNo(currentpage);
+			filterDTO.setSize((int) PageInfo.pageList);
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
-*/
-            filterDTO.setPageNo(currentpage);
-            filterDTO.setSize((int) PageInfo.pageList);
+			JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
+			reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
 
-            List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			throw e;
+		}
 
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+		return;
 
-            JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
-            reportServiceApi.writePdfReport(jp, response, "invoice Report " + new Date().toString());
+	}
 
+	@GetMapping(value = "invoice/filter/xls", produces = "application/xls")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterXLS(@ModelAttribute("filter") InvoiceFilterDTO filterDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            throw e;
-        }
+		try {
 
-        return;
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-    }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+				return;// access deniled page
+			}
 
-    @GetMapping(value = "invoice/filter/xls", produces = "application/xls")
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public void filterXLS(@ModelAttribute("filter")InvoiceFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+			if (currentUser.getStoreId() == null) {
+				return;// store not assigned page
+			}
 
-        try {
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentFiscalYear == null) {
+				return;// store not assigned page
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
-                return;//access deniled page
-            }
+			/* current user checking end */
 
-            if (currentUser.getStoreId() == null) {
-                return;//store not assigned page
-            }
+			if (filterDTO == null) {
+				return;
+			}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			Integer page = filterDTO.getPageNo();
 
-            if (currentFiscalYear == null){
-                return;//store not assigned page
-            }
+			filterDTO.setStatus(Status.ACTIVE);
+			filterDTO.setStoreInfoId(currentUser.getStoreId());
 
+			if (page == null) {
+				page = 1;
+			}
 
-        /*current user checking end*/
+			if (page < 1) {
+				page = 1;
+			}
 
-            if (filterDTO == null) {
-                return;
-            }
+			int currentpage = page - 1;
 
-            Integer page = filterDTO.getPageNo();
+			/*
+			 * long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.
+			 * countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE,
+			 * currentUser.getStoreId(), from, to);
+			 * 
+			 * int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			 * 
+			 * if (currentpage > totalpage || currentpage < 0) { currentpage = 0; }
+			 * 
+			 * List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage,
+			 * PageInfo.numberOfPage);
+			 */
+			filterDTO.setPageNo(currentpage);
+			filterDTO.setSize((int) PageInfo.pageList);
 
-            filterDTO.setStatus(Status.ACTIVE);
-            filterDTO.setStoreInfoId(currentUser.getStoreId());
+			List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
 
-            if (page == null) {
-                page = 1;
-            }
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            if (page < 1) {
-                page = 1;
-            }
+			JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
+			reportServiceApi.writeXlsReport(jp, response, "invoice Report " + new Date().toString());
 
-            int currentpage = page - 1;
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            /*long totalList = invoiceInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+			return;
+		}
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+		return;
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+	}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
-*/
-            filterDTO.setPageNo(currentpage);
-            filterDTO.setSize((int) PageInfo.pageList);
+	@GetMapping(value = "/ledger/filter/pdf", produces = "application/pdf")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterLedgerPdf(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
-            List<InvoiceInfoDTO> invoiceInfoDTOList = invoiceInfoApi.filter(filterDTO);
+		try {
 
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            JasperPrint jp = rp.InvoiceReport(invoiceInfoDTOList, "Invoice", "Invoice " + new Date().toString());
-            reportServiceApi.writeXlsReport(jp, response, "invoice Report " + new Date().toString());
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
+				request.getSession().invalidate();
+				return;
+			}
 
+			if (currentUser.getStoreId() == null) {
+				return;
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            return;
-        }
+			if (currentFiscalYear == null) {
+				return;
+			}
 
-        return;
+			/* current user checking end */
 
-    }
+			if (filterTerms == null) {
+				return;
 
-    @GetMapping(value = "/ledger/filter/pdf" , produces = "application/pdf")
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public void filterLedgerPdf(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
+			}
 
-        try {
+			if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null
+					& (filterTerms.getFrom() == null | filterTerms.getTo() == null)) {
+				return;
 
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-            
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                request.getSession().invalidate();
-                return;
-            }
+			}
 
-            if (currentUser.getStoreId() == null) {
-                return;
-            }
+			Integer page = filterTerms.getPage();
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			if (page == null) {
+				page = 1;
+			}
 
-            if (currentFiscalYear == null){
-                return;
-            }
+			if (page < 1) {
+				page = 1;
+			}
 
+			int currentpage = page - 1;
 
-        /*current user checking end*/
+			/*
+			 * long totalList = ledgerInfoApi.countFilter(filterTerms);
+			 * 
+			 * int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			 * 
+			 * if (currentpage > totalpage || currentpage < 0) { currentpage = 0; }
+			 * 
+			 * List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage,
+			 * PageInfo.numberOfPage);
+			 */
 
-            if (filterTerms == null) {
-                return;
+			filterTerms.setPage(currentpage);
+			filterTerms.setSize((int) PageInfo.pageList);
+			filterTerms.setStatus(Status.ACTIVE);
+			filterTerms.setStoreId(currentUser.getStoreId());
 
-            }
+			List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms);
 
-            if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null & (filterTerms.getFrom() == null | filterTerms.getTo() == null)){
-                return;
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-            }
+			JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
+			reportServiceApi.writePdfReport(jp, response, "Ledger Report " + new Date().toString());
 
-            Integer page = filterTerms.getPage();
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			throw e;
+		}
+	}
 
-            if (page == null) {
-                page = 1;
-            }
+	@GetMapping(value = "/ledger/filter/xls", produces = "application/xls")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterLedgerXls(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
-            if (page < 1) {
-                page = 1;
-            }
+		try {
 
-            int currentpage = page - 1;
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-           /* long totalList = ledgerInfoApi.countFilter(filterTerms);
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
+				request.getSession().invalidate();
+				return;
+			}
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			if (currentUser.getStoreId() == null) {
+				return;
+			}
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);*/
+			if (currentFiscalYear == null) {
+				return;
+			}
 
-            filterTerms.setPage(currentpage);
-            filterTerms.setSize((int) PageInfo.pageList);
-            filterTerms.setStatus(Status.ACTIVE);
-            filterTerms.setStoreId(currentUser.getStoreId());
+			/* current user checking end */
 
-            List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms );
+			if (filterTerms == null) {
+				return;
 
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+			}
 
-            JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
-            reportServiceApi.writePdfReport(jp, response, "Ledger Report " + new Date().toString());
+			if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null
+					& (filterTerms.getFrom() == null | filterTerms.getTo() == null)) {
+				return;
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            throw e;
-        }
-    }
+			}
 
-    @GetMapping(value = "/ledger/filter/xls", produces = "application/xls")
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public void filterLedgerXls(@ModelAttribute("terms") LedgerFilterDTO filterTerms, BindingResult result , ModelMap modelMap, RedirectAttributes redirectAttributes , HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
+			Integer page = filterTerms.getPage();
 
-        try {
+			if (page == null) {
+				page = 1;
+			}
 
-             /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (page < 1) {
+				page = 1;
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.REPORT_VIEW)) {
-                request.getSession().invalidate();
-                return;
-            }
+			int currentpage = page - 1;
 
-            if (currentUser.getStoreId() == null) {
-                return;
-            }
+			/*
+			 * long totalList = ledgerInfoApi.countFilter(filterTerms);
+			 * 
+			 * int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			 * 
+			 * if (currentpage > totalpage || currentpage < 0) { currentpage = 0; }
+			 * 
+			 * List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage,
+			 * PageInfo.numberOfPage);
+			 */
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			filterTerms.setPage(currentpage);
+			filterTerms.setSize((int) PageInfo.pageList);
+			filterTerms.setStatus(Status.ACTIVE);
+			filterTerms.setStoreId(currentUser.getStoreId());
 
-            if (currentFiscalYear == null){
-                return;
-            }
+			List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms);
 
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
 
-        /*current user checking end*/
+			JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
+			reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + new Date().toString());
 
-            if (filterTerms == null) {
-                return;
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			throw e;
+		}
+	}
 
-            }
+	@GetMapping(value = "product/filter/pdf", produces = "application/pdf")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterProductPDF(@ModelAttribute("filter") ProductFilterDTO filterTerms, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) throws ClassNotFoundException, IOException, JRException {
 
-            if (filterTerms.getAccountId() == null & filterTerms.getFiscalYearId() == null & (filterTerms.getFrom() == null | filterTerms.getTo() == null)){
-                return;
+		try {
 
-            }
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            Integer page = filterTerms.getPage();
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return;// access deniled page
+			}
 
-            if (page == null) {
-                page = 1;
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return;// store not assigned page
+			}
 
-            if (page < 1) {
-                page = 1;
-            }
+			/* current user checking end */
 
-            int currentpage = page - 1;
+			if (filterTerms == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
+				return;
 
-           /* long totalList = ledgerInfoApi.countFilter(filterTerms);
+			}
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			if (filterTerms.getName() == null & filterTerms.getSubCategoryId() < 1
+					&& filterTerms.getTrendingLevel() == null
+					&& (filterTerms.getGreaterThanInStock() < 1 || filterTerms.getLessThanInStock() < 1)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid filter terms");
+				return;
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);*/
+			Integer page = filterTerms.getPage();
 
-            filterTerms.setPage(currentpage);
-            filterTerms.setSize((int) PageInfo.pageList);
-            filterTerms.setStatus(Status.ACTIVE);
-            filterTerms.setStoreId(currentUser.getStoreId());
+			if (page == null) {
+				page = 1;
+			}
 
-            List<LedgerInfoDTO> ledgerFilterDTOS = ledgerInfoApi.filter(filterTerms );
+			if (page < 1) {
+				page = 1;
+			}
 
-            ReportGeneratorUtil rp = new ReportGeneratorUtil();
+			int currentpage = page - 1;
 
-            JasperPrint jp = rp.ledgerReport(ledgerFilterDTOS, "Ledger", "Ledger " + new Date().toString());
-            reportServiceApi.writeXlsReport(jp, response, "Ledger Report " + new Date().toString());
+			filterTerms.setStatus(Status.ACTIVE);
+			filterTerms.setStoreInfoId(currentUser.getStoreId());
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            throw e;
-        }
-    }
+			filterTerms.setPage(currentpage);
+			filterTerms.setSize((int) PageInfo.pageList);
+
+			List<ProductInfoDTO> productInfoDTOList = productInfoApi.filter(filterTerms);
+
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
+
+			JasperPrint jp = rp.productReport(productInfoDTOList, "Product", "Product " + new Date().toString());
+			reportServiceApi.writePdfReport(jp, response, "Product Report " + new Date().toString());
+
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			throw e;
+		}
+
+		return;
+
+	}
+
+	@GetMapping(value = "product/filter/xls", produces = "application/xls")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public void filterProductXLS(@ModelAttribute("filter") ProductFilterDTO filterTerms, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		try {
+
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.PRODUCT_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return;// access deniled page
+			}
+
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Store not assigned");
+				return;// store not assigned page
+			}
+
+			/* current user checking end */
+
+			if (filterTerms == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "filter terms required");
+				return;
+
+			}
+
+			if (filterTerms.getName() == null & filterTerms.getSubCategoryId() < 1
+					&& filterTerms.getTrendingLevel() == null
+					&& (filterTerms.getGreaterThanInStock() < 1 || filterTerms.getLessThanInStock() < 1)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "invalid filter terms");
+				return;
+
+			}
+
+			Integer page = filterTerms.getPage();
+
+			if (page == null) {
+				page = 1;
+			}
+
+			if (page < 1) {
+				page = 1;
+			}
+
+			int currentpage = page - 1;
+
+			filterTerms.setStatus(Status.ACTIVE);
+			filterTerms.setStoreInfoId(currentUser.getStoreId());
+
+			filterTerms.setPage(currentpage);
+			filterTerms.setSize((int) PageInfo.pageList);
+
+			List<ProductInfoDTO> productInfoDTOList = productInfoApi.filter(filterTerms);
+
+			ReportGeneratorUtil rp = new ReportGeneratorUtil();
+
+			JasperPrint jp = rp.productReport(productInfoDTOList, "Product", "Product " + new Date().toString());
+			reportServiceApi.writeXlsReport(jp, response, "Product Report " + new Date().toString());
+
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+
+			return;
+		}
+
+		return;
+
+	}
 }

@@ -430,7 +430,7 @@
                 name: 'Amount',
                 colorByPoint: true,
                 data: [{
-                    name: 'Sale',
+                    name: 'Paid',
                     y: saleAmount - dueAmount,
                     selected: true,
                     color: '#28a745'
@@ -514,7 +514,7 @@
                 colorByPoint: true,
                 data: [{
                     name: 'Other Customer',
-                    y: totalSaleAmount,
+                    y: totalSaleAmount - clientSaleAmount,
                     selected: true,
                     color: '#327da8'
                 }, {

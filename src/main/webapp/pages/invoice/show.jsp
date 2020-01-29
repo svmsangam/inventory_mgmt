@@ -217,37 +217,57 @@
         </div>
         <!-- this row will not appear when printing -->
         <div class="row no-print" id="editor">
-            <div class="col-xs-12">
+            <div class="col-md-2 margin-b-5">
                 <a href="${pageContext.request.contextPath}/invoice/print?invoiceId=${invoice.invoiceId}"
-                   class="btn btn-default" target="_blank"><i class="fa fa-print"></i> Print</a>
+                   class="btn btn-yahoo btn-block" target="_blank"><i class="fa fa-print"></i>&nbsp;&nbsp;Print</a>
 
+            </div>
+
+            <div class="col-md-2 margin-b-5">
                 <c:if test="${invoice.canceled eq false}">
-
                     <a href="${pageContext.request.contextPath}/paymentinfo/add?invoiceId=${invoice.invoiceId}"
-                       class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Proceed To Payment </a>
+                       class="btn btn-success btn-block"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Payment </a>
 
                 </c:if>
+            </div>
 
+            <div class="col-md-2 margin-b-5">
                 <a href="${pageContext.request.contextPath}/invoice/pdf?invoiceId=${invoice.invoiceId}"
-                   class="btn btn-primary pull-left" target="_blank" style="margin-right: 5px;">
-                    <i class="fa fa-file-pdf-o"></i> Generate PDF
-                </a>
-
-                <c:choose>
-                    <c:when test="${invoice.canceled eq true}"><label class="btn btn-danger">canceled</label> </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#invoiceCancel">cancel
-                        </button>
-                        <a href="${pageContext.request.contextPath}/orderreturn/add?orderInfoId=${invoice.orderInfo.orderId}"
-                           class="btn-primary btn">return order</a>
-                    </c:otherwise>
-                </c:choose>
-
-                <a href="${pageContext.request.contextPath}/invoice/xls?invoiceId=${invoice.invoiceId}"
-                   class="btn btn-primary pull-left" target="_blank" style="margin-right: 5px;">
-                    <i class="fa fa-file-excel-o"></i> Generate Excel
+                   class="btn btn-facebook btn-block" target="_blank">
+                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Generate PDF
                 </a>
             </div>
+
+            <div class="col-md-2 margin-b-5">
+
+                <a href="${pageContext.request.contextPath}/invoice/xls?invoiceId=${invoice.invoiceId}"
+                   class="btn btn-primary btn-block" target="_blank">
+                    <i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Generate Excel
+                </a>
+            </div>
+
+            <c:choose>
+                <c:when test="${invoice.canceled eq true}">
+                    <div class="col-md-2 margin-b-5">
+                        <label class="btn btn-danger">canceled</label>
+                    </div>
+
+                    <div class="col-md-2">
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-md-2 margin-b-5">
+                        <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#invoiceCancel">
+                            <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;&nbsp;cancel
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 margin-b-5">
+                        <a href="${pageContext.request.contextPath}/orderreturn/add?orderInfoId=${invoice.orderInfo.orderId}"
+                           class="btn-tumblr btn btn-block"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;&nbsp;return order</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <c:if test="${fn:length(paymentList) gt 0}">
@@ -258,71 +278,73 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Method</th>
-                                    <th>Remarks</th>
-                                    <th>Cheque Date</th>
-                                    <th>Exp-Withdrawable Date</th>
-                                    <th>Bank Name</th>
-                                    <th>Bank Account</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Remarks</th>
+                                        <th>Cheque Date</th>
+                                        <th>Exp-Withdrawable Date</th>
+                                        <th>Bank Name</th>
+                                        <th>Bank Account</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
 
-                                <tbody>
-                                <c:forEach items="${paymentList}" var="paymentInfo">
+                                    <tbody>
+                                    <c:forEach items="${paymentList}" var="paymentInfo">
 
-                                    <c:if test="${paymentInfo.receivedPayment ne null}">
-                                        <tr>
-                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                                value="${paymentInfo.paymentDate}"/></td>
-                                            <td><fmt:formatNumber type="number" maxFractionDigits="3"
-                                                                  groupingUsed="true"
-                                                                  value="${paymentInfo.receivedPayment.amount}"/></td>
-                                            <td>${paymentInfo.receivedPayment.paymentMethod}</td>
-                                            <td>${paymentInfo.remark}</td>
-                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                                value="${paymentInfo.receivedPayment.chequeDate}"/></td>
+                                        <c:if test="${paymentInfo.receivedPayment ne null}">
+                                            <tr>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${paymentInfo.paymentDate}"/></td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                      groupingUsed="true"
+                                                                      value="${paymentInfo.receivedPayment.amount}"/></td>
+                                                <td>${paymentInfo.receivedPayment.paymentMethod}</td>
+                                                <td>${paymentInfo.remark}</td>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${paymentInfo.receivedPayment.chequeDate}"/></td>
 
-                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                                value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/></td>
-                                            <td>${paymentInfo.receivedPayment.bankOfCheque}</td>
-                                            <td>${paymentInfo.receivedPayment.bankAccountNumber}</td>
-                                            <th>
-                                                <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
-                                                    <c:choose>
-                                                        <c:when test="${paymentInfo.receivedPayment.status eq 'INACTIVE'}"><a
-                                                                class="btn btn-sm btn-danger"
-                                                                href="${pageContext.request.contextPath}/paymentinfo/chuque/collect?paymentId=${paymentInfo.paymentInfoId}">Is
-                                                            Collected ?</a></c:when>
-                                                        <c:otherwise><label
-                                                                class="label label-success">collected</label> </c:otherwise>
-                                                    </c:choose>
-                                                </c:if>
-                                            </th>
-                                        </tr>
-                                    </c:if>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${paymentInfo.receivedPayment.commitedDateOfCheque}"/></td>
+                                                <td>${paymentInfo.receivedPayment.bankOfCheque}</td>
+                                                <td>${paymentInfo.receivedPayment.bankAccountNumber}</td>
+                                                <th>
+                                                    <c:if test="${paymentInfo.receivedPayment.paymentMethod eq 'CHEQUE'}">
+                                                        <c:choose>
+                                                            <c:when test="${paymentInfo.receivedPayment.status eq 'INACTIVE'}"><a
+                                                                    class="btn btn-sm btn-danger"
+                                                                    href="${pageContext.request.contextPath}/paymentinfo/chuque/collect?paymentId=${paymentInfo.paymentInfoId}">Is
+                                                                Collected ?</a></c:when>
+                                                            <c:otherwise><label
+                                                                    class="label label-success">collected</label> </c:otherwise>
+                                                        </c:choose>
+                                                    </c:if>
+                                                </th>
+                                            </tr>
+                                        </c:if>
 
-                                    <c:if test="${paymentInfo.refundPayment ne null}">
-                                        <tr>
-                                            <td><fmt:formatDate pattern="MMM dd, yyyy"
-                                                                value="${paymentInfo.paymentDate}"/></td>
-                                            <td><fmt:formatNumber type="number" maxFractionDigits="3"
-                                                                  groupingUsed="true"
-                                                                  value="${paymentInfo.refundPayment.amount}"/></td>
-                                            <td>${paymentInfo.refundPayment.paymentMethod}</td>
-                                            <td>${paymentInfo.remark}</td>
+                                        <c:if test="${paymentInfo.refundPayment ne null}">
+                                            <tr>
+                                                <td><fmt:formatDate pattern="MMM dd, yyyy"
+                                                                    value="${paymentInfo.paymentDate}"/></td>
+                                                <td><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                      groupingUsed="true"
+                                                                      value="${paymentInfo.refundPayment.amount}"/></td>
+                                                <td>${paymentInfo.refundPayment.paymentMethod}</td>
+                                                <td>${paymentInfo.remark}</td>
 
-                                        </tr>
-                                    </c:if>
-                                </c:forEach>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
