@@ -13,11 +13,21 @@ public class ServiceDTO {
 
     private int totalStore;
 
+    private int totalOrder;
+
     private int expireDays;
 
     private double rate;
 
     private Status status;
+
+    public int getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(int totalOrder) {
+        this.totalOrder = totalOrder;
+    }
 
     public String getTitle() {
         return title;

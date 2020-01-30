@@ -10,7 +10,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-hover table-striped">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
                 <th>SN</th>
@@ -38,5 +39,6 @@
             </c:forEach>
             </tbody>
         </table>
+        </div>
     </div>
 </div>

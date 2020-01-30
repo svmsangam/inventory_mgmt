@@ -16,6 +16,8 @@ public class ServiceInfo extends AbstractEntity<Long>{
 
     private int totalStore;
 
+    private int totalOrder;
+
     private int expireDays;
 
     private double rate;
@@ -60,5 +62,13 @@ public class ServiceInfo extends AbstractEntity<Long>{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public int getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(int totalOrder) {
+        this.totalOrder = totalOrder;
     }
 }
