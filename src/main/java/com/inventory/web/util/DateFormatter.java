@@ -2,9 +2,11 @@ package com.inventory.web.util;
 
 import org.springframework.format.Formatter;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -37,6 +39,12 @@ public final class DateFormatter implements Formatter<Date> {
         DateFormat dateFormat = new SimpleDateFormat(this.pattern, locale);
         dateFormat.setLenient(false);
         return dateFormat;
+    }
+
+    public static Date calculateExpiryDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        return new Date(cal.getTime().getTime());
     }
 
 }

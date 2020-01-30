@@ -1,6 +1,10 @@
 package com.inventory.web.session;
 
 import com.inventory.core.api.iapi.ISubscriberServiceApi;
+import com.inventory.core.model.dto.ServiceDTO;
+import com.inventory.core.model.dto.SubscriberServiceDTO;
+import com.inventory.core.model.entity.ServiceInfo;
+import com.inventory.core.model.entity.SubscriberService;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.UserType;
@@ -54,10 +58,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("user doesnt exists");
 		}
 
-		UserDetailsWrapper userDetailsWrapper = new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString() , userRepository , subscriberServiceApi);
+		SubscriberServiceDTO subscriberService = subscriberServiceApi.getSelectedByUserId(u.getId());
+
+		UserDetailsWrapper userDetailsWrapper = new UserDetailsWrapper(u, AuthorityUtils.commaSeparatedStringToAuthorityList(u.getAuthority()), msg.toString() , userRepository , subscriberServiceApi , subscriberService);
 
 		if (u.getUserType().equals(UserType.USER)) {
-			userDetailsWrapper = new UserDetailsWrapper(u, getAuthorities(u.getUsername()), msg.toString(), userRepository, subscriberServiceApi);
+			userDetailsWrapper = new UserDetailsWrapper(u, getAuthorities(u.getUsername()), msg.toString(), userRepository, subscriberServiceApi , subscriberService);
 		}
 
 		/*if (!userDetailsWrapper.isAccountNonLocked()){

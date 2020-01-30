@@ -2,6 +2,8 @@ package com.inventory.web.util;
 
 import com.inventory.core.api.iapi.IUserApi;
 import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.ServiceDTO;
+import com.inventory.core.model.dto.SubscriberServiceDTO;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
@@ -9,6 +11,8 @@ import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.web.session.UserDetailsWrapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Date;
 
 public class AuthenticationUtil {
 
@@ -136,5 +140,65 @@ public class AuthenticationUtil {
         }
 
         return false;
+    }
+
+    public static final SubscriberServiceDTO getSubscriberService(){
+
+        UserDetailsWrapper userDetailsWrapper = getCurrentUser();
+
+        if (userDetailsWrapper == null){
+            return null;
+        }
+
+        return userDetailsWrapper.getSubscriberServiceDTO();
+    }
+
+    public static final ServiceDTO getService(){
+
+       SubscriberServiceDTO subscriberServiceDTO = getSubscriberService();
+
+        if (subscriberServiceDTO == null){
+            return null;
+        }
+
+        Date currentDate = DateFormatter.calculateExpiryDate();
+
+        if (subscriberServiceDTO.getExpireOn().before(currentDate)) {
+            subscriberServiceDTO.setExpired(false);
+        } else {
+            subscriberServiceDTO.setExpired(true);
+        }
+
+        return subscriberServiceDTO.getServiceInfo();
+    }
+
+    public static int getStoreLimit(){
+
+        SubscriberServiceDTO subscriberServiceDTO = getSubscriberService();
+
+        if (subscriberServiceDTO == null){
+            return 0;
+        }
+
+        if (subscriberServiceDTO.getServiceInfo() == null){
+            return 0;
+        }
+
+        return subscriberServiceDTO.getServiceInfo().getTotalStore();
+    }
+
+    public static int getOrderLimit(){
+
+        SubscriberServiceDTO subscriberServiceDTO = getSubscriberService();
+
+        if (subscriberServiceDTO == null){
+            return 0;
+        }
+
+        if (subscriberServiceDTO.getServiceInfo() == null){
+            return 0;
+        }
+
+        return subscriberServiceDTO.getServiceInfo().getTotalOrder();
     }
 }

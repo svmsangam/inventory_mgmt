@@ -3,6 +3,7 @@ package com.inventory.web.session;
 
 import com.inventory.core.api.iapi.ISubscriberServiceApi;
 import com.inventory.core.model.dto.SubscriberServiceDTO;
+import com.inventory.core.model.entity.ServiceInfo;
 import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
@@ -26,6 +27,7 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 	private final Collection<GrantedAuthority> authorities;
 	private final User user;
 	private String remoteAddress;
+	private SubscriberServiceDTO subscriberServiceDTO;
 
 	private ISubscriberServiceApi subscriberServiceApi;
 
@@ -42,6 +44,15 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 		this.remoteAddress = remoteAddress;
 		this.userRepository = userRepository;
 		this.subscriberServiceApi = subscriberServiceApi;
+	}
+
+	public UserDetailsWrapper(User user, Collection<GrantedAuthority> authorities, String remoteAddress , UserRepository userRepository , ISubscriberServiceApi subscriberServiceApi , SubscriberServiceDTO subscriberServiceDTO) {
+		this.user = user;
+		this.authorities = authorities;
+		this.remoteAddress = remoteAddress;
+		this.userRepository = userRepository;
+		this.subscriberServiceApi = subscriberServiceApi;
+		this.subscriberServiceDTO = subscriberServiceDTO;
 	}
 
 	@Override
@@ -158,5 +169,8 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
 		return new Date(cal.getTime().getTime());
 	}
 
+	public SubscriberServiceDTO getSubscriberServiceDTO() {
+		return subscriberServiceDTO;
+	}
 }
 
