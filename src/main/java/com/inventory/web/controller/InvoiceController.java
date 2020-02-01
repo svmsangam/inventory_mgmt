@@ -543,6 +543,7 @@ public class InvoiceController {
 	}
 
 	@GetMapping(value = "/xls", produces = "application/xls")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
 	public void xls(@RequestParam("invoiceId") Long invoiceId, RedirectAttributes redirectAttributes,
 			HttpServletRequest request, HttpServletResponse response) {
 
