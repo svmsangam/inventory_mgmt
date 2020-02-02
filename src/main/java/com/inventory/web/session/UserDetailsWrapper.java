@@ -148,7 +148,7 @@ public class UserDetailsWrapper implements UserDetails, Serializable, Comparable
                 return false;
             }
 
-            return DateParseUtil.validateBeforeOrEqualCurrentDate(subscriberServiceDTO.getExpireOn());
+            return !DateParseUtil.validateBeforeOrEqualCurrentDate(subscriberServiceDTO.getExpireOn());
 
         } catch (Exception e) {
             e.printStackTrace();
