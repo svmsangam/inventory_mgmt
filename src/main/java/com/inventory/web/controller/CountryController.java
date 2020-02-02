@@ -53,6 +53,7 @@ public class CountryController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/save")
+    @PreAuthorize("isAuthenticated()")
     public String addCountry(ModelMap modelMap, @ModelAttribute("countryDto") CountryInfoDTO countryDto,
                              RedirectAttributes redirectAttributes) {
 

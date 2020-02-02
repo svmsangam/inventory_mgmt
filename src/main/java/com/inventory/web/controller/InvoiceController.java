@@ -551,15 +551,6 @@ public class InvoiceController {
 			/* current user checking start */
 			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			// if (currentUser != null) {
-
-			// if ((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) &
-			// currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) |
-			// (currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) &
-			// currentUser.getUserauthority().contains(Authorities.AUTHENTICATED)) |
-			// (currentUser.getUserauthority().contains(Authorities.USER) &
-			// currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-
 			boolean valid = true;
 
 			if (currentUser.getUserauthority().contains(Authorities.USER)) {
