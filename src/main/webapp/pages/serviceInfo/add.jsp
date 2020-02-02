@@ -49,6 +49,12 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="control-label">Total Order</label>
+                                <input type="number" class="form-control" name="totalOrder" placeholder="total Order">
+                                <p class="form-error"></p>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="control-label">Validity Days</label>
                                 <input type="number" class="form-control" name="expireDays" placeholder="validity days">
                                 <p class="form-error"></p>

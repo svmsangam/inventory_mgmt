@@ -48,6 +48,7 @@
                                     <th>SN</th>
                                     <th>Title</th>
                                     <th>Total Store</th>
+                                    <th>Total Order</th>
                                     <th>Validity</th>
                                     <th>Rate</th>
                                 </tr>
@@ -58,6 +59,7 @@
                                         <td>${i.index + 1}</td>
                                         <td>${serviceInfo.title}</td>
                                         <td>${serviceInfo.totalStore}</td>
+                                        <td>${serviceInfo.totalOrder}</td>
                                         <td>${serviceInfo.expireDays} days</td>
                                         <td>${serviceInfo.rate}</td>
 

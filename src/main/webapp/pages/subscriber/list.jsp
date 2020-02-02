@@ -49,30 +49,32 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div>
-                            <table id="table2" class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>Full Name</th>
-                                    <th>Username</th>
-                                    <th>Mobile</th>
-                                    <th>City</th>
-                                </tr>
-                                </thead>
-                                <tbody id="myData">
-                                <c:forEach var="subscriber" items="${subscriberList}" varStatus="i">
+                            <div class="table-responsive">
+                                <table id="table2" class="table table-bordered table-hover table-striped">
+                                    <thead>
                                     <tr>
-                                        <td>${i.index + 1}</td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${subscriber.subscriberId}">${subscriber.fullName}</a>
-                                        </td>
-                                        <td>${subscriber.username}</td>
-                                        <td>${subscriber.mobile}</td>
-                                        <td>${subscriber.cityName}</td>
+                                        <th>SN</th>
+                                        <th>Full Name</th>
+                                        <th>Username</th>
+                                        <th>Mobile</th>
+                                        <th>City</th>
                                     </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody id="myData">
+                                    <c:forEach var="subscriber" items="${subscriberList}" varStatus="i">
+                                        <tr>
+                                            <td>${i.index + 1}</td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/subscriber/show?subscriberId=${subscriber.subscriberId}">${subscriber.fullName}</a>
+                                            </td>
+                                            <td>${subscriber.username}</td>
+                                            <td>${subscriber.mobile}</td>
+                                            <td>${subscriber.cityName}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <!-- /.box-body -->

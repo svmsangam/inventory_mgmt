@@ -61,6 +61,9 @@ public class OrderInfoController {
     @Autowired
     private INotificationApi notificationApi;
 
+    @Autowired
+    private IStoreInvoiceApi storeInvoiceApi;
+
     @GetMapping(value = "/sale/list")
     public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
@@ -335,6 +338,10 @@ public class OrderInfoController {
                 return "redirect:/fiscalyear/add";//store not assigned page
             }
 
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
+            }
 
         /*current user checking end*/
 
@@ -382,6 +389,11 @@ public class OrderInfoController {
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
                 return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
             }
 
 
@@ -466,6 +478,11 @@ public class OrderInfoController {
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
                 return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
             }
 
 
@@ -635,6 +652,10 @@ public class OrderInfoController {
                 return "redirect:/fiscalyear/add";//store not assigned page
             }
 
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
+            }
 
         /*current user checking end*/
 
@@ -703,6 +724,11 @@ public class OrderInfoController {
                 return "redirect:/fiscalyear/add";//store not assigned page
             }
 
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
+            }
+
         /*current user checking end*/
 
             if (orderId == null) {
@@ -767,6 +793,11 @@ public class OrderInfoController {
             if (currentFiscalYear == null){
                 redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
                 return "redirect:/fiscalyear/add";//store not assigned page
+            }
+
+            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
+                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
+                return "redirect:/dashboard";
             }
 
         /*current user checking end*/

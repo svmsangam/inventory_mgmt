@@ -80,7 +80,7 @@ public class TagInfoApi implements ITagInfoApi {
     public List<TagInfoDTO> search(Status status, String q, int page, int size, long storeId) {
         Pageable pageable = createPageRequest(page, size ,"name" , Sort.Direction.ASC);
 
-        return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllBySearch(q , Status.ACTIVE , pageable));
+        return tagInfoConverter.convertToDtoList(tagInfoRepository.findAllBySearch(q , Status.ACTIVE , storeId , pageable));
     }
 
     @Override

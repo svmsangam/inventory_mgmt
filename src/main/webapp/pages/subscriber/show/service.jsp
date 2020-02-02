@@ -11,12 +11,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-hover table-striped">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
                 <th>SN</th>
                 <th>Title</th>
                 <th>Total Store</th>
+                <th>Total Order</th>
                 <th>Validity</th>
                 <th>Rate</th>
                 <th>Expire Date</th>
@@ -31,6 +33,7 @@
                     <td>${i.index + 1}</td>
                     <td>${subscriberService.serviceInfo.title}</td>
                     <td>${subscriberService.serviceInfo.totalStore}</td>
+                    <td>${subscriberService.serviceInfo.totalOrder}</td>
                     <td>${subscriberService.serviceInfo.expireDays} days</td>
                     <td>${subscriberService.serviceInfo.rate}</td>
                     <td><fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${subscriberService.expireOn}"/></td>
@@ -46,5 +49,6 @@
             </c:forEach>
             </tbody>
         </table>
+        </div>
     </div>
 </div>

@@ -25,8 +25,8 @@ public interface TagInfoRepository extends JpaRepository<TagInfo, Long>, JpaSpec
 
     TagInfo findByName(String tagName);
 
-    @Query("select t from TagInfo t where t.status = ?2 and (t.name like concat('%'  , ?1) or t.name like  concat( ?1 , '%') or t.name like  concat('%', ?1 , '%') or t.code like concat('%'  , ?1) or t.code like  concat( ?1 , '%') or t.code like  concat('%', ?1 , '%'))")
-    List<TagInfo> findAllBySearch(String query , Status status , Pageable pageable);
+    @Query("select t from TagInfo t where t.status = ?2 and t.storeInfo.id = ?3 and (t.name like concat('%'  , ?1) or t.name like  concat( ?1 , '%') or t.name like  concat('%', ?1 , '%') or t.code like concat('%'  , ?1) or t.code like  concat( ?1 , '%') or t.code like  concat('%', ?1 , '%'))")
+    List<TagInfo> findAllBySearch(String query , Status status , long storeId , Pageable pageable);
 
     //@Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select t from TagInfo t where t.name = ?1 and t.status = ?2 and t.storeInfo.id = ?3")

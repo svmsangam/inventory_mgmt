@@ -67,6 +67,9 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Autowired
     private IAccountInfoApi accountInfoApi;
 
+    @Autowired
+    private IStoreInvoiceApi storeInvoiceApi;
+
     @Override
     public double getTotalAmountByStoreInfoAndStatus(long storeInfoId, Status status) {
 
@@ -152,6 +155,8 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         accountInfoApi.addCreditAmount(invoiceInfo.getOrderInfo().getClientInfo().getId(), AccountAssociateType.CUSTOMER, BigDecimal.valueOf(invoiceInfo.getTotalAmount()));
 
         ledgerInfoApi.save(invoiceInfo.getId());
+
+        storeInvoiceApi.save(invoiceInfo.getStoreInfo().getId());
 
         return invoiceInfoConverter.convertToDto(invoiceInfo);
     }

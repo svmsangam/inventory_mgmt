@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+import="com.inventory.web.util.AuthenticationUtil"
+%>
 <!DOCTYPE html>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
@@ -111,15 +113,29 @@
                             <!-- Menu toggle button -->
                             <a href="#" class="dropdown-toggle notifications-a" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning countNotificationHeader"></span>
+                                <span class="label label-warning countNotificationHeader">1</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header countNotification"></li>
+                                <li class="header countNotification">
+                                    <li>
+                                        <a href="#">
+                                                <c:if test="${AuthenticationUtil.getSubscriberService().isExpired()}">
+                                                    <span class="label label-danger">Your Service is Expired</span><br>
+                                                    <p>Please Renue in time</p><br>
+                                                    <p>Contact Us: 9849019834/9841891093</p>
+                                                </c:if>
+                                                <c:if test="${!AuthenticationUtil.getSubscriberService().isExpired()}">
+                                                    Your Service will be expired on <br>
+                                                    ${AuthenticationUtil.getSubscriberService().getExpireOn()} <br>
+                                                    <p>Please Renue in time</p>
+                                                </c:if>
+                                        </a>
+                                    </li>
+                                </li>
                                 <li>
                                     <!-- Inner Menu: contains the notifications -->
                                     <ul class="menu notification">
-
-                                        <!-- end notification -->
+                                       <%--notificatins--%>
                                     </ul>
                                 </li>
                                 <li class="footer"><a href="#">View all</a></li>
