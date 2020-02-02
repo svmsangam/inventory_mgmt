@@ -85,13 +85,7 @@ public class StoreInvoiceApi implements IStoreInvoiceApi {
                 storeInvoice = save(storeId);
             }
 
-            ServiceDTO serviceDTO = AuthenticationUtil.getService();
-
-            if (serviceDTO == null){
-                return false;
-            }
-
-            return storeInvoice.getCount() < serviceDTO.getTotalOrder();
+            return storeInvoice.getCount() < AuthenticationUtil.getOrderLimit();
 
         } catch (Exception e) {
             LoggerUtil.logException(this.getClass(), e);

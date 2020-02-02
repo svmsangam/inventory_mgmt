@@ -8,6 +8,7 @@ import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
+import com.inventory.core.util.DateParseUtil;
 import com.inventory.web.session.UserDetailsWrapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -150,7 +151,15 @@ public class AuthenticationUtil {
             return null;
         }
 
-        return userDetailsWrapper.getSubscriberServiceDTO();
+        SubscriberServiceDTO subscriberServiceDTO = userDetailsWrapper.getSubscriberServiceDTO();
+
+        if (subscriberServiceDTO == null){
+            return null;
+        }
+
+        subscriberServiceDTO.setExpired(DateParseUtil.validateBeforeOrEqualCurrentDate(subscriberServiceDTO.getExpireOn()));
+
+        return subscriberServiceDTO;
     }
 
     public static final ServiceDTO getService(){

@@ -5,6 +5,7 @@ import com.inventory.core.model.entity.SubscriberService;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.ServiceRepository;
 import com.inventory.core.model.repository.SubscriberRepository;
+import com.inventory.core.util.DateParseUtil;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class SubscriberServiceConverter implements IListConvertable<SubscriberService , SubscriberServiceDTO> , IConvertable<SubscriberService , SubscriberServiceDTO>{
+public class SubscriberServiceConverter implements IListConvertable<SubscriberService, SubscriberServiceDTO>, IConvertable<SubscriberService, SubscriberServiceDTO> {
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -39,7 +40,7 @@ public class SubscriberServiceConverter implements IListConvertable<SubscriberSe
         return null;
     }
 
-    public SubscriberService convertToEntity(long serviceId , long subscriberId) throws ParseException {
+    public SubscriberService convertToEntity(long serviceId, long subscriberId) throws ParseException {
 
         SubscriberService subscriberService = new SubscriberService();
 
@@ -87,13 +88,7 @@ public class SubscriberServiceConverter implements IListConvertable<SubscriberSe
         dto.setExpireOn(entity.getExpireOn());
         dto.setStatus(entity.getStatus());
 
-        if (new Date().equals(entity.getExpireOn())){
-            dto.setExpired(true);
-        }else if (new Date().after(entity.getExpireOn())){
-            dto.setExpired(true);
-        }else {
-            dto.setExpired(false);
-        }
+        dto.setExpired(DateParseUtil.validateBeforeOrEqualCurrentDate(entity.getExpireOn()));
 
         return dto;
     }
@@ -112,4 +107,5 @@ public class SubscriberServiceConverter implements IListConvertable<SubscriberSe
     public List<SubscriberService> convertToEntityList(List<SubscriberServiceDTO> dtoList) {
         return null;
     }
+
 }

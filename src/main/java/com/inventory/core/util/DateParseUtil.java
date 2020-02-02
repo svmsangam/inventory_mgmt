@@ -91,8 +91,26 @@ public class DateParseUtil {
 
     public static boolean validateBeforeCurrentDate(Date date){
 
+        boolean isBefore = new DateTime(date).isBeforeNow();
+        return isBefore;
+    }
+
+    public static boolean validateBeforeOrEqualCurrentDate(Date date){
+
+        DateTime dateTime = new DateTime(date);
+        return dateTime.isBeforeNow() || dateTime.isEqualNow();
+    }
+
+    public static boolean validateAfterCurrentDate(Date date){
+
         boolean isBefore = new DateTime(date).isAfterNow();
         return isBefore;
+    }
+
+    public static boolean validateAfterOrEqualCurrentDate(Date date){
+
+        DateTime dateTime = new DateTime(date);
+        return dateTime.isAfterNow() || dateTime.isEqualNow();
     }
 
     public static String getCurrentYearDateStr(){

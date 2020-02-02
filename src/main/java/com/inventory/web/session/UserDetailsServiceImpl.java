@@ -64,6 +64,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		if (u.getUserType().equals(UserType.USER)) {
 			userDetailsWrapper = new UserDetailsWrapper(u, getAuthorities(u.getUsername()), msg.toString(), userRepository, subscriberServiceApi , subscriberService);
+		}else {
+
 		}
 
 		/*if (!userDetailsWrapper.isAccountNonLocked()){
