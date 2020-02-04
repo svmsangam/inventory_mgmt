@@ -144,11 +144,11 @@ class ReportServiceApi implements IReportServiceApi {
         storecontact.setAlignment(Element.ALIGN_CENTER);
         document.add(storecontact);
 
-        Paragraph invoiceDate = new Paragraph("Invoice Date : " + getDate(invoice.getInvoiceDate()));
+        Paragraph invoiceDate = new Paragraph("Receipt Date : " + getDate(invoice.getInvoiceDate()));
         invoiceDate.setAlignment(Element.ALIGN_RIGHT);
         document.add(invoiceDate);
 
-        Paragraph invoiceNo = new Paragraph("Invoice No : " + invoice.getInvoiceNo());
+        Paragraph invoiceNo = new Paragraph("Receipt No : " + invoice.getInvoiceNo());
         invoiceNo.setAlignment(Element.ALIGN_RIGHT);
         document.add(invoiceNo);
 
