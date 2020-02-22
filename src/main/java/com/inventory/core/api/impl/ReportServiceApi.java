@@ -13,13 +13,11 @@ import com.inventory.core.model.dto.OrderInfoDTO;
 import com.inventory.core.model.dto.OrderItemInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.util.FilePath;
+import com.inventory.web.util.LoggerUtil;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.BarcodeQRCode;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -112,7 +110,29 @@ class ReportServiceApi implements IReportServiceApi {
         String file = Long.toString(System.currentTimeMillis());
         //request.getServletPath()+"/PDFfile.pdf";
 
-        String path = FilePath.getOSPath();
+        String path = FilePath.getOSPath() + File.separator + "invoicepdf" + File.separator;
+
+        File folder = new File(path);
+
+        if (!folder.exists()){
+            folder.mkdirs();
+        }
+
+        if (!folder.canRead()){
+            LoggerUtil.logDebug(path + " is not readable path");
+            folder.setReadable(true);
+        }
+
+        if (!folder.canWrite()){
+            LoggerUtil.logDebug(path + " is not writable path");
+            folder.setWritable(true);
+        }
+
+        if (!folder.canExecute()){
+            LoggerUtil.logDebug(path + " is not executable path");
+            folder.setExecutable(true);
+        }
+
 
         OrderInfoDTO orderInfoDTO = invoice.getOrderInfo();
 
@@ -124,7 +144,7 @@ class ReportServiceApi implements IReportServiceApi {
 
         document.setPageSize(PageSize.A4);
 
-        PdfWriter.getInstance(document, new FileOutputStream(file));
+        PdfWriter.getInstance(document, new FileOutputStream(path + file));
 
         document.open();
 
@@ -332,7 +352,7 @@ class ReportServiceApi implements IReportServiceApi {
 
         document.close();
 
-        return file;
+        return path + file;
 
     }
 
