@@ -70,13 +70,13 @@ public class XLSReport extends AbstractXlsxView {
         //invoice info start
         Row invoicerow = sheet.createRow(6);
         Cell invoicenocell = invoicerow.createCell(6);
-        invoicenocell.setCellValue("invoiceNo");
+        invoicenocell.setCellValue("Receipt No");
         Cell invoicenonextcell = invoicerow.createCell(7);
         invoicenonextcell.setCellValue(invoice.getInvoiceNo());
 
         Row invoicedaterow = sheet.createRow(7);
         Cell invoicedatestrcell = invoicedaterow.createCell(6);
-        invoicedatestrcell.setCellValue("invoice date");
+        invoicedatestrcell.setCellValue("Receipt Date");
         Cell invoicedatecell = invoicedaterow.createCell(7);
         invoicedatecell.setCellValue(getDate(invoice.getInvoiceDate()));
 

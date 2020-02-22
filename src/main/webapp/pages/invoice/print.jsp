@@ -31,8 +31,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        <%--<i class="fa fa-globe"></i>--%> Receipt <span id="inv">#${invoice.invoiceNo}</span>
-                        <small class="pull-right">Date: <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></small>
+                        <%--<i class="fa fa-globe"></i>--%> Receipt No: <span id="inv">#${invoice.invoiceNo}</span>
+                        <small class="pull-right">Receipt Date: <fmt:formatDate pattern="MMM dd, yyyy" value="${invoice.invoiceDate}"/></small>
                     </h2>
                 </div>
                 <!-- /.col -->

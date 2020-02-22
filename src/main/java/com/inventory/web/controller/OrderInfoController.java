@@ -1,7 +1,39 @@
 package com.inventory.web.controller;
 
-import com.inventory.core.api.iapi.*;
-import com.inventory.core.model.dto.*;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.inventory.core.api.iapi.ICityInfoApi;
+import com.inventory.core.api.iapi.IFiscalYearInfoApi;
+import com.inventory.core.api.iapi.IInvoiceInfoApi;
+import com.inventory.core.api.iapi.IItemInfoApi;
+import com.inventory.core.api.iapi.INotificationApi;
+import com.inventory.core.api.iapi.IOrderInfoApi;
+import com.inventory.core.api.iapi.IOrderItemInfoApi;
+import com.inventory.core.api.iapi.ISendMailSSL;
+import com.inventory.core.api.iapi.IStoreInvoiceApi;
+import com.inventory.core.api.iapi.IUserApi;
+import com.inventory.core.model.dto.FiscalYearInfoDTO;
+import com.inventory.core.model.dto.InvUserDTO;
+import com.inventory.core.model.dto.InvoiceInfoDTO;
+import com.inventory.core.model.dto.OrderFilterDTO;
+import com.inventory.core.model.dto.OrderInfoDTO;
+import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.SalesOrderStatus;
@@ -11,905 +43,830 @@ import com.inventory.core.validation.OrderValidation;
 import com.inventory.core.validation.PaymentInfoValidation;
 import com.inventory.web.error.OrderError;
 import com.inventory.web.error.PaymentInfoError;
-import com.inventory.web.session.RequestCacheUtil;
-import com.inventory.web.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import com.inventory.web.util.AuthenticationUtil;
+import com.inventory.web.util.LoggerUtil;
+import com.inventory.web.util.PageInfo;
+import com.inventory.web.util.StringConstants;
+import com.inventory.web.util.UIUtil;
 
 @Controller
 @RequestMapping("order")
 public class OrderInfoController {
 
-    @Autowired
-    private IUserApi userApi;
+	@Autowired
+	private IUserApi userApi;
 
-    @Autowired
-    private IItemInfoApi itemInfoApi;
+	@Autowired
+	private IItemInfoApi itemInfoApi;
 
-    @Autowired
-    private IOrderInfoApi orderInfoApi;
+	@Autowired
+	private IOrderInfoApi orderInfoApi;
 
-    @Autowired
-    private IOrderItemInfoApi orderItemInfoApi;
+	@Autowired
+	private IOrderItemInfoApi orderItemInfoApi;
 
-    @Autowired
-    private IInvoiceInfoApi invoiceInfoApi;
+	@Autowired
+	private IInvoiceInfoApi invoiceInfoApi;
 
-    @Autowired
-    private OrderValidation orderValidation;
+	@Autowired
+	private OrderValidation orderValidation;
 
-    @Autowired
-    private IFiscalYearInfoApi fiscalYearInfoApi;
+	@Autowired
+	private IFiscalYearInfoApi fiscalYearInfoApi;
 
-    @Autowired
-    private ICityInfoApi cityInfoApi;
+	@Autowired
+	private ICityInfoApi cityInfoApi;
 
-    @Autowired
-    private PaymentInfoValidation paymentInfoValidation;
+	@Autowired
+	private PaymentInfoValidation paymentInfoValidation;
 
-    @Autowired
-    private ISendMailSSL sendMailSSL;
+	@Autowired
+	private ISendMailSSL sendMailSSL;
 
-    @Autowired
-    private INotificationApi notificationApi;
+	@Autowired
+	private INotificationApi notificationApi;
 
-    @Autowired
-    private IStoreInvoiceApi storeInvoiceApi;
+	@Autowired
+	private IStoreInvoiceApi storeInvoiceApi;
 
-    @GetMapping(value = "/sale/list")
-    public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	@GetMapping(value = "/sale/list")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String listSale(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-        try {
+		try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                   /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			/* current user checking end */
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			if (page == null) {
+				page = 1;
+			}
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+			if (page < 1) {
+				page = 1;
+			}
 
+			int currentpage = page - 1;
 
-        /*current user checking end*/
+			long totalList = orderInfoApi.countListSale(Status.ACTIVE, currentUser.getStoreId());
 
-            if (page == null) {
-                page = 1;
-            }
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
-            if (page < 1) {
-                page = 1;
-            }
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
 
-            int currentpage = page - 1;
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            long totalList = orderInfoApi.countListSale(Status.ACTIVE, currentUser.getStoreId());
+			modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.ACTIVE, currentUser.getStoreId(),
+					currentpage, (int) PageInfo.pageList));
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
+			modelMap.put(StringConstants.FISCAL_YEAR_LIST,
+					fiscalYearInfoApi.list(Status.ACTIVE, currentUser.getStoreId(), 0, 100));
+			modelMap.put(StringConstants.SALE_TRACK_LIST, SalesOrderStatus.values());
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			return "redirect:/";
+		}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+		return "order/listSale";
+	}
 
-            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.ACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
-            modelMap.put(StringConstants.FISCAL_YEAR_LIST , fiscalYearInfoApi.list(Status.ACTIVE , currentUser.getStoreId() , 0 , 100));
-            modelMap.put(StringConstants.SALE_TRACK_LIST , SalesOrderStatus.values());
+	@GetMapping(value = "/sale/filter")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String filter(@ModelAttribute("filter") OrderFilterDTO filterDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request,
+			HttpServletResponse response) {
 
+		try {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            return "redirect:/";
-        }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        return "order/listSale";
-    }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-    @GetMapping(value = "/sale/filter")
-    public String filter(@ModelAttribute("filter")OrderFilterDTO filterDTO , BindingResult bindingResult , ModelMap modelMap, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-        try {
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			/* current user checking end */
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
+			if (filterDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
+				return "redirect:/sale/list";
+			}
 
-                RequestCacheUtil.save(request, response);
+			Integer page = filterDTO.getPageNo();
 
-                return "redirect:/login";
-            }
+			filterDTO.setStatus(Status.ACTIVE);
+			filterDTO.setStoreId(currentUser.getStoreId());
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (page == null) {
+				page = 1;
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (page < 1) {
+				page = 1;
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			int currentpage = page - 1;
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			long totalList = orderInfoApi.filterCount(filterDTO);// invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE,
+																	// currentUser.getStoreId(), from, to);
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
 
-            /*current user checking end*/
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            if (filterDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Invoice not found");
-                return "redirect:/sale/list";
-            }
+			filterDTO.setPageNo(currentpage);
+			filterDTO.setSize((int) PageInfo.pageList);
 
-            Integer page = filterDTO.getPageNo();
+			modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.filter(filterDTO));
+			modelMap.put(StringConstants.SALE_TRACK_LIST, SalesOrderStatus.values());
 
-            filterDTO.setStatus(Status.ACTIVE);
-            filterDTO.setStoreId(currentUser.getStoreId());
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
+			modelMap.put("filterDTO", filterDTO);
+			modelMap.put("totalResult", totalList);
 
-            if (page == null) {
-                page = 1;
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/";
+		}
 
-            if (page < 1) {
-                page = 1;
-            }
+		return "order/filter";
 
-            int currentpage = page - 1;
+	}
 
-            long totalList = orderInfoApi.filterCount(filterDTO);//invoiceInfoApi.countAllByStatusAndStoreInfoAndInvoiceDateBetween(Status.ACTIVE, currentUser.getStoreId(), from, to);
+	@GetMapping(value = "/sale/inactive")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String listSaleInactive(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+		try {
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            filterDTO.setPageNo(currentpage);
-            filterDTO.setSize((int) PageInfo.pageList);
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.filter(filterDTO));
-            modelMap.put(StringConstants.SALE_TRACK_LIST , SalesOrderStatus.values());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
-            modelMap.put("filterDTO" , filterDTO);
-            modelMap.put("totalResult" , totalList);
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/";
-        }
+			/* current user checking end */
 
-        return "order/filter";
+			if (page == null) {
+				page = 1;
+			}
 
-    }
+			if (page < 1) {
+				page = 1;
+			}
 
-    @GetMapping(value = "/sale/inactive")
-    public String listSaleInactive(@RequestParam(value = "pageNo", required = false) Integer page, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			int currentpage = page - 1;
 
-        try {
+			long totalList = orderInfoApi.countListSale(Status.INACTIVE, currentUser.getStoreId());
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentpage > totalpage || currentpage < 0) {
+				currentpage = 0;
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.INACTIVE, currentUser.getStoreId(),
+					currentpage, (int) PageInfo.pageList));
+			modelMap.put("lastpage", totalpage);
+			modelMap.put("currentpage", page);
+			modelMap.put("pagelist", pagesnumbers);
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			return "redirect:/";
+		}
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+		return "order/listSaleInactive";
+	}
 
+	@GetMapping(value = "/sale/add")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String addOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-            /*current user checking end*/
+		try {
 
-            if (page == null) {
-                page = 1;
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (page < 1) {
-                page = 1;
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            int currentpage = page - 1;
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            long totalList = orderInfoApi.countListSale(Status.INACTIVE, currentUser.getStoreId());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            int totalpage = (int) Math.ceil(totalList / PageInfo.pageList);
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            if (currentpage > totalpage || currentpage < 0) {
-                currentpage = 0;
-            }
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-            List<Integer> pagesnumbers = PageInfo.PageLimitCalculator(page, totalpage, PageInfo.numberOfPage);
+			/* current user checking end */
 
-            modelMap.put(StringConstants.ORDER_LIST, orderInfoApi.listSale(Status.INACTIVE, currentUser.getStoreId(), currentpage, (int) PageInfo.pageList));
-            modelMap.put("lastpage", totalpage);
-            modelMap.put("currentpage", page);
-            modelMap.put("pagelist", pagesnumbers);
+			modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			return "order/addSale";
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            return "redirect:/";
-        }
+			return "redirect:/";
+		}
+	}
 
-        return "order/listSaleInactive";
-    }
+	@PostMapping(value = "/sale/save")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String saveSaleOrder(@ModelAttribute("order") OrderInfoDTO orderInfoDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-    @GetMapping(value = "/sale/add")
-    public String addOnSale(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+		try {
 
-        try {
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-                   /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+			/* current user checking end */
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+			synchronized (this.getClass()) {
+				orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				orderInfoDTO.setCreatedById(currentUser.getUserId());
 
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
+				OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
 
-        /*current user checking end*/
+				if (!error.isValid()) {
 
-            modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+					modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+					modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+					modelMap.put(StringConstants.ORDER_ERROR, error);
+					modelMap.put(StringConstants.ORDER, orderInfoDTO);
 
-            return "order/addSale";
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+					return "order/addSale";
+				}
 
-            return "redirect:/";
-        }
-    }
+				orderInfoDTO = orderInfoApi.save(orderInfoDTO);
+				redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "order saved successfullly");
 
-    @PostMapping(value = "/sale/save")
-    public String saveSaleOrder(@ModelAttribute("order") OrderInfoDTO orderInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				/*
+				 * if (orderInfoDTO.getClientInfo() != null) { if
+				 * (orderInfoDTO.getClientInfo().getEmail() != null &&
+				 * !orderInfoDTO.getClientInfo().getEmail().isEmpty()) {
+				 * 
+				 * sendMailSSL.sendHtmlMail("dhirajbadu50@gmail.com",
+				 * orderInfoDTO.getClientInfo().getEmail(), getSendmsg(orderInfoDTO),
+				 * "sale order created"); } }
+				 */
+			}
 
-        try {
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/";
+		}
+		return "redirect:/order/sale/" + orderInfoDTO.getOrderId();
+	}
 
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+	private String getSendmsg(OrderInfoDTO orderInfoDTO) {
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		String msg = "<html><head><style>div { background-color: lightblue;}</style></head><body><div>";
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		msg = msg + "Dear sir/madam, \n\n";
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		msg = msg + "<h1>" + orderInfoDTO.getClientInfo().getName() + "</h1>"
+				+ " your order is created of total amount : " + orderInfoDTO.getGrandTotal() + " \n\n thank you \n\n ";
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+		msg = msg + "</div></body></html>";
+		return msg;
+	}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+	@GetMapping(value = "/sale/quick")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String addQuick(ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+		try {
 
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking end*/
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            synchronized (this.getClass()) {
-                orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                orderInfoDTO.setCreatedById(currentUser.getUserId());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-                OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-                if (!error.isValid()) {
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-                    modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-                    modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
-                    modelMap.put(StringConstants.ORDER_ERROR, error);
-                    modelMap.put(StringConstants.ORDER, orderInfoDTO);
+			/* current user checking end */
 
-                    return "order/addSale";
-                }
+			modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+			modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
 
-                orderInfoDTO = orderInfoApi.save(orderInfoDTO);
-                redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "order saved successfullly");
+			return "order/quick/add";
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-                /*if (orderInfoDTO.getClientInfo() != null) {
-                    if (orderInfoDTO.getClientInfo().getEmail() != null && !orderInfoDTO.getClientInfo().getEmail().isEmpty()) {
+			return "redirect:/";
+		}
+	}
 
-                        sendMailSSL.sendHtmlMail("dhirajbadu50@gmail.com", orderInfoDTO.getClientInfo().getEmail(), getSendmsg(orderInfoDTO), "sale order created");
-                    }
-                }*/
-            }
+	@GetMapping(value = "/sale/cancel")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String cancelQuick(@RequestParam("orderId") long orderId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/";
-        }
-        return "redirect:/order/sale/" + orderInfoDTO.getOrderId();
-    }
+		try {
 
-    private String getSendmsg(OrderInfoDTO orderInfoDTO){
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-        String msg ="<html><head><style>div { background-color: lightblue;}</style></head><body><div>";
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        msg = msg + "Dear sir/madam, \n\n";
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-        msg = msg + "<h1>" +orderInfoDTO.getClientInfo().getName() + "</h1>" + " your order is created of total amount : " + orderInfoDTO.getGrandTotal() + " \n\n thank you \n\n ";
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-        msg = msg + "</div></body></html>";
-        return msg;
-    }
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-    @GetMapping(value = "/sale/quick")
-    public String addQuick(ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			/* current user checking end */
 
-        try {
+			OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE, orderId, currentUser.getStoreId());
 
-                   /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (orderInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/list";
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			synchronized (this) {
+				orderInfoApi.cancelQuickSale(orderId);
+			}
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
+			return "redirect:/order/sale/list";
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			return "redirect:/";
+		}
+	}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+	@GetMapping(value = "/sale/quit")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String quitQuick(@RequestParam("orderId") long orderId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+		try {
 
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking end*/
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-            modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            return "order/quick/add";
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            return "redirect:/";
-        }
-    }
+			/* current user checking end */
 
-    @GetMapping(value = "/sale/cancel")
-    public String cancelQuick(@RequestParam("orderId")long orderId , ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE, orderId, currentUser.getStoreId());
 
-        try {
+			if (orderInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/inactive";
+			}
 
-                   /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			synchronized (this) {
+				orderInfoApi.cancelQuickSale(orderId);
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
+			return "redirect:/order/sale/inactive";
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			return "redirect:/";
+		}
+	}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+	@PostMapping(value = "/sale/quick")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String saveQuick(@ModelAttribute("order") OrderInfoDTO orderInfoDTO, BindingResult bindingResult,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+		try {
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking end*/
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE , orderId , currentUser.getStoreId());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            if (orderInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
-            }
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            synchronized (this){
-                orderInfoApi.cancelQuickSale(orderId );
-            }
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
-            return "redirect:/order/sale/list";
+			/* current user checking end */
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			synchronized (this.getClass()) {
+				orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				orderInfoDTO.setCreatedById(currentUser.getUserId());
 
-            return "redirect:/";
-        }
-    }
+				OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
 
-    @GetMapping(value = "/sale/quit")
-    public String quitQuick(@RequestParam("orderId")long orderId , ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				if (!error.isValid()) {
 
-        try {
+					orderInfoDTO.setOrderItemInfoDTOList(orderItemInfoApi
+							.getAllOnValidationFaild(orderInfoDTO.getOrderItemInfoDTOList(), currentUser.getStoreId()));
+					modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
+					modelMap.put(StringConstants.CITY_LIST, cityInfoApi.list());
+					modelMap.put(StringConstants.ORDER_ERROR, error);
+					modelMap.put(StringConstants.ORDER, orderInfoDTO);
 
-            /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+					return "order/quick/add";
+				}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				orderInfoDTO = orderInfoApi.saveQuickSale(orderInfoDTO);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				notificationApi.saveAndSendForSuperAdmin("order created",
+						"new order created " + orderInfoDTO.getOrderNo(), "/order/sale/" + orderInfoDTO.getOrderId(),
+						currentUser.getStoreId());
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/";
+		}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+		return "redirect:/order/sale/quick/comfirm?orderId=" + orderInfoDTO.getOrderId();
+	}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+	@GetMapping(value = "sale/quick/comfirm")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String confirmQuick(@RequestParam("orderId") Long orderId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+		try {
 
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            /*current user checking end*/
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE , orderId , currentUser.getStoreId());
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            if (orderInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/inactive";
-            }
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-            synchronized (this){
-                orderInfoApi.cancelQuickSale(orderId );
-            }
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-            redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "Order canceled successfully");
-            return "redirect:/order/sale/inactive";
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			/* current user checking end */
 
-            return "redirect:/";
-        }
-    }
+			if (orderId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/quick";
+			}
 
-    @PostMapping(value = "/sale/quick")
-    public String saveQuick(@ModelAttribute("order") OrderInfoDTO orderInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			if (orderId < 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/quick";
+			}
 
-        try {
+			OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE, orderId, currentUser.getStoreId());
 
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+			if (orderInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/quick";
+			}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+			modelMap.put(StringConstants.ORDER, orderInfoDTO);
+			modelMap.put(StringConstants.ORDER_ITEM_LIST,
+					orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderId));
+			modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+			return "redirect:/";
+		}
+		return "order/quick/confirm";
+	}
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+	@PostMapping(value = "sale/quick/confirm")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String confirmQuick(@ModelAttribute("paymentInfo") PaymentInfoDTO paymentInfoDTO,
+			BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+		try {
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-        /*current user checking end*/
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            synchronized (this.getClass()) {
-                orderInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                orderInfoDTO.setCreatedById(currentUser.getUserId());
+			FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi
+					.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
 
-                OrderError error = orderValidation.onSaleSave(orderInfoDTO, bindingResult);
+			if (currentFiscalYear == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
+				return "redirect:/fiscalyear/add";// store not assigned page
+			}
 
-                if (!error.isValid()) {
+			if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR,
+						"You reached the order limitation please contact us.");
+				return "redirect:/dashboard";
+			}
 
-                    orderInfoDTO.setOrderItemInfoDTOList(orderItemInfoApi.getAllOnValidationFaild(orderInfoDTO.getOrderItemInfoDTOList() , currentUser.getStoreId()));
-                    modelMap.put(StringConstants.ORDERNO, orderInfoApi.generatOrderNumber(currentUser.getStoreId()));
-                    modelMap.put(StringConstants.CITY_LIST , cityInfoApi.list());
-                    modelMap.put(StringConstants.ORDER_ERROR, error);
-                    modelMap.put(StringConstants.ORDER, orderInfoDTO);
+			/* current user checking end */
 
-                    return "order/quick/add";
-                }
+			if (paymentInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/order/sale/quick";
+			}
 
-                orderInfoDTO = orderInfoApi.saveQuickSale(orderInfoDTO);
+			if (paymentInfoDTO.getOrderInfoId() <= 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/order/sale/quick";
+			}
 
-                notificationApi.saveAndSendForSuperAdmin("order created" , "new order created " + orderInfoDTO.getOrderNo() , "/order/sale/" + orderInfoDTO.getOrderId() , currentUser.getStoreId());
-            }
+			OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE, paymentInfoDTO.getOrderInfoId(),
+					currentUser.getStoreId());
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/";
-        }
+			if (orderInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
+				return "redirect:/order/sale/quick";
+			}
 
-        return "redirect:/order/sale/quick/comfirm?orderId=" + orderInfoDTO.getOrderId();
-    }
+			synchronized (this.getClass()) {
+				paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
+				paymentInfoDTO.setCreatedById(currentUser.getUserId());
 
-    @GetMapping(value = "sale/quick/comfirm")
-    public String confirmQuick(@RequestParam("orderId") Long orderId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+				PaymentInfoError error = paymentInfoValidation.onQuickSave(paymentInfoDTO, bindingResult);
 
-        try {
+				if (!error.isValid()) {
+					modelMap.put(StringConstants.PAYMENTERROR, error);
+					modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
+					modelMap.put(StringConstants.ORDER, orderInfoDTO);
+					modelMap.put(StringConstants.ORDER_ITEM_LIST,
+							orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderInfoDTO.getOrderId()));
+					modelMap.put(StringConstants.PAYMENTMETHODLIST, PaymentMethod.values());
 
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
+					return "order/quick/confirm";
+				}
 
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.saveQuickSale(paymentInfoDTO);
 
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
+				paymentInfoDTO.setInvoiceInfoId(invoiceInfoDTO.getInvoiceId());
+			}
 
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
+		} catch (Exception e) {
 
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
+			LoggerUtil.logException(this.getClass(), e);
+			return "redirect:/500";
+		}
 
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
+		redirectAttributes.addFlashAttribute(StringConstants.MESSAGE, "invoice successfully created");
+		return "redirect:/invoice/" + paymentInfoDTO.getInvoiceInfoId();
+	}
 
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
+	@GetMapping(value = "sale/{orderId}")
+	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
+	public String show(@PathVariable("orderId") Long orderId, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) {
 
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
+		try {
 
-        /*current user checking end*/
+			/* current user checking start */
+			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-            if (orderId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/quick";
-            }
+			if (currentUser.getUserauthority().contains(Authorities.USER)
+					& !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
+				return "redirect:/";// access deniled page
+			}
 
-            if (orderId < 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/quick";
-            }
+			if (currentUser.getStoreId() == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
+				return "redirect:/store/list";// store not assigned page
+			}
 
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE, orderId, currentUser.getStoreId());
+			/* current user checking end */
 
-            if (orderInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/quick";
-            }
+			if (orderId == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/list";
+			}
 
-            modelMap.put(StringConstants.ORDER, orderInfoDTO);
-            modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderId));
-            modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
+			if (orderId < 0) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/list";
+			}
 
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
+			OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE, orderId, currentUser.getStoreId());
 
-            return "redirect:/";
-        }
-        return "order/quick/confirm";
-    }
+			if (orderInfoDTO == null) {
+				redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
+				return "redirect:/order/sale/list";
+			}
 
-    @PostMapping(value = "sale/quick/confirm")
-    public String confirmQuick(@ModelAttribute("paymentInfo") PaymentInfoDTO paymentInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+			modelMap.put(StringConstants.ORDER, orderInfoDTO);
+			modelMap.put(StringConstants.ORDER_ITEM_LIST,
+					orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderId));
+			modelMap.put(StringConstants.INVOICE,
+					invoiceInfoApi.getByOrderIdAndStatusAndStoreId(orderId, Status.ACTIVE, currentUser.getStoreId()));
 
-        try {
+		} catch (Exception e) {
+			LoggerUtil.logException(this.getClass(), e);
 
-                /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & ! AuthenticationUtil.checkPermission(currentUser, Permission.INVOICE_CREATE)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
-
-            FiscalYearInfoDTO currentFiscalYear = fiscalYearInfoApi.getCurrentFiscalYearByStoreInfo(currentUser.getStoreId());
-
-            if (currentFiscalYear == null){
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, "please create current fiscal year");
-                return "redirect:/fiscalyear/add";//store not assigned page
-            }
-
-            if (!storeInvoiceApi.verifyForCurrentMonth(currentUser.getStoreId())){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "You reached the order limitation please contact us.");
-                return "redirect:/dashboard";
-            }
-
-        /*current user checking end*/
-
-            if (paymentInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/order/sale/quick";
-            }
-
-            if (paymentInfoDTO.getOrderInfoId() <= 0){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/order/sale/quick";
-            }
-
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.INACTIVE , paymentInfoDTO.getOrderInfoId() , currentUser.getStoreId());
-
-            if (orderInfoDTO == null){
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "bad request");
-                return "redirect:/order/sale/quick";
-            }
-
-            synchronized (this.getClass()) {
-                paymentInfoDTO.setStoreInfoId(currentUser.getStoreId());
-                paymentInfoDTO.setCreatedById(currentUser.getUserId());
-
-                PaymentInfoError error = paymentInfoValidation.onQuickSave(paymentInfoDTO , bindingResult);
-
-                if (!error.isValid()) {
-                    modelMap.put(StringConstants.PAYMENTERROR, error);
-                    modelMap.put(StringConstants.PAYMENT, paymentInfoDTO);
-                    modelMap.put(StringConstants.ORDER, orderInfoDTO);
-                    modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderInfoDTO.getOrderId()));
-                    modelMap.put(StringConstants.PAYMENTMETHODLIST , PaymentMethod.values());
-
-                    return "order/quick/confirm";
-                }
-
-                InvoiceInfoDTO invoiceInfoDTO = invoiceInfoApi.saveQuickSale(paymentInfoDTO);
-
-                paymentInfoDTO.setInvoiceInfoId(invoiceInfoDTO.getInvoiceId());
-            }
-
-        } catch (Exception e) {
-
-            LoggerUtil.logException(this.getClass() , e);
-            return "redirect:/500";
-        }
-
-        redirectAttributes.addFlashAttribute(StringConstants.MESSAGE , "invoice successfully created");
-        return "redirect:/invoice/" + paymentInfoDTO.getInvoiceInfoId();
-    }
-
-    @GetMapping(value = "sale/{orderId}")
-    public String show(@PathVariable("orderId") Long orderId, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-
-        try {
-
-                     /*current user checking start*/
-            InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
-
-            if (currentUser == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (!((currentUser.getUserauthority().contains(Authorities.SUPERADMIN) | currentUser.getUserauthority().contains(Authorities.ADMINISTRATOR) | currentUser.getUserauthority().contains(Authorities.USER)) && currentUser.getUserauthority().contains(Authorities.AUTHENTICATED))) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Athentication failed");
-                return "redirect:/logout";
-            }
-
-            if (currentUser.getUserauthority().contains(Authorities.USER) & !AuthenticationUtil.checkPermission(currentUser, Permission.SALES_ORDER_VIEW)) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Access deniled");
-                return "redirect:/";//access deniled page
-            }
-
-            if (currentUser.getStoreId() == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.INFO, UIUtil.addStoreMessage());
-                return "redirect:/store/list";//store not assigned page
-            }
-
-        /*current user checking end*/
-
-            if (orderId == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
-            }
-
-            if (orderId < 0) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
-            }
-
-            OrderInfoDTO orderInfoDTO = orderInfoApi.show(Status.ACTIVE, orderId, currentUser.getStoreId());
-
-            if (orderInfoDTO == null) {
-                redirectAttributes.addFlashAttribute(StringConstants.ERROR, "Order not found");
-                return "redirect:/order/sale/list";
-            }
-
-            modelMap.put(StringConstants.ORDER, orderInfoDTO);
-            modelMap.put(StringConstants.ORDER_ITEM_LIST, orderItemInfoApi.getAllByStatusAndOrderInfo(Status.ACTIVE, orderId));
-            modelMap.put(StringConstants.INVOICE , invoiceInfoApi.getByOrderIdAndStatusAndStoreId(orderId , Status.ACTIVE , currentUser.getStoreId()));
-
-
-        } catch (Exception e) {
-            LoggerUtil.logException(this.getClass() , e);
-
-            return "redirect:/500";
-        }
-        return "order/showSale";
-    }
+			return "redirect:/500";
+		}
+		return "order/showSale";
+	}
 }
-
-
-
