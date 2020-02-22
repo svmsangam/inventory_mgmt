@@ -40,7 +40,7 @@ public class SendMailSSL implements ISendMailSSL {
             Session session = Session.getDefaultInstance(props,
                     new javax.mail.Authenticator() {
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("inventory.sys.info@gmail.com", "deamon50");
+                            return new PasswordAuthentication("nrestro.stock@gmail.com", "Nepal$11");
                         }
                     });
             return session;
