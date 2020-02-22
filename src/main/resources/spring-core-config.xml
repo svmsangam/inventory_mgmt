@@ -31,10 +31,8 @@
         <property name="dataSourceProperties">
             <props>
                 <prop key="url">jdbc:mysql://localhost:3306/inventory?verifyServerCertificate=false&amp;useSSL=false</prop>
-                 <prop key="user">root</prop>
-                <prop key="password">root</prop>
-                <!--<prop key="user">root</prop>
-                <prop key="password"></prop>-->
+                <prop key="user">root</prop>
+                <prop key="password">RoshanKhm$11</prop>
                 <prop key="prepStmtCacheSize">250</prop>
                 <prop key="prepStmtCacheSqlLimit">2048</prop>
                 <prop key="cachePrepStmts">true</prop>
