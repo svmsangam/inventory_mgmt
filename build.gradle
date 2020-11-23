@@ -114,6 +114,8 @@ dependencies {
     compile group: 'com.github.darrachequesne', name: 'spring-data-jpa-datatables', version: '4.3'*/
 
 
+// https://mvnrepository.com/artifact/commons-lang/commons-lang
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
     compile ('ar.com.fdvs:DynamicJasper:5+'){
         exclude group: 'org.springframework'
