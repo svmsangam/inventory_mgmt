@@ -230,7 +230,7 @@ public class ReportGeneratorUtil {
 		AbstractColumn amount = createColumn("totalAmount", Double.class, "Amount", 30, headerStyle, detailNumStyle);
 		AbstractColumn receivableamount = createColumn("receivableAmount", Double.class, "Receivable Amount", 30,
 				headerStyle, detailNumStyle);
-		AbstractColumn fiscalYear = createColumn("fiscalYearInfo.title", String.class, "Fiscal Fear", 24, headerStyle,
+		AbstractColumn fiscalYear = createColumn("fiscalYearInfo.title", String.class, "Fiscal Year", 24, headerStyle,
 				detailTextStyle);
 		AbstractColumn client = createColumn("orderInfo.clientInfo.name", String.class, "Client Name", 50, headerStyle,
 				detailTextStyle);
