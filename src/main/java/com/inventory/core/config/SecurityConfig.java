@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +30,20 @@ public class SecurityConfig {
             ClearSiteDataHeaderWriter.Directive.EXECUTION_CONTEXTS
     };*/
 
+    private ExceptionMappingAuthenticationFailureHandler authenticationFailureHandler(){
+        ExceptionMappingAuthenticationFailureHandler failureHandler = new ExceptionMappingAuthenticationFailureHandler();
+
+        Map<String, String> error = new HashMap<String, String>();
+
+        error.put("org.springframework.security.authentication.BadCredentialsException", "/login/wrong_username_or_password");
+        error.put("org.springframework.security.authentication.CredentialsExpiredException", "/login/credentialsExpired");
+        error.put("org.springframework.security.authentication.LockedException", "/login/account_is_not_activated_check_your_email");
+        error.put("org.springframework.security.authentication.DisabledException", "/login/account_expired");
+
+        failureHandler.setExceptionMappings(error);
+        return failureHandler;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -39,19 +57,20 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .formLogin(login ->
                         login
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/dashboard")
                                 .failureHandler(
                                         (request, response, exception) ->
                                                 response.sendRedirect("/auth/login?error=" + exception.getMessage())
                                 )
                                 .usernameParameter("username")
                                 .passwordParameter("password")
-                                .loginPage("/auth/login")
+                                .failureHandler(authenticationFailureHandler())
+                                .loginPage("/login")
                                 .permitAll()
                 )
                 .logout(logout ->
                         logout.
-                                logoutUrl("/auth/logout").
+                                logoutUrl("/logout").
                                 invalidateHttpSession(true).
                                 clearAuthentication(true).
                                 permitAll()
