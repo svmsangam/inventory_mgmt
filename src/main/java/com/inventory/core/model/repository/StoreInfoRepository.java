@@ -14,7 +14,6 @@ import java.util.List;
  * Created by dhiraj on 8/1/17.
  */
 @Repository
-@Transactional(readOnly = true)
 public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long>, JpaSpecificationExecutor<StoreInfo> {
 
     StoreInfo findById(long storeId);
@@ -24,8 +23,6 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long>, Jpa
 
     @Query("select s from StoreInfo s where s.status=?1")
     List<StoreInfo> findAllByStatus(Status status);
-
-    List<StoreInfo> findAllByStatusInAndIdIn(Status status,  List<Long> storeId);
 
     StoreInfo findByName(String storeName);
 

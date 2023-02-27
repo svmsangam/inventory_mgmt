@@ -9,10 +9,7 @@ import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.ResponseStatus;
 import com.inventory.core.util.Authorities;
 import com.inventory.web.util.AuthenticationUtil;
-import com.inventory.web.util.StringConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**

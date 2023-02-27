@@ -1,10 +1,10 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/inventory
-    username: dhiraj
-    password: r00t@Dhiraj
-#    hikari:
-#      schema: jagire
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/inventory
+    username: postgres
+    password: 123456
+  #    hikari:
+  #      schema: jagire
   jpa:
 #    show_sql: true
