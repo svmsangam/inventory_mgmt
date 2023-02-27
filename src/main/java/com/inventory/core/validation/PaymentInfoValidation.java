@@ -192,7 +192,7 @@ public class PaymentInfoValidation extends GlobalValidation{
             }
         }
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(paymentInfoDTO.getOrderInfoId());
+        OrderInfo orderInfo = orderInfoRepository.findById(paymentInfoDTO.getOrderInfoId()).orElse(null);
 
         valid = valid && checkAmount(paymentInfoDTO.getReceivedPayment().getAmount(), orderInfo.getGrandTotal());
 

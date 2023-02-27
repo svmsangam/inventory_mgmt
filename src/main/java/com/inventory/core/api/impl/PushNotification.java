@@ -1,10 +1,11 @@
+/*
 package com.inventory.core.api.impl;
 
 import com.inventory.core.api.fb.FirebaseResponse;
 import com.inventory.core.api.fb.PushNotificationsService;
 import com.inventory.core.api.iapi.IPushNotification;
 import com.inventory.core.model.dto.NotificationDTO;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+*/
 /**
  * Created by dhiraj on 1/18/18.
- */
+ *//*
+
 @Service
 public class PushNotification implements IPushNotification {
 
@@ -70,3 +73,4 @@ public class PushNotification implements IPushNotification {
         }
     }
 }
+*/

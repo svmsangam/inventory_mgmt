@@ -58,8 +58,8 @@ public class StoreUserInfoConverter implements IConvertable<StoreUserInfo, Store
             return null;
         }
 
-        entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
-        entity.setUser(userRepository.findOne(dto.getUserId()));
+        entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()).orElse(null));
+        entity.setUser(userRepository.findById(dto.getUserId()).orElse(null));
 
         return entity;
     }

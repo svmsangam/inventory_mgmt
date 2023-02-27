@@ -40,8 +40,8 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
 
         subCategoryInfo.setStatus(Status.ACTIVE);
 
-        subCategoryInfo.setCreatedBy(userRepository.findOne(subCategoryInfoDTO.getCreatedById()));
-        subCategoryInfo.setStoreInfo(storeInfoRepository.findOne(subCategoryInfoDTO.getStoreInfoId()));
+        subCategoryInfo.setCreatedBy(userRepository.findById(subCategoryInfoDTO.getCreatedById()));
+        subCategoryInfo.setStoreInfo(storeInfoRepository.findById(subCategoryInfoDTO.getStoreInfoId()));
 
         return subCategoryInfoConverter.convertToDto(subCategoryInfoRepository.save(subCategoryInfo));
     }
@@ -50,7 +50,7 @@ public class SubCategoryInfoApi implements ISubcategoryInfoApi {
     @Transactional
     public SubCategoryInfoDTO update(SubCategoryInfoDTO subCategoryInfoDTO) {
 
-        SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryInfoDTO.getSubCategoryId());
+        SubCategoryInfo subCategoryInfo = subCategoryInfoRepository.findById(subCategoryInfoDTO.getSubCategoryId()).orElse(null);
 
         subCategoryInfo = subCategoryInfoConverter.copyConvertToEntity(subCategoryInfoDTO, subCategoryInfo);
 

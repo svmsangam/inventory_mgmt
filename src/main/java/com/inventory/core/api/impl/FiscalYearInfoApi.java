@@ -50,7 +50,7 @@ public class FiscalYearInfoApi implements IFiscalYearInfoApi {
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override

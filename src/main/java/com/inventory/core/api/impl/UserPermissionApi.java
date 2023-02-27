@@ -31,7 +31,7 @@ public class UserPermissionApi implements IUserPermissionApi {
     @Override
     public UserPermissionDTO update(UserPermissionDTO userPermissionDTO) {
 
-        UserPermission userPermission = userPermissionRepository.findById(userPermissionDTO.getUserPermissionId());
+        UserPermission userPermission = userPermissionRepository.findById(userPermissionDTO.getUserPermissionId()).orElseThrow();
 
         userPermission = userPermissionConverter.copyConvertToEntity(userPermissionDTO, userPermission);
 

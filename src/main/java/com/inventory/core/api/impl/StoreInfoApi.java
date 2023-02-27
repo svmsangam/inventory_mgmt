@@ -50,7 +50,7 @@ public class StoreInfoApi implements IStoreInfoApi {
     @Override
     public StoreInfoDTO update(StoreInfoDTO storeInfoDTO) {
 
-        StoreInfo storeInfo = storeInfoRepository.findById(storeInfoDTO.getStoreId());
+        StoreInfo storeInfo = storeInfoRepository.findById(storeInfoDTO.getStoreId()).orElseThrow();
 
         storeInfo = storeInfoConverter.copyConvertToEntity(storeInfoDTO, storeInfo);
 

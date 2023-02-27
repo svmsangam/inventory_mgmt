@@ -56,7 +56,7 @@ public class ClientInfoApi implements IClientInfoApi {
     @Override
     public ClientInfoDTO update(ClientInfoDTO clientInfoDTO) {
 
-        ClientInfo clientInfo = clientInfoRepository.findById(clientInfoDTO.getClientId());
+        ClientInfo clientInfo = clientInfoRepository.findById(clientInfoDTO.getClientId()).orElseThrow();
 
         clientInfo = clientInfoConverter.copyConvertToEntity(clientInfoDTO , clientInfo);
 
@@ -75,7 +75,7 @@ public class ClientInfoApi implements IClientInfoApi {
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override

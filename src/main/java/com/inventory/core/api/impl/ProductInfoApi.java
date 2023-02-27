@@ -59,8 +59,8 @@ public class ProductInfoApi implements IProductInfoApi {
 		ProductInfo productInfo = productInfoConverter.convertToEntity(productInfoDTO);
 
 		productInfo.setStatus(Status.ACTIVE);
-		productInfo.setCreatedBy(userRepository.findOne(productInfoDTO.getCreatedById()));
-		productInfo.setStoreInfo(storeInfoRepository.findOne(productInfoDTO.getStoreInfoId()));
+		productInfo.setCreatedBy(userRepository.findById(productInfoDTO.getCreatedById()));
+		productInfo.setStoreInfo(storeInfoRepository.findById(productInfoDTO.getStoreInfoId()));
 
 		productInfo = productInfoRepository.save(productInfo);
 
@@ -72,7 +72,7 @@ public class ProductInfoApi implements IProductInfoApi {
 	@Override
 	public ProductInfoDTO update(ProductInfoDTO productInfoDTO) {
 
-		ProductInfo productInfo = productInfoRepository.findById(productInfoDTO.getProductId());
+		ProductInfo productInfo = productInfoRepository.findById(productInfoDTO.getProductId()).orElseThrow();
 
 		productInfo = productInfoConverter.copyConvertToEntity(productInfoDTO, productInfo);
 
@@ -121,7 +121,7 @@ public class ProductInfoApi implements IProductInfoApi {
 
 	private Pageable createPageRequest(int page, int size, String properties, Sort.Direction direction) {
 
-		return new PageRequest(page, size, new Sort(direction, properties));
+		return PageRequest.of(page, size, Sort.by(direction, properties));
 	}
 
 	@Override

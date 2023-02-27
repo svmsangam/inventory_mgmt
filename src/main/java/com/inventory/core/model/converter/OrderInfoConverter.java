@@ -80,7 +80,7 @@ public class OrderInfoConverter implements IListConvertable<OrderInfo , OrderInf
             return null;
         }
 
-        entity.setClientInfo(clientInfoRepository.findById(dto.getClientId()));
+        entity.setClientInfo(clientInfoRepository.findById(dto.getClientId()).orElseThrow());
         entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
         entity.setDeliveryAddress(dto.getDeliveryAddress());
         entity.setDeliveryDate(dto.getDeliveryDate());

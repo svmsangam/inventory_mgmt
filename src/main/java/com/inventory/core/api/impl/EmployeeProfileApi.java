@@ -65,8 +65,8 @@ public class EmployeeProfileApi implements IEmployeeProfileApi{
             storeEmployee.setDate(employeeProfileDTO.getJoinDate());
         }
 
-        storeEmployee.setDesignation(designationRepository.findOne(employeeProfileDTO.getDesignationId()));
-        storeEmployee.setEmployeeProfile(employeeProfileRepository.findOne(employeeProfileDTO.getEmployeeProfileId()));
+        storeEmployee.setDesignation(designationRepository.findById(employeeProfileDTO.getDesignationId()).orElse(null));
+        storeEmployee.setEmployeeProfile(employeeProfileRepository.findById(employeeProfileDTO.getEmployeeProfileId()).orElse(null));
         storeEmployee.setEmployeeStatus(employeeProfileDTO.getEmployeeStatus());
         storeEmployee.setOwner(storeInfoRepository.findById(employeeProfileDTO.getOwnerId()));
         storeEmployee.setStatus(Status.ACTIVE);

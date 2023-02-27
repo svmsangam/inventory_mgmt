@@ -84,7 +84,7 @@ public class OrderReturnInfoConverter implements IListConvertable<OrderReturnInf
 
         entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
         entity.setNote(entity.getNote());
-        entity.setOrderInfo(orderInfoRepository.findOne(dto.getOrderInfoId()));
+        entity.setOrderInfo(orderInfoRepository.findById(dto.getOrderInfoId()).orElse(null));
         entity.setReturnDate(dto.getReturnDate());
         entity.setTotalAmount(dto.getTotalAmount());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreId()));

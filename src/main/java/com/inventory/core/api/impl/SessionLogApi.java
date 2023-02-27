@@ -95,13 +95,7 @@ public class SessionLogApi implements ISessionLogApi {
 
 	@Override
 	public List<SessionLog> getUserHistory(final long userId) {
-		Page<SessionLog> sessionLogs = sessionLogRepository.findAll(new Specification<SessionLog>() {
-
-			@Override
-			public Predicate toPredicate(Root<SessionLog> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(root.get("userId"), userId);
-			}
-		}, new PageRequest(0, 10, new Sort(new Order(Direction.DESC, "id"))));
+		Page<SessionLog> sessionLogs = sessionLogRepository.findAll((Specification<SessionLog>) (root, query, cb) -> cb.equal(root.get("userId"), userId), PageRequest.of(0, 10, Sort.by(new Order(Direction.DESC, "id"))));
 
 		return sessionLogs.getContent();
 	}
@@ -174,7 +168,7 @@ public class SessionLogApi implements ISessionLogApi {
 			public Predicate toPredicate(Root<SessionLog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 				return cb.equal(root.get("userId"), userId);
 			}
-		}, new PageRequest(0, 5, new Sort(new Order(Direction.DESC, "loggedIn"))));
+		}, PageRequest.of(0, 5, Sort.by(new Order(Direction.DESC, "loggedIn"))));
 		return sessionLog.getContent();
 	}
 

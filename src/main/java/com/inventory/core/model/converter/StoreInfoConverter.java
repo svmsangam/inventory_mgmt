@@ -82,7 +82,7 @@ public class StoreInfoConverter implements IConvertable<StoreInfo, StoreInfoDTO>
         }
 
         if (dto.getCityId() != null & 0 < dto.getCityId()) {
-            entity.setCityInfo(cityInfoRepository.findOne(dto.getCityId()));
+            entity.setCityInfo(cityInfoRepository.findById(dto.getCityId()).orElse(null));
         }
 
         entity.setContact(dto.getContact().trim());

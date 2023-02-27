@@ -11,7 +11,6 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,7 +75,7 @@ public class UserApi implements IUserApi {
     }
 
     @Override
-    public InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException {
+    public InvUserDTO save(InvUserDTO userDTO) throws IOException{
 
         User user = userConverter.convertToEntity(userDTO);
 
@@ -87,9 +86,9 @@ public class UserApi implements IUserApi {
         return userConverter.convertToDto(user);
     }
 
-    public void changePassword(long userId, String newPassword) throws IOException, JSONException {
+    public void changePassword(long userId, String newPassword) throws IOException{
 
-        User user = userRepository.findOne(userId);
+        User user = userRepository.findById(userId);
 
         user.setPassword(passwordEncoder.encode(newPassword));
 

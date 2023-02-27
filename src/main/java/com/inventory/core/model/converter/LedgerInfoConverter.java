@@ -87,7 +87,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
         }
 
         entity.setAccountEntryType(dto.getAccountEntryType());
-        entity.setAccountInfo(accountInfoRepository.findById(dto.getAccountId()));
+        entity.setAccountInfo(accountInfoRepository.findById(dto.getAccountId()).orElse(null));
         entity.setAmount(dto.getAmount());
         entity.setLedgerEntryType(dto.getLedgerEntryType());
         entity.setRemarks(dto.getRemarks());
@@ -358,7 +358,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
 
         if (filterDTO.getFiscalYearId() != null) {
             if (filterDTO.getFiscalYearId() > 0) {
-                filter.setFiscalYearInfo(fiscalYearInfoRepository.findById(filterDTO.getFiscalYearId()));
+                filter.setFiscalYearInfo(fiscalYearInfoRepository.findById(filterDTO.getFiscalYearId()).orElse(null));
             }
         }
 
@@ -367,7 +367,7 @@ public class LedgerInfoConverter implements IListConvertable<LedgerInfo, LedgerI
         if (filterDTO.getAccountId() != null) {
 
             if (filterDTO.getAccountId() > 0) {
-                filter.setAccountInfo(accountInfoRepository.findById(filterDTO.getAccountId()));
+                filter.setAccountInfo(accountInfoRepository.findById(filterDTO.getAccountId()).orElse(null));
             }
         }
 

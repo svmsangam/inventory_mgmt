@@ -6,16 +6,16 @@ import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.util.Authorities;
-import com.inventory.core.util.ParseUtls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+@Service
 public class Startup {
 
     @Autowired
@@ -203,7 +203,7 @@ public class Startup {
             lotInfoList.add(lotInfo);
         }
 
-        lotInfoRepository.save(lotInfoList);
+        lotInfoRepository.saveAllAndFlush(lotInfoList);
 
     }
 
@@ -243,7 +243,7 @@ public class Startup {
 
         designationList.add(accountant);
 
-        designationRepository.save(designationList);
+        designationRepository.saveAllAndFlush(designationList);
     }
 
     private void createService(){

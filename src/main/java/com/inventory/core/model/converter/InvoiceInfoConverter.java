@@ -2,9 +2,7 @@ package com.inventory.core.model.converter;
 
 import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.InvoiceListDTO;
-import com.inventory.core.model.dto.LedgerInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
-import com.inventory.core.model.entity.LedgerInfo;
 import com.inventory.core.model.entity.OrderInfo;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.FiscalYearInfoRepository;
@@ -13,7 +11,6 @@ import com.inventory.core.model.repository.StoreInfoRepository;
 import com.inventory.core.model.repository.UserRepository;
 import com.inventory.core.util.IConvertable;
 import com.inventory.core.util.IListConvertable;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -90,11 +87,11 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
             return null;
         }
 
-        entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
+        entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
         entity.setDescription(dto.getDescription());
         entity.setInvoiceDate(dto.getInvoiceDate());
         entity.setInvoiceNo(dto.getInvoiceNo());
-        entity.setOrderInfo(orderInfoRepository.findOne(dto.getOrderInfoId()));
+        entity.setOrderInfo(orderInfoRepository.findById(dto.getOrderInfoId()).orElseThrow());
         entity.setReceivableAmount(entity.getOrderInfo().getGrandTotal());
         entity.setTotalAmount(entity.getOrderInfo().getGrandTotal());
         entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
@@ -106,11 +103,11 @@ public class InvoiceInfoConverter implements IConvertable<InvoiceInfo , InvoiceI
 
     public InvoiceInfo convertToEntity(long orderInfoId , long createdById) {
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(orderInfoId);
+        OrderInfo orderInfo = orderInfoRepository.findById(orderInfoId).orElseThrow();
 
         InvoiceInfo entity = new InvoiceInfo();
 
-        entity.setCreatedBy(userRepository.findOne(createdById));
+        entity.setCreatedBy(userRepository.findById(createdById));
         entity.setDescription(orderInfo.getDescription());
         entity.setInvoiceDate(new Date());
         entity.setOrderInfo(orderInfo);

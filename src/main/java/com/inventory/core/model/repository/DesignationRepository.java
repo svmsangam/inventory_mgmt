@@ -14,7 +14,6 @@ import java.util.List;
  * Created by dhiraj on 8/11/17.
  */
 @Repository
-@Transactional(readOnly = true)
 public interface DesignationRepository extends JpaRepository<Designation, Long>, JpaSpecificationExecutor<Designation> {
 
     Designation findByIdAndStatusAndOwner_Id(long designationId , Status status , long ownerId);

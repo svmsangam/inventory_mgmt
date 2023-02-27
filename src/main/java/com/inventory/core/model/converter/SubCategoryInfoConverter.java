@@ -63,7 +63,7 @@ public class SubCategoryInfoConverter implements IConvertable<SubCategoryInfo, S
                 entity.setDepth(0);
                 entity.setParent(null);
             }else {
-                entity.setParent(subCategoryInfoRepository.findById(dto.getCategoryId()));
+                entity.setParent(subCategoryInfoRepository.findById(dto.getCategoryId()).orElse(null));
                 entity.setType(CategoryType.Child);
                 entity.setDepth(entity.getParent().getDepth() + 1);
             }

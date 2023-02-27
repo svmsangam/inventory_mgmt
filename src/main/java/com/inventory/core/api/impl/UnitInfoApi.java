@@ -35,7 +35,7 @@ public class UnitInfoApi implements IUnitInfoApi {
     @Override
     public UnitInfoDTO update(UnitInfoDTO unitInfoDTO) {
 
-        UnitInfo unitInfo = unitInfoRepository.findById(unitInfoDTO.getUnitId());
+        UnitInfo unitInfo = unitInfoRepository.findById(unitInfoDTO.getUnitId()).orElseThrow();
 
         unitInfo = unitInfoConverter.copyConvertToEntity(unitInfoDTO, unitInfo);
 

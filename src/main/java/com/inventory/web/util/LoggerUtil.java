@@ -1,9 +1,8 @@
 package com.inventory.web.util;
 
 import com.inventory.core.model.entity.User;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.helpers.NOPLoggerFactory;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -11,7 +10,7 @@ import java.util.Properties;
 
 public class LoggerUtil {
 
-    private static Logger LOGGER = Logger.getLogger(LoggerUtil.class);
+    private static Logger LOGGER = new NOPLoggerFactory().getLogger(LoggerUtil.class.getName());
 
     public static void logException(Class className, Exception exception) {
 
@@ -48,7 +47,7 @@ public class LoggerUtil {
     }
 
     public static void changeMailSubject(){
-        Properties props = new Properties();
+       /* Properties props = new Properties();
         try {
             InputStream configStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/log4j.properties");
             if (configStream == null) {
@@ -63,7 +62,7 @@ public class LoggerUtil {
         props.setProperty("log4j.appender.mailAppender.Subject", "Exception in Inventory Application on " + new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
 
         LogManager.resetConfiguration();
-        PropertyConfigurator.configure(props);
+        PropertyConfigurator.configure(props);*/
     }
 
     public static void main(String[] a){

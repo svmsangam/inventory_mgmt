@@ -50,7 +50,7 @@ public class OrderItemInfoApi implements IOrderItemInfoApi {
             orderItemInfoList.add(orderItemInfo);
         }
 
-        orderItemInfoRepository.save(orderItemInfoList);
+        orderItemInfoRepository.saveAllAndFlush(orderItemInfoList);
 
         return amount;
     }

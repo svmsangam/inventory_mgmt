@@ -64,7 +64,7 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
 
             ReturnItemInfo entity = new ReturnItemInfo();
 
-            OrderItemInfo orderItemInfo = orderItemInfoRepository.findById(orderReturnInfoDTO.getOrderItemInfoIdList().get(i));
+            OrderItemInfo orderItemInfo = orderItemInfoRepository.findById(orderReturnInfoDTO.getOrderItemInfoIdList().get(i)).orElseThrow();
 
             entity.setOrderItemInfo(orderItemInfo);
             entity.setOrderReturnInfo(orderReturnInfo);
@@ -90,7 +90,7 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
 
         }
 
-        returnItemInfoRepository.save(returnItemInfoList);
+        returnItemInfoRepository.saveAllAndFlush(returnItemInfoList);
 
         return amount;
     }
@@ -134,7 +134,7 @@ public class ReturnItemInfoApi implements IReturnItemInfoApi {
 
         }
 
-        returnItemInfoRepository.save(returnItemInfoList);
+        returnItemInfoRepository.saveAllAndFlush(returnItemInfoList);
 
         return amount;
     }

@@ -66,7 +66,7 @@ public class CityInfoApi implements ICityInfoApi {
     }
 
     private Pageable createPageRequest(PageableDTO pageableDTO) {
-        return new PageRequest(pageableDTO.getPage(), pageableDTO.getSize(), new Sort(pageableDTO.getDirection(), pageableDTO.getProperties()));
+        return PageRequest.of(pageableDTO.getPage(), pageableDTO.getSize(), Sort.by(pageableDTO.getDirection(), pageableDTO.getProperties()));
     }
 
     @Override

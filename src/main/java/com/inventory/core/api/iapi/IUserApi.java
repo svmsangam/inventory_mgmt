@@ -4,10 +4,7 @@ import com.inventory.core.model.dto.InvUserDTO;
 import com.inventory.core.model.enumconstant.Permission;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.enumconstant.UserType;
-import org.json.JSONException;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public interface IUserApi {
 
     long getTotalUserByStoreInfoAndStatus(long storeInfoId , Status status);
 
-    InvUserDTO save(InvUserDTO userDTO) throws IOException, JSONException;
+    InvUserDTO save(InvUserDTO userDTO) throws IOException;
 
     InvUserDTO getUserWithId(long userId);
 
@@ -28,7 +25,7 @@ public interface IUserApi {
 
     InvUserDTO updateEnable(long userId);
 
-    void changePassword(long userId, String newPassword) throws IOException, JSONException;
+    void changePassword(long userId, String newPassword) throws IOException;
 
     InvUserDTO getUserByUserName(String userName);
 

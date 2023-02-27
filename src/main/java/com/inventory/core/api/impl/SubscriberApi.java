@@ -85,8 +85,8 @@ public class SubscriberApi implements ISubscriberApi {
     
     @Override
     public void activate(long subscribId) {
-    	 Subscriber subscriber= subscriberRepository.findOne(subscribId);
-    	 User u = userRepository.findOne(subscriber.getUser().getId());
+    	 Subscriber subscriber= subscriberRepository.findById(subscribId);
+    	 User u = userRepository.findById(subscriber.getUser().getId()).orElseThrow();
     	 u.setStatus(Status.ACTIVE);
     	 userRepository.save(u);
     }

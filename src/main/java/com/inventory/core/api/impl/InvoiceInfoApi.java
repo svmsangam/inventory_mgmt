@@ -10,9 +10,7 @@ import com.inventory.core.model.enumconstant.NumberStatus;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.model.specification.InvoiceSpecification;
-import com.inventory.core.model.specification.LedgerSpecification;
 import com.inventory.web.util.LoggerUtil;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -104,7 +102,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         if (0 == count) {
             CodeGenerator codeGenerator = new CodeGenerator();
 
-            StoreInfo store = storeInfoRepository.findOne(storeId);
+            StoreInfo store = storeInfoRepository.findById(storeId);
 
             String prefix = "I" + store.getName().substring(0, 2).toUpperCase();
 
@@ -120,7 +118,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
         } else {
 
-            StoreInfo store = storeInfoRepository.findOne(storeId);
+            StoreInfo store = storeInfoRepository.findById(storeId);
 
             long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Invoice, fiscalYearInfo.getId()).getNumber();
 
@@ -165,7 +163,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
     @Transactional
     public InvoiceInfoDTO saveQuickSale(PaymentInfoDTO paymentInfoDTO) {
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(paymentInfoDTO.getOrderInfoId());
+        OrderInfo orderInfo = orderInfoRepository.findById(paymentInfoDTO.getOrderInfoId()).orElseThrow();
 
         orderInfo.setStatus(Status.ACTIVE);
 
@@ -253,7 +251,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
 
     private Pageable createPageRequest(int page, int size, String properties, Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override

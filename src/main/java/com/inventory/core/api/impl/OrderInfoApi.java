@@ -125,7 +125,7 @@ public class OrderInfoApi implements IOrderInfoApi {
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override
@@ -185,7 +185,7 @@ public class OrderInfoApi implements IOrderInfoApi {
         if (count == null | 0 == count){
             CodeGenerator codeGenerator = new CodeGenerator();
 
-            StoreInfo store = storeInfoRepository.findOne(storeId);
+            StoreInfo store = storeInfoRepository.findById(storeId);
 
             String prefix = "O" + store.getName().substring(0 , 2).toUpperCase();
 
@@ -201,7 +201,7 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         } else {
 
-            StoreInfo store = storeInfoRepository.findOne(storeId);
+            StoreInfo store = storeInfoRepository.findById(storeId);
 
             long number = codeGeneratorRepository.findFirstByStoreInfo_IdAndNumberStatusAndFiscalYearInfo_IdOrderByIdDesc(storeId, NumberStatus.Order , fiscalYearInfo.getId()).getNumber();
 
@@ -229,7 +229,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Lock(LockModeType.OPTIMISTIC)
     public void updateAmount(long orderId){
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+        OrderInfo orderInfo = orderInfoRepository.findById(orderId).orElseThrow();
 
         orderInfo.setTotalAmount( orderItemInfoApi.getTotalAmountByStatusAndOrderInfo(Status.ACTIVE , orderId));
 
@@ -245,7 +245,7 @@ public class OrderInfoApi implements IOrderInfoApi {
     @Transactional
     public OrderInfoDTO updateSaleTrack(long orderId, SalesOrderStatus track , long createdById) {
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+        OrderInfo orderInfo = orderInfoRepository.findById(orderId).orElseThrow();
 
         orderInfo.setSaleTrack(track);
 
@@ -269,7 +269,7 @@ public class OrderInfoApi implements IOrderInfoApi {
 
         itemInfoApi.updateInStockOnSaleTrack(SalesOrderStatus.CANCEL , orderId);
 
-        OrderInfo orderInfo = orderInfoRepository.findOne(orderId);
+        OrderInfo orderInfo = orderInfoRepository.findById(orderId).orElseThrow();
 
         orderInfo.setStatus(Status.DELETED);
         orderInfo.setSaleTrack(SalesOrderStatus.CANCEL);

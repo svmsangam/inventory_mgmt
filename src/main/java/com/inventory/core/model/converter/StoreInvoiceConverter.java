@@ -59,7 +59,7 @@ public class StoreInvoiceConverter implements IConvertable<StoreInvoice, StoreIn
 
         entity.setCount(dto.getCount());
         entity.setMonth(dto.getMonth());
-        entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreId()));
+        entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreId()).orElse(null));
 
         return entity;
     }

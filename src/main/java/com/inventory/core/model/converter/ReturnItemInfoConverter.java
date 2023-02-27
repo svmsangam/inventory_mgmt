@@ -73,8 +73,8 @@ public class ReturnItemInfoConverter implements IListConvertable<ReturnItemInfo 
             return null;
         }
 
-        entity.setOrderItemInfo(orderItemInfoRepository.findById(dto.getOrderItemInfoId()));
-        entity.setOrderReturnInfo(orderReturnInfoRepository.findById(dto.getOrderReturnInfoId()));
+        entity.setOrderItemInfo(orderItemInfoRepository.findById(dto.getOrderItemInfoId()).orElse(null));
+        entity.setOrderReturnInfo(orderReturnInfoRepository.findById(dto.getOrderReturnInfoId()).orElse(null));
         entity.setQuantity(dto.getQuantity());
         entity.setRate(entity.getOrderItemInfo().getRate());
         entity.setTotalAmount(entity.getQuantity() * entity.getRate());

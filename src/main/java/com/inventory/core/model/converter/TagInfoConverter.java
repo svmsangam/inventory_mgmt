@@ -60,8 +60,8 @@ public class TagInfoConverter implements IConvertable<TagInfo, TagInfoDTO>, ILis
 
         entity.setCode(dto.getCode().trim());
         entity.setName(dto.getName().trim());
-        entity.setCreatedBy(userRepository.findOne(dto.getCreatedById()));
-        entity.setStoreInfo(storeInfoRepository.findOne(dto.getStoreInfoId()));
+        entity.setCreatedBy(userRepository.findById(dto.getCreatedById()));
+        entity.setStoreInfo(storeInfoRepository.findById(dto.getStoreInfoId()));
 
         return entity;
     }

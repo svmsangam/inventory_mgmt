@@ -87,7 +87,7 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
         }
 
         if (dto.getCitizenShipCityId() != null) {
-            entity.setCitizenShipCity(cityInfoRepository.findOne(dto.getCitizenShipCityId()));
+            entity.setCitizenShipCity(cityInfoRepository.findById(dto.getCitizenShipCityId()).orElse(null));
         }
 
         entity.setCitizenShipNo(dto.getCitizenShipNo());
@@ -100,10 +100,10 @@ public class EmployeeProfileConverter implements IListConvertable<EmployeeProfil
         entity.setMobileNumber(dto.getMobileNumber());
         entity.setPermanentAddress(dto.getPermanentAddress());
         if (dto.getPermanentCityId() != null) {
-            entity.setPermanentCity(cityInfoRepository.findOne(dto.getPermanentCityId()));
+            entity.setPermanentCity(cityInfoRepository.findById(dto.getPermanentCityId()).orElse(null));
         }
         entity.setTemporaryAddress(dto.getTemporaryAddress());
-        entity.setTemporaryCity(cityInfoRepository.findOne(dto.getTemporaryCityId()));
+        entity.setTemporaryCity(cityInfoRepository.findById(dto.getTemporaryCityId()).orElse(null));
         entity.setUser(userRepository.findById(dto.getUserId()));
         entity.setOwner(storeInfoRepository.findById(dto.getOwnerId()));
 

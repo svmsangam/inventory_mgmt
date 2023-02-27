@@ -44,7 +44,7 @@ public class TagInfoApi implements ITagInfoApi {
     @Override
     public TagInfoDTO update(TagInfoDTO tagInfoDTO) {
 
-        TagInfo tagInfo = tagInfoRepository.findById(tagInfoDTO.getTagId());
+        TagInfo tagInfo = tagInfoRepository.findById(tagInfoDTO.getTagId()).orElseThrow();
 
         tagInfo = tagInfoConverter.copyConvertToEntity(tagInfoDTO, tagInfo);
 
@@ -73,7 +73,7 @@ public class TagInfoApi implements ITagInfoApi {
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override

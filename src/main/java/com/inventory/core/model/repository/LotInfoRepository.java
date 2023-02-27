@@ -13,7 +13,6 @@ import java.util.List;
  * Created by dhiraj on 8/11/17.
  */
 @Repository
-@Transactional(readOnly = true)
 public interface LotInfoRepository extends JpaRepository<LotInfo, Long>, JpaSpecificationExecutor<LotInfo> {
 
     LotInfo findById(long lotInfoId);

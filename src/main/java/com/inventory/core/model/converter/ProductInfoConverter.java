@@ -116,9 +116,9 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
 
         entity.setDescription(dto.getDescription().trim());
         entity.setName(dto.getName().trim());
-        entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()));
+        entity.setSubCategoryInfo(subCategoryInfoRepository.findById(dto.getSubCategoryId()).orElse(null));
         entity.setTrendingLevel(dto.getTrendingLevel());
-        entity.setUnitInfo(unitInfoRepository.findById(dto.getUnitId()));
+        entity.setUnitInfo(unitInfoRepository.findById(dto.getUnitId()).orElse(null));
 
         return entity;
     }

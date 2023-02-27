@@ -135,16 +135,16 @@ public class ItemInfoConverter implements IConvertable<ItemInfo, ItemInfoDTO>, I
         entity.setCostPrice(dto.getCostPrice());
         entity.setExpireDate(dto.getExpireDate());
         entity.setInStock(Math.toIntExact(dto.getQuantity()));
-        entity.setLotInfo(lotInfoRepository.findById(dto.getLotId()));
-        entity.setProductInfo(productInfoRepository.findById(dto.getProductId()));
+        entity.setLotInfo(lotInfoRepository.findById(dto.getLotId()).orElse(null));
+        entity.setProductInfo(productInfoRepository.findById(dto.getProductId()).orElse(null));
         entity.setQuantity(dto.getQuantity());
         entity.setSellingPrice(dto.getSellingPrice());
-        entity.setTagInfo(tagInfoRepository.findById(dto.getTagId()));
+        entity.setTagInfo(tagInfoRepository.findById(dto.getTagId()).orElse(null));
         entity.setThreshold(dto.getThreshold());
         entity.setCode(dto.getCode());
 
         if (dto.getVendorId() != null){
-            entity.setVendorInfo(clientInfoRepository.findById(dto.getVendorId()));
+            entity.setVendorInfo(clientInfoRepository.findById(dto.getVendorId()).orElse(null));
         }
 
         return entity;

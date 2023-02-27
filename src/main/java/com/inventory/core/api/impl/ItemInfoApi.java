@@ -62,7 +62,7 @@ public class ItemInfoApi implements IItemInfoApi{
     @Override
     public ItemInfoDTO update(ItemInfoDTO itemInfoDTO) {
 
-        ItemInfo itemInfo = itemInfoRepository.findById(itemInfoDTO.getItemId());
+        ItemInfo itemInfo = itemInfoRepository.findById(itemInfoDTO.getItemId()).orElseThrow();
 
         itemInfo = itemInfoConverter.copyConvertToEntity(itemInfoDTO , itemInfo);
 
@@ -131,7 +131,7 @@ public class ItemInfoApi implements IItemInfoApi{
 
         for (OrderItemInfo orderItemInfo : orderItemInfoList) {
 
-            ItemInfo itemInfo = itemInfoRepository.findById(orderItemInfo.getItemInfo().getId());
+            ItemInfo itemInfo = itemInfoRepository.findById(orderItemInfo.getItemInfo().getId()).orElse(null);
 
             if (track.equals(SalesOrderStatus.PENDDING)) {
 
@@ -169,7 +169,7 @@ public class ItemInfoApi implements IItemInfoApi{
 
     private Pageable createPageRequest(int page , int size , String properties , Sort.Direction direction) {
 
-        return new PageRequest(page, size, new Sort(direction, properties));
+        return PageRequest.of(page, size, Sort.by(direction, properties));
     }
 
     @Override

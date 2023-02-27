@@ -47,7 +47,7 @@ public class AccountInfoApi implements IAccountInfoApi {
     @Override
     public AccountInfoDTO update(AccountInfoDTO accountInfoDTO) {
 
-        AccountInfo accountInfo = accountInfoRepository.findById(accountInfoDTO.getAccountId());
+        AccountInfo accountInfo = accountInfoRepository.findById(accountInfoDTO.getAccountId()).orElseThrow();
         accountInfo = accountInfoConverter.copyConvertToEntity(accountInfoDTO, accountInfo);
 
         return accountInfoConverter.convertToDto(accountInfoRepository.save(accountInfo));

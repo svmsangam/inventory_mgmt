@@ -25,7 +25,7 @@ public class UserPermissionConverter implements IConvertable<UserPermission, Use
 
         UserPermission entity = new UserPermission();
 
-        entity.setUser(userRepository.findOne(dto.getUserId()));
+        entity.setUser(userRepository.findById(dto.getUserId()).orElse(null));
         entity.setPermissionList(dto.getPermissionList());
 
         return entity;

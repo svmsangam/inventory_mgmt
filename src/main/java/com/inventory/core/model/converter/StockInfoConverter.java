@@ -59,7 +59,7 @@ public class StockInfoConverter implements IConvertable<StockInfo, StockInfoDTO>
 
         entity.setInStock(dto.getInStock());
         entity.setQuantity(dto.getQuantity());
-        entity.setProductInfo(productInfoRepository.findById(dto.getProductId()));
+        entity.setProductInfo(productInfoRepository.findById(dto.getProductId()).orElse(null));
 
         return entity;
     }
