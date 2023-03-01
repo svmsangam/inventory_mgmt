@@ -91,8 +91,10 @@ public class ProductInfoApi implements IProductInfoApi {
 
 	@Override
 	public ProductInfoDTO getByIdAndStoreAndStatus(long productInfoId, long storeId, Status status) {
-		return productInfoConverter.convertToDtoDetail(
+		ProductInfoDTO productInfoDTO = productInfoConverter.convertToDtoDetail(
 				productInfoRepository.findByIdAndStatusAndStoreInfo(productInfoId, status, storeId));
+		productInfoDTO.setTotalCosting(getTotalCosting(productInfoId));
+		return productInfoDTO;
 	}
 
 	@Override

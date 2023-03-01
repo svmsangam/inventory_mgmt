@@ -1,7 +1,5 @@
 package com.inventory.core.model.converter;
 
-import com.inventory.core.api.iapi.IOrderItemInfoApi;
-import com.inventory.core.api.iapi.IProductInfoApi;
 import com.inventory.core.model.dto.ProductInfoDTO;
 import com.inventory.core.model.entity.ProductInfo;
 import com.inventory.core.model.repository.*;
@@ -41,10 +39,7 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
     private StockInfoConverter stockInfoConverter;
 
     @Autowired
-    private IOrderItemInfoApi orderItemInfoApi;
-
-    @Autowired
-    private IProductInfoApi productInfoApi;
+    private OrderItemInfoRepository orderItemInfoRepository;
 
     @Override
     public ProductInfo convertToEntity(ProductInfoDTO dto) {
@@ -100,10 +95,21 @@ public class ProductInfoConverter implements IConvertable<ProductInfo, ProductIn
         dto.setUnitInfo(unitInfoConverter.convertToDto(entity.getUnitInfo()));
         dto.setVersion(entity.getVersion());
         dto.setStockInfo(stockInfoConverter.convertToDto(stockInfoRepository.findByProductInfo(entity.getId())));
-        dto.setTotalSale(orderItemInfoApi.getTotalSaleAmountOfProduct(entity.getId()));
-        dto.setTotalCosting(productInfoApi.getTotalCosting(entity.getId()));
+        dto.setTotalSale(getTotalSaleAmountOfProduct(entity.getId()));
+        dto.setTotalCosting(0.0);
 
         return dto;
+    }
+
+    public double getTotalSaleAmountOfProduct(long productId) {
+
+        Double amount = orderItemInfoRepository.findTotalSaleAmountOfProduct(productId);
+
+        if (amount == null){
+            return 0;
+        }
+
+        return amount;
     }
 
 
