@@ -5,7 +5,10 @@ import com.inventory.core.model.dto.InvoiceInfoDTO;
 import com.inventory.core.model.dto.InvoiceListDTO;
 import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +24,12 @@ public interface IInvoiceInfoApi {
     String generatInvoiceNumber(long storeId);
 
     InvoiceInfoDTO save(long orderInfoId , long createdById);
+
+    @Transactional
+    PaymentInfoDTO savePayment(PaymentInfoDTO paymentInfoDTO);
+
+    @Lock(LockModeType.OPTIMISTIC)
+    long collectCheque(long paymentInfoId);
 
     InvoiceInfoDTO saveQuickSale(PaymentInfoDTO paymentInfoDTO);
 

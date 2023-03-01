@@ -4,10 +4,7 @@ import com.inventory.core.api.iapi.*;
 import com.inventory.core.model.converter.InvoiceInfoConverter;
 import com.inventory.core.model.dto.*;
 import com.inventory.core.model.entity.*;
-import com.inventory.core.model.enumconstant.AccountAssociateType;
-import com.inventory.core.model.enumconstant.LogType;
-import com.inventory.core.model.enumconstant.NumberStatus;
-import com.inventory.core.model.enumconstant.Status;
+import com.inventory.core.model.enumconstant.*;
 import com.inventory.core.model.repository.*;
 import com.inventory.core.model.specification.InvoiceSpecification;
 import com.inventory.web.util.LoggerUtil;
@@ -15,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,6 +156,28 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         storeInvoiceApi.save(invoiceInfo.getStoreInfo().getId());
 
         return invoiceInfoConverter.convertToDto(invoiceInfo);
+    }
+
+    @Override
+    @Transactional
+    public PaymentInfoDTO savePayment(PaymentInfoDTO paymentInfoDTO){
+        paymentInfoDTO = paymentInfoApi.save(paymentInfoDTO);
+        if (PaymentMethod.CASH.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())) {
+            ledgerInfoApi.saveOnPayment(paymentInfoDTO.getPaymentInfoId());
+            updateOnPayment(paymentInfoDTO.getPaymentInfoId());
+        } else if (PaymentMethod.CHEQUE.equals(paymentInfoDTO.getReceivedPayment().getPaymentMethod())) {
+            updateVersion(paymentInfoDTO.getInvoiceInfoId());
+        }
+
+        return paymentInfoDTO;
+    }
+
+    @Override
+    @Lock(LockModeType.OPTIMISTIC)
+    public long collectCheque(long paymentInfoId) {
+        long invoiceId = paymentInfoApi.collectCheque(paymentInfoId);
+        updateOnPayment(paymentInfoId);
+        return invoiceId;
     }
 
     @Override

@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
 public class StockInfoConverter implements IConvertable<StockInfo, StockInfoDTO>, IListConvertable<StockInfo, StockInfoDTO> {
 
     @Autowired
-    private ProductInfoConverter productInfoConverter;
-
-    @Autowired
     private ProductInfoRepository productInfoRepository;
 
     @Override

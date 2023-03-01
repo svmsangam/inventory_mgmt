@@ -7,9 +7,7 @@ import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.entity.InvoiceInfo;
 import com.inventory.core.model.entity.Payment;
 import com.inventory.core.model.entity.PaymentInfo;
-import com.inventory.core.model.entity.User;
 import com.inventory.core.model.enumconstant.AccountAssociateType;
-import com.inventory.core.model.enumconstant.PaymentMethod;
 import com.inventory.core.model.enumconstant.Status;
 import com.inventory.core.model.repository.InvoiceInfoRepository;
 import com.inventory.core.model.repository.PaymentInfoRepository;
@@ -48,9 +46,6 @@ public class PaymentInfoApi implements IPaymentInfoApi {
     private ILedgerInfoApi ledgerInfoApi;
 
     @Autowired
-    private IInvoiceInfoApi invoiceInfoApi;
-
-    @Autowired
     private PaymentRepository paymentRepository;
 
     @Autowired
@@ -73,13 +68,6 @@ public class PaymentInfoApi implements IPaymentInfoApi {
         PaymentInfo paymentInfo = paymentInfoConverter.convertToEntity(paymentInfoDTO);
 
         paymentInfo = paymentInfoRepository.save(paymentInfo);
-
-        if (PaymentMethod.CASH.equals(paymentInfo.getReceivedPayment().getPaymentMethod())) {
-            ledgerInfoApi.saveOnPayment(paymentInfo.getId());
-            invoiceInfoApi.updateOnPayment(paymentInfo.getId());
-        } else if (PaymentMethod.CHEQUE.equals(paymentInfo.getReceivedPayment().getPaymentMethod())) {
-            invoiceInfoApi.updateVersion(paymentInfoDTO.getInvoiceInfoId());
-        }
 
         return paymentInfoConverter.convertToDto(paymentInfo);
     }
@@ -145,7 +133,7 @@ public class PaymentInfoApi implements IPaymentInfoApi {
 
     @Override
     @Lock(LockModeType.OPTIMISTIC)
-    public long collectChuque(long paymentInfoId) {
+    public long collectCheque(long paymentInfoId) {
 
         PaymentInfo paymentInfo = paymentInfoRepository.findById(paymentInfoId);
 
@@ -156,8 +144,6 @@ public class PaymentInfoApi implements IPaymentInfoApi {
         payment.setPaymentDate(new Date());
 
         paymentRepository.save(payment);
-
-        invoiceInfoApi.updateOnPayment(paymentInfoId);
 
         ledgerInfoApi.saveOnPayment(paymentInfoId);
 

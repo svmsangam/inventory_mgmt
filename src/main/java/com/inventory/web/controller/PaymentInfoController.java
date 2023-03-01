@@ -170,7 +170,7 @@ public class PaymentInfoController {
 					return "payment/add";
 				}
 
-				paymentInfoApi.save(paymentInfoDTO);
+				invoiceInfoApi.savePayment(paymentInfoDTO);
 			}
 
 		} catch (Exception e) {
@@ -238,7 +238,7 @@ public class PaymentInfoController {
 					return "redirect:/paymentinfo/add?invoiceId=" + paymentInfoDTO.getInvoiceInfoId();
 				}
 
-				long invoiceId = paymentInfoApi.collectChuque(paymentId);
+				long invoiceId = invoiceInfoApi.collectCheque(paymentId);
 
 				return "redirect:/paymentinfo/add?invoiceId=" + invoiceId;
 			}

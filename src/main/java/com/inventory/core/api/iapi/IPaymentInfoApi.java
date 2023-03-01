@@ -2,7 +2,9 @@ package com.inventory.core.api.iapi;
 
 import com.inventory.core.model.dto.PaymentInfoDTO;
 import com.inventory.core.model.enumconstant.Status;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -16,7 +18,8 @@ public interface IPaymentInfoApi {
 
     void refundOnSalesReturn(long invoiceId, long createdById, double amount);
 
-    long collectChuque(long paymentInfoId);
+    @Lock(LockModeType.OPTIMISTIC)
+    long collectCheque(long paymentInfoId);
 
     PaymentInfoDTO getById(long paymentInfoId);
 
