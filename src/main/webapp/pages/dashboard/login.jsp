@@ -55,13 +55,13 @@
         <c:if test="${error ne null}">
             <label class="has-error form-error" style="color: #dd4b39;">${error}</label>
         </c:if>
-        <form action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+        <form action="${pageContext.request.contextPath}/authenticate" method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="Username" name="j_username" autofocus required/>
+                <input type="text" class="form-control" placeholder="Username" name="username" autofocus required/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password" name="j_password" required/>
+                <input type="password" class="form-control" placeholder="Password" name="password" required/>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">

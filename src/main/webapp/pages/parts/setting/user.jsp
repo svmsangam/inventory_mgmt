@@ -6,15 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<sec:authorize ifAnyGranted=" ROLE_USER , SUBCATEGORY_VIEW">
+<sec:authorize access="hasAnyRole('ROLE_USER' , 'SUBCATEGORY_VIEW')">
     <li><a href="${pageContext.request.contextPath}/category/list"><i class="fa fa-th-large"></i> <span>Category</span></a></li>
 </sec:authorize>
 
-<sec:authorize ifAnyGranted=" ROLE_USER , UNIT_VIEW">
+<sec:authorize access="hasAnyRole('ROLE_USER' , 'UNIT_VIEW')">
     <li><a href="${pageContext.request.contextPath}/unit/list"><i class="fa fa-square"></i><span>Unit</span></a></li>
 </sec:authorize>
 
-<sec:authorize ifAnyGranted=" ROLE_USER , TAG_VIEW">
+<sec:authorize access="hasAnyRole('ROLE_USER' , 'TAG_VIEW')">
     <li><a href="${pageContext.request.contextPath}/tag/list"><i class="fa fa-tags"></i><span>Tag</span></a></li>
 </sec:authorize>
 

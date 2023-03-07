@@ -25,7 +25,7 @@
         <%@include file="/pages/parts/setting/system.jsp" %>
     </sec:authorize>
 
-    <sec:authorize ifAnyGranted=" ROLE_USER , ROLE_DASHBOARD">
+    <sec:authorize access="hasAnyRole('ROLE_USER' , 'ROLE_DASHBOARD')">
         <%@include file="/pages/parts/setting/user.jsp" %>
     </sec:authorize>
 

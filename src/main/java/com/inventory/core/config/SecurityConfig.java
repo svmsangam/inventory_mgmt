@@ -4,9 +4,14 @@ import com.inventory.web.session.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,11 +40,13 @@ public class SecurityConfig {
 
         Map<String, String> error = new HashMap<String, String>();
 
-        error.put("org.springframework.security.authentication.BadCredentialsException", "/login/wrong_username_or_password");
-        error.put("org.springframework.security.authentication.CredentialsExpiredException", "/login/credentialsExpired");
-        error.put("org.springframework.security.authentication.LockedException", "/login/account_is_not_activated_check_your_email");
-        error.put("org.springframework.security.authentication.DisabledException", "/login/account_expired");
+        error.put(UsernameNotFoundException.class.getName(), "/login/wrong_username_or_password");
+        error.put(BadCredentialsException.class.getName(), "/login/wrong_username_or_password");
+        error.put(CredentialsExpiredException.class.getName(), "/login/credentialsExpired");
+        error.put(LockedException.class.getName(), "/login/account_is_not_activated_check_your_email");
+        error.put(DisabledException.class.getName(), "/login/account_expired");
 
+        System.out.println("-----inside authenticationFailureHandler-----");
         failureHandler.setExceptionMappings(error);
         return failureHandler;
     }
@@ -49,7 +56,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/img/**", "/css/**", "/js/**", "/auth/**")
+                .antMatchers("/resources/**", "/auth/**", "/login/**")
                 .permitAll()
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
@@ -58,10 +65,7 @@ public class SecurityConfig {
                 .formLogin(login ->
                         login
                                 .defaultSuccessUrl("/dashboard")
-                                .failureHandler(
-                                        (request, response, exception) ->
-                                                response.sendRedirect("/auth/login?error=" + exception.getMessage())
-                                )
+                                .loginProcessingUrl("/authenticate")
                                 .usernameParameter("username")
                                 .passwordParameter("password")
                                 .failureHandler(authenticationFailureHandler())

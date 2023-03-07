@@ -21,7 +21,7 @@
     <%@include file="/pages/dashboard/admin-index.jsp" %>
 </sec:authorize>
 
-<sec:authorize ifAnyGranted=" ROLE_USER , ROLE_DASHBOARD">
+<sec:authorize access="hasAnyRole('ROLE_USER' , 'ROLE_DASHBOARD')">
     <%@include file="/pages/dashboard/user-index.jsp" %>
 </sec:authorize>
 
