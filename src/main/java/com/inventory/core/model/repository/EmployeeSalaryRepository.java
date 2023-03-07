@@ -29,9 +29,9 @@ public interface EmployeeSalaryRepository extends JpaRepository<EmployeeSalary ,
     @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.storeEmployee.id = ?2 and es.status = ?3")
     List<EmployeeSalary> findAllByStoreEmployee_IdAndStatusWithStoreEmployee(long storeEmployeeId , Status status);
 
-    @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.storeEmployee.id = ?1 and es.status = ?3")
+   /* @Query("select es from EmployeeSalary es join fetch es.storeEmployee where es.storeEmployee.id = ?1 and es.status = ?3")
     List<EmployeeSalary> findAllByStoreInfo_IdAndStatusWithStoreEmployee(long storeInfoId , Status status);
-
+*/
 
 
 

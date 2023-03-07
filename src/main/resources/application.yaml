@@ -6,7 +6,9 @@ spring:
       dev: develop,debug,local,localdb
       prod: production,local
   application:
-    name: "makalu_hrm"
+    name: "makalu_inventory"
+  main:
+    allow-circular-references: true
   jpa:
     properties:
       hibernate:
@@ -16,6 +18,10 @@ spring:
           batch_size: 100
     hibernate:
       ddl-auto: update
+  mvc:
+    view:
+      prefix: /pages/
+      suffix: .jsp
 
 
 logging:

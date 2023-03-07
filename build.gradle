@@ -44,6 +44,7 @@ dependencies {
 
     //developmentOnly 'org.springframework.boot:spring-boot-devtools'
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    compileOnly("org.apache.tomcat.embed:tomcat-embed-jasper:10.1.7")
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -61,7 +62,7 @@ dependencies {
 
     implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
-    implementation ('ar.com.fdvs:DynamicJasper:5+'){
+    implementation ('ar.com.fdvs:DynamicJasper:5.3.8'){
         exclude group: 'org.springframework'
         exclude group: 'commons-beanutils'
         exclude group: 'commons-collections'
