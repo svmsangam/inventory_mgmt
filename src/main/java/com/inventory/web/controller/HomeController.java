@@ -100,9 +100,8 @@ public class HomeController {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             int year = calendar.get(Calendar.YEAR);
-            String yearStr = Integer.toString(year);
 
-            modelMap.put(StringConstants.CART_SALE_DATA , invoiceInfoApi.getTotalSellOfYearByStore(currentUser.getStoreId() , yearStr));
+            modelMap.put(StringConstants.CART_SALE_DATA , invoiceInfoApi.getTotalSellOfYearByStore(currentUser.getStoreId() , year));
 
             modelMap.put(StringConstants.STORE , currentUser.getStoreName());
 

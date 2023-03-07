@@ -315,7 +315,7 @@ public class InvoiceInfoApi implements IInvoiceInfoApi {
         return amount;
     }
 
-    public List<Double> getTotalSellOfYearByStore(long storeId, String year) {
+    public List<Double> getTotalSellOfYearByStore(long storeId, int year) {
 
         List<Double> totalSales = new ArrayList<Double>();
 

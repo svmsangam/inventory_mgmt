@@ -98,7 +98,7 @@ public class FiscalYearInfoController {
 
 	@PostMapping(value = "/save")
 	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR')")
-	public String save(@RequestAttribute("fiscalYearInfo") FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap,
+	public String save(FiscalYearInfoDTO fiscalYearInfoDTO, ModelMap modelMap,
 			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
 
 		try {

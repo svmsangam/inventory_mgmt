@@ -110,7 +110,7 @@ public class ClientInfoAjaxController {
 
     @PostMapping(value = "customer/save", produces = {MediaType.APPLICATION_JSON_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public ResponseEntity<RestResponseDTO> saveCustomer(@RequestAttribute("client") ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
+    public ResponseEntity<RestResponseDTO> saveCustomer( ClientInfoDTO clientInfoDTO, HttpServletRequest request) {
         RestResponseDTO result = new RestResponseDTO();
 
         try {

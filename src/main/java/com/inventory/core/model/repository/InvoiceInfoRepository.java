@@ -54,8 +54,8 @@ public interface InvoiceInfoRepository extends JpaRepository<InvoiceInfo , Long>
     @Query("select sum (i.receivableAmount) from InvoiceInfo i where i.storeInfo.id = ?1 and i.status = ?2")
     Double findTotalReceivableByStoreInfoAndStatus(long storeInfoId , Status status);
 
-    @Query("select sum (i.totalAmount) , substring(i.invoiceDate , 6, 2) from InvoiceInfo i where i.storeInfo.id=?1 and substring(i.invoiceDate , 1, 4) = ?2 group by substring(i.invoiceDate , 6, 2)")
-    List<Object[]> findTotalSellOfYearByStore(long storeId , String year );
+    @Query("select sum (i.totalAmount) , year (i.invoiceDate) from InvoiceInfo i where i.storeInfo.id=?1 and year(i.invoiceDate) = ?2 group by year(i.invoiceDate)")
+    List<Object[]> findTotalSellOfYearByStore(long storeId , int year );
 
     @Query("select i from InvoiceInfo i where i.status = ?1 and i.orderInfo.clientInfo.id = ?2 and i.storeInfo.id =?3")
     List<InvoiceInfo> findAllByStatusAndBuyerAndStoreInfo(Status status , long clientId , long storeId , Pageable pageable);

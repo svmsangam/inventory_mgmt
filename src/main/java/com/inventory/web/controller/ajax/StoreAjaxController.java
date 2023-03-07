@@ -53,7 +53,7 @@ public class StoreAjaxController {
 
 	@PostMapping(value = "save", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasRole('ROLE_SUPERADMINISTRATOR')")
-	public ResponseEntity<RestResponseDTO> save(@RequestAttribute("store") StoreInfoDTO storeInfoDTO,
+	public ResponseEntity<RestResponseDTO> save( StoreInfoDTO storeInfoDTO,
 			BindingResult bindingResult, HttpServletRequest request) {
 		RestResponseDTO result = new RestResponseDTO();
 

@@ -116,7 +116,7 @@ public class ItemController {
 
     @PostMapping(value = "/save")
 	@PreAuthorize("hasAnyRole('ROLE_SUPERADMINISTRATOR','ROLE_ADMINISTRATOR','ROLE_USER,ROLE_AUTHENTICATED')")
-    public String save(@RequestAttribute("item") ItemInfoDTO itemInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String save(ItemInfoDTO itemInfoDTO, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
         try {
        /*current user checking start*/
