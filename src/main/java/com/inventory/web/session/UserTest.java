@@ -1,3 +1,4 @@
+/*
 package com.inventory.web.session;
 
 
@@ -65,4 +66,4 @@ public class UserTest implements AuthenticationProvider {
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
-}
+}*/
