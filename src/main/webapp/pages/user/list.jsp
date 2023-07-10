@@ -181,6 +181,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger pull-left closeAdd" data-dismiss="modal">Close
                         </button>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <button type="submit" id="saveuser" pagecontext="${pageContext.request.contextPath}"
                                 url="${pageContext.request.contextPath}/user/save" class="btn btn-primary">Save changes
                         </button>

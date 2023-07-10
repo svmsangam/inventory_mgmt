@@ -40,19 +40,19 @@ public class UserValidation extends GlobalValidation {
 
     boolean valid = true;
 
-    public PasswordError change(String oldPassword , String newPassword , String confirmPassword , long userId){
+    public PasswordError change( String newPassword , String confirmPassword , long userId){
 
         PasswordError error = new PasswordError();
 
         valid = true;
 
-        if (oldPassword == null | newPassword == null | confirmPassword == null){
+        if (newPassword == null | confirmPassword == null){
 
             valid = false;
 
             error.setError("invalid request");
 
-        } else if (oldPassword.trim().equals("") | newPassword.trim().equals("")| confirmPassword.trim().equals("")) {
+        } else if ( newPassword.trim().equals("")| confirmPassword.trim().equals("")) {
 
             valid = false;
 
@@ -78,12 +78,13 @@ public class UserValidation extends GlobalValidation {
                 valid = false;
 
                 error.setError("user not found");
-            } else if (!passwordEncoder.matches(oldPassword , user.getPassword())){
-
-                valid = false;
-
-                error.setError("your current password is incorrect");
             }
+//            else if (!passwordEncoder.matches(oldPassword , user.getPassword())){
+//
+//                valid = false;
+//
+//                error.setError("your current password is incorrect");
+//            }
         }
 
         error.setValid(valid);

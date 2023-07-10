@@ -81,15 +81,14 @@ public class UserController {
 
 	@PostMapping(value = "/changepassword")
 	@PreAuthorize("isAuthenticated()")
-	public String updatePassword(@RequestParam("oldpassword") String oldPassword,
-			@RequestParam("newpassword") String newPassword, @RequestParam("confirmpassword") String confirmPassword,
+	public String updatePassword(@RequestParam("newpassword") String newPassword, @RequestParam("confirmpassword") String confirmPassword,
 			RedirectAttributes redirectAttributes) {
 
 		try {
 
 			InvUserDTO currentUser = AuthenticationUtil.getCurrentUser(userApi);
 
-			PasswordError error = userValidation.change(oldPassword, newPassword, confirmPassword,
+			PasswordError error = userValidation.change(newPassword, confirmPassword,
 					currentUser.getUserId());
 
 			if (!error.isValid()) {

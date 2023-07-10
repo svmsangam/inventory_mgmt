@@ -44,10 +44,10 @@
                     <form action="${pageContext.request.contextPath}/user/changepassword" method="post" >
                         <div class="box-body">
 
-                            <div class="form-group">
-                                <label class="control-label">Old Password</label>
-                                <input type="password" class="form-control" name="oldpassword" placeholder="old password">
-                            </div>
+<%--                            <div class="form-group">--%>
+<%--                                <label class="control-label">Old Password</label>--%>
+<%--                                <input type="password" class="form-control" name="oldpassword" placeholder="old password">--%>
+<%--                            </div>--%>
 
                             <div class="form-group">
                                 <label class="control-label">New Password</label>
