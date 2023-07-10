@@ -2,7 +2,7 @@ package com.inventory.web.util;
 
 public class StringConstants {
 
-    public static final String VerificationMainSender = "inventory.sys.info@gmail.com";
+    public static final String VerificationMainSender = "testappmailservice49@gmail.com";
     public static final String Server_url = "www.pasalya.com";
     public static final String Local_url = "http://localhost:8080";
 
