@@ -42,9 +42,9 @@ dependencies {
     implementation "org.projectlombok:lombok:1.18.24"
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
-    //developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    compileOnly("org.apache.tomcat.embed:tomcat-embed-jasper:9.0.65")
+//    developmentOnly ("org.springframework.boot:spring-boot-devtools")
+//    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    implementation("org.apache.tomcat.embed:tomcat-embed-jasper:9.0.65")
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
     implementation("org.springframework.security:spring-security-taglibs:5.7.2")
 
